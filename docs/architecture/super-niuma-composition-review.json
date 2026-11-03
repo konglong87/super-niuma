@@ -19,7 +19,7 @@
   },
   "web/src/v2/desktopServiceBridge.ts": {
     "baseline_sha256": "ab147f9605aa8784f139c5aa07d248963e5c8741694fbf228a55cc1ed41350ab",
-    "reviewed_sha256": "b868968fe14d80192828389a965ef653c1f6353bbc5395521eafdabd4ff25db2",
+    "reviewed_sha256": "a60d523da2e8ed1d3ff045eefed0274efbb42ac98ffb5edd6645a99143b83939",
     "reason": "Optional typed Super methods and their DTOs; legacy bridge capability unchanged.",
     "verification": "TypeScript build + client capability tests + real Wails bindings"
   }
