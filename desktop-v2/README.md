@@ -19,11 +19,11 @@ wails doctor
 macOS：
 
 ```bash
-scripts/build-Niuma Desktop.sh
-open Niuma Desktop/build/bin/niuma.app
+scripts/build-desktop-v2.sh
+open desktop-v2/build/bin/niuma.app
 ```
 
-脚本以 `VITE_DESKTOP_UI_VERSION=2` 构建前端并复制到 `Niuma Desktop/frontend/dist`，
+脚本以 `VITE_DESKTOP_UI_VERSION=2` 构建前端并复制到 `desktop-v2/frontend/dist`，
 编译本地 server，再用 Wails 打包，并将 `niuma` 放入 app 的
 `Contents/MacOS/`。不能只复制桌面可执行文件而遗漏 server。macOS 在复制
 server 后会按“先签名嵌套 server，再签名外层 app”的顺序重新签名，并严格校验
@@ -34,8 +34,8 @@ server 后会按“先签名嵌套 server，再签名外层 app”的顺序重�
 Windows（在 Windows 上执行 PowerShell）：
 
 ```powershell
-.\scripts\build-Niuma Desktop-windows.ps1
-node scripts/test-Niuma Desktop-windows-packaging.mjs --require-pwsh
+.\scripts\build-desktop-v2-windows.ps1
+node scripts/test-desktop-v2-windows-packaging.mjs --require-pwsh
 ```
 
 脚本目标产物为 `dist\niuma-setup.exe`，仅支持 Windows amd64。
@@ -131,8 +131,8 @@ Windows/Linux/TUI/Code Execution/Replay。
 真实验收命令：
 
 ```bash
-bash scripts/build-Niuma Desktop.sh
-open Niuma Desktop/build/bin/niuma.app
+bash scripts/build-desktop-v2.sh
+open desktop-v2/build/bin/niuma.app
 ```
 
 模型 ComputerUse 已通过受信任的本地 bridge 接入 Wails Controller；在模型图片路线
