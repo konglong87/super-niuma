@@ -10,7 +10,7 @@ import (
 
 const (
 	applicationID = 0x53555052 // SUPR, not the legacy Session database.
-	schemaVersion = 1
+	schemaVersion = 2
 )
 
 func initialize(ctx context.Context, db *sql.DB) error {
@@ -31,16 +31,18 @@ func initialize(ctx context.Context, db *sql.DB) error {
 	}
 	switch {
 	case appID == applicationID && version == schemaVersion:
-		// Do not run schema migrations on an existing or foreign application.
-		rows, err := tx.QueryContext(ctx, "SELECT "+orderColumns+" FROM work_orders LIMIT 0")
-		if err != nil {
+		if err := validateV2Schema(ctx, tx); err != nil {
 			return err
 		}
-		if err := rows.Close(); err != nil {
+	case appID == applicationID && version == 1:
+		if err := migrateV1(ctx, tx); err != nil {
 			return err
 		}
 	case appID == 0 && version == 0 && tables == 0:
 		if _, err := tx.ExecContext(ctx, schema()); err != nil {
+			return err
+		}
+		if _, err := tx.ExecContext(ctx, busSchema()); err != nil {
 			return err
 		}
 		if _, err := tx.ExecContext(ctx, fmt.Sprintf("PRAGMA application_id = %d; PRAGMA user_version = %d", applicationID, schemaVersion)); err != nil {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/konglong87/super-niuma/internal/super/eventbus"
 	"github.com/konglong87/super-niuma/internal/super/workorder"
 )
 
@@ -35,8 +36,13 @@ func (s *Store) Cancel(ctx context.Context, id string, at time.Time) (workorder.
 	if err := insertEvent(ctx, tx, id, workorder.StatusCancelled, order.UpdatedAt); err != nil {
 		return workorder.WorkOrder{}, storageError(ctx, err)
 	}
+	if _, _, err := appendEventTx(ctx, tx, intakeBusEvent(id, eventbus.TopicWorkOrderCancelled, order.UpdatedAt), true); err != nil {
+		traceBus(ctx, "intake.cancel", err)
+		return workorder.WorkOrder{}, storageError(ctx, err)
+	}
 	if err := tx.Commit(); err != nil {
 		return workorder.WorkOrder{}, storageError(ctx, err)
 	}
+	traceBus(ctx, "intake.cancel", nil)
 	return order, nil
 }

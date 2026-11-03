@@ -15,7 +15,7 @@
 | 优先级 | 阶段 | 实现 | 自动测试 | 原生实操 | 模型/外部验收 | 提交/push |
 | --- | --- | --- | --- | --- | --- | --- |
 | 0 | A0 架构与方案 review | 双review通过 | 基线测试/边界通过 | 不适用 | 官方来源已核实 | 本切片提交/push |
-| 1 | A1 持久 bus + migration + intake原子事件 | 未开始 | 未开始 | 不改变 UI | 无模型 | 待 A0 |
+| 1 | A1 持久 bus + migration + intake原子事件 | 已实现 | focused/race通过 | 不改变 UI | 无模型 | 本切片提交/push |
 | 2 | A2 Router/admission/inbox/grants | 未开始 | 未开始 | 后续 A7 | 快路径零模型 | 待 A1 |
 | 3 | A3 单Worker持久执行/预算/取消 | 未开始 | 未开始 | 后续 A7 | 需受限运行配置 | 待 A2 |
 | 4 | A4 并行 Worker/Subagent | 未开始 | 未开始 | 后续 A7 | 需总预算 | 待 A3 |
@@ -44,3 +44,10 @@
 - 第一轮 security：6 P1，已按架构§16修订；复核通过。
 - 基线验证：`GOSUMDB=sum.golang.org go test ./internal/super/...` 全通过；boundary guard通过。
 - 两位 reviewer 均确认无未关闭方案阻断，允许A1；A1不得启动真实模型/工具/渠道。
+
+## A1 交付切片
+
+- 变更：eventbus契约、SQLite v1→v2及历史回填、双订阅/ACK/NACK/lease/fencing/retry/DLQ，接单与取消+bus原子提交。
+- 实测：`go test -race ./internal/super/eventbus ./internal/super/sqlitestore -skip 'TestControl|TestRouter'` 通过（A2控制层仍并行实施，明确排除未集成部分）。
+- 下一优先级：A2/A3/A4持久CAS/资源/预算/执行器接线；A5只读验收器和A7前端已有task-owned代码，尚未交付。
+- 原生、真实模型及真实外部通道验收尚未执行；不得以本切片测试替代。

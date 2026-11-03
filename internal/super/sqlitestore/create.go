@@ -9,6 +9,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/konglong87/super-niuma/internal/super/eventbus"
 	"github.com/konglong87/super-niuma/internal/super/workorder"
 )
 
@@ -41,9 +42,17 @@ func (s *Store) Create(ctx context.Context, key string, order workorder.WorkOrde
 	if err := insertEvent(ctx, tx, order.ID, workorder.StatusRecorded, order.CreatedAt); err != nil {
 		return workorder.WorkOrder{}, false, storageError(ctx, err)
 	}
+	if _, _, err := appendEventTx(ctx, tx, intakeBusEvent(order.ID, eventbus.TopicWorkOrderRecorded, order.CreatedAt), false); err != nil {
+		traceBus(ctx, "intake.create", err)
+		if errors.Is(err, eventbus.ErrCapacity) {
+			return workorder.WorkOrder{}, false, err
+		}
+		return workorder.WorkOrder{}, false, storageError(ctx, err)
+	}
 	if err := tx.Commit(); err != nil {
 		return workorder.WorkOrder{}, false, storageError(ctx, err)
 	}
+	traceBus(ctx, "intake.create", nil)
 	return order, true, nil
 }
 
