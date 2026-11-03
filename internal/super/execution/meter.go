@@ -2,6 +2,7 @@ package execution
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"log/slog"
@@ -13,17 +14,39 @@ import (
 
 // One state per attempt; query's parallel tools are deliberately disabled.
 type attemptState struct {
-	request   Request
-	cancel    context.CancelFunc
-	logger    *slog.Logger
-	err       error
-	toolCalls int
-	writes    []WriteReceipt
+	request    Request
+	cancel     context.CancelFunc
+	logger     *slog.Logger
+	err        error
+	toolCalls  int
+	writes     []WriteReceipt
+	diagnostic *Diagnostic
 }
 
 func (s *attemptState) fail(err error) error {
 	if s.err == nil {
 		s.err = err
+		d := Diagnostic{FailureStage: StageUnknown}
+		if s.diagnostic != nil {
+			d = *s.diagnostic
+		}
+		if reported, ok := failureDiagnostic(err); ok {
+			// Sparse local failures (e.g. a bounded callback) must not erase the
+			// already observed response metadata. New requests clear it upfront.
+			if reported.HTTPStatus != 0 {
+				index := d.RequestIndex
+				d = reported
+				d.RequestIndex = index
+			}
+			d.FailureStage = reported.FailureStage
+		} else {
+			d.FailureStage = StageUnknown
+		}
+		d.Code = ErrorCode(FailureCode(err))
+		if d.FailureStage == StageUnknown || d.FailureStage == StageNone || d.FailureStage == "" {
+			d.FailureStage = stageForCode(d.Code)
+		}
+		s.diagnose(d)
 		s.cancel()
 	}
 	return s.err
@@ -40,9 +63,15 @@ func (s *attemptState) authorize(ctx context.Context) error {
 	}
 	return nil
 }
+func (s *attemptState) diagnose(d Diagnostic) { copy := d.safe(); s.diagnostic = &copy }
 func (s *attemptState) log(action, code string) {
-	s.logger.Info("super_execution", "action", action, "run_id", s.request.RunID,
-		"job_id", s.request.JobID, "attempt_id", s.request.AttemptID, "code", code)
+	reference := sha256.Sum256([]byte(s.request.AttemptID))
+	attrs := []any{"action", action, "run_id", s.request.RunID, "job_id", s.request.JobID, "attempt_ref", fmt.Sprintf("%x", reference[:8]), "code", code}
+	if s.diagnostic != nil {
+		d := s.diagnostic.safe()
+		attrs = append(attrs, "diagnostic_code", d.Code, "http_status", d.HTTPStatus, "response_bytes", d.ResponseBytes, "media_type", d.MediaType, "usage_state", d.UsageState, "request_index", d.RequestIndex, "body_state", d.BodyState, "failure_stage", d.FailureStage, "completion_kind", d.CompletionKind, "content_kind", d.ContentKind)
+	}
+	s.logger.Info("super_execution", attrs...)
 }
 
 type boundedWriter struct {
@@ -52,7 +81,7 @@ type boundedWriter struct {
 
 func (w *boundedWriter) Write(p []byte) (int, error) {
 	if len(p) > MaxResultBytes-w.bytes {
-		return 0, w.state.fail(ErrFailed)
+		return 0, w.state.fail(codedFailure(CodeOutputTooLarge))
 	}
 	w.bytes += len(p)
 	return len(p), nil
@@ -69,14 +98,17 @@ type meteredStreamer struct {
 	usageKnown bool
 }
 
+type responseDiagnoser interface{ responseDiagnostic() Diagnostic }
+
 func (m *meteredStreamer) StreamMessages(ctx context.Context, req anthropic.MessagesRequest, cb anthropic.StreamCallbacks) (*anthropic.StreamResult, error) {
+	m.state.diagnose(Diagnostic{Code: CodeOK, RequestIndex: m.calls + 1, FailureStage: StageAuthority})
 	if err := m.state.authorize(ctx); err != nil {
 		return nil, err
 	}
-	if m.calls >= m.state.request.MaxTurns || req.Model != m.state.request.Model ||
-		req.MaxTokens != m.state.request.MaxOutputTokens || req.Thinking != nil {
+	if m.calls >= m.state.request.MaxTurns || req.Model != m.state.request.Model || req.MaxTokens != m.state.request.MaxOutputTokens || req.Thinking != nil {
 		return nil, m.state.fail(ErrInvalid)
 	}
+	m.state.diagnostic.FailureStage = StageRequest
 	encoded, err := json.Marshal(req)
 	if err != nil || len(encoded) > maxRequestBytes {
 		return nil, m.state.fail(ErrBudget)
@@ -85,7 +117,7 @@ func (m *meteredStreamer) StreamMessages(ctx context.Context, req anthropic.Mess
 	if sizer, ok := m.inner.(requestSizer); ok {
 		n, err := sizer.requestBytes(req)
 		if err != nil {
-			return nil, m.state.fail(ErrFailed)
+			return nil, m.state.fail(diagnosticFailure(*m.state.diagnostic, ErrorCode(FailureCode(err)), ErrFailed))
 		}
 		if n > size {
 			size = n
@@ -94,11 +126,10 @@ func (m *meteredStreamer) StreamMessages(ctx context.Context, req anthropic.Mess
 	if size > maxRequestBytes {
 		return nil, m.state.fail(ErrBudget)
 	}
-	// One byte per possible token, plus explicit message/tool framing. Never
-	// estimate bytes/4: JSON escaping and non-ASCII text invalidate that bound.
 	input := size + framingReserve + len(req.Messages)*perMessageReserve + len(req.Tools)*perToolReserve
 	m.calls++
-	id := fmt.Sprintf("%s/model/%d", m.state.request.AttemptID, m.calls)
+	id := fmt.Sprintf("%s.model.%d", m.state.request.AttemptID, m.calls)
+	m.state.diagnostic.FailureStage = StageBudget
 	m.state.log(actionModelReserve, codeStart)
 	if err := m.state.request.Budget.Reserve(ctx, id, input, req.MaxTokens); err != nil {
 		m.usageKnown = false
@@ -106,15 +137,23 @@ func (m *meteredStreamer) StreamMessages(ctx context.Context, req anthropic.Mess
 	}
 	return m.reservedRequest(ctx, id, input, req, cb)
 }
+
 func (m *meteredStreamer) reservedRequest(ctx context.Context, id string, input int, req anthropic.MessagesRequest, cb anthropic.StreamCallbacks) (stream *anthropic.StreamResult, retErr error) {
 	usage, known := Usage{}, false
 	defer func() {
-		// Settlement is bounded cleanup only, never another model request. On lost
-		// authority/cancellation/unknown usage the reservation is NOT refunded.
+		// This bounded bookkeeping may outlive cancellation. It never performs a
+		// model request. Known cost is settled even when execution was rejected;
+		// incomplete/ambiguous reports retain the entire reservation.
 		settleCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
 		defer cancel()
 		if err := m.state.request.Budget.Settle(settleCtx, id, usage, known); err != nil {
-			stream, retErr = nil, m.state.fail(ErrBudget)
+			if retErr == nil {
+				d := *m.state.diagnostic
+				d.FailureStage = StageBudget
+				stream, retErr = nil, m.state.fail(diagnosticFailure(d, CodeBudgetSettlement, ErrBudget))
+			} else {
+				m.state.log(actionModelSettle, string(CodeBudgetSettlement))
+			}
 		}
 		m.usageKnown = m.usageKnown && known
 		m.usage.InputTokens += usage.InputTokens
@@ -124,42 +163,56 @@ func (m *meteredStreamer) reservedRequest(ctx context.Context, id string, input 
 	if err := m.state.authorize(ctx); err != nil {
 		return nil, err
 	}
+	m.state.diagnostic.FailureStage = StageNetwork
 	m.state.log(actionModelRequest, codeStart)
-	raw, err := m.inner.StreamMessages(ctx, req, cb)
-	if err != nil {
-		return nil, m.state.fail(safeError(ctx, ErrFailed))
+	raw, requestErr := m.inner.StreamMessages(ctx, req, cb)
+	d := Diagnostic{Code: CodeOK, RequestIndex: m.calls, FailureStage: StageUnknown}
+	if metadata, ok := m.inner.(responseDiagnoser); ok {
+		d = metadata.responseDiagnostic()
+	}
+	if failure, ok := failureDiagnostic(requestErr); ok {
+		d = failure
+	}
+	d.RequestIndex = m.calls
+	m.state.diagnose(d)
+	if requestErr != nil {
+		usage, known = rejectedUsage(requestErr)
+		if known && (usage.InputTokens > input || usage.OutputTokens > req.MaxTokens) {
+			return nil, m.budgetExceeded()
+		}
+		if _, typed := failureDiagnostic(requestErr); typed {
+			return nil, m.state.fail(requestErr)
+		}
+		// Never pass arbitrary errors or PartialStreamError to query: they can
+		// contain secrets or activate recovery of a rejected partial response.
+		return nil, m.state.fail(diagnosticFailure(d, ErrorCode(FailureCode(safeError(ctx, requestErr))), safeError(ctx, ErrFailed)))
 	}
 	if raw == nil {
-		return nil, m.state.fail(ErrFailed)
+		return nil, m.state.fail(diagnosticFailure(d, CodeOutputInvalid, ErrFailed))
 	}
-	u := raw.Usage
-	if u.InputTokens < 0 || u.OutputTokens < 0 || u.CacheReadInputTokens < 0 || u.CacheCreationInputTokens < 0 {
-		return nil, m.state.fail(ErrBudget)
+	var usageErr error
+	usage, usageErr = observedUsage(raw.Usage)
+	if usageErr != nil {
+		m.state.diagnostic.UsageState = UsageInvalid
+		m.state.diagnostic.FailureStage = StageUsage
+		return nil, m.state.fail(diagnosticFailure(*m.state.diagnostic, CodeUsageInvalid, ErrFailed))
 	}
-	// OpenAI input already includes cached tokens; Anthropic's does not.
-	for _, n := range []int{u.InputTokens, u.OutputTokens, u.CacheReadInputTokens, u.CacheCreationInputTokens, u.CacheCreationEphemeral1hInputTokens, u.CacheCreationEphemeral5mInputTokens, u.CacheCreation.Ephemeral1hInputTokens, u.CacheCreation.Ephemeral5mInputTokens} {
-		if n < 0 || n > maxRequestBytes {
-			return nil, m.state.fail(ErrBudget)
-		}
-	}
-	creation := max(u.CacheCreationInputTokens, u.CacheCreationEphemeral1hInputTokens+u.CacheCreationEphemeral5mInputTokens, u.CacheCreation.Ephemeral1hInputTokens+u.CacheCreation.Ephemeral5mInputTokens)
-	total := int64(u.InputTokens) + int64(creation)
-	if !u.InputTokensIncludeCacheRead {
-		total += int64(u.CacheReadInputTokens)
-	}
-	if total > int64(maxRequestBytes)*2 || int64(u.OutputTokens) > int64(maxResponseBytes)*2 {
-		return nil, m.state.fail(ErrBudget)
-	}
-	usage = Usage{int(total), u.OutputTokens}
-	known = total > 0
-	if known && (usage.InputTokens > input || usage.OutputTokens > req.MaxTokens) {
-		return nil, m.state.fail(ErrBudget)
+	known = true
+	m.state.diagnostic.UsageState = UsageKnown
+	if usage.InputTokens > input || usage.OutputTokens > req.MaxTokens {
+		return nil, m.budgetExceeded()
 	}
 	if err := m.state.authorize(ctx); err != nil {
-		known = false
 		return nil, err
 	}
+	m.state.diagnostic.FailureStage = StageNone
 	return raw, nil
+}
+func (m *meteredStreamer) budgetExceeded() error {
+	d := *m.state.diagnostic
+	d.UsageState = UsageKnown
+	d.FailureStage = StageBudget
+	return m.state.fail(diagnosticFailure(d, CodeBudgetExceeded, ErrBudget))
 }
 
 // A later successful write supersedes an older receipt for that same path.

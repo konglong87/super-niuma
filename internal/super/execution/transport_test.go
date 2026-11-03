@@ -110,7 +110,7 @@ func TestSingleHTTPPostNoRedirectRetryOrFallback(t *testing.T) {
 			req := fixtureRequest(t)
 			r := New(func(context.Context) (config.Config, error) { return cfg, nil }, nil)
 			got, err := r.Execute(context.Background(), req)
-			if err != ErrFailed || got.Text != "" || calls.Load() != 1 || redirects.Load() != 0 {
+			if !errors.Is(err, ErrFailed) || got.Text != "" || calls.Load() != 1 || redirects.Load() != 0 {
 				t.Fatalf("result=%+v err=%v requests=%d redirects=%d", got, err, calls.Load(), redirects.Load())
 			}
 			b := req.Budget.(*fakeBudget)
@@ -141,7 +141,7 @@ func TestTransportNonReplayableAndNoEnvironmentDefaults(t *testing.T) {
 		return nil, io.EOF
 	})
 	_, err = client.StreamMessages(context.Background(), anthropic.MessagesRequest{Model: "model", MaxTokens: 20, Messages: []anthropic.MessageParam{{Role: "user", Content: []anthropic.ContentBlock{{Type: "text", Text: "hi"}}}}}, anthropic.StreamCallbacks{})
-	if err != ErrFailed || calls != 1 {
+	if !errors.Is(err, ErrFailed) || calls != 1 {
 		t.Fatal("transport error retried", err, calls)
 	}
 }
@@ -227,6 +227,7 @@ func TestMissingPartialAndZeroUsageKeepReservation(t *testing.T) {
 	for _, usage := range []string{`{}`, `{"input_tokens":15}`, `{"output_tokens":5}`, `{"input_tokens":0,"output_tokens":0}`} {
 		t.Run(usage, func(t *testing.T) {
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				w.Header().Set("Content-Type", "application/json")
 				fmt.Fprintf(w, `{"role":"assistant","content":[{"type":"text","text":"Done."}],"stop_reason":"end_turn","usage":%s}`, usage)
 			}))
 			defer server.Close()
@@ -236,7 +237,7 @@ func TestMissingPartialAndZeroUsageKeepReservation(t *testing.T) {
 			r := New(func(context.Context) (config.Config, error) { return cfg, nil }, nil)
 			got, err := r.Execute(context.Background(), req)
 			b := req.Budget.(*fakeBudget)
-			if err != nil || got.UsageKnown || len(b.settled) != 1 || b.settled[0].known {
+			if !errors.Is(err, ErrFailed) || got.Text != "" || got.UsageKnown || len(b.settled) != 1 || b.settled[0].known {
 				t.Fatalf("got=%+v err=%v settle=%+v", got, err, b.settled)
 			}
 		})
@@ -280,6 +281,7 @@ func TestProtocolRejectsTruncationServerToolsAndMalformedMessages(t *testing.T) 
 
 func TestHTTPResponseByteLimitAndRawErrorPrivacy(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
 		io.WriteString(w, strings.Repeat("x", maxResponseBytes+1))
 	}))
 	defer server.Close()
@@ -288,7 +290,7 @@ func TestHTTPResponseByteLimitAndRawErrorPrivacy(t *testing.T) {
 	req := fixtureRequest(t)
 	r := New(func(context.Context) (config.Config, error) { return cfg, nil }, nil)
 	got, err := r.Execute(context.Background(), req)
-	if err != ErrFailed || got.Text != "" {
+	if !errors.Is(err, ErrFailed) || got.Text != "" {
 		t.Fatalf("got=%+v err=%v", got, err)
 	}
 }
@@ -309,7 +311,7 @@ func TestAuthorityIsRecheckedAtHTTPBoundary(t *testing.T) {
 	_, err = httpClient.StreamMessages(context.Background(), anthropic.MessagesRequest{
 		Model: "model", MaxTokens: 10, Messages: []anthropic.MessageParam{{Role: "user", Content: []anthropic.ContentBlock{{Type: "text", Text: "protected"}}}},
 	}, anthropic.StreamCallbacks{})
-	if err != ErrAuthority || calls != 0 {
+	if !errors.Is(err, ErrAuthority) || calls != 0 {
 		t.Fatalf("err=%v calls=%d", err, calls)
 	}
 }

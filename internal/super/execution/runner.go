@@ -2,7 +2,6 @@ package execution
 
 import (
 	"context"
-	"errors"
 	"io"
 	"log/slog"
 	"strings"
@@ -73,6 +72,13 @@ func (r *Runner) configuration(ctx context.Context, provider, model string) (con
 }
 
 func (r *Runner) Execute(ctx context.Context, request Request) (result Result, retErr error) {
+	defer func() {
+		if retErr != nil && result.Diagnostic == nil {
+			code := ErrorCode(FailureCode(retErr))
+			d := Diagnostic{Code: code, FailureStage: stageForCode(code)}.safe()
+			result.Diagnostic = &d
+		}
+	}()
 	if ctx == nil {
 		return result, ErrInvalid
 	}
@@ -87,7 +93,19 @@ func (r *Runner) Execute(ctx context.Context, request Request) (result Result, r
 	defer cancel()
 	state := &attemptState{request: request, cancel: cancel, logger: rLogger(r)}
 	state.log(actionAttemptStart, codeOK)
-	defer func() { state.log(actionAttemptEnd, errorCode(retErr)) }()
+	defer func() {
+		if state.diagnostic != nil {
+			d := *state.diagnostic
+			if retErr != nil && d.Code == CodeOK {
+				d.Code = ErrorCode(FailureCode(retErr))
+				d.FailureStage = stageForCode(d.Code)
+			}
+			d = d.safe()
+			result.Diagnostic = &d
+			state.diagnose(d)
+		}
+		state.log(actionAttemptEnd, errorCode(retErr))
+	}()
 	if err := state.authorize(runCtx); err != nil {
 		return result, err
 	}
@@ -147,9 +165,20 @@ func (r *Runner) Execute(ctx context.Context, request Request) (result Result, r
 	if err := state.authorize(runCtx); err != nil {
 		return result, err
 	}
-	if qr.PendingInteraction != nil || qr.StopReason != stopComplete || strings.TrimSpace(qr.Response) == "" ||
-		!utf8.ValidString(qr.Response) || len(qr.Response) > MaxResultBytes {
-		return result, ErrFailed
+	if qr.PendingInteraction != nil {
+		return result, state.fail(codedFailure(CodeOutputUnsupported))
+	}
+	if qr.StopReason == "max_tokens" || qr.StopReason == "length" {
+		return result, state.fail(codedFailure(CodeOutputTruncated))
+	}
+	if qr.StopReason != stopComplete || !utf8.ValidString(qr.Response) {
+		return result, state.fail(codedFailure(CodeOutputInvalid))
+	}
+	if strings.TrimSpace(qr.Response) == "" {
+		return result, state.fail(codedFailure(CodeOutputEmpty))
+	}
+	if len(qr.Response) > MaxResultBytes {
+		return result, state.fail(codedFailure(CodeOutputTooLarge))
 	}
 	result.Text = qr.Response
 	return result, nil
@@ -170,24 +199,10 @@ func safeError(ctx context.Context, err error) error {
 }
 
 func errorCode(err error) string {
-	switch {
-	case err == nil:
+	if err == nil {
 		return codeOK
-	case errors.Is(err, context.Canceled):
-		return codeCancelled
-	case errors.Is(err, context.DeadlineExceeded):
-		return codeDeadline
-	case errors.Is(err, ErrAuthority):
-		return codeAuthority
-	case errors.Is(err, ErrBudget):
-		return codeBudget
-	case errors.Is(err, ErrInvalid):
-		return codeInvalid
-	case errors.Is(err, ErrUnavailable):
-		return codeUnavailable
-	default:
-		return codeFailed
 	}
+	return FailureCode(err)
 }
 
 var _ Executor = (*Runner)(nil)

@@ -61,7 +61,23 @@ type WriteReceipt struct {
 	AttemptID string `json:"attempt_id"`
 }
 
+// Diagnostic contains only safe enums and bounded numeric metadata. It never
+// includes URLs, headers, response text, provider error strings or credentials.
+type Diagnostic struct {
+	BodyState      BodyState      `json:"body_state,omitempty"`
+	FailureStage   FailureStage   `json:"failure_stage,omitempty"`
+	CompletionKind CompletionKind `json:"completion_kind,omitempty"`
+	ContentKind    ContentKind    `json:"content_kind,omitempty"`
+	Code           ErrorCode      `json:"code"`
+	HTTPStatus     int            `json:"http_status,omitempty"`
+	ResponseBytes  int64          `json:"response_bytes,omitempty"`
+	MediaType      MediaType      `json:"media_type,omitempty"`
+	UsageState     UsageState     `json:"usage_state,omitempty"`
+	RequestIndex   int            `json:"request_index,omitempty"`
+}
+
 type Result struct {
+	Diagnostic *Diagnostic    `json:"diagnostic,omitempty"`
 	Writes     []WriteReceipt `json:"writes,omitempty"`
 	Text       string         `json:"text"`
 	Usage      Usage          `json:"usage"`

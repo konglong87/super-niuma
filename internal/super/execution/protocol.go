@@ -184,36 +184,6 @@ func encodeResponses(req anthropic.MessagesRequest) ([]byte, string, error) {
 	return data, "/responses", err
 }
 
-// Pointer counters distinguish missing reports from a real zero. Missing any
-// required counter discards the incomplete report: the reservation stays held.
-type wireUsage struct {
-	Input       *int `json:"input_tokens"`
-	Output      *int `json:"output_tokens"`
-	CacheCreate *int `json:"cache_creation_input_tokens"`
-	CacheRead   *int `json:"cache_read_input_tokens"`
-	Prompt      *int `json:"prompt_tokens"`
-	Completion  *int `json:"completion_tokens"`
-}
-
-func (u wireUsage) usage(protocol config.ProviderProtocol) anthropic.Usage {
-	in, out := u.Input, u.Output
-	if protocol == config.ProviderProtocolOpenAIChatCompletions {
-		in, out = u.Prompt, u.Completion
-	}
-	if in == nil || out == nil {
-		return anthropic.Usage{}
-	}
-	result := anthropic.Usage{InputTokens: *in, OutputTokens: *out, InputTokensIncludeCacheRead: protocol != config.ProviderProtocolAnthropicMessages}
-	if protocol == config.ProviderProtocolAnthropicMessages {
-		if u.CacheCreate != nil {
-			result.CacheCreationInputTokens = *u.CacheCreate
-		}
-		if u.CacheRead != nil {
-			result.CacheReadInputTokens = *u.CacheRead
-		}
-	}
-	return result
-}
 func decodeResponse(protocol config.ProviderProtocol, data []byte) (*anthropic.StreamResult, error) {
 	switch protocol {
 	case config.ProviderProtocolAnthropicMessages:
@@ -221,12 +191,11 @@ func decodeResponse(protocol config.ProviderProtocol, data []byte) (*anthropic.S
 			Role       string                   `json:"role"`
 			Content    []anthropic.ContentBlock `json:"content"`
 			StopReason string                   `json:"stop_reason"`
-			Usage      wireUsage                `json:"usage"`
 		}
 		if json.Unmarshal(data, &response) != nil {
-			return nil, ErrFailed
+			return nil, codedFailure(CodeOutputInvalid)
 		}
-		return &anthropic.StreamResult{Message: anthropic.MessageParam{Role: response.Role, Content: response.Content}, StopReason: response.StopReason, Usage: response.Usage.usage(protocol)}, nil
+		return &anthropic.StreamResult{Message: anthropic.MessageParam{Role: response.Role, Content: response.Content}, StopReason: response.StopReason}, nil
 	case config.ProviderProtocolOpenAIChatCompletions:
 		return decodeChat(data)
 	case config.ProviderProtocolOpenAIResponses:
@@ -246,32 +215,38 @@ func decodeChat(data []byte) (*anthropic.StreamResult, error) {
 			} `json:"message"`
 			Finish string `json:"finish_reason"`
 		} `json:"choices"`
-		Usage wireUsage `json:"usage"`
 	}
 	if json.Unmarshal(data, &response) != nil || len(response.Choices) != 1 {
-		return nil, ErrFailed
+		return nil, codedFailure(CodeOutputInvalid)
 	}
 	c := response.Choices[0]
-	if c.Message.Role != roleAssistant || c.Message.Refusal != "" {
-		return nil, ErrFailed
+	if c.Message.Role != roleAssistant {
+		return nil, codedFailure(CodeOutputInvalid)
 	}
-	result := &anthropic.StreamResult{Message: anthropic.MessageParam{Role: roleAssistant}, Usage: response.Usage.usage(config.ProviderProtocolOpenAIChatCompletions)}
+	if c.Message.Refusal != "" {
+		return nil, codedFailure(CodeOutputRefused)
+	}
+	result := &anthropic.StreamResult{Message: anthropic.MessageParam{Role: roleAssistant}}
 	if c.Message.Content != "" {
 		result.Message.Content = append(result.Message.Content, anthropic.ContentBlock{Type: contentText, Text: c.Message.Content})
 	}
 	for _, tc := range c.Message.ToolCalls {
 		if tc.Type != "function" {
-			return nil, ErrFailed
+			return nil, codedFailure(CodeOutputUnsupported)
 		}
 		result.Message.Content = append(result.Message.Content, anthropic.ContentBlock{Type: contentToolUse, ID: tc.ID, Name: tc.Function.Name, Input: json.RawMessage(tc.Function.Arguments)})
 	}
 	switch c.Finish {
+	case "length":
+		return nil, codedFailure(CodeOutputTruncated)
+	case "content_filter":
+		return nil, codedFailure(CodeOutputRefused)
 	case "stop":
 		result.StopReason = stopComplete
 	case "tool_calls":
 		result.StopReason = stopTools
 	default:
-		return nil, ErrFailed
+		return nil, codedFailure(CodeOutputInvalid)
 	}
 	return result, nil
 }
@@ -288,31 +263,39 @@ func decodeResponses(data []byte) (*anthropic.StreamResult, error) {
 			Name      string         `json:"name"`
 			Arguments string         `json:"arguments"`
 		} `json:"output"`
-		Usage wireUsage `json:"usage"`
 	}
-	if json.Unmarshal(data, &response) != nil || response.Status != "completed" || (len(response.Error) > 0 && string(response.Error) != "null") {
-		return nil, ErrFailed
+	if json.Unmarshal(data, &response) != nil {
+		return nil, codedFailure(CodeOutputInvalid)
 	}
-	result := &anthropic.StreamResult{Message: anthropic.MessageParam{Role: roleAssistant}, StopReason: stopComplete, Usage: response.Usage.usage(config.ProviderProtocolOpenAIResponses)}
+	if response.Status == "incomplete" {
+		return nil, codedFailure(CodeOutputTruncated)
+	}
+	if response.Status != "completed" || (len(response.Error) > 0 && string(response.Error) != "null") {
+		return nil, codedFailure(CodeOutputInvalid)
+	}
+	result := &anthropic.StreamResult{Message: anthropic.MessageParam{Role: roleAssistant}, StopReason: stopComplete}
 	for _, out := range response.Output {
 		switch out.Type {
 		case "message":
 			if out.Role != roleAssistant || (out.Status != "" && out.Status != "completed") {
-				return nil, ErrFailed
+				return nil, codedFailure(CodeOutputInvalid)
 			}
 			for _, b := range out.Content {
 				if b.Type != "output_text" {
-					return nil, ErrFailed
+					return nil, codedFailure(CodeOutputUnsupported)
 				}
 				result.Message.Content = append(result.Message.Content, anthropic.ContentBlock{Type: contentText, Text: b.Text})
 			}
 		case "function_call":
+			if out.Status != "" && out.Status != "completed" {
+				return nil, codedFailure(CodeOutputInvalid)
+			}
 			result.StopReason = stopTools
 			result.Message.Content = append(result.Message.Content, anthropic.ContentBlock{Type: contentToolUse, ID: out.CallID, Name: out.Name, Input: json.RawMessage(out.Arguments)})
 		default:
 			// Reasoning/encrypted/server-tool continuations are intentionally not
 			// replayed or silently dropped by this narrowly supported protocol.
-			return nil, ErrUnavailable
+			return nil, codedFailure(CodeOutputUnsupported)
 		}
 	}
 	return result, nil

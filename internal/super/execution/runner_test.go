@@ -184,7 +184,7 @@ func TestFreshSessionRealQueryToolLoopAndReceipts(t *testing.T) {
 		}
 		for j, c := range budget.reserved {
 			encoded, _ := json.Marshal(requests[len(requests)-3+j])
-			if c.input < len(encoded)+framingReserve || c.output != 200 || c.id != fmt.Sprintf("%s/model/%d", req.AttemptID, j+1) {
+			if c.input < len(encoded)+framingReserve || c.output != 200 || c.id != fmt.Sprintf("%s.model.%d", req.AttemptID, j+1) {
 				t.Fatalf("bad reservation: %+v", c)
 			}
 		}
@@ -263,12 +263,12 @@ func TestUnknownUsageNeverRefundedAndCacheAccounting(t *testing.T) {
 		input int
 		err   error
 	}{
-		{"unknown", anthropic.Usage{}, false, 0, nil},
+		{"unknown", anthropic.Usage{}, false, 0, ErrFailed},
 		{"anthropic_cache", anthropic.Usage{InputTokens: 10, OutputTokens: 2, CacheReadInputTokens: 20, CacheCreationInputTokens: 5}, true, 35, nil},
 		{"openai_cache_included", anthropic.Usage{InputTokens: 30, OutputTokens: 2, CacheReadInputTokens: 20, InputTokensIncludeCacheRead: true}, true, 30, nil},
 		{"usage_overrun", anthropic.Usage{InputTokens: 10, OutputTokens: 201}, true, 10, ErrBudget},
-		{"negative", anthropic.Usage{InputTokens: -1}, false, 0, ErrBudget},
-		{"overflow", anthropic.Usage{InputTokens: int(^uint(0) >> 1), CacheReadInputTokens: int(^uint(0) >> 1)}, false, 0, ErrBudget},
+		{"negative", anthropic.Usage{InputTokens: -1}, false, 0, ErrFailed},
+		{"overflow", anthropic.Usage{InputTokens: int(^uint(0) >> 1), CacheReadInputTokens: int(^uint(0) >> 1)}, false, 0, ErrFailed},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -424,7 +424,7 @@ func TestOutputLimitErrorSanitizationAndNoImplicitRetry(t *testing.T) {
 			})
 			r.logger = slog.New(slog.NewJSONHandler(&logs, nil))
 			got, err := r.Execute(context.Background(), req)
-			if err != ErrFailed || got.Text != "" || calls != 1 {
+			if !errors.Is(err, ErrFailed) || got.Text != "" || calls != 1 {
 				t.Fatalf("got=%+v err=%v calls=%d", got, err, calls)
 			}
 			if strings.Contains(logs.String(), "secret") || strings.Contains(err.Error(), "secret") || strings.Contains(logs.String(), req.Objective) {

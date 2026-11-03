@@ -26,6 +26,7 @@ type httpStreamer struct {
 	protocol  config.ProviderProtocol
 	client    *http.Client
 	authorize func(context.Context) error
+	last      Diagnostic
 }
 
 func newHTTPStreamer(cfg config.Config) (query.MessageStreamer, error) {
@@ -49,20 +50,34 @@ func (s *httpStreamer) requestBytes(req anthropic.MessagesRequest) (int, error) 
 	data, _, err := encodeRequest(s.protocol, req)
 	return len(data), err
 }
-func (s *httpStreamer) StreamMessages(ctx context.Context, req anthropic.MessagesRequest, cb anthropic.StreamCallbacks) (*anthropic.StreamResult, error) {
+func (s *httpStreamer) responseDiagnostic() Diagnostic { return s.last.safe() }
+
+func (s *httpStreamer) StreamMessages(ctx context.Context, req anthropic.MessagesRequest, cb anthropic.StreamCallbacks) (stream *anthropic.StreamResult, retErr error) {
+	d := Diagnostic{Code: CodeOK, UsageState: UsageNotObserved, FailureStage: StageRequest}
+	defer func() {
+		if failure, ok := failureDiagnostic(retErr); ok {
+			d = failure
+		} else if retErr == nil {
+			d = s.last
+		}
+		s.last = d.safe()
+	}()
 	data, suffix, err := encodeRequest(s.protocol, req)
-	if err != nil || len(data) > maxRequestBytes {
-		return nil, ErrFailed
+	if err != nil {
+		return nil, diagnosticFailure(d, ErrorCode(FailureCode(err)), ErrFailed)
+	}
+	if len(data) > maxRequestBytes {
+		return nil, diagnosticFailure(d, CodeBudgetDenied, ErrBudget)
 	}
 	endpoint := strings.TrimRight(s.cfg.BaseURL, "/")
 	if s.protocol == config.ProviderProtocolAnthropicMessages && !strings.HasSuffix(endpoint, "/v1") {
 		endpoint += "/v1"
 	}
-	// Body is intentionally non-replayable. Along with fresh HTTP/1 connections
-	// (no keepalive), this removes net/http's idempotent connection retry path.
+	// One non-replayable body on a fresh HTTP/1 connection: no SDK compatibility
+	// calls, redirects, connection retries, proxies or fallback routes.
 	httpReq, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint+suffix, io.NopCloser(bytes.NewReader(data)))
 	if err != nil {
-		return nil, ErrUnavailable
+		return nil, diagnosticFailure(d, CodeUnavailable, ErrUnavailable)
 	}
 	httpReq.ContentLength = int64(len(data))
 	httpReq.Header.Set("Content-Type", "application/json")
@@ -82,68 +97,142 @@ func (s *httpStreamer) StreamMessages(ctx context.Context, req anthropic.Message
 		}
 		httpReq.Header.Set("Authorization", "Bearer "+key)
 	}
+	d.FailureStage = StageAuthority
 	if err := ctx.Err(); err != nil {
-		return nil, err
+		return nil, transportFailure(ctx, d, err, CodeUnknown)
 	}
 	if s.authorize != nil {
 		if err := s.authorize(ctx); err != nil {
-			return nil, err
+			return nil, diagnosticFailure(d, ErrorCode(FailureCode(err)), err)
 		}
 	}
+	d.FailureStage = StageNetwork
 	response, err := s.client.Do(httpReq)
 	if err != nil {
-		return nil, ErrFailed
+		return nil, transportFailure(ctx, d, err, CodeNetwork)
 	}
 	defer response.Body.Close()
+	d.HTTPStatus = response.StatusCode
+	d.MediaType = classifyMedia(response.Header.Get("Content-Type"))
+	d.FailureStage = StageHTTP
 	if response.StatusCode < 200 || response.StatusCode >= 300 {
-		return nil, ErrFailed
+		code := CodeHTTPFailure
+		switch response.StatusCode {
+		case http.StatusUnauthorized:
+			code = CodeHTTPUnauthorized
+		case http.StatusForbidden:
+			code = CodeHTTPForbidden
+		case http.StatusTooManyRequests:
+			code = CodeHTTPRateLimited
+		}
+		return nil, diagnosticFailure(d, code, ErrFailed)
 	}
+	d.FailureStage = StageMedia
+	if d.MediaType != MediaJSON {
+		return nil, diagnosticFailure(d, CodeMediaType, ErrFailed)
+	}
+	d.FailureStage = StageBody
 	body, err := io.ReadAll(io.LimitReader(response.Body, maxResponseBytes+1))
-	if err != nil || len(body) > maxResponseBytes || !utf8.Valid(body) {
-		return nil, ErrFailed
+	d.ResponseBytes = int64(len(body))
+	d.BodyState = BodyPartial
+	if len(body) > maxResponseBytes {
+		d.BodyState = BodySizeLimit
+		return nil, diagnosticFailure(d, CodeBodyTooLarge, ErrFailed)
 	}
-	result, err := decodeResponse(s.protocol, body)
 	if err != nil {
-		return nil, ErrFailed
+		return nil, transportFailure(ctx, d, err, CodeBodyRead)
 	}
-	if err := validateResponse(result); err != nil {
-		return nil, err
+	d.BodyState = BodyComplete
+	return s.decodeOutcome(body, d, cb)
+}
+
+func (s *httpStreamer) decodeOutcome(body []byte, d Diagnostic, cb anthropic.StreamCallbacks) (*anthropic.StreamResult, error) {
+	usage, state, usageErr := strictUsage(s.protocol, body)
+	d.UsageState = state
+	var trusted *Usage
+	if state == UsageKnown {
+		amount, err := observedUsage(usage)
+		if err == nil {
+			trusted = &amount
+		}
 	}
+	reject := func(code ErrorCode, stage FailureStage, cause error) (*anthropic.StreamResult, error) {
+		d.FailureStage = stage
+		return nil, rejectedOutcome(d, code, cause, trusted)
+	}
+	if ErrorCode(FailureCode(usageErr)) == CodeJSONInvalid {
+		return reject(CodeJSONInvalid, StageJSON, ErrFailed)
+	}
+	d.CompletionKind, d.ContentKind = classifyOutcome(s.protocol, body)
+	result, outputErr := decodeResponse(s.protocol, body)
+	if outputErr == nil {
+		outputErr = validateResponse(result)
+	}
+	if outputErr != nil {
+		return reject(ErrorCode(FailureCode(outputErr)), StageOutput, ErrFailed)
+	}
+	if usageErr != nil {
+		return reject(ErrorCode(FailureCode(usageErr)), StageUsage, ErrFailed)
+	}
+	result.Usage = usage
 	for _, b := range result.Message.Content {
 		if b.Type == contentText && cb.OnText != nil {
 			if err := cb.OnText(b.Text); err != nil {
-				return nil, ErrFailed
+				return reject(ErrorCode(FailureCode(err)), StageCallback, err)
 			}
 		}
 	}
+	d.Code = CodeOK
+	d.FailureStage = StageNone
+	s.last = d.safe()
 	return result, nil
 }
 
 func validateResponse(r *anthropic.StreamResult) error {
-	if r == nil || r.Message.Role != roleAssistant || len(r.Message.Content) == 0 {
-		return ErrFailed
+	if r == nil || r.Message.Role != roleAssistant {
+		return codedFailure(CodeOutputInvalid)
+	}
+	switch r.StopReason {
+	case "max_tokens", "length":
+		return codedFailure(CodeOutputTruncated)
+	case "refusal", "content_filter":
+		return codedFailure(CodeOutputRefused)
+	}
+	if len(r.Message.Content) == 0 {
+		return codedFailure(CodeOutputEmpty)
 	}
 	textBytes, calls := 0, 0
+	hasText := false
 	seen := map[string]bool{}
 	for _, b := range r.Message.Content {
 		switch b.Type {
 		case contentText:
 			textBytes += len(b.Text)
-			if !utf8.ValidString(b.Text) || textBytes > MaxResultBytes {
-				return ErrFailed
+			hasText = hasText || strings.TrimSpace(b.Text) != ""
+			if !utf8.ValidString(b.Text) {
+				return codedFailure(CodeOutputInvalid)
+			}
+			if textBytes > MaxResultBytes {
+				return codedFailure(CodeOutputTooLarge)
 			}
 		case contentToolUse:
 			calls++
-			if calls > maxCallsPerResponse || !validID(b.ID) || seen[b.ID] || (b.Name != ToolRead && b.Name != ToolWrite) || !json.Valid(b.Input) || len(b.Input) > maxResponseBytes {
-				return ErrFailed
+			if b.Name != ToolRead && b.Name != ToolWrite {
+				return codedFailure(CodeOutputUnsupported)
+			}
+			if calls > maxCallsPerResponse || !validID(b.ID) || seen[b.ID] || !json.Valid(b.Input) || len(b.Input) > maxResponseBytes {
+				return codedFailure(CodeOutputInvalid)
 			}
 			seen[b.ID] = true
 		default:
-			return ErrFailed
+			return codedFailure(CodeOutputUnsupported)
 		}
 	}
+	if calls == 0 && !hasText {
+		return codedFailure(CodeOutputEmpty)
+	}
 	if calls > 0 && r.StopReason != stopTools || calls == 0 && r.StopReason != stopComplete {
-		return ErrFailed
+		return codedFailure(CodeOutputInvalid)
 	}
 	return nil
 }

@@ -18,8 +18,10 @@ never load configuration from the worker workspace.
 - `Budget.Reserve` precedes **each** actual model HTTP request. The reservation is
   at least the larger of internal/actual wire JSON byte counts plus conservative
   framing and the requested output-token maximum. A unique attempt/request ID
-  identifies settlement. Incomplete/missing usage, transport errors and uncertain
-  completion retain the reservation. Settlement is bounded cleanup and may run
+  identifies settlement. Incomplete/missing/invalid usage and transport errors
+  retain the reservation. A complete, strictly validated usage report is settled
+  even if the output is rejected (including truncation, empty text and unsupported
+  output); execution success and trustworthy accounting are independent. Settlement is bounded cleanup and may run
   after cancellation; it never starts another model request.
 - `Result.Writes` contains only receipts from successful trusted `super_write`
   operations. Each carries the exact relative path, byte length, SHA-256 and
@@ -70,3 +72,51 @@ receipts, route drift and discovery/logging suppression.
 
 Run `GOSUMDB=sum.golang.org go test -race ./internal/super/execution` and
 `GOSUMDB=sum.golang.org go vet ./internal/super/execution`.
+
+## Safe diagnostics / controller handoff (2026-11-03)
+
+`Result.Diagnostic *Diagnostic` is optional and backward-compatible; it contains
+only the following bounded numbers and fixed enums:
+
+- `Code ErrorCode` (`code`): stable safe root cause. Persist `FailureCode(err)`
+  instead of `err.Error()`; nil gives `""`, unknown errors give
+  `execution_unknown`. Diagnosed errors preserve `errors.Is` for safe sentinels.
+- `HTTPStatus int`, `ResponseBytes int64`, `RequestIndex int`: HTTP status (or 0),
+  bytes actually read (at most response limit + 1), and one-based request index
+  (0 before a model admission).
+- `MediaType MediaType`: `unknown`, `missing`, `json`, `event_stream`, `text`,
+  `html`, `other`, `invalid`; no raw Content-Type or parameters.
+- `BodyState BodyState`: `unobserved`, `partial`, `complete`, `size_limit_hit`.
+  Complete means the bounded HTTP body finished reading, not output success.
+- `UsageState UsageState`: `not_observed`, `missing`, `partial`, `known`, `invalid`.
+  Known means validated counters, not successful execution. `Result.UsageKnown`
+  describes aggregate attempt accounting; the diagnostic describes the last or
+  failed request. Non-2xx bodies are never read/trusted for refund.
+- `FailureStage FailureStage`: `none`, `unknown`, `request`, `authority`, `budget`,
+  `network`, `http`, `media_type`, `body`, `json`, `usage`, `output`, `callback`.
+- `CompletionKind CompletionKind`: `unknown`, `complete`, `tool_call`, `truncated`,
+  `refused`. `ContentKind ContentKind`: `unknown`, `empty`, `text`, `tool_call`,
+  `reasoning`, `mixed`, `unsupported`. These describe shape only.
+
+The private typed rejected outcome carries **only validated numeric usage**, no
+partial stream/text/tool messages. The meter settles it on the error path; query
+cannot recover it via `PartialStreamError`. Unknown/malformed usage cannot refund
+reservations or authorize tools. No reasoning continuation, unknown server tool,
+retry, fallback, or provider compatibility path has been enabled. JSON media type
+is required for accepted bodies. Both diagnostics serialization and logs enforce
+the enum/numeric whitelist; there are no URLs, headers, body/reasoning values,
+credentials, or raw errors.
+
+Regression evidence is synthetic/offline: real query + HTTP RoundTripper fixtures
+cover HTTP 200 known usage 7/9 with length/null/reasoning-only output; rejected
+writes, all three protocols, HTTP failures, timeout/partial body, size/media/JSON
+failures, absent/partial/invalid/duplicate usage, budget overrun, cancellation,
+revocation, settlement failure, privacy, and legacy result encoding. Existing
+loopback HTTP tests still exercise one-POST/no-retry behavior and successful tools.
+This does **not** prove the earlier real-provider failure had the same cause and
+is not a second model acceptance run.
+
+Slice ledger: implementation and offline tests stay inside `execution/**`;
+pre-existing reservation-ID / hashed-attempt logging changes are preserved.
+Controller persistence/UI and any later paid acceptance remain owned by the main
+agent. No commit/push in this delegated slice, per explicit instruction.
