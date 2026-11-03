@@ -26,8 +26,8 @@
 
 ## Progress
 
-- Drafts written; README and related build-command review in progress.
-- Metadata update, rendered-page verification, commit and push pending.
+- Completed: both READMEs, verified Desktop command corrections, GitHub About/topics, local checks and live rendered-page inspection.
+- Source commits 002a187 and 4967d23 are pushed; final verification is recorded below.
 
 ## Metadata applied and read back
 
@@ -47,3 +47,12 @@ Topics (16): `ai-agents`, `multi-agent`, `agent-orchestration`, `workflow-automa
 - Presentation source slice `002a187` is committed and pushed. The public page shows the new Super title, Chinese/English navigation, screenshot, preview status, About description and all 16 topics.
 - GitHub image endpoints return HTTP 200 with SVG/PNG content types; the real Desktop screenshot and all badges rendered in the built-in browser.
 - Visual review found the first left-to-right architecture graph compressed its labels too far. Replaced both language diagrams with a compact top-to-bottom graph before final acceptance; no capability claims changed.
+
+## Final verification
+
+- Public Chinese README inspected in the built-in browser: new Super identity, navigation, preview callout, actual Desktop image, benefits, setup instructions and compact architecture diagram render correctly.
+- Public English README inspected: headline, onboarding, status section and retained Computer Use limits are visible and consistent.
+- Both remote README Git blob SHAs match the local files. About text and 16 topics were read back from GitHub; public visibility/main/homepage remain unchanged.
+- Local image endpoints return HTTP 200; no fabricated showcase image, adoption count, benchmark, release or successful model/channel acceptance was introduced.
+- Verification tab closed. No new screenshot file, private credential, log, temporary workspace or runtime modification remains from this task.
+- Documentation scope has no open blocker. Existing model HTTP 429, external-channel acceptance and distribution limitations are accurately carried forward, not resolved or hidden by this presentation update.
