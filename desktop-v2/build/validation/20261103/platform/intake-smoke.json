@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "checks": [
+    "status",
+    "missing marker",
+    "cross origin",
+    "wrong host",
+    "unclean path",
+    "unknown query",
+    "create",
+    "same-key retry",
+    "key conflict",
+    "relative workspace",
+    "unknown field",
+    "wrong media type",
+    "body limit",
+    "list",
+    "cancel",
+    "repeat cancel",
+    "retry cannot revive",
+    "restart persistence"
+  ],
+  "binary_sha256": "ed908e28ba57765ec4bc9ebf94c60f20014268a07a7fb3c66d53e86e418c7aa2",
+  "execution_enabled": false,
+  "llm_routing_enabled": false,
+  "synthetic_data_only": true,
+  "owned_processes_and_state_cleaned": true
+}

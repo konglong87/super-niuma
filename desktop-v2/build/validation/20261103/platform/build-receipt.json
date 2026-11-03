@@ -1,0 +1,15 @@
+{
+  "source_commit": "526c14c59f8903da32ab65d0782ca2bdc64e1465",
+  "bundle_source": "$REPO/desktop-v2/build/bin/niuma.app",
+  "binary_sha256": "36888e4859a95f795081de968d1cf9a7421176c6d302dad35516ae141cb0f6a7",
+  "qa_bundle_id": "com.superniuma.platform.qa20261103",
+  "qa_bundle": "$PRIVATE_QA/Super Niuma Platform QA.app",
+  "explicit_roots": {
+    "NIUMA_CONFIG_DIR": "$PRIVATE_QA/home/.niuma",
+    "NIUMA_DESKTOP_CONFIG_DIR": "$PRIVATE_QA/desktop",
+    "SUPER_NIUMA_STATE_DIR": "$PRIVATE_QA/super"
+  },
+  "synthetic_credentials_only": true,
+  "native_ui_not_model_execution": true,
+  "codesign": "ad-hoc; not notarized distribution"
+}

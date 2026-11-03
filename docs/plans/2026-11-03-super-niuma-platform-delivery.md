@@ -8,7 +8,7 @@
 - 原 niuma 仓库不作为写入目标；不创建分支/worktree。
 - 架构草案：`docs/architecture/2026-11-03-super-niuma-control-plane.md`。
 - 外部参考核实：deepseek-ai/dsh-superagent-prototype @6337fc823ce20251c8de8085948165c81aaa701e。
-- A0：设计、两项复用审计及两位独立 reviewer 复核通过。**开始A1；产品完成门禁尚未达到。**
+- A0 through A7 implementation and reviewed source are committed/pushed (latest source: 526c14c). Native UI acceptance passed. Overall product acceptance is NOT complete: the real-model recheck hit HTTP 429; live external-channel and unified same-order acceptance remain blocked.
 
 ## 按依赖排序的队列
 
@@ -16,13 +16,13 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 0 | A0 架构与方案 review | 双review通过 | 基线测试/边界通过 | 不适用 | 官方来源已核实 | 本切片提交/push |
 | 1 | A1 持久 bus + migration + intake原子事件 | 已实现 | focused/race通过 | 不改变 UI | 无模型 | 本切片提交/push |
-| 2 | A2 Router/admission/inbox/grants | Implemented; final review | Race PASS | Native approval/cancel exercised | Rule fast path uses no LLM | Pending current slice |
-| 3 | A3 Worker/budget/cancel | Implemented; safe diagnostic closure | Race PASS | Native scoped authorization exercised | First real-model trial FAILED; retained | Pending current slice |
-| 4 | A4 Parallel Worker/Subagent | Bounded DAG/shared budget implemented | SQLite overlap/race PASS | Two workers visible | Real-model closure not established | Pending current slice |
-| 5 | A5 Verification/outbox | Implemented; concurrent-cancel fixed | Receipt/restart/race PASS | Report/delivery states visible | No worker self-certification | Pending current slice |
-| 6 | A6 External channels | Webhook/Feishu/scoped bindings implemented | Router/adapter/race PASS | No live account used | BLOCKED: live Feishu account/recipient | Pending current slice |
-| 7 | A7 Desktop control plane | Implemented; native UI polish in progress | Focused UI/typecheck PASS | Intake/config/consent/cancel exercised; false cancellation alarm being fixed | Native evidence only | Pending current slice |
-| 8 | A8 End-to-end acceptance | Failure/recovery integration implemented | Full Super race/vet PASS | Final build recheck required | NOT PASSED: model failure and missing external channel credentials | Pending evidence |
+| 2 | A2 Router/admission/inbox/grants | Implemented; review closed | Race PASS | Native approval/cancel exercised | Rule fast path uses no LLM | 526c14c pushed |
+| 3 | A3 Worker/budget/cancel | Implemented; safe diagnostic closure | Race PASS | Native scoped authorization exercised | First real-model trial FAILED; retained | 526c14c pushed |
+| 4 | A4 Parallel Worker/Subagent | Bounded DAG/shared budget implemented | SQLite overlap/race PASS | Two workers visible | Real-model closure not established | 526c14c pushed |
+| 5 | A5 Verification/outbox | Implemented; concurrent-cancel fixed | Receipt/restart/race PASS | Report/delivery states visible | No worker self-certification | 526c14c pushed |
+| 6 | A6 External channels | Webhook/Feishu/scoped bindings implemented | Router/adapter/race PASS | No live account used | BLOCKED: live Feishu account/recipient | 526c14c pushed |
+| 7 | A7 Desktop control plane | Implemented; UI repair complete | 941 web tests/typecheck PASS | Final native intake/config/select/consent/approval-gate/cancel/restart PASS | Synthetic UI fixture; no model acceptance claim | 9cd8b41 / 526c14c pushed |
+| 8 | End-to-end acceptance | Failure/recovery integration implemented | 132-package full Go / Super race / vet PASS | Final native screenshots PASS | BLOCKED: model HTTP 429; missing live external account/recipient; unified same-order acceptance not passed | Source pushed; receipts in final evidence slice |
 
 每阶段：检查未完成队列 → 评审具体变更 → focused tests/race → 提交/push coherent slice → 继续最高优先级无阻塞项。不能因某个外部验收缺配置就放弃能继续完成的实现；也不能将缺配置的验收说成通过。
 
@@ -36,7 +36,7 @@
 
 ## 明确验收边界
 
-当前已交付仅是 Desktop intake。任何新阶段只有代码、相应测试和发布状态实际完成才标记已交付。外部账号/模型的真实运行需可用配置及授权目标；没有则记录具体阻塞，保持该验收未完成。正式签名/分发和第二显示器仍是先前明确延期项，而不是本次暗中删减范围。
+Implemented and pushed: isolated Desktop intake/control plane, scoped Router, durable queues/bus, bounded workers/DAG, independent file verification and outbox/channel adapters. Native UI and automated acceptance pass; real-model and live external-channel acceptance are separate gates and remain unpassed. Formal signing/distribution and physical second-display acceptance remain explicitly deferred.
 
 ## 方案 Review 记录
 
@@ -96,3 +96,12 @@
 - The trusted Desktop operator can enumerate/approve/cancel/retry/abandon persisted external scopes and inspect their events/DLQ, with unique-ID resolution and stored-principal derivation. Router privileges remain unchanged.
 - All Super packages and Desktop focused/broader race tests passed; Super + Desktop vet passed. The long-repository socket-path case is separately covered by full short-path Go regression rather than a production/test relaxation.
 - Next: final native build/screenshots, one separately preregistered bounded real-model recheck, no live Feishu action without an authorized configured destination.
+
+## 最终交接门禁
+
+- 代码切片已推送：`fb22e1b`、`9cd8b41`、`526c14c`。最终原生构建源码为 `526c14c`。
+- UI 修复与真实中文操作验收通过，见 `docs/deployment/2026-11-03-super-niuma-ui-acceptance.md`。两张原生执行单均在未批准、零 attempt 时取消；不作为模型成功证据。
+- 最终短路径完整 Go 回归 132 个测试包通过；全量前端 941 tests；Super race/vet、boundary/public-docs 与 18 项 intake smoke 均通过。
+- 独立模型复测遇到明确 HTTP 429；根进入 needs_attention 并停止，原失败记录保留，没有第三次模型试验。保留的 13,822 token 预算不是实际用量声明。
+- 最高优先级剩余项：可用模型路由/限流解除后的重新授权验收 → 真实外部账号与收件目标配置 → 同一工单原生/模型/渠道统一贯通。外部条件未满足前整体 A8 未通过，不标“全部完成”。
+- 原生 QA 进程/私有状态/日志/短路径副本/mock 已清理；仅保留要求的截图与脱敏证据。正式签名分发、物理第二屏继续按用户既有决定延期。

@@ -73,7 +73,7 @@
 
 ## 已准备的验收测试
 
-测试路径：`/Users/konglong/GolandProjects/super-niuma/internal/super/platform/real_acceptance_test.go`，包名 `platform_test`。
+测试路径：`$REPO/internal/super/platform/real_acceptance_test.go`，包名 `platform_test`。
 
 - 默认跳过；真实调用需 `SUPER_NIUMA_REAL_MODEL_ACCEPTANCE=1`。
 - `SUPER_NIUMA_REAL_MODEL_CONFIG_ONLY=1`：只报告上述脱敏配置，零模型请求。

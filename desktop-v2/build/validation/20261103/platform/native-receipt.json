@@ -1,0 +1,102 @@
+{
+  "source_commit": "526c14c59f8903da32ab65d0782ca2bdc64e1465",
+  "locale": "zh-CN",
+  "native_actions": [
+    "sidebar Super entry",
+    "intake persisted",
+    "profile config saved through UI",
+    "native order and profile selection",
+    "consent checkbox checked",
+    "submit awaiting approval",
+    "cancel without execution",
+    "restart readback",
+    "ordinary-session entry preserved"
+  ],
+  "visual_results": [
+    "consent text stays beside fixed checkbox",
+    "no pathological narrow vertical label",
+    "scoped dropdown appearance aligned",
+    "normal cancellation is not an error",
+    "scope and owner labels visible"
+  ],
+  "runs": [
+    {
+      "id": "d5df752e-ba96-4b6a-a863-6e2af690754e",
+      "scope": "local",
+      "owner": "local",
+      "status": "cancelled",
+      "version": 2,
+      "approved": false,
+      "safe_code": "cancel_requested",
+      "job_attempts": [
+        0
+      ],
+      "reservation_count": 0,
+      "verification_present": false,
+      "notice_count": 0
+    },
+    {
+      "id": "a97393b3-6528-480e-8d07-e935b6f258cf",
+      "scope": "local",
+      "owner": "local",
+      "status": "cancelled",
+      "version": 2,
+      "approved": false,
+      "safe_code": "cancel_requested",
+      "job_attempts": [
+        0
+      ],
+      "reservation_count": 0,
+      "verification_present": false,
+      "notice_count": 0
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "final-native-cancelled.png",
+      "sha256": "47823b3b7a917ffc549e704d38608c148a2a9ca3c833ca43f227abff4d6ddb6a",
+      "width": 4718592,
+      "height": 4292935744,
+      "source": "real Wails app; native CUA capture; no DOM/mock screenshot",
+      "retention": "repository evidence"
+    },
+    {
+      "file": "final-native-consent.png",
+      "sha256": "baa898ea1b0a18c6a941049f524ca975843b5022a64c0758f7cec064612a8767",
+      "width": 4718592,
+      "height": 4292935744,
+      "source": "real Wails app; native CUA capture; no DOM/mock screenshot",
+      "retention": "local-only (private fixture workspace path visible)"
+    },
+    {
+      "file": "final-native-controls.png",
+      "sha256": "7b906a6c26f946a453a6fef8a7d2c71c50397ab3d465c08c6c730c5bfcb7d28d",
+      "width": 4718592,
+      "height": 4292935744,
+      "source": "real Wails app; native CUA capture; no DOM/mock screenshot",
+      "retention": "repository evidence"
+    },
+    {
+      "file": "final-native-session-entry.png",
+      "sha256": "abf80798e109d33fdce6d574dee6bae0b5700edb8a81b544129b18497d74dde0",
+      "width": 4718592,
+      "height": 4292935744,
+      "source": "real Wails app; native CUA capture; no DOM/mock screenshot",
+      "retention": "repository evidence"
+    },
+    {
+      "file": "final-native-super-home.png",
+      "sha256": "1f95f5d8917cadf8b3ddb24430157ccd26e86ebc999a2ff18c20c65d846b4a71",
+      "width": 4718592,
+      "height": 4292935744,
+      "source": "real Wails app; native CUA capture; no DOM/mock screenshot",
+      "retention": "local-only (private fixture workspace path visible)"
+    }
+  ],
+  "native_model_calls": 0,
+  "external_channel_calls": 0,
+  "tool_limitations": [
+    "CUA wheel/coordinate actions intermittently reported noWindowsAvailable; semantic AX actions and activating the QA app restored menu/key interactions. Product selection was then observed to change."
+  ],
+  "private_fixture_cleanup": "completed: owned app/helper processes stopped; private config, SQLite/WAL, clone, logs, short-path source snapshot and mock screenshots removed; requested native evidence retained"
+}
