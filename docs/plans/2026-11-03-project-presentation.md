@@ -41,3 +41,9 @@ Topics (16): `ai-agents`, `multi-agent`, `agent-orchestration`, `workflow-automa
 - Local validation: 80 README links/assets/anchors, documented command paths and pinned toolchain references pass; CLI `--help` executes; 7 public-doc checks, 6 boundary-guard tests, legacy baseline guard, shell syntax and whitespace checks pass.
 - Runtime code is unchanged. No native rebuild or paid model call is required for this documentation-only slice.
 - Ready to commit/push the presentation slice; live page rendering is the remaining final check.
+
+## Published-page review
+
+- Presentation source slice `002a187` is committed and pushed. The public page shows the new Super title, Chinese/English navigation, screenshot, preview status, About description and all 16 topics.
+- GitHub image endpoints return HTTP 200 with SVG/PNG content types; the real Desktop screenshot and all badges rendered in the built-in browser.
+- Visual review found the first left-to-right architecture graph compressed its labels too far. Replaced both language diagrams with a compact top-to-bottom graph before final acceptance; no capability claims changed.

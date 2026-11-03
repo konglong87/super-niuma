@@ -103,19 +103,15 @@ go run ./cmd/niuma --help
 ## Separate receiving work, doing work, and checking work
 
 ```mermaid
-flowchart LR
-    Desktop[Desktop orders and approval] --> Control[Authorization and task control]
-    Channels[Feishu / signed Webhook] --> Router[Rule-first Router]
-    Router --> Control
-    Control --> Queue[Durable task queue]
-    Queue --> Workers[Workers / subtask DAG]
-    Workers --> Verify[Independent file verifier]
-    Verify --> Outbox[Delivery outbox]
-    Outbox --> Targets[Explicitly authorized targets]
-    Queue -. state events .-> Bus[Durable event bus]
-    Verify -. verification events .-> Bus
-    Outbox -. delivery events .-> Bus
-    Bus -. progress and audit .-> Desktop
+flowchart TB
+    Desktop[Desktop orders and approval] --> Control[Authorization and budgets / durable queue]
+    Router[Feishu and signed Webhook / rule-first Router] --> Control
+    Control --> Workers[Workers / bounded subtask DAG]
+    Workers --> Verify[Independent file verification]
+    Verify --> Outbox[Delivery outbox / authorized targets]
+    Control -. state .-> Bus[Durable event bus / progress and audit]
+    Verify -. evidence .-> Bus
+    Outbox -. receipts .-> Bus
 ```
 
 - **The router routes; it does not acquire authority from a prompt.** Identity and permissions come from trusted adapters and configuration. Supported commands use deterministic fast paths; unsupported requests require clarification.

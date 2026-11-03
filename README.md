@@ -103,19 +103,15 @@ go run ./cmd/niuma --help
 ## 工作原理：把接单、干活、验收分开
 
 ```mermaid
-flowchart LR
-    Desktop[Desktop 工单与审批] --> Control[授权与任务控制面]
-    Channels[飞书 / 签名 Webhook] --> Router[规则优先 Router]
-    Router --> Control
-    Control --> Queue[持久任务队列]
-    Queue --> Workers[多 Worker / 子任务 DAG]
+flowchart TB
+    Desktop[Desktop 工单与审批] --> Control[授权与预算 / 持久任务队列]
+    Router[飞书与签名 Webhook / 规则优先 Router] --> Control
+    Control --> Workers[多 Worker / 有界子任务 DAG]
     Workers --> Verify[独立文件验收]
-    Verify --> Outbox[交付 Outbox]
-    Outbox --> Targets[显式授权的接收目标]
-    Queue -. 状态事件 .-> Bus[持久事件总线]
-    Verify -. 验收事件 .-> Bus
-    Outbox -. 交付事件 .-> Bus
-    Bus -. 进度与审计 .-> Desktop
+    Verify --> Outbox[交付 Outbox / 显式授权目标]
+    Control -. 状态 .-> Bus[持久事件总线 / 进度与审计]
+    Verify -. 验收证据 .-> Bus
+    Outbox -. 交付回执 .-> Bus
 ```
 
 - **Router 管分流，不越权干活**：渠道身份与授权来自受信适配器和配置，不由消息正文或模型决定。普通命令走确定性快路径；不支持的请求先澄清，不猜权限。
