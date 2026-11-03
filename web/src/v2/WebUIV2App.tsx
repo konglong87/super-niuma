@@ -1,3 +1,5 @@
+import { SuperWorkspace } from "./super/SuperWorkspace";
+import { getSuperClient } from "./super/client";
 import { WorkflowWorkbench } from "./workflows/WorkflowWorkbench";
 import { useWorkflowLeaveGuard } from "./workflows/useWorkflowLeaveGuard";
 import type { WorkflowClient } from "./workflows/client";
@@ -72,6 +74,8 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
   const client = useSessionControlClient();
   const drafts = useRef(new Map<SessionRef, ComposerDraft>());
   const [state, setState] = useState<RouteState>(() => routeState(window.location.pathname));
+  const [superOpen, setSuperOpen] = useState(false);
+  const [superVisited, setSuperVisited] = useState(false);
   const [filters, setFilters] = useState<SessionListFilters>({ query: "", statuses: [] });
   const settingsOpen = state.route.kind === "settings";
   const workflowsOpen = state.route.kind === "workflows";
@@ -116,6 +120,7 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
   const desktop = useDesktopReadiness({ enabled: isDesktop, apiBase: identity.apiBase, apiToken: identity.apiToken, onReady: refreshDesktopData });
   const desktopReady = desktop.ready;
   const desktopServiceBridge = isDesktop ? getDesktopServiceBridge() : null;
+  const superClient = useMemo(() => isDesktop ? getSuperClient() : null, [isDesktop, desktopServiceBridge]);
   const computerClient = useMemo(() => {
     const bridge = isDesktop ? getComputerBridge() : null;
     return bridge ? createComputerClient(bridge) : null;
@@ -149,6 +154,7 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
   }, [queryClient]);
 
   const navigateToSession = useCallback((ref: SessionRef): void => {
+    setSuperOpen(false);
     window.history.pushState({}, "", webUIV2SessionPath(ref));
     setState({ route: { kind: "session", ref }, selectedRef: ref });
     setErrorCode("");
@@ -177,8 +183,16 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
     requestSettingsNavigation(() => navigateToSession(ref));
   }, [navigateToSession, requestSettingsNavigation]);
 
+  function openSuper(): void {
+    requestSettingsNavigation(() => {
+      setSuperVisited(true); setSuperOpen(true);
+      setNewSessionOpen(false); setSidebarOpen(false); setSearchOpen(false);
+    });
+  }
+
   function openSettings(section: SettingsSection = "general"): void {
     workflowLeave.request(() => {
+    setSuperOpen(false);
     window.history.pushState({}, "", webUIV2SettingsPath(section, state.selectedRef));
     setState((current) => ({ ...current, route: { kind: "settings", section } }));
     setSidebarOpen(false);
@@ -186,8 +200,9 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
   }
 
   function navigateWorkflow(path: string): void {
-    if (path === window.location.pathname) return;
+    if (path === window.location.pathname && !superOpen) return;
     requestSettingsNavigation(() => {
+      setSuperOpen(false);
       workflowLeave.setDirty(false);
       window.history.pushState({}, "", path);
       setState((current) => ({ ...current, route: parseWebUIV2Route(window.location.pathname) }));
@@ -230,6 +245,7 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
   function openNewSession(): void {
     if (isDesktop && !desktopReady) return;
     setSidebarOpen(false);
+    setSuperOpen(false);
     setNewSessionOpen(true);
   }
 
@@ -289,6 +305,7 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
 
   useEffect(() => {
     function restoreRoute() {
+      setSuperOpen(false);
       const next = routeState(window.location.pathname);
       if (state.route.kind === "workflows") {
         const targetURL = window.location.pathname + window.location.search;
@@ -377,7 +394,7 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
 
   const searchSessions = allSessions.data ?? sessions;
 
-  return <main aria-label={t("webui2.workspace")} className="webui2-page" data-appearance-enabled={visual.appearance.enabled ? "true" : "false"} data-inspector-open={!workflowsOpen && inspectorOpen} data-session-ref={state.selectedRef ?? undefined} data-sidebar-hidden={sidebarHidden} data-sidebar-open={sidebarOpen} data-theme={theme} style={visualSettingsStyle(visual)}>
+  return <main aria-label={t("webui2.workspace")} className="webui2-page" data-appearance-enabled={visual.appearance.enabled ? "true" : "false"} data-inspector-open={!superOpen && !workflowsOpen && inspectorOpen} data-session-ref={state.selectedRef ?? undefined} data-sidebar-hidden={sidebarHidden} data-sidebar-open={sidebarOpen} data-theme={theme} style={visualSettingsStyle(visual)}>
     {isDesktop && !desktopReady ? <section className="webui2-desktop-readiness" data-state={desktop.state} aria-busy={desktop.state !== "failed"} role="status">
       <div className="webui2-desktop-status-copy">
         {desktop.state === "failed" ? <AlertTriangle aria-hidden="true" size={18} /> : <LoaderCircle className="webui2-desktop-status-spinner" aria-hidden="true" size={18} />}
@@ -404,18 +421,22 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
       onCreateSessionInWorkspace={(cwd) => { void createSessionInWorkspace(cwd); }}
       onOpenSettings={() => openSettings()}
       onOpenWorkflows={() => navigateWorkflow(webUIV2WorkflowPath())}
-      workflowsActive={workflowsOpen}
+      workflowsActive={workflowsOpen && !superOpen}
+      onOpenSuper={isDesktop ? openSuper : undefined}
+      superActive={superOpen}
       onArchive={handleArchive}
       onRenameSession={client.rename ? handleRename : undefined}
       onStop={handleStop}
       onSelect={selectSession}
-      selectedRef={state.selectedRef}
+      selectedRef={superOpen ? null : state.selectedRef}
       sessions={sessions}
     />
     {sidebarHidden ? <button aria-label={t("webui2.showSidebar")} className="webui2-sidebar-restore" onClick={showSidebar} title={t("webui2.showSidebar")} type="button"><PanelLeftOpen aria-hidden="true" size={18} /></button> : null}
     {sidebarOpen ? <button aria-label={t("webui2.closeSessions")} className="webui2-mobile-sidebar-backdrop" onClick={() => setSidebarOpen(false)} tabIndex={-1} type="button" /> : null}
     <button aria-controls="webui2-session-sidebar" aria-expanded={sidebarOpen} aria-label={t("webui2.openSessions")} className="webui2-mobile-sidebar-open" onClick={() => setSidebarOpen(true)} title={t("webui2.openSessions")} type="button"><PanelLeftOpen aria-hidden="true" size={18} /></button>
     <div className="webui2-content">
+      {superVisited ? <div className="webui2-super-surface" hidden={!superOpen} inert={!superOpen}><SuperWorkspace client={superClient} onBack={() => setSuperOpen(false)} /></div> : null}
+      <div className="webui2-conversation-surfaces" hidden={superOpen} inert={superOpen}>
       {isDesktop && !workflowsOpen ? <ComputerWorkspace client={computerClient} selectedConversationRef={state.selectedRef} nativeOverlay={false} /> : null}
       {workflowsOpen && desktopReady && state.route.kind === "workflows" ? <WorkflowWorkbench identity={identity} route={state.route} client={workflowClient} agentClient={workflowAgentClient} onNavigate={navigateWorkflow} onDirtyChange={workflowLeave.setDirty} onRequestNavigation={workflowLeave.request} /> : null}
       {!workflowsOpen ? <section className="webui2-workspace">
@@ -437,6 +458,7 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
         {stream.error ? <p role="alert">{t(`webui2.error.${stream.error}`)}</p> : null}
       </section> : null}
       {!workflowsOpen && state.selectedRef && desktopReady ? <SelectedSessionInspector identity={identity} onClose={() => setInspectorOpen(false)} onTabChange={setInspectorTab} open={inspectorOpen} selectedRef={state.selectedRef} tab={inspectorTab} /> : null}
+      </div>
     </div>
     <NewSessionDialog identity={identity} onSelectWorkspace={desktopServiceBridge?.SelectWorkspace} onClose={() => setNewSessionOpen(false)} onCreated={handleCreated} open={newSessionOpen} />
     <SessionSearchDialog open={searchOpen} sessions={searchSessions} onClose={() => setSearchOpen(false)} onCreateSession={openNewSession} onSelect={selectSession} />
@@ -446,7 +468,7 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
     {state.route.kind === "settings" && desktopReady ? <SettingsCenter identity={identity} section={state.route.section} onSectionChange={openSettings} onBack={closeSettings} onRequestNavigation={requestSettingsNavigation} onDirtyChange={(dirty) => { settingsDirty.current = dirty; }} onBusyChange={(busy) => { settingsBusy.current = busy; }} theme={theme} onThemeChange={changeTheme} inspectorOpen={inspectorOpen} onInspectorChange={changeInspector} selectedRef={state.selectedRef} onOpenSession={selectSession} onVisualPreview={setVisualPreview} /> : null}
     {leaveDialog ? <UnsavedChangesDialog kind={leaveDialog} language={language} onCancel={cancelPendingNavigation} onDiscard={discardPendingNavigation} /> : null}
     {state.route.kind !== "settings" ? <DesktopPet settings={savedVisual.visual.pet} status={selectedSession?.status} onOpenSettings={() => openSettings("pet")} /> : null}
-    {needsModelSetup && state.route.kind !== "settings" ? <section className="webui2-onboarding-backdrop" role="dialog" aria-modal="true" aria-labelledby="webui2-onboarding-title">
+    {needsModelSetup && !superOpen && state.route.kind !== "settings" ? <section className="webui2-onboarding-backdrop" role="dialog" aria-modal="true" aria-labelledby="webui2-onboarding-title">
       <div className="webui2-onboarding">
         <p className="webui2-onboarding-kicker">{language === "zh" ? "开始使用" : "Get started"}</p>
         <h1 id="webui2-onboarding-title">{language === "zh" ? "先配置你的模型" : "Configure your model"}</h1>
@@ -457,6 +479,7 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
           <span><strong>3</strong>{language === "zh" ? "开始会话" : "Start a session"}</span>
         </div>
         <div className="webui2-onboarding-actions">
+          <button type="button" onClick={openSuper}>{language === "zh" ? "先登记工单（无需模型）" : "Record a work order (no model needed)"}</button>
           <button type="button" onClick={() => openSettings("models")}>{language === "zh" ? "配置模型" : "Configure model"}</button>
         </div>
       </div>

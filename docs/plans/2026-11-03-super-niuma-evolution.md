@@ -1,5 +1,25 @@
 # Super Niuma architecture evolution and delivery ledger
 
+## Desktop entry correction — 2026-11-03
+
+User-visible requirement: Desktop is the single primary application. Add **超级牛马干活** immediately beside/below **新建会话** in the upper-left sidebar; open a native React workspace in the existing window. Business isolation must not create a second user application. Port 61585 was a disposable QA listener, not a permanent product entry.
+
+Architecture: Desktop composition → optional Super Wails bridge → existing workorder.Service → dedicated sqlitestore. No iframe, extra HTTP listener, new Session, Session schema migration, or provider/model invocation. Lazy store initialization and bounded, serialized bridge calls; close on app shutdown. Existing Session callbacks and state remain authoritative. Super pane navigation is shell-only and preserves the selected conversation and its drafts. The standalone binary remains a developer/headless diagnostic surface.
+
+### Active delivery ledger (priority order)
+
+Initial state: clean main at 4971f40; origin/main pulled and current. No pre-existing dirty files. All following changes are task-owned; generated assets, isolated acceptance data and screenshots remain ignored.
+
+| Priority | Slice / intended files | Acceptance gate | Status |
+| --- | --- | --- | --- |
+| D1 | Dedicated desktop-v2 Super bridge + tests; main.go composition/lifecycle only; shared Super state-location helper if required | create/list/get/cancel, idempotency, sanitized failures, lazy lifecycle, concurrent shutdown, isolated persistence; desktop Go tests | Implemented; focused tests, race stress and vet pass |
+| D2 | web/src/v2/super workspace/client/styles/tests; sidebar and WebUIV2App composition only | native pane, no HTTP/window-open, original session navigation/create unchanged, stale async protection, focused tests + typecheck | Implemented; full frontend 895 tests + typecheck pass |
+| D3 | Explicit reviewed composition-only baseline exceptions; architecture/usage docs | old Session/runtime baseline still protected; guard self-tests; no blanket baseline rewrite | Reviewed four exact composition files; 6 guard tests pass |
+| D4 | Build real Wails app; isolated native click/create/read/cancel/restart/back-to-session acceptance; screenshots | real native screenshots under desktop-v2/build/validation/20261103; no changes to user's running app/data | Build passes; native intake verified, restart/cancel/session return in progress |
+| D5 | Verify diff, commit/push each coherent slice, cleanup and reconcile ledger | task-owned source committed; HEAD == origin/main | Pending verification |
+
+Automatic execution, worker pool, model routing, automated acceptance and delivery remain explicitly deferred to the existing P2+ queue after this Desktop correction. Native scripted acceptance is not autonomous model acceptance.
+
 ## Current ordered queue
 
 The public successor is an independent source snapshot, not a GitHub fork or a private-source dependency. The original niuma source repository remains unchanged by this task. Final GitHub inspection on 2026-11-03 found it private; this agent did not change its visibility, and will not reopen it. No existing branch or worktree is created. The initial main branch belongs to the new repository.
@@ -109,3 +129,11 @@ Automatic execution, automatic approval, worker pool scaling, model-based routin
 ## Visibility reconciliation — final audit, 2026-11-03
 
 GitHub reports super-niuma public and niuma private. No tool call in this task changed niuma visibility. Earlier references to it remaining public were an unverified assumption and are corrected here. The actor/time of the private transition are not established. Do not undo the observed state. Source independence is verified, but old native UI and release/link migration gates remain open.
+
+## Desktop implementation verification (first coherent slice)
+
+- Backend: isolated bridge tests, race tests, 20 iterations of concurrent lifecycle tests, and go vet passed. Normal startup does not initialize Super persistence.
+- Frontend: full suite 92 files / 895 tests passed; final focused Super suite 10 tests and typecheck passed. Existing sidebar, route shell and workflow suites remain green.
+- Full Go suite and full Desktop/Super race suite passed from an owned short private home-directory source copy. Normal checkout path exceeds macOS Unix-domain socket length in an inherited bridge fixture; no security checks were weakened.
+- Real Wails macOS app built and ad-hoc signature validated. Initial native creation succeeds; final native restart/cancellation/navigation and screenshot review remain the next gate. The first screenshot review prompted stronger form-label/active-navigation contrast.
+- Generated assets, acceptance app state and logs are ignored; only source, tests and documentation are committed. CI now runs the narrow boundary guard's own regression tests.

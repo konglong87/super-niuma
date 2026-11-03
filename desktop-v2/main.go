@@ -30,6 +30,7 @@ import (
 var bundledAssets embed.FS
 
 type app struct {
+	superWorkOrders   superWorkOrderBridge
 	mu                sync.Mutex
 	config            desktopConfig
 	port              int
@@ -320,6 +321,7 @@ func desktopSQLitePath() (string, error) {
 }
 
 func (a *app) shutdown(ctx context.Context) {
+	a.superWorkOrders.close()
 	startupLog("shutdown begin")
 	defer startupLog("shutdown complete")
 	if a.acceptanceClose != nil {

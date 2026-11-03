@@ -6,15 +6,16 @@ import (
 	"fmt"
 	"io"
 	"net"
-	"os"
 	"path/filepath"
 	"strconv"
+
+	"github.com/konglong87/super-niuma/internal/super"
 )
 
 const (
 	DefaultAddress     = "127.0.0.1:7391"
-	StateDirectoryName = ".super-niuma"
-	DatabaseName       = "work-orders.db"
+	StateDirectoryName = super.StateDirectoryName
+	DatabaseName       = super.DatabaseName
 	Version            = "0.1.0-intake"
 )
 
@@ -25,11 +26,8 @@ type options struct {
 }
 
 func defaultStateDirectory() string {
-	home, err := os.UserHomeDir()
-	if err != nil || home == "" {
-		return ""
-	}
-	return filepath.Join(home, StateDirectoryName)
+	directory, _ := super.StateDirectory()
+	return directory
 }
 
 func parseOptions(args []string, output io.Writer) (options, error) {

@@ -1,4 +1,4 @@
-import { Archive, ChevronDown, ChevronRight, Ellipsis, Filter, Folder, Info, PanelLeftClose, Pencil, Plus, Search, Share2, Square, X } from "lucide-react";
+import { ClipboardList, Archive, ChevronDown, ChevronRight, Ellipsis, Filter, Folder, Info, PanelLeftClose, Pencil, Plus, Search, Share2, Square, X } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, type DragEvent, type JSX, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { useI18n } from "../../lib/i18n";
 import type { IdentityConfig } from "../../lib/types";
@@ -20,6 +20,8 @@ type SessionSidebarProps = {
   onOpenSettings: () => void;
   onOpenWorkflows?: () => void;
   workflowsActive?: boolean;
+  onOpenSuper?: () => void;
+  superActive?: boolean;
   onOpenSearch: () => void;
   onHideSidebar: () => void;
   onCreateSession: () => void;
@@ -40,7 +42,7 @@ const sidebarDefaultWidth = 288;
 const sidebarKeyboardStep = 8;
 const workspaceCollapseStorageKey = "niuma-webui.v2.workspace-collapse.v1";
 
-export function SessionSidebar({ sessions, filters, selectedRef, onFiltersChange, onSelect, onContextDragStart, onOpenSettings, onOpenWorkflows, workflowsActive, onOpenSearch, onHideSidebar, onCreateSession, createDisabled = false, onCreateSessionInWorkspace, onMobileClose, onStop, onArchive, onRenameSession, identity }: SessionSidebarProps): JSX.Element {
+export function SessionSidebar({ sessions, filters, selectedRef, onFiltersChange, onSelect, onContextDragStart, onOpenSettings, onOpenWorkflows, workflowsActive, onOpenSuper, superActive, onOpenSearch, onHideSidebar, onCreateSession, createDisabled = false, onCreateSessionInWorkspace, onMobileClose, onStop, onArchive, onRenameSession, identity }: SessionSidebarProps): JSX.Element {
   const { t, language } = useI18n();
   const [copyStatus, setCopyStatus] = useState("");
   const [sidebarWidth, setSidebarWidth] = useState(loadSidebarWidth);
@@ -138,6 +140,7 @@ export function SessionSidebar({ sessions, filters, selectedRef, onFiltersChange
           </div>
         </div>
         <button className="webui2-new-session" disabled={createDisabled} onClick={() => onCreateSession()} type="button"><Plus aria-hidden="true" size={17} />{t("webui2.newSession")}</button>
+        {onOpenSuper ? <button aria-current={superActive ? "page" : undefined} className="webui2-new-session webui2-super-entry" onClick={onOpenSuper} type="button"><ClipboardList aria-hidden="true" size={17} />{language === "zh" ? "超级牛马干活" : "Super Niuma"}</button> : null}
         {onOpenWorkflows ? <button aria-current={workflowsActive ? "page" : undefined} className="webui2-new-session" onClick={onOpenWorkflows} type="button">{language === "zh" ? "Team 编排工作台" : "Team workflows"}</button> : null}
         {/* Temporarily hide status filtering while retaining the existing controls. */}
         <details className="webui2-status-filter-disclosure" hidden>

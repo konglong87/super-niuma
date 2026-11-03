@@ -1,0 +1,49 @@
+.webui2-conversation-surfaces { display: contents; }
+.webui2-conversation-surfaces[hidden], .webui2-super-surface[hidden] { display: none; }
+.webui2-super-surface { min-width: 0; min-height: 0; flex: 1; overflow: auto; }
+.webui2-super-entry { display: flex; align-items: center; gap: 8px; }
+.webui2-page .webui2-super-entry[aria-current="page"] { color: var(--webui2-accent); background: var(--webui2-accent-surface); }
+.super-workspace { box-sizing: border-box; max-width: 1280px; margin: 0 auto; padding: 28px 32px; color: var(--webui2-text); }
+.super-workspace h1 { margin: 4px 0 8px; font-size: 26px; }
+.super-workspace h2 { margin: 0 0 16px; font-size: 16px; }
+.super-workspace h3 { font-size: 13px; }
+.super-workspace small, .super-header p, .super-workspace dt { color: var(--webui2-text-muted); }
+.super-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.super-header p { margin: 4px 0; font-size: 13px; }
+.super-header .super-eyebrow { letter-spacing: 2px; font-size: 10px; font-weight: 700; color: var(--webui2-accent); }
+.super-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.super-workspace button { display: inline-flex; justify-content: center; align-items: center; gap: 6px; padding: 9px 12px; border: 1px solid var(--webui2-border); border-radius: 8px; background: var(--webui2-surface); color: var(--webui2-text); cursor: pointer; font: inherit; font-size: 13px; }
+.super-workspace button:disabled { opacity: .5; cursor: default; }
+.super-workspace button:focus-visible, .super-workspace input:focus-visible, .super-workspace textarea:focus-visible { outline: 2px solid var(--webui2-accent); outline-offset: 2px; }
+.super-scope { display: flex; align-items: flex-start; gap: 10px; margin-top: 24px; padding: 16px; background: var(--webui2-accent-surface); color: var(--webui2-accent); border-radius: 10px; font-size: 13px; }
+.super-scope p { margin: 5px 0 0; line-height: 1.6; }
+.super-notice { min-height: 19px; font-size: 13px; color: var(--webui2-text-muted); }
+.super-error { padding: 12px; color: var(--webui2-danger); background: var(--webui2-danger-surface); border-radius: 8px; }
+.super-columns { display: grid; grid-template-columns: minmax(260px, .9fr) minmax(280px, 1.1fr); gap: 20px; align-items: start; }
+.super-card { padding: 22px; background: var(--webui2-surface); border: 1px solid var(--webui2-border-subtle); border-radius: 12px; }
+.super-form { display: flex; flex-direction: column; gap: 10px; }
+.webui2-page .super-form label { color: var(--webui2-text); font-size: 13px; font-weight: 600; }
+.super-form input, .super-form textarea { box-sizing: border-box; width: 100%; padding: 10px 11px; color: var(--webui2-text); background: var(--webui2-surface-raised); border: 1px solid var(--webui2-border); border-radius: 8px; font: inherit; font-size: 13px; }
+.super-form textarea { resize: vertical; min-height: 72px; }
+.super-form small { font-size: 11px; line-height: 1.6; }
+.super-workspace .super-primary { margin-top: 8px; background: var(--webui2-accent); border-color: var(--webui2-accent); color: var(--webui2-accent-text); }
+.super-records { display: grid; gap: 16px; min-width: 0; }
+.super-empty { font-size: 13px; line-height: 1.8; color: var(--webui2-text-muted); }
+.super-order-list { list-style: none; margin: 14px 0 0; padding: 0; max-height: 190px; overflow: auto; }
+.super-order-list li + li { margin-top: 6px; }
+.super-order-list button { width: 100%; justify-content: space-between; text-align: left; }
+.super-order-list span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.super-order-list small { flex-shrink: 0; }
+.super-order-list [aria-pressed="true"] { border-color: var(--webui2-accent); background: var(--webui2-accent-surface); }
+.super-badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; background: var(--webui2-surface-muted); }
+.super-detail { overflow-wrap: anywhere; font-size: 13px; line-height: 1.6; }
+.super-objective { white-space: pre-wrap; }
+.super-detail dl { font-size: 11px; }
+.super-detail dd { margin: 4px 0 10px; }
+.super-stages { display: flex; gap: 10px; margin: 16px 0; }
+.super-stages div { flex: 1; padding: 10px; background: var(--webui2-surface-muted); border-radius: 8px; }
+.super-stages span, .super-stages strong { display: block; font-size: 11px; }
+.super-stages strong { margin-top: 4px; color: var(--webui2-text-muted); }
+.super-workspace .super-cancel { color: var(--webui2-danger); }
+@media (max-width: 1000px) { .super-workspace { padding: 20px; } .super-header { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 780px) { .super-columns { grid-template-columns: 1fr; } }

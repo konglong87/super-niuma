@@ -1,5 +1,22 @@
 import type { ComputerActionReceipt, ComputerCapabilitiesResponse, ComputerObservationResponse, ComputerPermissionTarget, ComputerRuntimeStatus, ComputerSessionSnapshot, StartComputerSessionInput } from "./computer/types";
 
+export type WorkOrderInput = { title: string; objective: string; acceptance_criteria: string[]; workspace?: string };
+export type WorkOrder = WorkOrderInput & {
+  id: string;
+  status: "recorded" | "cancelled";
+  execution_status: "not_started";
+  verification_status: "not_started";
+  delivery_status: "not_started";
+  created_at: string;
+  updated_at: string;
+};
+export type SuperWorkOrderBridge = {
+  CreateSuperWorkOrder: (key: string, input: WorkOrderInput) => Promise<WorkOrder>;
+  ListSuperWorkOrders: () => Promise<WorkOrder[]>;
+  GetSuperWorkOrder: (id: string) => Promise<WorkOrder>;
+  CancelSuperWorkOrder: (id: string) => Promise<WorkOrder>;
+};
+
 export type DesktopServiceStatus = {
   state: "stopped" | "starting" | "ready" | "failed";
   pid?: number;
@@ -31,7 +48,7 @@ export type DesktopBackgroundImage = {
   data_url?: string;
 };
 
-export type DesktopServiceBridge = {
+export type DesktopServiceBridge = Partial<SuperWorkOrderBridge> & {
   RestartLocalService: () => Promise<void>;
   GetLocalServiceStatus?: () => Promise<DesktopServiceStatus>;
   SelectWorkspace?: () => Promise<string>;

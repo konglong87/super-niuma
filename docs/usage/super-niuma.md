@@ -1,8 +1,14 @@
 # Super Niuma intake workspace
 
-**Status: intake-only Developer Preview.** This is a dedicated local entry, not a replacement for the existing conversation entry. It records explicit work requests and acceptance criteria, persists them across restarts, and supports cancellation. It does not execute tasks, call a model, verify artifacts or deliver results yet.
+**Status: intake-only Developer Preview.** Use the **超级牛马干活** action in Desktop, directly below **新建会话**. It opens inside the same app window and does not replace or alter the conversation entry. It records explicit work requests and acceptance criteria, persists them across restarts, and supports cancellation. It does not execute tasks, call a model, verify artifacts or deliver results yet.
 
-## Start from source
+## Desktop (primary entry)
+
+Build with `npm --prefix web ci --legacy-peer-deps` then `scripts/build-desktop-v2.sh`, and open the built app. Use **超级牛马干活** to record a task name, objective and one acceptance criterion per line. Inspect recent work orders and cancel an intake from the detail card. **返回会话**, an existing conversation, or **新建会话** returns to the normal conversation experience. Switching modes does not create a session. New users may choose **先登记工单（无需模型）** from model onboarding.
+
+The native bridge uses the dedicated Super database, not the Session database. It opens on first Super use; no extra port/service is required. For isolated testing only, `SUPER_NIUMA_STATE_DIR` selects an absolute private directory. Keep normal Desktop and the optional headless console pointed at the intended state directory.
+
+## Headless / developer console (optional)
 
 Requirements: Go as declared by go.mod, CGO and a C toolchain for the existing SQLite dependency.
 
@@ -10,7 +16,7 @@ Requirements: Go as declared by go.mod, CGO and a C toolchain for the existing S
 go run ./cmd/super-niuma
 ```
 
-Open the exact loopback address printed by the process (default `http://127.0.0.1:7391`). The application refuses non-loopback binding. A separate initial main branch belongs to the new repository; it does not change branches in the previous project.
+For headless debugging only, open the exact loopback address printed by the process (default `http://127.0.0.1:7391`). The application refuses non-loopback binding. A separate initial main branch belongs to the new repository; it does not change branches in the previous project.
 
 The traditional entry remains:
 
@@ -64,3 +70,5 @@ python3 scripts/super-niuma-smoke.py --binary .tmp/super-niuma
 ```
 
 The smoke starts only owned loopback processes with synthetic inputs, exercises 18 HTTP checks including restart persistence, and cleans its processes and databases on exit. Browser screenshots are a separate acceptance surface, not replaced by this test.
+
+The previously demonstrated `127.0.0.1:61585` address was a temporary acceptance listener and has been stopped. It is not the product entry.

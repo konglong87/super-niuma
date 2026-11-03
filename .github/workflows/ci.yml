@@ -40,7 +40,9 @@ jobs:
       # neither need GTK/WebKit nor prove a runnable desktop build.
       - run: go build ./...
       - name: Super migration boundary
-        run: python3 scripts/super-niuma-boundary-test.py
+        run: |
+          python3 scripts/super-niuma-boundary-test.py
+          python3 scripts/super-niuma-boundary-guard-test.py
       - name: Super binary HTTP smoke
         run: |
           go build -o "$RUNNER_TEMP/super-niuma" ./cmd/super-niuma

@@ -1,0 +1,26 @@
+{
+  "desktop-v2/main.go": {
+    "baseline_sha256": "7fde925e0691c8443b9242624c97d83e2ae220c000985ff7e91adf93ee117530",
+    "reviewed_sha256": "1e030c0ef092b07fe441ade01109c215c05672950797c5ac47e51257035de152",
+    "reason": "One Super bridge field and shutdown closure only; Session startup/runtime unchanged.",
+    "verification": "Go bridge lifecycle/race tests + native restart acceptance"
+  },
+  "web/src/v2/WebUIV2App.tsx": {
+    "baseline_sha256": "b8cb327f534c309b89cd91451876ac08a4d8d5ad7e11f9ac6b4ca93d74e39e4b",
+    "reviewed_sha256": "61985cb3ddd07f91188bd20ddd2520821f48dbe3991b3f0a6d756591810aa3d1",
+    "reason": "Desktop-only pane visibility and navigation composition; existing Session components stay mounted.",
+    "verification": "DesktopSuperNavigation + existing WebUIV2App/WorkflowShell regression + native clicks"
+  },
+  "web/src/v2/components/SessionSidebar.tsx": {
+    "baseline_sha256": "1e0fe5ec0d8f16ced245839e9de13ada0834082800fde6ba35d2f597693c9669",
+    "reviewed_sha256": "3eb566ac3fb08ae4078bf7e9e305f76bf30ca5216bff32856066fe4de8774e26",
+    "reason": "Optional Super action immediately after New Session; existing callbacks unchanged.",
+    "verification": "SessionSidebar + DesktopSuperNavigation + native sidebar screenshot"
+  },
+  "web/src/v2/desktopServiceBridge.ts": {
+    "baseline_sha256": "ab147f9605aa8784f139c5aa07d248963e5c8741694fbf228a55cc1ed41350ab",
+    "reviewed_sha256": "b868968fe14d80192828389a965ef653c1f6353bbc5395521eafdabd4ff25db2",
+    "reason": "Optional typed Super methods and their DTOs; legacy bridge capability unchanged.",
+    "verification": "TypeScript build + client capability tests + real Wails bindings"
+  }
+}
