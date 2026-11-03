@@ -13,10 +13,10 @@ Initial state: clean main at 4971f40; origin/main pulled and current. No pre-exi
 | Priority | Slice / intended files | Acceptance gate | Status |
 | --- | --- | --- | --- |
 | D1 | Dedicated desktop-v2 Super bridge + tests; main.go composition/lifecycle only; shared Super state-location helper if required | create/list/get/cancel, idempotency, sanitized failures, lazy lifecycle, concurrent shutdown, isolated persistence; desktop Go tests | Implemented; focused tests, race stress and vet pass |
-| D2 | web/src/v2/super workspace/client/styles/tests; sidebar and WebUIV2App composition only | native pane, no HTTP/window-open, original session navigation/create unchanged, stale async protection, focused tests + typecheck | Implemented; full frontend 895 tests + typecheck pass |
+| D2 | web/src/v2/super workspace/client/styles/tests; sidebar and WebUIV2App composition only | native pane, no HTTP/window-open, original session navigation/create unchanged, stale async protection, focused tests + typecheck | Implemented; full frontend 896 tests + typecheck pass |
 | D3 | Explicit reviewed composition-only baseline exceptions; architecture/usage docs | old Session/runtime baseline still protected; guard self-tests; no blanket baseline rewrite | Reviewed four exact composition files; 6 guard tests pass |
-| D4 | Build real Wails app; isolated native click/create/read/cancel/restart/back-to-session acceptance; screenshots | real native screenshots under desktop-v2/build/validation/20261103; no changes to user's running app/data | Build passes; native intake verified, restart/cancel/session return in progress |
-| D5 | Verify diff, commit/push each coherent slice, cleanup and reconcile ledger | task-owned source committed; HEAD == origin/main | Pending verification |
+| D4 | Build real Wails app; isolated native click/create/read/cancel/restart/back-to-session acceptance; screenshots | real native screenshots under desktop-v2/build/validation/20261103; no changes to user's running app/data | Passed: real native create/retry/restart/cancel, original session creation and draft-preserving mode switches |
+| D5 | Verify diff, commit/push each coherent slice, cleanup and reconcile ledger | task-owned source committed; HEAD == origin/main | First slice 25fa7df pushed; final acceptance commit closes this gate |
 
 Automatic execution, worker pool, model routing, automated acceptance and delivery remain explicitly deferred to the existing P2+ queue after this Desktop correction. Native scripted acceptance is not autonomous model acceptance.
 
@@ -137,3 +137,15 @@ GitHub reports super-niuma public and niuma private. No tool call in this task c
 - Full Go suite and full Desktop/Super race suite passed from an owned short private home-directory source copy. Normal checkout path exceeds macOS Unix-domain socket length in an inherited bridge fixture; no security checks were weakened.
 - Real Wails macOS app built and ad-hoc signature validated. Initial native creation succeeds; final native restart/cancellation/navigation and screenshot review remain the next gate. The first screenshot review prompted stronger form-label/active-navigation contrast.
 - Generated assets, acceptance app state and logs are ignored; only source, tests and documentation are committed. CI now runs the narrow boundary guard's own regression tests.
+
+### Native verification follow-up
+
+Implementation slice 25fa7df was committed and pushed after focused checks. An initial native click after text paste only changed focus; the unchanged legacy New Session dialog reproduced the same first-click behavior. A fresh-state click then succeeded in both modes. No Super-specific event-handler defect was established. Remove the speculative explicit-submit workaround and retain the standard form/onSubmit pattern used by existing Desktop dialogs; keep a whitespace-only input guard and click-based unit coverage. Final rebuilt native pointer submission/cancellation passed; screenshots and a sanitized receipt are retained.
+
+Native observations so far: work-order creation and cancellation survive restarts; creating a traditional session uses the original dialog; switching Super → conversation preserves the selected session and its unsent draft. No message/model invocation was triggered. Only synthetic isolated fixtures were used.
+
+### Desktop correction closure
+
+D1–D4 pass. Final frontend suite: **92 files / 896 tests**, plus typecheck. Full Go: **125 tested packages**; full Desktop/Super race suite passes. Six boundary self-tests and seven public-doc tests pass. Native receipt and four actual screenshots live under `desktop-v2/build/validation/20261103/`; see `docs/deployment/2026-11-03-super-niuma-desktop-acceptance.md`. Test app, eight owned runtime/helper processes, private fixture databases, raw logs and disposable source copy are cleaned. Original niuma is unchanged and clean. This acceptance slice closes D5 through the required commit/push and HEAD/origin verification.
+
+Next highest-priority unimplemented work remains **P2 controlled Worker/execution**, after this user-requested Desktop correction. P3 independent acceptance/delivery depends on P2; P4 channel admission depends on P3; P5 release migration remains separate. No worker/automatic delivery or autonomous-model acceptance is claimed here.

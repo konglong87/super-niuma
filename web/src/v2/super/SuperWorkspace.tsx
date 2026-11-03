@@ -18,6 +18,7 @@ export function SuperWorkspace({ client, onBack }: Props): JSX.Element {
   const selected = model.selected;
   function submit(event: FormEvent): void {
     event.preventDefault();
+    if (!title.trim() || !objective.trim() || !criteria.trim()) return;
     void model.create({ title: title.trim(), objective: objective.trim(), acceptance_criteria: criteria.split("\n").map((line) => line.trim()).filter(Boolean), workspace: workspace.trim() });
   }
   return <section className="super-workspace" aria-label={copy.title} aria-busy={model.busy}>
@@ -37,7 +38,7 @@ export function SuperWorkspace({ client, onBack }: Props): JSX.Element {
         <label htmlFor="super-criteria">{copy.criteria}</label><textarea id="super-criteria" required maxLength={WORK_ORDER_LIMITS.criteria} rows={3} value={criteria} onChange={(event) => setCriteria(event.target.value)} />
         <label htmlFor="super-workspace">{copy.workspace}</label><input id="super-workspace" maxLength={WORK_ORDER_LIMITS.workspace} value={workspace} onChange={(event) => setWorkspace(event.target.value)} aria-describedby="super-workspace-hint" />
         <small id="super-workspace-hint">{copy.workspaceHint}</small>
-        <button className="super-primary" disabled={!client || model.busy || !title.trim() || !objective.trim() || !criteria.trim()} type="submit" onClick={(event) => { event.preventDefault(); event.currentTarget.form?.requestSubmit(); }}>{model.busy ? copy.saving : copy.create}</button>
+        <button className="super-primary" disabled={!client || model.busy || !title.trim() || !objective.trim() || !criteria.trim()} type="submit">{model.busy ? copy.saving : copy.create}</button>
       </form>
       <div className="super-records">
         <section className="super-card"><h2>{copy.list} <small>{model.orders.length}</small></h2><small>{copy.limit}</small>

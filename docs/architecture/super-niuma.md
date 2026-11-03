@@ -21,6 +21,6 @@ The Super bridge initializes its own SQLite store lazily, serializes bounded ope
 
 ## Current milestone
 
-The first feature slice adds a dedicated, loopback-only intake console; consult the ledger for delivery status. It records explicit human requests with acceptance criteria, supports idempotent intake and cancellation, and reports that execution is disabled. There is deliberately no model call or execution adapter in this milestone.
+The current slice integrates the intake workspace into Desktop. The earlier loopback-only console remains an optional headless/developer surface; consult the ledger for delivery status. It records explicit human requests with acceptance criteria, supports idempotent intake and cancellation, and reports that execution is disabled. There is deliberately no model call or execution adapter in this milestone.
 
 See ../plans/2026-11-03-super-niuma-evolution.md for the authoritative ordered queue, interfaces, acceptance gates, risks and deferrals.

@@ -60,6 +60,8 @@ See the [ordered implementation ledger](../plans/2026-11-03-super-niuma-evolutio
 
 ## Validation status
 
+Real native Desktop acceptance covers in-window intake, idempotent submission, restart persistence, cancellation and preservation of traditional conversation drafts. See `../deployment/2026-11-03-super-niuma-desktop-acceptance.md` for commands, results and local screenshot locations.
+
 The intake entry is exercised on macOS in this milestone; CI also runs its binary HTTP smoke on Linux. Windows Super runtime acceptance is not claimed. The POSIX private-directory/file guard is intentionally fail-closed; it must not be weakened just to claim another platform. Existing desktop build jobs remain separate from Super entry acceptance.
 
 Run the isolated black-box acceptance after building:

@@ -26,7 +26,7 @@ describe("Super Desktop workspace", () => {
     act(() => { Object.getOwnPropertyDescriptor(field instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype, "value")!.set!.call(field, value); field.dispatchEvent(new Event("input", { bubbles: true })); });
   }
   function fillForm() { fill("super-title", input.title); fill("super-objective", input.objective); fill("super-criteria", "不创建会话\n不调用模型"); }
-  async function submit() { await act(async () => host.querySelector<HTMLButtonElement>('button[type="submit"]')!.click()); }
+  async function submit() { await act(async () => host.querySelector<HTMLButtonElement>('.super-primary')!.click()); }
 
   it("records, inspects and cancels without HTTP or a browser window", async () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch"); const open = vi.spyOn(window, "open");
@@ -39,6 +39,12 @@ describe("Super Desktop workspace", () => {
     expect(client.cancel).toHaveBeenCalledWith(order.id); expect(host.textContent).toContain("已取消");
     expect(host.querySelector<HTMLButtonElement>(".super-cancel")?.disabled).toBe(true);
     expect(fetchSpy).not.toHaveBeenCalled(); expect(open).not.toHaveBeenCalled();
+  });
+  it("does not invoke intake for whitespace-only fields even when form validation is bypassed", async () => {
+    await render(); fillForm(); fill("super-title", "   ");
+    expect(host.querySelector<HTMLButtonElement>(".super-primary")?.disabled).toBe(true);
+    await act(async () => host.querySelector("form")!.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true })));
+    expect(client.create).not.toHaveBeenCalled();
   });
   it("reuses an idempotency key across ambiguous failures and double submits", async () => {
     vi.mocked(client.create).mockRejectedValueOnce("secret path /private/user/database");
@@ -67,7 +73,7 @@ describe("Super Desktop workspace", () => {
   });
   it("fails closed when Desktop bridge methods are absent", async () => {
     await render(null); expect(host.textContent).toContain("桥接尚未就绪");
-    expect(host.querySelector<HTMLButtonElement>('button[type="submit"]')?.disabled).toBe(true);
+    expect(host.querySelector<HTMLButtonElement>('.super-primary')?.disabled).toBe(true);
     expect(getSuperClient()).toBeNull();
     window.go = { main: { app: { RestartLocalService: vi.fn(), ListSuperWorkOrders: vi.fn() } } };
     expect(getSuperClient()).toBeNull();
