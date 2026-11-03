@@ -36,4 +36,4 @@ The root checkout's full test run encountered macOS socket-length errors plus on
 - The Super runtime was exercised on macOS; Linux binary smoke is a CI gate. Windows Super runtime acceptance is not claimed.
 - Existing native desktop logic is preserved, but a fresh macOS desktop UI acceptance for the successor is still a migration gate. Cross-platform build success is not native UI acceptance.
 - Automatic execution, independent task acceptance, external delivery and proactive intake remain future work.
-- The old niuma repository remains public. No formal binary release, signing or visibility migration was performed.
+- Final GitHub inspection found the old niuma repository private. This agent made no visibility-changing call; initial visibility was not verified, so the time or actor of that change is unknown. No formal binary release, signing or visibility migration was performed by this task.

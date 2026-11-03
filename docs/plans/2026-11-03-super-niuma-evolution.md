@@ -2,7 +2,7 @@
 
 ## Current ordered queue
 
-The public successor is an independent source snapshot, not a GitHub fork or a private-source dependency. The original niuma repository remains unchanged and public until migration gates pass. No existing branch or worktree is created. The initial main branch belongs to the new repository.
+The public successor is an independent source snapshot, not a GitHub fork or a private-source dependency. The original niuma source repository remains unchanged by this task. Final GitHub inspection on 2026-11-03 found it private; this agent did not change its visibility, and will not reopen it. No existing branch or worktree is created. The initial main branch belongs to the new repository.
 
 | Priority | Slice | Implementation | Automated acceptance | UI/native acceptance | Model acceptance | Delivery |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -11,7 +11,7 @@ The public successor is an independent source snapshot, not a GitHub fork or a p
 | P2 | Controlled execution adapter and worker ownership | Planned, depends on P1 | budget, cancellation, lease loss/fencing, resource exclusion | Actual task and restart acceptance required | Bounded real-model run required | Not started |
 | P3 | Independent verification and delivery receipts | Planned, depends on P2 | failed/stale/missing evidence and ambiguous side effects fail closed | Real artifact/native acceptance as applicable | Separate model assessment where useful | Not started |
 | P4 | Channel adapters, observe-mode proactive admission, exception dashboard | Planned, depends on P3 | allowlists, duplicate delivery, source isolation, policy revocation | Original-channel delivery and recovery acceptance | Shadow evaluation before autonomous mode | Not started |
-| P5 | Public release migration and old repository visibility | Blocked on release readiness and migration notices | independent clean-checkout build/release, link audit | Legacy desktop and Super entry acceptance | No additional autonomy claim | Keep niuma public for now |
+| P5 | Public release migration and visibility reconciliation | Old repository observed private; release readiness and migration notices remain pending | independent clean-checkout build/release, link audit | Legacy desktop and Super entry acceptance | No additional autonomy claim | Preserve observed private state; do not reopen |
 
 Physical second-display acceptance and formal signing/distribution remain explicitly deferred, as recorded in the existing Computer Use ledger. They are not silently claimed by this project migration.
 
@@ -69,7 +69,7 @@ The application mounts the handler at /api/super/v1/ and embeds its own static a
 5. Retain only requested/necessary redacted screenshots under ignored validation output; remove throwaway databases/logs/binaries when acceptance finishes. Never commit these data.
 6. Audit tracked source before publication. Keep Apache-2.0 license and upstream attribution. No dependency on private niuma or developer machine paths in build inputs.
 7. Commit each coherent verified slice as konglong <konglong@com>, push main, check git diff --check, clean status and HEAD == origin/main.
-8. Do not make niuma private until a separate release/migration readiness gate is closed. Existing Session UI/native and public download migration remain explicit unfinished gates.
+8. The original plan deferred a visibility change until release/migration readiness. Final inspection instead found niuma already private, without a visibility-changing tool call by this agent. Preserve that observed state; do not make it public. Existing Session UI/native and public download migration remain unfinished gates.
 
 ## Non-goals of this slice
 
@@ -78,7 +78,7 @@ Automatic execution, automatic approval, worker pool scaling, model-based routin
 ## Baseline slice verification — 2026-11-03
 
 - Original repository was clean and pulled before work; baseline remains 6b021afb71de9b6b43fa8de0e35e62638df75581.
-- GitHub public repository konglong87/super-niuma was created; the old repository remains public.
+- GitHub public repository konglong87/super-niuma was created. The old repository was not modified by this task; final inspection found it private (initial visibility had not been verified).
 - Twelve legacy packages passed (CLI, server, query, runtime, AgentTeam/workflow, channel, Goal, capability loop). The first five were newly tested under the new module.
 - 1,383 legacy Go/frontend files match their baseline after reversing only Go module import identity. No new legacy-session code was added.
 - Source privacy/attribution review excludes 45 uncleared historical operational screenshots; licenses and immediate/transitive provenance remain.
@@ -104,4 +104,8 @@ Automatic execution, automatic approval, worker pool scaling, model-based routin
 2. P2 safety gate: expired owner/epoch cannot commit results, same-resource writers serialize, manual Stop stays responsive, and ambiguous side effects do not replay.
 3. P3: bind independent verifier evidence to the exact work-order/attempt/artifact version; only verified outcomes may enter delivery, and delivery needs its own receipt.
 4. P4: external sources and observe-mode admission after the controlled execution/verification path is accepted.
-5. P5: release/migration readiness before changing niuma visibility. Old native desktop acceptance and public link/release migration remain explicit gates. Physical second display and formal signing remain the user's existing deferrals.
+5. P5: finish release/migration readiness and public entry/link migration. niuma is already observed private; do not change or reopen it. Old native desktop acceptance remains an explicit gate. Physical second display and formal signing remain the user's existing deferrals.
+
+## Visibility reconciliation — final audit, 2026-11-03
+
+GitHub reports super-niuma public and niuma private. No tool call in this task changed niuma visibility. Earlier references to it remaining public were an unverified assumption and are corrected here. The actor/time of the private transition are not established. Do not undo the observed state. Source independence is verified, but old native UI and release/link migration gates remain open.

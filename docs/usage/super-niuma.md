@@ -50,7 +50,7 @@ The optional workspace is metadata only. Recording a path does not authorize fil
 
 ## Next phases and release migration
 
-See the [ordered implementation ledger](../plans/2026-11-03-super-niuma-evolution.md). Controlled execution, worker ownership, independent verification, delivery receipts and proactive channel admission remain future gates. The former niuma repository remains public until release and migration readiness are demonstrated; no automatic visibility switch is performed.
+See the [ordered implementation ledger](../plans/2026-11-03-super-niuma-evolution.md). Controlled execution, worker ownership, independent verification, delivery receipts and proactive channel admission remain future gates. Final GitHub inspection found the former niuma repository private. This task did not change its visibility and does not reopen it. Release readiness and migration notices remain separate unfinished gates.
 
 ## Validation status
 

@@ -9,7 +9,7 @@ Baseline: niuma `6b021afb71de9b6b43fa8de0e35e62638df75581`.
 - Local workstation identifiers in historical Markdown were normalized. Documented synthetic test IPs remain identified as test fixtures, not misrepresented as production endpoints.
 - Historical operational screenshots were not cleared for re-publication; they are intentionally excluded from this initial snapshot, with referenced Markdown images replaced by explanatory text. Original files remain in the source repository. No screenshots were silently blurred or replaced with fabricated evidence.
 - The new Super console is validated separately with fresh synthetic test work orders in the real application. Its screenshots are ignored validation artifacts, not shipped user data.
-- No formal release, signing claim or old-repository visibility change is made by this publication.
+- No formal release, signing claim or old-repository visibility change is made by this publication. Final GitHub inspection found niuma private; the initial visibility was not verified. Preserve that private state and do not reopen it.
 
 ## Excluded historical screenshots
 
