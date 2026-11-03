@@ -51,3 +51,10 @@
 - 实测：`go test -race ./internal/super/eventbus ./internal/super/sqlitestore -skip 'TestControl|TestRouter'` 通过（A2控制层仍并行实施，明确排除未集成部分）。
 - 下一优先级：A2/A3/A4持久CAS/资源/预算/执行器接线；A5只读验收器和A7前端已有task-owned代码，尚未交付。
 - 原生、真实模型及真实外部通道验收尚未执行；不得以本切片测试替代。
+
+## 隔离执行/验收内核切片
+
+- 新执行适配器复用真实 query 循环，每attempt新上下文；限定文件工具、每请求预算、路径能力、可信写回执、路由指纹；无继承会话、shell、MCP、hooks或隐式重试。
+- 独立验收器只读可信策略与候选文件，重新计算hash并执行结构化断言；拒绝symlink/越界/超量/重复JSON键。不把候选截图或模型自报当验收。
+- 验证：execution与verification的 `go test -race`、`go vet`通过；测试使用本地fixture，不代表真实模型或外部账户验收。
+- 该切片为A3/A5内核，调度/平台/渠道/原生UI集成仍进行中，不能标全平台交付。
