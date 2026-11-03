@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/konglong87/super-niuma/internal/super"
+	"github.com/konglong87/super-niuma/internal/super/platform"
 	"github.com/konglong87/super-niuma/internal/super/sqlitestore"
 	"github.com/konglong87/super-niuma/internal/super/workorder"
 )
@@ -21,16 +22,17 @@ const (
 	superActionCancel     = "work_order.cancel"
 )
 
-// The bridge owns only intake persistence, never a Session or execution runtime.
+// The bridge owns Super persistence and its isolated platform, never a legacy Session.
 // Keep this lifecycle separate from app.mu so legacy desktop calls cannot block
 // on database work. The zero value is ready and performs no filesystem I/O.
 type superWorkOrderBridge struct {
-	once    sync.Once
-	gate    chan struct{}
-	ctx     context.Context
-	stop    context.CancelFunc
-	store   superWorkOrderStore // protected by gate
-	service *workorder.Service  // protected by gate
+	once     sync.Once
+	gate     chan struct{}
+	ctx      context.Context
+	stop     context.CancelFunc
+	store    superWorkOrderStore // protected by gate
+	platform *platform.Service   // protected by gate
+	service  *workorder.Service  // protected by gate
 
 	// Optional composition seams must be set before the first call. Production
 	// uses the private SQLite store and the application's structured logger.
@@ -124,6 +126,10 @@ func (b *superWorkOrderBridge) close() {
 	if b.store == nil {
 		return
 	}
+	if b.platform != nil {
+		b.platform.Close()
+		b.platform = nil
+	}
 	err := b.store.Close()
 	b.store, b.service = nil, nil
 	if err != nil {
@@ -137,6 +143,9 @@ func (b *superWorkOrderBridge) close() {
 // Return canonical recognized errors, not wrappers that may contain SQL, paths,
 // or caller content. errors.Is identity survives both direct and wrapped errors.
 func safeSuperWorkOrderError(err error) (error, string) {
+	if safe, code, ok := safeSuperPlatformError(err); ok {
+		return safe, code
+	}
 	for _, known := range []struct {
 		err  error
 		code string

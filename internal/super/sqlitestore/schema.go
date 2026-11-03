@@ -10,7 +10,7 @@ import (
 
 const (
 	applicationID = 0x53555052 // SUPR, not the legacy Session database.
-	schemaVersion = 2
+	schemaVersion = 3
 )
 
 func initialize(ctx context.Context, db *sql.DB) error {
@@ -31,11 +31,27 @@ func initialize(ctx context.Context, db *sql.DB) error {
 	}
 	switch {
 	case appID == applicationID && version == schemaVersion:
+		if err := validateV3Schema(ctx, tx); err != nil {
+			return err
+		}
+	case appID == applicationID && version == 2:
 		if err := validateV2Schema(ctx, tx); err != nil {
+			return err
+		}
+		if err := migrateControl(ctx, tx); err != nil {
+			return err
+		}
+		if err := MigrateRouter(ctx, tx); err != nil {
 			return err
 		}
 	case appID == applicationID && version == 1:
 		if err := migrateV1(ctx, tx); err != nil {
+			return err
+		}
+		if err := migrateControl(ctx, tx); err != nil {
+			return err
+		}
+		if err := MigrateRouter(ctx, tx); err != nil {
 			return err
 		}
 	case appID == 0 && version == 0 && tables == 0:
@@ -45,11 +61,23 @@ func initialize(ctx context.Context, db *sql.DB) error {
 		if _, err := tx.ExecContext(ctx, busSchema()); err != nil {
 			return err
 		}
+		if err := migrateControl(ctx, tx); err != nil {
+			return err
+		}
+		if err := MigrateRouter(ctx, tx); err != nil {
+			return err
+		}
 		if _, err := tx.ExecContext(ctx, fmt.Sprintf("PRAGMA application_id = %d; PRAGMA user_version = %d", applicationID, schemaVersion)); err != nil {
 			return err
 		}
 	default:
 		return errOpen
+	}
+	if err := validateV3Schema(ctx, tx); err != nil {
+		return err
+	}
+	if _, err := tx.ExecContext(ctx, fmt.Sprintf("PRAGMA user_version = %d", schemaVersion)); err != nil {
+		return err
 	}
 	return tx.Commit()
 }
@@ -79,4 +107,20 @@ CREATE TABLE work_order_events (
  occurred_at TEXT NOT NULL,
  UNIQUE(work_order_id, kind)
 );`, workorder.StatusRecorded, workorder.StatusCancelled, workorder.NotStarted)
+}
+
+func validateV3Schema(ctx context.Context, tx *sql.Tx) error {
+	if err := validateV2Schema(ctx, tx); err != nil {
+		return err
+	}
+	for _, q := range []string{"SELECT scope,id,owner,revision,status,data FROM super_runs LIMIT 0", "SELECT account,kind,identity,scope,run_id FROM super_ingress LIMIT 0", "SELECT scope,run_id,job_id,workspace,mode,owner,token,epoch FROM super_resources LIMIT 0", "SELECT account,message_id,scope,run_id,content_hash,decision_json FROM super_router_receipts LIMIT 0"} {
+		rows, err := tx.QueryContext(ctx, q)
+		if err != nil {
+			return err
+		}
+		if err = rows.Close(); err != nil {
+			return err
+		}
+	}
+	return nil
 }

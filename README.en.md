@@ -1,11 +1,12 @@
-> **Super Niuma — your super workhorse.** This independent successor preserves the traditional conversation entry and adds an isolated Super work-order entry. The initial milestone records requests only; autonomous execution is not enabled. See the [delivery ledger](docs/plans/2026-11-03-super-niuma-evolution.md) and [architecture](docs/architecture/super-niuma.md). The retained traditional capabilities are described below.
+> **Super Niuma — your super workhorse.** This independent successor preserves ordinary conversations and adds a separate delivery control plane inside the **same Desktop app**. Durable routing/queues, bounded workers and task DAGs, independent file checks and notification outboxes are implemented in the development preview. **Implementation is not proof of successful real-model or external-channel acceptance.** See the [current delivery ledger](docs/plans/2026-11-03-super-niuma-platform-delivery.md) and [reviewed architecture](docs/architecture/2026-11-03-super-niuma-control-plane.md).
 
-## Two entries, separate responsibilities
+## One Desktop, two entries
 
-- **Super intake:** `go run ./cmd/super-niuma` — durable explicit requests, acceptance criteria and cancellation. No automatic execution.
-- **Traditional conversations:** `go run ./cmd/niuma --help` — retained conversation/runtime behavior.
+- **Super Niuma:** the sidebar action next to New session; record work orders, then configure and authorize isolated execution. Inspect workers, budgets, verification evidence and delivery receipts.
+- **Ordinary conversations:** the original Session entry and behavior remain intact.
+- **Optional developer console:** `go run ./cmd/super-niuma` is a loopback, intake-only HTTP helper—not a separate product homepage or execution service.
 
-Super binds only to loopback and owns a separate `~/.super-niuma` store. It does not read old sessions or model credentials. See the [Super guide](docs/usage/super-niuma.md). No binary release has been published for this successor yet.
+Build from source with `GOSUMDB=sum.golang.org bash scripts/build-desktop-v2.sh`. Super owns separate `~/.super-niuma` state. Intake makes no model calls; authorized execution reads the configured model route without opening the legacy Session store. See the [Super guide](docs/usage/super-niuma.md). No binary release has been published for this successor yet.
 
 <p align="center">
   <img src="web/src/v2/assets/niuma-mark.svg" alt="Niuma mascot mark" width="144">

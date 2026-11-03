@@ -263,3 +263,12 @@ contract tests -> transactional store/race -> router/worker integration
 ### 物理存储的可维护实现
 
 在逻辑域边界不变前提下，A2–A5可采用**有界根aggregate JSON + CAS revision**简化首版：grant快照、有限节点/attempt/verification/outbox同根原子更新。硬上限32节点、单aggregate 1MiB、列表100条；超限拒绝而非截断。不可变字段和状态机在store边界二次校验。inbox、binding、event/subscription与**全局workspace资源占用**仍独立持久，不可埋入单root规避跨root互斥。scope/owner/id/revision/status等索引列与JSON一致性验证；状态变更+事件+inbox收据在同一SQLite事务，禁止双写第二权威。采用该物理策略必须补并发CAS、全Store资源互斥和故障回滚测试。
+
+## 18. Integration review closure (2026-11-03)
+
+- **R06: failed roots with unresolved claims.** A completed failure is not evidence that every sibling process stopped. Expired outstanding claims must be durably classified as unknown, including when another node already failed. Recovery must not silently free unknown resources or admit a retry; the existing explicit local-operator stop resolution remains the only release path. Transition guards and real SQLite restart tests own this invariant.
+- **R07: local operator across channel scopes.** An external scope with manual approval must not create invisible, unapprovable orders. The trusted native Desktop operator may enumerate and manage persisted scoped runs through a distinct administrative repository interface. Lookup must be unique; an ambiguous run ID fails closed. The principal is derived from the stored run, never from a caller-provided owner. Router/channel principals retain their existing scope-bound limits. Removing a current binding must not hide older work from cancellation/recovery.
+- **R08: accounting is independent of output acceptance.** A complete, strictly validated usage report remains chargeable when output is truncated, empty or otherwise rejected. Such an output still cannot execute tools or satisfy a task. Typed diagnostics preserve only bounded numbers and enumerated stages; no bodies, reasoning, URLs, credentials or raw provider errors are durable diagnostics.
+- **R09: cancellation settles every in-flight notice.** A first receipt cannot finalize a root while another notice is still sending. Accepted receipts survive cancellation; ambiguous outcomes stay unknown and are not automatically resent. Terminal state cannot be revived by a late response. SQLite concurrency/restart regressions cover this boundary.
+
+These are refinements of the approved control-plane boundaries, not a replacement scheduler or a change to legacy Session semantics. Product acceptance remains split into automated regression, native interaction, real-model execution, and live external transport evidence.

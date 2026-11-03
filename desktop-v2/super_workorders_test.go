@@ -523,7 +523,14 @@ func TestSuperWorkOrderBridgeNoPhantomExecutionOrSensitiveLogs(t *testing.T) {
 	if err := rows.Err(); err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(tables, []string{"work_order_events", "work_orders"}) {
-		t.Fatalf("unexpected execution/session schema: %v", tables)
+	if !reflect.DeepEqual(tables, []string{"super_dead_letters", "super_events", "super_ingress", "super_resources", "super_router_receipts", "super_runs", "super_subscriptions", "work_order_events", "work_orders"}) {
+		t.Fatalf("unexpected legacy/session schema: %v", tables)
+	}
+	rows.Close()
+	for _, table := range []string{"super_runs", "super_resources", "super_ingress", "super_router_receipts"} {
+		var n int
+		if err := db.QueryRow("SELECT count(*) FROM " + table).Scan(&n); err != nil || n != 0 {
+			t.Fatalf("intake started phantom execution in %s: %d %v", table, n, err)
+		}
 	}
 }

@@ -79,7 +79,7 @@ func TestMigrationV1PreservesOrdersKeysAndBackfillsOnce(t *testing.T) {
 		t.Fatalf("migration changed order: %#v %v", loaded, err)
 	}
 	var version int
-	if err = s.db.QueryRow("PRAGMA user_version").Scan(&version); err != nil || version != 2 {
+	if err = s.db.QueryRow("PRAGMA user_version").Scan(&version); err != nil || version != schemaVersion {
 		t.Fatalf("schema version %d %v", version, err)
 	}
 	page, err := s.ReadEvents(ctx, eventbus.LocalScope, 0, 100)

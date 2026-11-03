@@ -16,13 +16,13 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 0 | A0 架构与方案 review | 双review通过 | 基线测试/边界通过 | 不适用 | 官方来源已核实 | 本切片提交/push |
 | 1 | A1 持久 bus + migration + intake原子事件 | 已实现 | focused/race通过 | 不改变 UI | 无模型 | 本切片提交/push |
-| 2 | A2 Router/admission/inbox/grants | 未开始 | 未开始 | 后续 A7 | 快路径零模型 | 待 A1 |
-| 3 | A3 单Worker持久执行/预算/取消 | 未开始 | 未开始 | 后续 A7 | 需受限运行配置 | 待 A2 |
-| 4 | A4 并行 Worker/Subagent | 未开始 | 未开始 | 后续 A7 | 需总预算 | 待 A3 |
-| 5 | A5 独立验收/交付 outbox | 未开始 | 未开始 | 后续 A7 | 不接受自报成功 | 待 A4 |
-| 6 | A6 外部渠道/授权互通 | 未开始 | 未开始 | 后续 A7 | 需凭据/白名单/验收目标 | 待 A2/A5 |
-| 7 | A7 Desktop完整控制面 | 未开始 | 未开始 | 必须真实 app | 不以假数据替代 | 待 A1–A6 |
-| 8 | A8 全链路故障/真实集成验收 | 未开始 | 未开始 | 必须 | 真实配置不可伪造 | 待 A7 |
+| 2 | A2 Router/admission/inbox/grants | Implemented; final review | Race PASS | Native approval/cancel exercised | Rule fast path uses no LLM | Pending current slice |
+| 3 | A3 Worker/budget/cancel | Implemented; safe diagnostic closure | Race PASS | Native scoped authorization exercised | First real-model trial FAILED; retained | Pending current slice |
+| 4 | A4 Parallel Worker/Subagent | Bounded DAG/shared budget implemented | SQLite overlap/race PASS | Two workers visible | Real-model closure not established | Pending current slice |
+| 5 | A5 Verification/outbox | Implemented; concurrent-cancel fixed | Receipt/restart/race PASS | Report/delivery states visible | No worker self-certification | Pending current slice |
+| 6 | A6 External channels | Webhook/Feishu/scoped bindings implemented | Router/adapter/race PASS | No live account used | BLOCKED: live Feishu account/recipient | Pending current slice |
+| 7 | A7 Desktop control plane | Implemented; native UI polish in progress | Focused UI/typecheck PASS | Intake/config/consent/cancel exercised; false cancellation alarm being fixed | Native evidence only | Pending current slice |
+| 8 | A8 End-to-end acceptance | Failure/recovery integration implemented | Full Super race/vet PASS | Final build recheck required | NOT PASSED: model failure and missing external channel credentials | Pending evidence |
 
 每阶段：检查未完成队列 → 评审具体变更 → focused tests/race → 提交/push coherent slice → 继续最高优先级无阻塞项。不能因某个外部验收缺配置就放弃能继续完成的实现；也不能将缺配置的验收说成通过。
 
@@ -58,3 +58,41 @@
 - 独立验收器只读可信策略与候选文件，重新计算hash并执行结构化断言；拒绝symlink/越界/超量/重复JSON键。不把候选截图或模型自报当验收。
 - 验证：execution与verification的 `go test -race`、`go vet`通过；测试使用本地fixture，不代表真实模型或外部账户验收。
 - 该切片为A3/A5内核，调度/平台/渠道/原生UI集成仍进行中，不能标全平台交付。
+
+## 原生验收新增阻断（用户反馈）
+
+- 用户截图确认A7存在checkbox/label样式串扰、竖排窄列、异常留白/贴边；不能以此前UI单测替代视觉验收。
+- 已将UI根因修复与布局美化列为当前P0体验门禁，前端agent专门修复；修复后必须重新build并实际截图。
+- 原生QA副本曾被LaunchServices再次启动而丢失隔离环境；发现目录不一致后未点击业务按钮，已停止该副本进程。现测试Info.plist+open --env双重隔离并确认实际workspace为私有fixture。
+
+## Resume and delivery ledger - 2026-11-03
+
+- Resumed on main after status/diff review and `git pull --ff-only origin main` (already current). All dirty files are owned by this continuous task. The original niuma repository is outside the write scope.
+- Pushed foundations: e9053e1 (reviewed architecture), c41690d (durable bus), 2acd5ea (isolated executor/independent verifier).
+- Native QA exercised the Desktop Super entry, persisted one intake, saved an isolated profile, checked consent, submitted an awaiting-approval run and cancelled it. Attempts remain zero: no model was invoked.
+- Native screenshots confirm the checkbox/layout fix. QA found a normal cancellation mislabeled as a backend issue; fixing this and WebKit select appearance is a pre-commit UI gate.
+- macOS LaunchServices overrides HOME. QA now explicitly verifies NIUMA_CONFIG_DIR, NIUMA_DESKTOP_CONFIG_DIR and SUPER_NIUMA_STATE_DIR all point to its private fixture. The initial configuration-save failure started no execution.
+- Regression coverage adds simultaneous notice settlement during cancellation, retained accepted receipts, and recovery of still-sending notices under needs_attention. Unknown side effects must never be blindly retried.
+- Remaining priority: close security review; commit/push control-plane slice; final UI build/native recheck; broad regression from a short private path; clean private fixtures; final commit/push.
+- Live model failure remains in the acceptance receipt. Real Feishu credentials and an authorized recipient are not configured; no claim of fully accepted multichannel end-to-end delivery.
+
+### Verified checkpoint
+
+- `fb22e1b` is committed and pushed: failed model outputs retain trustworthy metering and safe diagnostic enums; unknown usage still retains its reservation.
+- Full Go regression from the private short-path source snapshot passed: 132 tested packages, no FAIL. This avoids the known Unix-socket path-length issue without relaxing an existing test.
+- Intake HTTP smoke passed all 18 checks, including idempotency/authentication/cancellation/restart. This is intake-only evidence, not model or external-channel acceptance.
+- Original niuma repository remains clean at `6b021afb71de9b6b43fa8de0e35e62638df75581`.
+- Final independent integration review raised R06/R07 (expired siblings under Failed; scoped Desktop operator approval); implementation and focused regression are required before platform commit.
+
+- `9cd8b41` committed/pushed: Super control UI, fixed checkbox/label grid, scoped native select styling, explicit cancellation messages, scope/owner labels; 81 focused tests + typecheck + boundary guards passed. Native screenshots must still be refreshed against the final build.
+- Final frontend regression on the frozen UI passed: `npm test` = 96 files / 941 tests. The prior 81 focused tests, typecheck, 6 boundary-guard checks and 7 public-document checks also passed.
+- R06 follow-on review found that an expired verification claim could be reclassified every scheduler tick, repeatedly increasing the root revision (duplicate bus emission was suspected but not confirmed). One-time recovery without releasing unknown isolation is required before final acceptance; the verification-claim provenance must be retained.
+- Native UI acceptance will use an updated, ad-hoc signed QA clone with all three explicit config/state-root overrides. No daily-use app process will be modified or terminated.
+
+### Integration review closed
+
+- R06/R07 and concurrent-delivery cancellation findings are closed at implementation/automated-test level. Independent reviewer found no remaining P0/P1 in the reviewed slice.
+- Expired verification claims now enter needs_attention once; 64 subsequent scheduler steps across restart preserve revision, bus count and isolation. The proven old failure was repeated revision; the existing event gate already filtered unchanged-state bus entries.
+- The trusted Desktop operator can enumerate/approve/cancel/retry/abandon persisted external scopes and inspect their events/DLQ, with unique-ID resolution and stored-principal derivation. Router privileges remain unchanged.
+- All Super packages and Desktop focused/broader race tests passed; Super + Desktop vet passed. The long-repository socket-path case is separately covered by full short-path Go regression rather than a production/test relaxation.
+- Next: final native build/screenshots, one separately preregistered bounded real-model recheck, no live Feishu action without an authorized configured destination.

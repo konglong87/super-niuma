@@ -7,6 +7,7 @@ import (
 	"errors"
 	"time"
 
+	supercontrol "github.com/konglong87/super-niuma/internal/super/control"
 	"github.com/konglong87/super-niuma/internal/super/eventbus"
 	"github.com/konglong87/super-niuma/internal/super/workorder"
 )
@@ -32,7 +33,7 @@ func sameBusEvent(a, b eventbus.Event) bool {
 }
 
 // appendEventTx is the shared transactional seam for intake and future domains.
-// control is PRIVATE: only the exact, already-recorded local cancellation may
+// control is PRIVATE: only exact persisted cancellation/run revisions may
 // bypass ordinary admission. It is not available on the public AppendEvent API.
 func appendEventTx(ctx context.Context, tx *sql.Tx, e eventbus.Event, control bool) (eventbus.Event, bool, error) {
 	normalized, err := eventbus.NormalizeEvent(e)
@@ -41,7 +42,12 @@ func appendEventTx(ctx context.Context, tx *sql.Tx, e eventbus.Event, control bo
 	}
 	e = normalized
 	if control {
-		if err = validateCancellationControl(ctx, tx, e); err != nil {
+		if e.Topic == supercontrol.EventRunChanged || e.Topic == supercontrol.EventDeliveryReady {
+			err = validateRunControlEvent(ctx, tx, e)
+		} else {
+			err = validateCancellationControl(ctx, tx, e)
+		}
+		if err != nil {
 			return eventbus.Event{}, false, err
 		}
 	}

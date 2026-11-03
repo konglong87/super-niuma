@@ -1,13 +1,14 @@
-> **Super Niuma — 你的超级牛马。** 这是 niuma 的独立公开演进项目：保留传统会话入口，已新增隔离的 Super 工单入口。自动执行尚未接入；见 [演进计划](docs/plans/2026-11-03-super-niuma-evolution.md) 和 [架构边界](docs/architecture/super-niuma.md)。下文介绍保留的传统能力。
+> **Super Niuma — 你的超级牛马。** niuma 的独立公开演进项目：在同一个 Desktop 中保留普通会话，并提供独立的 Super 交付控制面。控制面代码已接入持久 Router/任务队列/多 Worker、受限子任务 DAG、独立验收和通知 outbox；**仍为开发预览，不代表真实模型与外部渠道已全部验收通过**。见[最新交付账本](docs/plans/2026-11-03-super-niuma-platform-delivery.md)和[评审后的架构](docs/architecture/2026-11-03-super-niuma-control-plane.md)。下文传统能力与 Super 授权范围不可混为一谈。
 
-## 两个入口，两个职责
+## 一个 Desktop，两个入口
 
-| 入口 | 启动方式 | 当前能力 |
+| 入口 | 使用方式 | 职责 |
 | --- | --- | --- |
-| Super 工作台 | `go run ./cmd/super-niuma` | 独立工单登记、验收条件、持久化、取消；不自动执行 |
-| 传统会话 | `go run ./cmd/niuma --help` | 保留既有会话、执行工具和入口 |
+| 超级牛马干活 / Super Niuma | Desktop 左上角、紧邻新建会话 | 登记工单；配置/授权后运行独立控制面，查看 Worker、预算、证据和回执 |
+| 普通会话 | 原新建会话入口 | 保留既有 Session 逻辑和工具能力 |
+| 可选开发调试控制台 | `go run ./cmd/super-niuma` | 仅本机工单登记 HTTP 辅助入口；不是独立产品首页，不启动执行 |
 
-Super 默认只监听本机，访问终端打印的地址。它使用独立的 `~/.super-niuma` 数据目录，不读取原 Session 或模型凭据。详见 [Super 使用说明](docs/usage/super-niuma.md)。当前没有正式安装包发布。
+从源码构建：`GOSUMDB=sum.golang.org bash scripts/build-desktop-v2.sh`。Super 状态保存在独立的 `~/.super-niuma`；登记工单不会调用模型，执行需另行配置和授权，且不会打开旧 Session 数据库。配置完成的执行器可读取用户的模型路由配置。详见[使用说明](docs/usage/super-niuma.md)。尚无本仓库正式安装包发布。
 
 <p align="center">
   <img src="web/src/v2/assets/niuma-mark.svg" alt="牛马 Niuma mascot mark" width="144">
