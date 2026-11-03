@@ -41,6 +41,10 @@ jobs:
       - run: go build ./...
       - name: Super migration boundary
         run: python3 scripts/super-niuma-boundary-test.py
+      - name: Super binary HTTP smoke
+        run: |
+          go build -o "$RUNNER_TEMP/super-niuma" ./cmd/super-niuma
+          python3 scripts/super-niuma-smoke.py --binary "$RUNNER_TEMP/super-niuma"
       - run: go vet ./...
 
       - name: gofmt

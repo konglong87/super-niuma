@@ -1,4 +1,11 @@
-> **Super Niuma — your super workhorse.** This independent successor preserves the traditional conversation entry and is adding an isolated Super work-order entry. The initial milestone records requests only; autonomous execution is not enabled. See the [delivery ledger](docs/plans/2026-11-03-super-niuma-evolution.md) and [architecture](docs/architecture/super-niuma.md). The retained traditional capabilities are described below.
+> **Super Niuma — your super workhorse.** This independent successor preserves the traditional conversation entry and adds an isolated Super work-order entry. The initial milestone records requests only; autonomous execution is not enabled. See the [delivery ledger](docs/plans/2026-11-03-super-niuma-evolution.md) and [architecture](docs/architecture/super-niuma.md). The retained traditional capabilities are described below.
+
+## Two entries, separate responsibilities
+
+- **Super intake:** `go run ./cmd/super-niuma` — durable explicit requests, acceptance criteria and cancellation. No automatic execution.
+- **Traditional conversations:** `go run ./cmd/niuma --help` — retained conversation/runtime behavior.
+
+Super binds only to loopback and owns a separate `~/.super-niuma` store. It does not read old sessions or model credentials. See the [Super guide](docs/usage/super-niuma.md). No binary release has been published for this successor yet.
 
 <p align="center">
   <img src="web/src/v2/assets/niuma-mark.svg" alt="Niuma mascot mark" width="144">

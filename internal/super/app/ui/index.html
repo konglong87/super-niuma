@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Super Niuma · 超级工作台</title><link rel="stylesheet" href="/assets/app.css"><script type="module" src="/assets/app.js"></script></head>
+<body>
+<div class="workspace">
+ <aside class="sidebar" aria-label="工作台导航">
+  <a class="brand" href="/" aria-label="Super Niuma 首页"><span class="brand-mark">牛</span><span>super-niuma<small>你的超级牛马</small></span></a>
+  <p class="nav-label">SUPER WORKSPACE</p><a class="nav-item active" href="/" aria-current="page"><span>▤</span> 工单中心 <span class="nav-dot"></span></a>
+  <div class="sidebar-note"><span class="status-dot"></span><strong>独立运行 · 本地优先</strong><p>原会话入口和 Session 逻辑保持不变。</p></div>
+  <footer>Developer Preview<br><span>INTAKE · 01</span></footer>
+ </aside>
+ <main>
+  <header class="topbar"><span>工作台 <span class="crumb">/ 工单中心</span></span><span class="local-label">● 仅本机可访问</span></header>
+  <section class="content">
+   <div class="heading"><div><p class="eyebrow">FROM A REQUEST TO A RESULT</p><h1>把目标交代清楚。</h1><p class="lead">先接住每一件事，再让交付有据可查。</p></div><button class="button secondary" id="refresh" type="button">刷新列表</button></div>
+   <div class="mode-banner" role="note"><span class="mode-icon">i</span><div><strong>当前为接单模式，不会自动干活。</strong><p>工单会独立保存。执行、验收和交付尚未接入，不调用模型，不读取原有会话。</p></div><span class="badge neutral" id="service-status">连接中</span></div>
+   <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+   <div class="metrics" aria-label="最近工单统计"><article><span>最近工单</span><strong id="count-all">—</strong><small>最多显示最近 100 张</small></article><article><span>已接单 · 未执行</span><strong id="count-recorded">—</strong><small>等待后续执行能力接入</small></article><article><span>已取消</span><strong id="count-cancelled">—</strong><small>保留记录，便于追踪</small></article></div>
+   <div class="work-grid">
+    <section class="panel intake"><div class="panel-heading"><h2>登记一个目标</h2><span class="small-label">人工明确委托</span></div>
+     <form id="intake-form">
+      <label for="title">工单标题 <span class="required">*</span></label><input id="title" name="title" maxlength="160" required placeholder="例如：修复设置页面的暗色模式问题">
+      <label for="objective">要完成什么 <span class="required">*</span></label><textarea id="objective" name="objective" rows="4" maxlength="8000" required placeholder="描述目标、范围，以及不应该改动的内容。"></textarea>
+      <label for="criteria">怎样算完成 <span class="required">*</span></label><textarea id="criteria" name="criteria" rows="3" required placeholder="每行一条验收条件，例如：&#10;暗色模式下文字清晰可读&#10;相关测试通过，并提供真实截图"></textarea>
+      <label for="workspace">工作目录 <span class="optional">可选 · 仅记录，不执行</span></label><input id="workspace" name="workspace" placeholder="绝对路径，例如 /Users/you/project" autocomplete="off">
+      <p class="form-note">请勿填写密码、密钥或真实用户敏感数据。</p><button class="button primary" id="submit-order" type="submit">登记工单 <span>↗</span></button>
+     </form>
+    </section>
+    <section class="panel queue"><div class="panel-heading"><h2>最近工单</h2><span class="small-label" id="list-count">正在读取</span></div><div id="orders" aria-live="polite"><p class="empty">正在读取已保存的工单…</p></div></section>
+   </div>
+   <section class="panel detail" id="detail" hidden aria-labelledby="detail-title"><div class="panel-heading"><div><p class="eyebrow">WORK ORDER</p><h2 id="detail-title"></h2></div><button id="close-detail" class="button secondary" type="button">收起详情</button></div><p id="detail-id" class="metadata"></p><div class="detail-grid"><div><h3>任务目标</h3><p id="detail-objective" class="preserve"></p><h3>验收条件</h3><ol id="detail-criteria"></ol><h3>工作目录</h3><p id="detail-workspace" class="metadata preserve"></p></div><div><h3>交付链路</h3><ul class="stages"><li><span class="stage-dot recorded"></span><span id="detail-state">已接单</span></li><li><span class="stage-dot"></span>执行 · 未开始</li><li><span class="stage-dot"></span>验收 · 未开始</li><li><span class="stage-dot"></span>交付 · 未开始</li></ul><p class="form-note">登记成功不等于执行成功，更不等于验收通过或已交付。</p><button id="cancel-order" class="button danger" type="button">取消工单</button></div></div></section>
+   <p class="page-footer">独立接单 · 不接管会话 · 不把“收到”当作“完成”</p>
+  </section>
+ </main>
+</div>
+<dialog id="cancel-dialog" aria-labelledby="cancel-title"><h2 id="cancel-title">取消这张工单？</h2><p>工单将保留在记录中，状态变为已取消。</p><div class="dialog-actions"><button id="keep-order" class="button secondary" type="button">保留工单</button><button id="confirm-cancel" class="button danger" type="button">确认取消</button></div></dialog>
+</body></html>

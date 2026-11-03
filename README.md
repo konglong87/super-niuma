@@ -1,4 +1,13 @@
-> **Super Niuma — 你的超级牛马。** 这是 niuma 的独立公开演进项目：保留传统会话入口，正在新增隔离的 Super 工单入口。自动执行尚未接入；见 [演进计划](docs/plans/2026-11-03-super-niuma-evolution.md) 和 [架构边界](docs/architecture/super-niuma.md)。下文介绍保留的传统能力。
+> **Super Niuma — 你的超级牛马。** 这是 niuma 的独立公开演进项目：保留传统会话入口，已新增隔离的 Super 工单入口。自动执行尚未接入；见 [演进计划](docs/plans/2026-11-03-super-niuma-evolution.md) 和 [架构边界](docs/architecture/super-niuma.md)。下文介绍保留的传统能力。
+
+## 两个入口，两个职责
+
+| 入口 | 启动方式 | 当前能力 |
+| --- | --- | --- |
+| Super 工作台 | `go run ./cmd/super-niuma` | 独立工单登记、验收条件、持久化、取消；不自动执行 |
+| 传统会话 | `go run ./cmd/niuma --help` | 保留既有会话、执行工具和入口 |
+
+Super 默认只监听本机，访问终端打印的地址。它使用独立的 `~/.super-niuma` 数据目录，不读取原 Session 或模型凭据。详见 [Super 使用说明](docs/usage/super-niuma.md)。当前没有正式安装包发布。
 
 <p align="center">
   <img src="web/src/v2/assets/niuma-mark.svg" alt="牛马 Niuma mascot mark" width="144">
