@@ -1,0 +1,9 @@
+{
+  "args": [
+    "mcp",
+    "show"
+  ],
+  "exit_code": 1,
+  "stderr": "mcp show requires a server name\n",
+  "stdout": ""
+}

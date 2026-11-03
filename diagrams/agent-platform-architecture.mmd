@@ -1,0 +1,103 @@
+flowchart TB
+  subgraph CHANNELS["用户从哪里进入"]
+    direction LR
+    CLI["CLI<br/>一次性任务 / 脚本"]
+    TUI["TUI<br/>终端交互"]
+    DESKTOP["Desktop<br/>桌面工作台"]
+    WEB["WebUI<br/>浏览器"]
+    FEISHU["Feishu Worker<br/>飞书机器人常驻进程"]
+  end
+
+  subgraph ACCESS["接入与治理"]
+    AUTH["鉴权与权限<br/>谁可以做什么"]
+    TENANT["租户与用户隔离<br/>数据属于哪个组织"]
+    ROUTE["路由与入口分配<br/>这次请求使用哪个 Profile"]
+    ADAPTER["渠道适配器<br/>把外部消息转换成统一格式"]
+  end
+
+  subgraph CORE["Runtime Core：真正执行任务的核心"]
+    direction TB
+    SESSION["Session / Goal<br/>会话、任务、长期目标"]
+    PROFILE["Profile / Team<br/>智能体定义与协作编排"]
+    LOOP["Agent Loop<br/>理解 → 计划 → 调用 → 验证 → 继续或完成"]
+    CONTEXT["Context Assembly<br/>Prompt、项目规则、租户上下文"]
+
+    subgraph CAPABILITIES["可插拔能力"]
+      direction LR
+      SKILLS["Skills<br/>专业做法与工作流"]
+      MCP["MCP<br/>外部服务工具"]
+      TOOLS["Tools<br/>文件、搜索、命令、浏览器"]
+      COMPUTER["Computer Use<br/>截图、结构化动作、真实桌面输入"]
+      MEMORY["Memory<br/>长期记忆与项目经验"]
+      IMAGE["Image Tool<br/>图片生成、编辑与理解"]
+    end
+
+    PROVIDER["Provider<br/>模型、协议与多模态服务"]
+    GATE["安全与完成检查<br/>权限、预算、证据、结果校验"]
+  end
+
+  subgraph STATE["状态、成本与可靠性"]
+    PERSIST["Persistence<br/>SQLite / MySQL / Transcript / Inbox / Outbox"]
+    OBSERVE["Telemetry / Audit / Quota<br/>日志、追踪、审计、用量与配额"]
+  end
+
+  subgraph OUTPUTS["输出适配"]
+    OUT_CLI["CLI / TUI 输出"]
+    OUT_DESKTOP["Desktop / WebUI 输出"]
+    OUT_FEISHU["Feishu Card / Message / Reaction"]
+    OUT_API["API / JSON / SSE / WebSocket"]
+  end
+
+  CLI --> AUTH
+  TUI --> AUTH
+  DESKTOP --> AUTH
+  WEB --> AUTH
+  FEISHU --> ADAPTER
+  ADAPTER --> AUTH
+  AUTH --> TENANT
+  TENANT --> ROUTE
+  ROUTE --> SESSION
+  ROUTE --> PROFILE
+
+  SESSION --> LOOP
+  PROFILE --> CONTEXT
+  SESSION --> CONTEXT
+  CONTEXT --> LOOP
+  LOOP --> PROVIDER
+  PROVIDER --> LOOP
+  LOOP --> GATE
+  GATE -->|继续| LOOP
+  GATE -->|完成| OUTPUTS
+  LOOP --> CAPABILITIES
+  CAPABILITIES --> LOOP
+  COMPUTER -->|ComputerSession / native helper| OUT_DESKTOP
+
+  SESSION --> PERSIST
+  LOOP --> PERSIST
+  PERSIST --> SESSION
+  AUTH -.-> OBSERVE
+  TENANT -.-> OBSERVE
+  LOOP -.-> OBSERVE
+  GATE -.-> OBSERVE
+  PERSIST -.-> OBSERVE
+  OBSERVE -.-> ROUTE
+
+  OUTPUTS --> OUT_CLI
+  OUTPUTS --> OUT_DESKTOP
+  OUTPUTS --> OUT_FEISHU
+  OUTPUTS --> OUT_API
+  OUT_FEISHU --> FEISHU
+
+  classDef channel fill:#E8F1FF,stroke:#3B6EA8,color:#102A43
+  classDef access fill:#FFF4D6,stroke:#B7791F,color:#4A2C00
+  classDef core fill:#E6FFFA,stroke:#2C7A7B,color:#123C3C
+  classDef capability fill:#F3E8FF,stroke:#805AD5,color:#322659
+  classDef state fill:#FCE8E6,stroke:#C53030,color:#4A1616
+  classDef output fill:#EAF7EA,stroke:#3F8F4B,color:#173B1A
+
+  class CLI,TUI,DESKTOP,WEB,FEISHU channel
+  class AUTH,TENANT,ROUTE,ADAPTER access
+  class SESSION,PROFILE,LOOP,CONTEXT,PROVIDER,GATE core
+  class SKILLS,MCP,TOOLS,MEMORY,IMAGE capability
+  class PERSIST,OBSERVE state
+  class OUT_CLI,OUT_DESKTOP,OUT_FEISHU,OUT_API output

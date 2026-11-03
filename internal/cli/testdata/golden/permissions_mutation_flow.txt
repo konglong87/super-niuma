@@ -1,0 +1,30 @@
+$ permissions mode ask
+Updated permissions
+
+$ permissions allow Bash:go test*
+Updated permissions
+
+$ permissions deny Write:secret.txt
+Updated permissions
+
+$ permissions list
+{
+  "allow": [
+    "Bash:go test*"
+  ],
+  "deny": [
+    "Write:secret.txt"
+  ],
+  "defaultMode": "ask"
+}
+
+$ permissions remove Write:secret.txt
+Updated permissions
+
+$ permissions clear
+Updated permissions
+
+$ permissions list
+{
+  "defaultMode": "ask"
+}

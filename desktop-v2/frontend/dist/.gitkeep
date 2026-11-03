@@ -1,0 +1,2 @@
+Go embed placeholder for fresh-clone checks only; not a frontend.
+Build the real desktop UI with scripts/build-desktop-v2.sh before running Wails.

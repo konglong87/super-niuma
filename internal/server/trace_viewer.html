@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>niuma Trace</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f5f7;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-strong: rgba(255, 255, 255, 0.96);
+      --surface-soft: rgba(0, 0, 0, 0.035);
+      --line: rgba(0, 0, 0, 0.10);
+      --line-strong: rgba(0, 0, 0, 0.16);
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --soft: #3a3a3c;
+      --blue: #007aff;
+      --green: #34c759;
+      --amber: #ff9f0a;
+      --rose: #ff3b30;
+      --violet: #af52de;
+      --shadow: 0 18px 46px rgba(0, 0, 0, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 980px;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.85), rgba(245,245,247,0) 36%),
+        radial-gradient(circle at top left, rgba(0,122,255,0.10), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(52,199,89,0.08), transparent 30%);
+      opacity: 1;
+    }
+    .app {
+      position: relative;
+      height: 100vh;
+      padding: 18px;
+      display: grid;
+      grid-template-rows: 1fr;
+    }
+    .nav-brand {
+      position: relative;
+      min-height: 104px;
+      display: flex;
+      align-items: center;
+      padding: 18px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.58);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand > div:last-child { min-width: 0; }
+    .mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      border: 1px solid var(--line-strong);
+      background: linear-gradient(180deg, #ffffff, #f2f2f7);
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 15px;
+      flex: none;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 21px; font-weight: 760; letter-spacing: 0; }
+    .subtle { color: var(--muted); font-size: 12px; }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--soft);
+      font-size: 12px;
+      flex: none;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+    main {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 340px minmax(560px, 1fr);
+      gap: 16px;
+    }
+    .panel {
+      min-height: 0;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto auto auto minmax(0, 1fr);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+    .panel-head {
+      min-height: 58px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .panel-title { font-size: 13px; font-weight: 720; color: var(--soft); }
+    .panel-body { height: calc(100% - 58px); overflow: auto; padding: 12px; }
+    .panel .panel-body { height: auto; min-height: 0; }
+    .segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(0,0,0,0.035);
+    }
+    button {
+      border: 1px solid transparent;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font: inherit;
+      letter-spacing: 0;
+    }
+    .segmented button { padding: 7px 10px; }
+    button.active {
+      color: var(--text);
+      background: rgba(255,255,255,0.84);
+      border-color: var(--line);
+    }
+    .session-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: none;
+    }
+    .time-select {
+      width: 112px;
+      min-height: 34px;
+      padding: 6px 30px 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.74);
+      color: var(--soft);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    .event-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.58);
+    }
+    .event-filter {
+      width: 132px;
+      min-height: 32px;
+      padding: 6px 28px 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.80);
+      color: var(--soft);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .custom-time {
+      display: none;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.50);
+    }
+    .custom-time.open { display: grid; }
+    .field {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+    .field label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
+    .field input {
+      width: 100%;
+      min-height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.86);
+      color: var(--text);
+      padding: 6px 8px;
+      font: 12px/1.3 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .apply-btn {
+      min-height: 32px;
+      padding: 6px 10px;
+      border: 1px solid rgba(0,122,255,0.28);
+      background: rgba(0,122,255,0.10);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
+      color: var(--soft);
+    }
+    .session {
+      padding: 12px;
+      margin-bottom: 9px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.72);
+      cursor: pointer;
+      transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+    }
+    .session:hover { border-color: rgba(0,122,255,0.35); background: rgba(0,122,255,0.06); }
+    .session.active { border-color: rgba(0,122,255,0.55); background: rgba(0,122,255,0.10); }
+    .session-title {
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .session-id {
+      margin-top: 6px;
+      color: var(--muted);
+      font: 11px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .workspace {
+      min-height: 0;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr);
+      padding: 0;
+      overscroll-behavior: contain;
+    }
+    .hero {
+      padding: 4px 2px 2px;
+    }
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .hero h2 { font-size: 20px; font-weight: 760; letter-spacing: 0; }
+    .hero-stats {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(140px, 1fr));
+      gap: 8px;
+    }
+    .mini-stat {
+      min-height: 58px;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.74);
+    }
+    .mini-stat.wide { grid-column: span 2; }
+    .mini-stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+    .mini-stat b {
+      display: block;
+      margin-top: 4px;
+      color: var(--text);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 720;
+      letter-spacing: 0;
+    }
+    .mini-stat small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.3;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--soft);
+      background: rgba(255,255,255,0.76);
+      font-size: 12px;
+    }
+    .chip.skill { border-color: rgba(175,82,222,0.28); color: #6d2f91; background: rgba(175,82,222,0.08); }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface-strong);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .card-body { padding: 12px 14px 14px; }
+    .detail-workbench {
+      position: relative;
+      min-height: 520px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+    .detail-tabs {
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 96px 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
+    }
+    .detail-tabs .status {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+    }
+    .tab-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      overflow-x: auto;
+    }
+    .detail-tab {
+      min-height: 34px;
+      padding: 7px 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      color: var(--muted);
+      background: transparent;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+    .detail-tab:hover {
+      color: var(--text);
+      background: rgba(0,0,0,0.035);
+    }
+    .detail-tab.active {
+      color: var(--text);
+      border-color: var(--line);
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+    }
+    .tab-count {
+      min-width: 22px;
+      padding: 2px 7px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.76);
+      font-size: 11px;
+      font-weight: 650;
+      text-align: center;
+    }
+    .detail-panels {
+      min-height: 0;
+      overflow: hidden;
+    }
+    .detail-panel {
+      height: 100%;
+      min-height: 0;
+      display: none;
+      overflow: auto;
+      padding: 14px;
+      overscroll-behavior: contain;
+    }
+    .detail-panel.active { display: block; }
+    .span-row {
+      display: grid;
+      grid-template-columns: 96px 1fr 76px;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+    .span-row:last-child { border-bottom: 0; }
+    .barwrap { height: 10px; border-radius: 999px; background: rgba(0,0,0,0.08); overflow: hidden; }
+    .bar { height: 100%; min-width: 3px; background: var(--blue); border-radius: 999px; }
+    .bar.tool { background: var(--violet); }
+    .bar.model { background: var(--green); }
+    .bar.api { background: var(--amber); }
+    .bar.query { background: var(--blue); }
+    .conversation {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+    .detail-panel.conversation { display: none; }
+    .detail-panel.conversation.active { display: grid; }
+    .bubble {
+      display: grid;
+      gap: 7px;
+      max-width: min(100%, 920px);
+      padding: 14px 15px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.86);
+    }
+    .bubble.user {
+      justify-self: end;
+      border-color: rgba(0,122,255,0.28);
+      background: #e8f2ff;
+    }
+    .bubble.assistant {
+      justify-self: start;
+      border-color: rgba(0,0,0,0.08);
+      background: #ffffff;
+    }
+    .bubble.system {
+      justify-self: center;
+      max-width: 100%;
+      background: rgba(0,0,0,0.035);
+    }
+    .bubble-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 700;
+    }
+	    .bubble-content {
+	      white-space: pre-wrap;
+	      word-break: break-word;
+	      color: var(--text);
+	      font-size: 14px;
+	      line-height: 1.56;
+	    }
+	    .rewind-grid {
+	      display: grid;
+	      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+	      gap: 14px;
+	      align-items: start;
+	    }
+	    .rewind-section {
+	      display: grid;
+	      gap: 10px;
+	    }
+	    .rewind-card {
+	      display: grid;
+	      gap: 8px;
+	      padding: 13px;
+	      border: 1px solid var(--line);
+	      border-radius: 14px;
+	      background: rgba(255,255,255,0.78);
+	    }
+	    .rewind-card.target {
+	      border-color: rgba(0,122,255,0.24);
+	      background: rgba(0,122,255,0.055);
+	    }
+	    .rewind-card.executed {
+	      border-color: rgba(52,199,89,0.25);
+	      background: rgba(52,199,89,0.075);
+	    }
+	    .rewind-head {
+	      display: flex;
+	      justify-content: space-between;
+	      gap: 12px;
+	      align-items: flex-start;
+	    }
+	    .rewind-title {
+	      font-weight: 740;
+	      color: var(--text);
+	      word-break: break-word;
+	    }
+	    .rewind-message {
+	      color: var(--soft);
+	      white-space: pre-wrap;
+	      word-break: break-word;
+	    }
+	    .rewind-meta {
+	      display: flex;
+	      flex-wrap: wrap;
+	      gap: 6px;
+	    }
+	    .rewind-command {
+	      padding: 7px 9px;
+	      border: 1px solid var(--line);
+	      border-radius: 10px;
+	      background: rgba(255,255,255,0.76);
+	      color: var(--soft);
+	      font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+	      word-break: break-all;
+	    }
+	    .event {
+	      display: grid;
+	      grid-template-columns: 132px 92px 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      cursor: pointer;
+    }
+    .event:last-child { border-bottom: 0; }
+    .event:hover { background: rgba(0,122,255,0.045); }
+    .event.recap {
+      margin: 8px 0;
+      padding: 12px;
+      border: 1px solid rgba(175,82,222,0.24);
+      border-radius: 14px;
+      background: rgba(175,82,222,0.07);
+    }
+    .event-name { font-weight: 700; color: var(--text); }
+    .event pre {
+      margin: 5px 0 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--muted);
+      font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 3px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--soft);
+      background: rgba(255,255,255,0.045);
+      font-size: 12px;
+    }
+    .pill.error { border-color: rgba(255,59,48,0.28); color: #b42318; background: rgba(255,59,48,0.08); }
+    .pill.recap { border-color: rgba(175,82,222,0.32); color: #7e22ce; background: rgba(175,82,222,0.10); }
+    .inspector-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      background: rgba(0,0,0,0.16);
+      z-index: 20;
+    }
+    .inspector-backdrop.open { display: block; }
+    .inspector-drawer {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      bottom: 18px;
+      width: min(520px, calc(100vw - 36px));
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.20);
+      backdrop-filter: blur(24px);
+      overflow: hidden;
+      z-index: 21;
+    }
+    .inspector-drawer.open { display: grid; grid-template-rows: auto 1fr; }
+    .drawer-close {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.035);
+      color: var(--soft);
+    }
+    .detail-pane { padding: 14px; overflow: auto; }
+    .detail-box {
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.76);
+      margin-bottom: 12px;
+    }
+    .detail-box h3 { font-size: 15px; margin-bottom: 8px; }
+    pre.json {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #1d1d1f;
+      font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .empty {
+      padding: 22px;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.62);
+    }
+    @media (max-width: 1180px) {
+      body { min-width: 760px; }
+      main { grid-template-columns: 300px 1fr; }
+      .detail-workbench { min-height: 420px; }
+      .hero-stats { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <main>
+    <aside class="panel">
+      <div class="nav-brand">
+        <div class="brand">
+          <div class="mark">GC</div>
+          <div>
+            <h1>niuma Trace</h1>
+            <p class="subtle">Conversation chain, tools, skills, tokens, cache and runtime timing.</p>
+          </div>
+        </div>
+      </div>
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Sessions</div>
+          <div class="subtle" id="timeSummary">All sessions</div>
+        </div>
+        <div class="session-actions">
+          <select class="time-select" id="timeSelect" title="Time range">
+            <option value="all">All</option>
+            <option value="today">Today</option>
+            <option value="24h">Last 24h</option>
+            <option value="7d">Last 7d</option>
+            <option value="30d">Last 30d</option>
+            <option value="custom">Custom...</option>
+          </select>
+          <button class="icon-btn" id="refreshBtn" title="Refresh">↻</button>
+        </div>
+      </div>
+      <div class="panel-head" style="min-height:auto;">
+        <div class="segmented" style="width:100%;">
+          <button id="localBtn" class="active">Local</button>
+          <button id="tenantBtn">Tenant</button>
+        </div>
+      </div>
+      <div class="custom-time" id="customTime">
+        <div class="field">
+          <label for="fromInput">From</label>
+          <input id="fromInput" type="datetime-local">
+        </div>
+        <div class="field">
+          <label for="toInput">To</label>
+          <input id="toInput" type="datetime-local">
+        </div>
+        <button class="apply-btn" id="applyTimeBtn">Apply</button>
+      </div>
+      <div id="sessions" class="panel-body"></div>
+    </aside>
+    <section class="workspace">
+      <div class="card detail-workbench">
+        <div class="detail-tabs" role="tablist" aria-label="Trace detail views">
+          <div class="tab-group">
+	            <button class="detail-tab active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+	            <button class="detail-tab" data-tab="conversation" role="tab" aria-selected="false">Conversation <span class="tab-count" id="conversationCount">0</span></button>
+	            <button class="detail-tab" data-tab="rewind" role="tab" aria-selected="false">Rewind <span class="tab-count" id="rewindCount">0</span></button>
+	            <button class="detail-tab" data-tab="events" role="tab" aria-selected="false">Event Stream <span class="tab-count" id="eventCount">0</span></button>
+	            <button class="detail-tab" data-tab="spans" role="tab" aria-selected="false">Runtime Spans <span class="tab-count" id="spanCount">0</span></button>
+          </div>
+          <div class="status"><span class="dot"></span><span id="status">ready</span></div>
+        </div>
+        <div class="detail-panels">
+          <section class="detail-panel active" id="overview" role="tabpanel">
+            <div class="hero">
+              <div class="hero-top">
+                <div>
+                  <h2 id="sessionTitle">Select a session</h2>
+                  <p class="subtle" id="sessionMeta">Choose a local or tenant session to inspect the full execution path.</p>
+                  <div class="chips" id="skillChips"></div>
+                </div>
+                <span class="pill" id="sourcePill">no session</span>
+              </div>
+              <div class="hero-stats" id="summary"></div>
+            </div>
+	          </section>
+	          <section class="detail-panel conversation" id="conversation" role="tabpanel"><div class="empty">Select a session to see the user and assistant messages.</div></section>
+	          <section class="detail-panel" id="rewind" role="tabpanel"><div class="empty">Select a local session to inspect checkpoints and rewind ranges.</div></section>
+	          <section class="detail-panel" id="events" role="tabpanel">
+              <div class="event-toolbar">
+                <div>
+                  <div class="panel-title">Event Stream</div>
+                  <div class="subtle" id="eventSummary">Select a session to inspect events.</div>
+                </div>
+                <select id="eventFilter" class="event-filter" aria-label="Event filter">
+	                  <option value="all">All events</option>
+	                  <option value="closure">Closure only</option>
+	                  <option value="recap">Recap only</option>
+	                  <option value="errors">Errors only</option>
+                </select>
+              </div>
+              <div id="eventList"></div>
+            </section>
+          <section class="detail-panel" id="spans" role="tabpanel"><div class="empty">Select a session to see model, tool and API timing.</div></section>
+        </div>
+      </div>
+    </section>
+    <div id="inspectorBackdrop" class="inspector-backdrop"></div>
+    <aside id="inspectorDrawer" class="inspector-drawer">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Inspector</div>
+          <div class="subtle">Structured event detail</div>
+        </div>
+        <button class="drawer-close" id="closeInspector" title="Close">x</button>
+      </div>
+      <div id="detail" class="detail-pane"><div class="empty">No event selected.</div></div>
+    </aside>
+  </main>
+</div>
+<script>
+let source = "local";
+let selected = "";
+let current = null;
+let activeDetailTab = "overview";
+let eventFilter = "all";
+let timeRange = "all";
+let customFrom = "";
+let customTo = "";
+const $ = (id) => document.getElementById(id);
+function setStatus(text){ $("status").textContent = text; }
+function authFetch(url){
+  const params = new URLSearchParams(location.search);
+  const headers = {"Authorization": "Bearer " + tokenFromLocation()};
+  const contextHeaders = [["tenant_key", "X-Tenant-Key"], ["user_id", "X-User-Id"], ["device_id", "X-Device-Id"]];
+  contextHeaders.forEach(([queryKey, headerName]) => {
+    const value = params.get(queryKey);
+    if(value){ headers[headerName] = value; }
+  });
+  return fetch(url, {headers: headers});
+}
+function tokenFromLocation(){ return new URLSearchParams(location.search).get("token") || ""; }
+function fmtTime(value){ if(!value) return ""; const d = new Date(value); return isNaN(d) ? "" : d.toLocaleString(); }
+function n(value){ return value || 0; }
+function compactNumber(value){ return new Intl.NumberFormat().format(n(value)); }
+function ms(value){ return compactNumber(value) + " ms"; }
+function pct(value){ return Math.round(n(value) * 100) + "%"; }
+function initTimeFilter(){
+  const params = new URLSearchParams(location.search);
+  const range = params.get("range") || "all";
+  timeRange = ["all", "today", "24h", "7d", "30d", "custom"].includes(range) ? range : "all";
+  customFrom = params.get("from") || "";
+  customTo = params.get("to") || "";
+  $("fromInput").value = datetimeLocalValue(customFrom);
+  $("toInput").value = datetimeLocalValue(customTo);
+  syncTimeControls();
+}
+function initSessionSelection(){
+  const params = new URLSearchParams(location.search);
+  const requestedSource = params.get("source");
+  if(requestedSource === "tenant" || requestedSource === "local"){
+    source = requestedSource;
+  }
+  selected = params.get("session_id") || "";
+}
+function syncTimeControls(){
+  $("timeSelect").value = timeRange;
+  $("customTime").classList.toggle("open", timeRange === "custom");
+  $("timeSummary").textContent = describeTimeFilter();
+}
+function datetimeLocalValue(value){
+  if(!value) return "";
+  const d = new Date(value);
+  if(isNaN(d)) return "";
+  const pad = (x) => String(x).padStart(2, "0");
+  return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes());
+}
+function toRFC3339FromLocalInput(value){
+  if(!value) return "";
+  const d = new Date(value);
+  return isNaN(d) ? "" : d.toISOString();
+}
+function timeBounds(){
+  const now = new Date();
+  if(timeRange === "all") return {};
+  if(timeRange === "today"){
+    const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    const end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+    return {from: start.toISOString(), to: end.toISOString()};
+  }
+  if(timeRange === "24h") return {from: new Date(now.getTime() - 24*60*60*1000).toISOString(), to: now.toISOString()};
+  if(timeRange === "7d") return {from: new Date(now.getTime() - 7*24*60*60*1000).toISOString(), to: now.toISOString()};
+  if(timeRange === "30d") return {from: new Date(now.getTime() - 30*24*60*60*1000).toISOString(), to: now.toISOString()};
+  return {from: customFrom, to: customTo};
+}
+function describeTimeFilter(){
+  if(timeRange === "all") return "All sessions";
+  if(timeRange === "today") return "Today";
+  if(timeRange === "24h") return "Last 24 hours";
+  if(timeRange === "7d") return "Last 7 days";
+  if(timeRange === "30d") return "Last 30 days";
+  const from = customFrom ? fmtTime(customFrom) : "Any start";
+  const to = customTo ? fmtTime(customTo) : "Any end";
+  return from + " to " + to;
+}
+function syncURL(){
+  const params = new URLSearchParams(location.search);
+  if(timeRange === "all"){
+    params.delete("range");
+    params.delete("from");
+    params.delete("to");
+  } else {
+    params.set("range", timeRange);
+    const bounds = timeBounds();
+    if(bounds.from) params.set("from", bounds.from); else params.delete("from");
+    if(bounds.to) params.set("to", bounds.to); else params.delete("to");
+  }
+  history.replaceState(null, "", location.pathname + "?" + params.toString());
+}
+function sessionListURL(){
+  const params = new URLSearchParams({source: source, limit: "1000"});
+  const bounds = timeBounds();
+  if(bounds.from) params.set("from", bounds.from);
+  if(bounds.to) params.set("to", bounds.to);
+  return "/trace/api/sessions?" + params.toString();
+}
+function applyTimeRange(range){
+  timeRange = range;
+  selected = "";
+  current = null;
+  syncTimeControls();
+  syncURL();
+  if(range !== "custom"){ loadSessions(true); }
+}
+async function loadSessions(autoOpen){
+  $("localBtn").classList.toggle("active", source === "local");
+  $("tenantBtn").classList.toggle("active", source === "tenant");
+  syncTimeControls();
+  setStatus("loading sessions");
+  const res = await authFetch(sessionListURL());
+  if(!res.ok){ $("sessions").innerHTML = '<div class="empty">'+escapeHTML(await res.text())+'</div>'; setStatus("error"); return; }
+  const body = await res.json();
+  const items = body.data || [];
+  $("sessions").innerHTML = items.map(item => sessionItem(item)).join("") || '<div class="empty">No sessions found.</div>';
+  document.querySelectorAll(".session").forEach(el => el.onclick = () => loadDetail(el.dataset.id));
+  markSelectedSession();
+  setStatus("ready");
+  if(autoOpen !== false){
+    const requested = selected && items.some((item) => item.session_id === selected);
+    if(requested){ await loadDetail(selected, true); }
+    else if(!selected && items.length > 0){ await loadDetail(items[0].session_id, true); }
+  }
+}
+function sessionItem(item){
+  const active = selected === item.session_id ? " active" : "";
+  const title = item.title || item.message_hint || item.session_id;
+  const time = fmtTime(item.updated_at || item.started_at);
+  return '<div class="session'+active+'" data-id="'+escapeHTML(item.session_id)+'">'+
+    '<div class="session-title">'+escapeHTML(title)+'</div>'+
+    '<div class="session-id">'+escapeHTML(item.session_id)+'</div>'+
+    '<div class="subtle" style="margin-top:8px;">'+escapeHTML(time || item.status || item.source)+'</div>'+
+  '</div>';
+}
+async function loadDetail(id, keepList){
+  selected = id;
+  markSelectedSession();
+  setStatus("loading trace");
+  if(!keepList){ await loadSessions(false); }
+  const res = await authFetch("/trace/api/sessions/"+encodeURIComponent(id)+"?source="+source+"&limit=300&trace_limit=300&task_limit=500");
+  if(!res.ok){ setStatus("error"); $("eventList").innerHTML = '<div class="empty">'+escapeHTML(await res.text())+'</div>'; closeInspector(); return; }
+  current = await res.json();
+  renderDetail(current);
+  setStatus("ready");
+}
+function markSelectedSession(){
+  document.querySelectorAll(".session").forEach(el => el.classList.toggle("active", el.dataset.id === selected));
+}
+function renderDetail(data){
+  const s = data.summary || {};
+  $("sessionTitle").textContent = data.title || data.session_id || "Untitled session";
+  $("sessionMeta").textContent = data.session_id + " · generated " + fmtTime(data.generated_at);
+  $("sourcePill").textContent = data.source || source;
+  renderSkills(s.skills || []);
+  $("summary").innerHTML = [
+    miniStat("Token Usage", s.token_summary || "No token usage was recorded for this session.", "", true),
+    miniStat("Prompt Cache", s.cache_summary || "No prompt-cache data was reported.", "", true),
+    miniStat("Duration", ms(s.duration_ms), "wall clock"),
+    miniStat("Turns", compactNumber(s.turns), compactNumber(s.messages)+" messages"),
+    miniStat("Tools", compactNumber(s.tool_calls), compactNumber(s.tool_errors)+" errors"),
+    miniStat("Model Time", ms(s.total_model_duration_ms), "provider span total"),
+    miniStat("Tool Time", ms(s.total_tool_duration_ms), "local execution total"),
+    miniStat("Cache Hit", pct(s.cache_hit_ratio), compactNumber(s.cache_read_tokens)+" read tokens")
+  ].join("");
+	  renderConversation(data.events || []);
+	  renderRewind(data.rewind || {});
+	  renderSpans(data.spans || []);
+	  renderEvents(data.events || []);
+  $("detail").innerHTML = '<div class="detail-box"><h3>Session Summary</h3><pre class="json">'+escapeHTML(JSON.stringify(s, null, 2))+'</pre></div>';
+  closeInspector();
+}
+function renderSkills(skills){
+  $("skillChips").innerHTML = skills.length
+    ? skills.map(skill => '<span class="chip skill">Skill · '+escapeHTML(skill)+'</span>').join("")
+    : '<span class="chip">No skill activation recorded</span>';
+}
+function renderConversation(events){
+  const messages = events.filter(event => event.type === "message" && (event.content || "").trim());
+  $("conversationCount").textContent = messages.length;
+  $("conversation").innerHTML = messages.map(message => {
+    const role = (message.role || message.name || "message").toLowerCase();
+    const cls = role === "user" ? "user" : (role === "assistant" ? "assistant" : "system");
+    const title = role === "user" ? "You" : (role === "assistant" ? "Assistant" : role);
+    const meta = fmtTime(message.time);
+    return '<div class="bubble '+cls+'">'+
+      '<div class="bubble-head"><span>'+escapeHTML(title)+'</span><span>'+escapeHTML(meta)+'</span></div>'+
+      '<div class="bubble-content">'+escapeHTML(message.content)+'</div>'+
+    '</div>';
+	  }).join("") || '<div class="empty">No plain conversation messages were recorded. Tool-only sessions still appear in Event Stream.</div>';
+	}
+	function renderRewind(rewind){
+	  const checkpoints = rewind.checkpoints || [];
+	  const rewinds = rewind.rewinds || [];
+	  $("rewindCount").textContent = checkpoints.length + rewinds.length;
+	  if(!checkpoints.length && !rewinds.length){
+	    $("rewind").innerHTML = '<div class="empty">No checkpoints or rewind events were recorded for this session.</div>';
+	    return;
+	  }
+	  const checkpointHTML = checkpoints.map(cp => {
+	    const id = cp.message_id || cp.name || cp.id;
+	    const command = id ? "/rewind " + id : "/rewind";
+	    const title = cp.message ? cp.message : (cp.name || "checkpoint");
+	    return '<article class="rewind-card target">'+
+	      '<div class="rewind-head"><div><div class="rewind-title">'+escapeHTML(title)+'</div><div class="subtle">'+escapeHTML(fmtTime(cp.time))+'</div></div><span class="pill">checkpoint</span></div>'+
+	      '<div class="rewind-meta">'+
+	        '<span class="pill">'+escapeHTML(compactNumber(cp.events_after || 0))+' later events</span>'+
+	        '<span class="pill">'+escapeHTML(compactNumber(cp.file_changes || 0))+' file changes</span>'+
+	        '<span class="pill">index '+escapeHTML(cp.index)+'</span>'+
+	      '</div>'+
+	      '<div class="rewind-command">'+escapeHTML(command)+'</div>'+
+	    '</article>';
+	  }).join("");
+	  const rewindHTML = rewinds.map(item => {
+	    return '<article class="rewind-card executed">'+
+	      '<div class="rewind-head"><div><div class="rewind-title">'+escapeHTML(item.name || "rewind")+'</div><div class="subtle">'+escapeHTML(fmtTime(item.time))+'</div></div><span class="pill">rewind</span></div>'+
+	      '<div class="rewind-message">'+escapeHTML(item.content || "rewind recorded")+'</div>'+
+	      '<div class="rewind-meta"><span class="pill">index '+escapeHTML(item.index)+'</span></div>'+
+	    '</article>';
+	  }).join("");
+	  $("rewind").innerHTML =
+	    '<div class="rewind-grid">'+
+	      '<section class="rewind-section"><div class="panel-title">Rewind targets</div>'+ (checkpointHTML || '<div class="empty">No checkpoint targets.</div>') +'</section>'+
+	      '<section class="rewind-section"><div class="panel-title">Executed rewinds</div>'+ (rewindHTML || '<div class="empty">No rewind has been executed in this session.</div>') +'</section>'+
+	    '</div>';
+	}
+	function renderSpans(spans){
+  $("spanCount").textContent = spans.length;
+  const max = Math.max.apply(null, spans.map(x => x.duration_ms || 0).concat([1]));
+  $("spans").innerHTML = spans.map(span => {
+    const width = Math.max(2, Math.round((span.duration_ms || 1) / max * 100));
+    const label = span.tool_name || span.model || span.skill || span.trace_id || "";
+    return '<div class="span-row">'+
+      '<span class="pill">'+escapeHTML(span.type)+'</span>'+
+      '<div><div style="display:flex;justify-content:space-between;gap:12px;"><strong>'+escapeHTML(span.name)+'</strong><span class="subtle">'+escapeHTML(label)+'</span></div>'+
+      '<div class="barwrap" style="margin-top:8px;"><div class="bar '+escapeHTML(span.type)+'" style="width:'+width+'%;"></div></div></div>'+
+      '<div class="subtle" style="text-align:right;">'+ms(span.duration_ms)+'</div>'+
+    '</div>';
+  }).join("") || '<div class="empty">No spans yet. Local transcript timing appears when paired tool calls and results are present.</div>';
+}
+function renderEvents(events){
+  $("eventCount").textContent = events.length;
+  $("eventSummary").textContent = eventSummaryText(events);
+	  const filtered = filteredEvents(events);
+	  $("eventList").innerHTML = filtered.map(({event, index}) => {
+	    const name = event.name || event.role || event.tool_name || event.type;
+	    const detail = eventDetail(event);
+	    const body = eventBody(event);
+	    const recap = isRecapEvent(event);
+	    const closure = isClosureEvent(event);
+	    const pillClass = (event.is_error ? ' error' : '') + (recap ? ' recap' : '');
+	    return '<div class="event '+(recap ? 'recap' : '')+'" data-index="'+index+'">'+
+	      '<div class="subtle">'+escapeHTML(fmtTime(event.time))+'</div>'+
+	      '<div><span class="pill'+pillClass+'">'+escapeHTML(closure ? "closure" : (recap ? "recap" : event.type))+'</span></div>'+
+	      '<div><div class="event-name">'+escapeHTML(name)+'</div><div class="subtle">'+escapeHTML(detail)+'</div><pre>'+escapeHTML(body.slice(0, 300))+'</pre></div>'+
+	    '</div>';
+	  }).join("") || '<div class="empty">No events match this filter.</div>';
+	  document.querySelectorAll(".event").forEach(el => el.onclick = () => showEvent(events[Number(el.dataset.index)]));
+	}
+	function isRecapEvent(event){
+	  return event.type === "recap_summary" || event.name === "session.recap";
+	}
+	function isClosureEvent(event){
+	  return event.type === "task_contract" || event.type === "completion_gate" || event.type === "action_record" || event.type === "evidence_record" || event.type === "delta_record" || String(event.name || "").startsWith("closure.");
+	}
+	function filteredEvents(events){
+	  return events.map((event, index) => ({event, index})).filter(({event}) => {
+	    if(eventFilter === "closure") return isClosureEvent(event);
+	    if(eventFilter === "recap") return isRecapEvent(event);
+	    if(eventFilter === "errors") return !!event.is_error;
+	    return true;
+	  });
+	}
+	function eventSummaryText(events){
+	  const recapCount = events.filter(isRecapEvent).length;
+	  const closureCount = events.filter(isClosureEvent).length;
+	  const errorCount = events.filter(event => event.is_error).length;
+	  return compactNumber(events.length)+" events · "+compactNumber(closureCount)+" closure · "+compactNumber(recapCount)+" recap · "+compactNumber(errorCount)+" errors";
+	}
+	function eventDetail(event){
+	  if(isClosureEvent(event)){
+	    const props = event.properties || {};
+	    const parts = [props.rule_id, props.severity || event.status, props.Confidence || props.confidence, props.ClosureLevel || props.closure_level].filter(Boolean);
+	    return parts.join(" · ");
+	  }
+	  return event.status || (event.skill ? "Skill " + event.skill : (event.tool_name || event.model || event.trace_id || ""));
+	}
+	function eventBody(event){
+	  if(isClosureEvent(event)){
+	    const props = event.properties || {};
+	    if(Array.isArray(props.missing_evidence) && props.missing_evidence.length){
+	      return "missing evidence: " + props.missing_evidence.join("; ");
+	    }
+	    if(Array.isArray(props.Reasons) && props.Reasons.length){
+	      return "reasons: " + props.Reasons.map(reason => reason.rule_id || reason.RuleID || reason.detail || reason.Detail || "").filter(Boolean).join("; ");
+	    }
+	    return JSON.stringify(props);
+	  }
+	  return event.content || event.output || event.input || "";
+	}
+function setDetailTab(tab){
+  activeDetailTab = tab;
+  document.querySelectorAll(".detail-tab").forEach(el => {
+    const active = el.dataset.tab === tab;
+    el.classList.toggle("active", active);
+    el.setAttribute("aria-selected", active ? "true" : "false");
+  });
+  document.querySelectorAll(".detail-panel").forEach(el => el.classList.toggle("active", el.id === tab));
+}
+function showEvent(event){
+  $("detail").innerHTML =
+    '<div class="detail-box"><h3>'+escapeHTML(event.name || event.type)+'</h3>'+
+    '<p class="subtle">'+escapeHTML(event.type)+' · '+escapeHTML(event.status || (event.is_error ? "error" : "ok"))+'</p></div>'+
+    '<div class="detail-box"><h3>Payload</h3><pre class="json">'+escapeHTML(JSON.stringify(event, null, 2))+'</pre></div>';
+  openInspector();
+}
+function openInspector(){
+  $("inspectorDrawer").classList.add("open");
+  $("inspectorBackdrop").classList.add("open");
+}
+function closeInspector(){
+  $("inspectorDrawer").classList.remove("open");
+  $("inspectorBackdrop").classList.remove("open");
+}
+function miniStat(label, value, hint, wide){
+  return '<div class="mini-stat '+(wide ? 'wide' : '')+'"><span>'+escapeHTML(label)+'</span><b>'+escapeHTML(String(value))+'</b><small>'+escapeHTML(hint || "")+'</small></div>';
+}
+function escapeHTML(value){ return String(value || "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch])); }
+$("localBtn").onclick = () => { source = "local"; selected = ""; current = null; loadSessions(true); };
+$("tenantBtn").onclick = () => { source = "tenant"; selected = ""; current = null; loadSessions(true); };
+$("eventFilter").onchange = () => {
+  eventFilter = $("eventFilter").value;
+  if(current){ renderEvents(current.events || []); }
+};
+$("refreshBtn").onclick = () => { if(selected){ loadDetail(selected); } else { loadSessions(true); } };
+$("timeSelect").onchange = () => applyTimeRange($("timeSelect").value);
+$("applyTimeBtn").onclick = () => {
+  customFrom = toRFC3339FromLocalInput($("fromInput").value);
+  customTo = toRFC3339FromLocalInput($("toInput").value);
+  if($("fromInput").value && !customFrom){ setStatus("invalid from"); return; }
+  if($("toInput").value && !customTo){ setStatus("invalid to"); return; }
+  if(customFrom && customTo && new Date(customFrom) > new Date(customTo)){ setStatus("invalid range"); return; }
+  applyTimeRange("custom");
+  loadSessions(true);
+};
+$("closeInspector").onclick = closeInspector;
+$("inspectorBackdrop").onclick = closeInspector;
+document.querySelectorAll(".detail-tab").forEach(el => el.onclick = () => setDetailTab(el.dataset.tab));
+setDetailTab(activeDetailTab);
+initSessionSelection();
+initTimeFilter();
+loadSessions(true);
+</script>
+</body>
+</html>

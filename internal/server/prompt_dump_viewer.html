@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>niuma Prompt Dump</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111315;
+      --panel: #181b1f;
+      --panel-2: #20242a;
+      --line: #323842;
+      --text: #eef2f5;
+      --muted: #a5adb8;
+      --accent: #69d3b0;
+      --accent-2: #86a7ff;
+      --danger: #ff8f8f;
+      --warn: #ffd37a;
+      --sessions-width: 220px;
+      --requests-width: 300px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+    }
+    header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: #15181c;
+    }
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+    .path {
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    input, select, button {
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font: inherit;
+    }
+    input { min-width: 320px; }
+    button {
+      cursor: pointer;
+      color: #071412;
+      background: var(--accent);
+      border-color: #4fb894;
+      font-weight: 700;
+    }
+    button.secondary {
+      color: var(--text);
+      background: var(--panel-2);
+      border-color: var(--line);
+    }
+    button.ghost {
+      color: var(--muted);
+      background: transparent;
+      border-color: var(--line);
+    }
+    main {
+      height: calc(100vh - 64px);
+      display: grid;
+      grid-template-columns: var(--sessions-width) 6px var(--requests-width) 6px minmax(0, 1fr);
+      min-height: 0;
+    }
+    body.focus-details {
+      --sessions-width: 56px;
+      --requests-width: 260px;
+    }
+    body.full-details main {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    body.full-details .sessions-pane,
+    body.full-details .requests-pane,
+    body.full-details .splitter {
+      display: none;
+    }
+    body.full-details .details-pane {
+      grid-column: 1 / -1;
+    }
+    body.focus-details .sessions-pane .section-head,
+    body.focus-details .sessions-pane .session .row,
+    body.focus-details .sessions-pane .session .subtle {
+      display: none;
+    }
+    body.focus-details .sessions-pane .scroll {
+      padding: 8px 5px;
+    }
+    body.focus-details .sessions-pane .session {
+      padding: 7px 4px;
+      min-height: 34px;
+    }
+    body.focus-details .sessions-pane .session .mono {
+      font-size: 10px;
+      text-align: center;
+      word-break: break-all;
+      max-height: 28px;
+      overflow: hidden;
+    }
+    section {
+      min-width: 0;
+      min-height: 0;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+    }
+    section:last-child { border-right: 0; }
+    .splitter {
+      cursor: col-resize;
+      background: #15181c;
+      border-right: 1px solid var(--line);
+      border-left: 1px solid rgba(255,255,255,.03);
+      min-width: 6px;
+    }
+    .splitter:hover,
+    .splitter.dragging {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    body.resizing {
+      cursor: col-resize;
+      user-select: none;
+    }
+    .section-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .subtle { color: var(--muted); font-size: 12px; }
+    .scroll {
+      overflow: auto;
+      min-height: 0;
+      flex: 1 1 auto;
+      padding: 10px;
+    }
+    .session, .record {
+      width: 100%;
+      text-align: left;
+      color: var(--text);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .session.active, .record.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(105, 211, 176, .35) inset;
+    }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      overflow-wrap: anywhere;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 7px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .pill.good { color: var(--accent); border-color: rgba(105, 211, 176, .45); }
+    .pill.warn { color: var(--warn); border-color: rgba(255, 211, 122, .45); }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+    body.focus-details .metrics,
+    body.full-details .metrics {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+    .metric {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px;
+      min-width: 0;
+    }
+    .metric b {
+      display: block;
+      font-size: 16px;
+      overflow-wrap: anywhere;
+    }
+    .tabs {
+      display: flex;
+      gap: 6px;
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+      flex-wrap: wrap;
+    }
+    .tabs .spacer { flex: 1 1 auto; }
+    .tabs button {
+      background: var(--panel-2);
+      color: var(--text);
+      border-color: var(--line);
+      padding: 6px 9px;
+      font-weight: 600;
+    }
+    .tabs button.active {
+      color: #071412;
+      background: var(--accent);
+      border-color: #4fb894;
+    }
+    .tabs button.action {
+      color: var(--text);
+      background: #252a31;
+      border-color: var(--line);
+    }
+    .copy-state {
+      color: var(--muted);
+      min-width: 54px;
+      align-self: center;
+      font-size: 12px;
+    }
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      line-height: 1.45;
+      font-size: 12px;
+    }
+    .detail-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .empty {
+      color: var(--muted);
+      padding: 20px;
+    }
+    .error { color: var(--danger); }
+    @media (max-width: 1080px) {
+      main { grid-template-columns: 1fr; height: auto; }
+      .splitter { display: none; }
+      section { min-height: 360px; border-right: 0; border-bottom: 1px solid var(--line); }
+      input { min-width: min(320px, 100%); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>niuma Prompt Dump</h1>
+      <div id="path" class="path">loading...</div>
+    </div>
+    <div class="controls">
+      <input id="sessionInput" placeholder="session_id">
+      <select id="limitInput">
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200" selected>200</option>
+        <option value="500">500</option>
+        <option value="1000">1000</option>
+      </select>
+      <button id="loadBtn">Load</button>
+      <button id="clearBtn" class="secondary">Clear</button>
+      <button id="focusBtn" class="secondary">Focus Details</button>
+    </div>
+  </header>
+  <main>
+    <section class="sessions-pane">
+      <div class="section-head">
+        <div class="section-title"><span>Sessions</span><span id="sessionCount" class="pill">0</span></div>
+        <div class="subtle">按 session_id 对齐 TUI 欢迎页和 prompt dump。</div>
+      </div>
+      <div id="sessions" class="scroll"></div>
+    </section>
+    <div class="splitter" data-resize="sessions" title="Drag to resize Sessions"></div>
+    <section class="requests-pane">
+      <div class="section-head">
+        <div class="section-title"><span>Requests</span><span id="recordCount" class="pill">0</span></div>
+        <div id="filterState" class="subtle">未筛选</div>
+      </div>
+      <div id="records" class="scroll"></div>
+    </section>
+    <div class="splitter" data-resize="requests" title="Drag to resize Requests"></div>
+    <section class="details-pane">
+      <div class="section-head">
+        <div class="section-title"><span>Details</span><span id="detailState" class="pill">summary</span></div>
+        <div id="cacheSummary" class="metrics"></div>
+      </div>
+      <div class="tabs">
+        <button data-tab="request" title="Shortcut: 1">Raw Request</button>
+        <button data-tab="system" class="active" title="Shortcut: 2">System</button>
+        <button data-tab="messages" title="Shortcut: 3">Messages</button>
+        <button data-tab="tools" title="Shortcut: 4">Tools</button>
+        <button data-tab="summary" title="Shortcut: 5">Summary</button>
+        <button data-tab="diagnostics" title="Shortcut: 6">Cache Diagnostics</button>
+        <span class="spacer"></span>
+        <button id="copyBtn" class="action">Copy JSON</button>
+        <button id="fullBtn" class="action">Full Details</button>
+        <span id="copyState" class="copy-state"></span>
+      </div>
+      <div id="detail" class="scroll"></div>
+    </section>
+  </main>
+  <script>
+    const layoutKey = "niuma.promptDumpViewer.layout.v1";
+    const legacyLayoutKey = "go-claude.promptDumpViewer.layout.v1";
+    const state = {
+      data: null,
+      selectedSession: "",
+      selectedRecord: null,
+      // Start with metadata-only system sections. Raw request details remain an
+      // explicit local action and are never the default view.
+      tab: "system",
+      focusDetails: false,
+      fullDetails: false,
+      layout: { sessionsWidth: 220, requestsWidth: 300 },
+    };
+    const token = new URLSearchParams(location.search).get("token") || "";
+
+    // token 只走 Authorization 头，不再拼进 query：/prompt-dump/api/records 返回
+    // 完整 prompt 正文，而 ?token= 会进 access log、浏览器历史和 Referer
+    // （AUDIT-P1-21）。页面外壳本身仍从 ?token= 读取初始 token。
+    function authHeaders() {
+      return token ? { Authorization: "Bearer " + token } : {};
+    }
+
+    async function fetchJSON(path) {
+      const res = await fetch(new URL(path, location.origin), { headers: authHeaders() });
+      if (!res.ok) throw new Error(await res.text() || res.statusText);
+      return res.json();
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+    }
+
+    function json(value) {
+      return JSON.stringify(value ?? null, null, 2);
+    }
+
+    function jsString(value) {
+      return JSON.stringify(String(value ?? ""));
+    }
+
+    function pct(value) {
+      if (value === undefined || value === null || value === "") return "-";
+      return `${Math.round(value * 100)}%`;
+    }
+
+    function short(value, size = 12) {
+      value = String(value || "");
+      return value.length > size ? value.slice(0, size) : value;
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function loadLayout() {
+      try {
+        const current = localStorage.getItem(layoutKey);
+        const legacy = localStorage.getItem(legacyLayoutKey);
+        const saved = JSON.parse(current || legacy || "{}");
+        if (!current && legacy) localStorage.setItem(layoutKey, legacy);
+        if (Number.isFinite(saved.sessionsWidth)) state.layout.sessionsWidth = clamp(saved.sessionsWidth, 140, 420);
+        if (Number.isFinite(saved.requestsWidth)) state.layout.requestsWidth = clamp(saved.requestsWidth, 220, 620);
+        state.focusDetails = Boolean(saved.focusDetails);
+        state.fullDetails = Boolean(saved.fullDetails);
+      } catch {
+        // Ignore corrupt localStorage and keep defaults.
+      }
+      applyLayout();
+    }
+
+    function saveLayout() {
+      localStorage.setItem(layoutKey, JSON.stringify({
+        ...state.layout,
+        focusDetails: state.focusDetails,
+        fullDetails: state.fullDetails,
+      }));
+    }
+
+    function applyLayout() {
+      document.body.classList.toggle("focus-details", state.focusDetails);
+      document.body.classList.toggle("full-details", state.fullDetails);
+      document.documentElement.style.setProperty("--sessions-width", `${state.layout.sessionsWidth}px`);
+      document.documentElement.style.setProperty("--requests-width", `${state.layout.requestsWidth}px`);
+      document.getElementById("focusBtn").textContent = state.focusDetails ? "Normal Layout" : "Focus Details";
+      document.getElementById("fullBtn").textContent = state.fullDetails ? "Exit Full" : "Full Details";
+    }
+
+    async function load(includeRequest = false) {
+      const session = document.getElementById("sessionInput").value.trim();
+      const limit = document.getElementById("limitInput").value;
+      const params = new URLSearchParams({ limit });
+      if (session) params.set("session_id", session);
+      if (includeRequest) params.set("include_request", "true");
+      const data = await fetchJSON(`/prompt-dump/api/records?${params.toString()}`);
+      state.data = data;
+      state.selectedSession = session;
+      state.selectedRecord = data.records[0] || null;
+      render();
+      if (!includeRequest && state.selectedRecord) {
+        await loadDetail(state.selectedRecord.line_number);
+      }
+    }
+
+    async function loadDetail(lineNumber) {
+      const session = document.getElementById("sessionInput").value.trim();
+      const limit = document.getElementById("limitInput").value;
+      const params = new URLSearchParams({ limit, include_request: "true" });
+      if (session) params.set("session_id", session);
+      const data = await fetchJSON(`/prompt-dump/api/records?${params.toString()}`);
+      state.data = { ...state.data, records: data.records, sessions: data.sessions };
+      state.selectedRecord = data.records.find(r => r.line_number === lineNumber) || data.records[0] || null;
+      render();
+    }
+
+    function selectSession(sessionID) {
+      document.getElementById("sessionInput").value = sessionID === "(missing)" ? "" : sessionID;
+      load(false).catch(showError);
+    }
+
+    function selectRecord(lineNumber) {
+      const record = (state.data?.records || []).find(r => r.line_number === lineNumber);
+      state.selectedRecord = record || null;
+      render();
+      if (record && !record.request) {
+        loadDetail(lineNumber).catch(showError);
+      }
+    }
+
+    function render() {
+      const data = state.data || {};
+      document.getElementById("path").textContent = data.path ? `${data.path}${data.exists ? "" : " (missing)"}` : "loading...";
+      document.getElementById("sessionCount").textContent = String((data.sessions || []).length);
+      document.getElementById("recordCount").textContent = String((data.records || []).length);
+      document.getElementById("filterState").textContent = data.filter?.session_id ? `session_id=${data.filter.session_id}` : "未筛选";
+      renderSessions(data.sessions || []);
+      renderRecords(data.records || []);
+      renderDetail(state.selectedRecord);
+    }
+
+    function renderSessions(sessions) {
+      const host = document.getElementById("sessions");
+      if (!sessions.length) {
+        host.innerHTML = `<div class="empty">${escapeHTML(state.data?.warning || "No prompt dump sessions.")}</div>`;
+        return;
+      }
+      host.innerHTML = sessions.map(s => {
+        const active = document.getElementById("sessionInput").value.trim() === s.session_id ? " active" : "";
+        const diagnostics = s.cache_diagnostics || {};
+        const providerState = diagnostics.provider_cache_usage_state || "unavailable";
+        const providerClass = providerState === "reported" ? "good" : "warn";
+        const topBlock = (diagnostics.largest_uncached_system_blocks || [])[0];
+        const trace = `<span class="pill ${providerClass}">${escapeHTML(providerState)}</span>`;
+        const uncached = topBlock ? `${topBlock.source || topBlock.kind || "system"} ${topBlock.text_bytes || 0}b${topBlock.stable ? " stable" : ""}` : "-";
+        return `<button class="session${active}" onclick="selectSession(${jsString(s.session_id)})">
+          <div class="mono">${escapeHTML(s.session_id)}</div>
+          <div class="row"><span class="subtle">${s.records} records · max turn ${s.max_turn || 0}</span>${trace}</div>
+          <div class="row"><span class="subtle">models</span><span class="mono">${escapeHTML((s.models || []).join(", "))}</span></div>
+          <div class="row"><span class="subtle">cache_control blocks</span><span>${s.cache_control_blocks || 0}</span></div>
+          <div class="row"><span class="subtle">top uncached</span><span>${escapeHTML(uncached)}</span></div>
+          <div class="row"><span class="subtle">last</span><span class="mono">${escapeHTML(s.last_timestamp || "-")}</span></div>
+        </button>`;
+      }).join("");
+    }
+
+    function renderRecords(records) {
+      const host = document.getElementById("records");
+      if (!records.length) {
+        host.innerHTML = `<div class="empty">No records for current filter.</div>`;
+        return;
+      }
+      host.innerHTML = records.map(r => {
+        const active = state.selectedRecord?.line_number === r.line_number ? " active" : "";
+        const raw = r.request_redaction?.raw_request_included ? "raw" : "summary";
+        const diagnostics = r.cache_diagnostics || {};
+        const topBlock = (diagnostics.largest_uncached_system_blocks || [])[0];
+        const delta = diagnostics.request_signature_delta_from_previous || {};
+        const changes = (delta.changed_fields || []).join(", ") || (delta.initialized ? "stable" : "first");
+        return `<button class="record${active}" onclick="selectRecord(${r.line_number})">
+          <div class="row"><b>line ${r.line_number} · turn ${r.turn}</b><span class="pill ${raw === "raw" ? "good" : "warn"}">${raw}</span></div>
+          <div class="mono subtle">${escapeHTML(r.timestamp || "")}</div>
+          <div class="row"><span>${escapeHTML(r.model || "-")}</span><span>${escapeHTML(r.scope || "main")} / ${escapeHTML(r.prompt_mode || "-")}</span></div>
+          <div class="row"><span class="subtle">system ${r.system_bytes || 0}b · tools ${r.tool_count || 0}</span><span class="subtle">cache blocks ${r.cache_control_blocks || 0}</span></div>
+          <div class="row"><span class="subtle">uncached ${diagnostics.uncached_system_bytes || 0}b</span><span class="subtle">${escapeHTML(topBlock ? `${topBlock.source || topBlock.kind} ${topBlock.text_bytes}b` : "-")}</span></div>
+          <div class="row"><span class="subtle">signature delta</span><span class="subtle">${escapeHTML(changes)}</span></div>
+          <div class="mono subtle">${escapeHTML(short(r.system_hash, 18))}</div>
+        </button>`;
+      }).join("");
+    }
+
+    function renderDetail(record) {
+      const host = document.getElementById("detail");
+      const badge = document.getElementById("detailState");
+      if (!record) {
+        badge.textContent = "empty";
+        document.getElementById("cacheSummary").innerHTML = "";
+        host.innerHTML = `<div class="empty">Select a request.</div>`;
+        return;
+      }
+      badge.textContent = record.request ? "full raw" : "summary only";
+      renderMetrics(record);
+      const value = currentDetailValue();
+      host.innerHTML = `<pre>${escapeHTML(json(value))}</pre>`;
+    }
+
+    function currentDetailValue() {
+      const record = state.selectedRecord;
+      if (!record) return null;
+      if (state.tab === "request") return record.request || { warning: "raw request is not included; set NIUMA_DUMP_PROMPT_FULL=true before starting TUI" };
+      if (state.tab === "system") return record.system_blocks_summary || [];
+      if (state.tab === "messages") return record.request ? record.request.messages : record.messages_summary;
+      if (state.tab === "tools") return record.request ? record.request.tools : record.tools_summary;
+      if (state.tab === "diagnostics") return diagnosticsDetail(record);
+      return record;
+    }
+
+    function diagnosticsDetail(record) {
+      const session = (state.data?.sessions || []).find(s => s.session_id === record.session_id);
+      return {
+        provider_cache_usage_state: session?.cache_diagnostics?.provider_cache_usage_state || "unavailable",
+        provider_cache_hit_ratio_input: session?.cache_diagnostics?.provider_cache_hit_ratio_input || 0,
+        provider_cache_hit_ratio_total_input: session?.cache_diagnostics?.provider_cache_hit_ratio_total_input || 0,
+        session_cache_diagnostics: session?.cache_diagnostics || null,
+        record_cache_diagnostics: record.cache_diagnostics || null,
+        trace_summary: session?.trace_summary || null,
+      };
+    }
+
+    function renderMetrics(record) {
+      const session = (state.data?.sessions || []).find(s => s.session_id === record.session_id);
+      const trace = session?.trace_summary || {};
+      const sessionDiag = session?.cache_diagnostics || {};
+      const recordDiag = record.cache_diagnostics || {};
+      const metrics = [
+        ["Provider cache usage", sessionDiag.provider_cache_usage_state || "unavailable"],
+        ["Cache hit / input", pct(sessionDiag.provider_cache_hit_ratio_input || trace.cache_hit_ratio || 0)],
+        ["Cache hit / total input", pct(sessionDiag.provider_cache_hit_ratio_total_input || 0)],
+        ["Cache read", trace.cache_read_tokens || 0],
+        ["Cache write", trace.cache_creation_tokens || 0],
+        ["Prompt cache blocks", record.cache_control_blocks || 0],
+        ["Cacheable system", recordDiag.cacheable_system_bytes || 0],
+        ["Uncached system", recordDiag.uncached_system_bytes || 0],
+        ["Skills position", recordDiag.skills_catalog_position ?? "-"],
+        ["Skills bytes", recordDiag.skills_catalog_bytes || "-"],
+        ["Skills hash", short(recordDiag.skills_catalog_hash || "", 12) || "-"],
+        ["Prefix before skills", short(recordDiag.prefix_before_skills_hash || "", 12) || "-"],
+        ["Prefix through skills", short(recordDiag.prefix_through_skills_hash || "", 12) || "-"],
+        ["Input tokens", trace.input_tokens || "-"],
+      ];
+      document.getElementById("cacheSummary").innerHTML = metrics.map(([label, value]) => `<div class="metric"><span class="subtle">${label}</span><b>${escapeHTML(value)}</b></div>`).join("");
+    }
+
+    function showError(err) {
+      document.getElementById("detail").innerHTML = `<div class="empty error">${escapeHTML(err.message || err)}</div>`;
+    }
+
+    async function copyCurrentJSON() {
+      const text = json(currentDetailValue());
+      const copyState = document.getElementById("copyState");
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          textarea.remove();
+        }
+        copyState.textContent = "Copied";
+      } catch {
+        copyState.textContent = "Copy failed";
+      }
+      window.setTimeout(() => { copyState.textContent = ""; }, 1600);
+    }
+
+    function setupSplitters() {
+      document.querySelectorAll(".splitter").forEach(splitter => {
+        splitter.addEventListener("pointerdown", event => {
+          if (state.fullDetails || state.focusDetails) return;
+          event.preventDefault();
+          const kind = splitter.dataset.resize;
+          const startX = event.clientX;
+          const startSessions = state.layout.sessionsWidth;
+          const startRequests = state.layout.requestsWidth;
+          splitter.classList.add("dragging");
+          document.body.classList.add("resizing");
+          splitter.setPointerCapture(event.pointerId);
+          const move = moveEvent => {
+            const delta = moveEvent.clientX - startX;
+            if (kind === "sessions") {
+              state.layout.sessionsWidth = clamp(startSessions + delta, 140, 420);
+            } else {
+              state.layout.requestsWidth = clamp(startRequests + delta, 220, 620);
+            }
+            applyLayout();
+          };
+          const up = upEvent => {
+            splitter.releasePointerCapture(upEvent.pointerId);
+            splitter.classList.remove("dragging");
+            document.body.classList.remove("resizing");
+            splitter.removeEventListener("pointermove", move);
+            splitter.removeEventListener("pointerup", up);
+            splitter.removeEventListener("pointercancel", up);
+            saveLayout();
+          };
+          splitter.addEventListener("pointermove", move);
+          splitter.addEventListener("pointerup", up);
+          splitter.addEventListener("pointercancel", up);
+        });
+      });
+    }
+
+    document.getElementById("loadBtn").addEventListener("click", () => load(false).catch(showError));
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      document.getElementById("sessionInput").value = "";
+      load(false).catch(showError);
+    });
+    document.getElementById("focusBtn").addEventListener("click", () => {
+      state.focusDetails = !state.focusDetails;
+      if (state.focusDetails) state.fullDetails = false;
+      applyLayout();
+      saveLayout();
+    });
+    document.getElementById("fullBtn").addEventListener("click", () => {
+      state.fullDetails = !state.fullDetails;
+      if (state.fullDetails) state.focusDetails = false;
+      applyLayout();
+      saveLayout();
+    });
+    document.getElementById("copyBtn").addEventListener("click", () => {
+      copyCurrentJSON();
+    });
+    document.querySelectorAll(".tabs button").forEach(button => {
+      if (!button.dataset.tab) return;
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".tabs button[data-tab]").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        state.tab = button.dataset.tab;
+        renderDetail(state.selectedRecord);
+      });
+    });
+    window.addEventListener("keydown", event => {
+      if (event.target && ["INPUT", "SELECT", "TEXTAREA"].includes(event.target.tagName)) return;
+      const shortcuts = { "1": "request", "2": "system", "3": "messages", "4": "tools", "5": "summary", "6": "diagnostics" };
+      const tab = shortcuts[event.key];
+      if (!tab) return;
+      const button = document.querySelector(`.tabs button[data-tab="${tab}"]`);
+      if (button) button.click();
+    });
+    loadLayout();
+    setupSplitters();
+    load(false).catch(showError);
+  </script>
+</body>
+</html>

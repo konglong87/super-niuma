@@ -1,0 +1,77 @@
+model: model-id
+provider: custom
+effort: high
+
+baseURL: https://model.example.com/v1
+apiKey: replace-me
+
+fallback:
+  enabled: false
+  providers: []
+
+update:
+  enabled: true
+  checkOnStartup: true
+  checkOnly: false
+  autoPull: true
+  skipWhenDirty: true
+  strategy: git-ff-only
+  repoDir: ""
+  customCommand: ""
+  versionSourceURL: ""
+  scheduleInterval: ""
+  timeoutSeconds: 30
+
+multimodal:
+  enabled: true
+  defaultModel: ""
+  models:
+    image: ""
+    video: ""
+    audio: ""
+    file: ""
+
+autoCompact:
+  enabled: false
+  defaultThresholdRatio: 0.75
+  preserveRecentRounds: 6
+  summaryModel: ""
+  maxSummaryTokens: 8000
+  cooldownTurns: 1
+  maxFailures: 3
+  modelContext: {}
+  modelThresholdRatio: {}
+
+maxToolResultBytes: 200000
+
+webSearch:
+  endpoint: https://cn.bing.com/search
+
+permissions:
+  defaultMode: ask
+  allow:
+    - Read
+    - LS
+    - Glob
+    - Grep
+  deny: []
+
+sandbox:
+  enabled: false
+  failIfUnavailable: false
+  allowUnsandboxedCommands: true
+  autoAllowBashIfSandboxed: true
+  enabledPlatforms:
+    - macos
+    - linux
+  filesystem:
+    allowWrite:
+      - .
+    denyWrite:
+      - .claude/skills
+      - .git/hooks
+    denyRead: []
+
+mcpServers: {}
+hooks: {}
+additionalDirectories: []

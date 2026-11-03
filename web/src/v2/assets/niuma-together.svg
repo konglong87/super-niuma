@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="go-together-title">
+  <title id="go-together-title">Go Together</title>
+  <style>
+    .go-g, .go-o, .customer-dot, .ready-dot, .c-shape { vector-effect: non-scaling-stroke; }
+    .go-scene { transform-box: fill-box; transform-origin: center; }
+    .go-g { transform-box: fill-box; transform-origin: center; animation: g-push 3.8s linear infinite; }
+    .go-o { transform-box: fill-box; transform-origin: center; animation: o-roll 3.8s linear infinite; }
+    /* The non-animated fallback is the finished, customer-facing frame. */
+    .go-forms { opacity: 0; animation: go-crossfade 3.8s linear infinite; }
+    .c-forms { opacity: 1; animation: c-crossfade 3.8s linear infinite; }
+    .c-pair { transform-box: fill-box; transform-origin: center; animation: c-facing 3.8s linear infinite; }
+    .c1, .c2 { transform-box: fill-box; transform-origin: center; }
+    .c1 { animation: c1-steps 3.8s linear infinite; }
+    .c2 { animation: c2-steps 3.8s linear infinite; }
+    .customer-dot { opacity: 1; animation: customer-appear 3.8s linear infinite; }
+    .ready-dot { opacity: 0; transform-box: fill-box; transform-origin: center; animation: ready-pulse 3.8s linear infinite; }
+
+    @keyframes g-push {
+      0%, 8% { transform: translate(0, 0) rotate(0); }
+      18% { transform: translate(3px, 1px) rotate(-8deg); }
+      28% { transform: translate(6px, 0) rotate(-2deg); }
+      34% { transform: translate(4px, 0) rotate(2deg); }
+      42%, 92% { transform: translate(0, 0) rotate(0); }
+      100% { transform: translate(0, 0) rotate(0); }
+    }
+    @keyframes o-roll {
+      0%, 12% { transform: translate(0, 0) rotate(0); }
+      32% { transform: translate(12px, 0) rotate(180deg); }
+      38%, 92% { transform: translate(10px, 0) rotate(180deg); }
+      100% { transform: translate(0, 0) rotate(0); }
+    }
+    @keyframes go-crossfade {
+      0%, 44% { opacity: 1; }
+      54%, 92% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes c-crossfade {
+      0%, 44% { opacity: 0; }
+      54%, 92% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    @keyframes c1-steps {
+      0%, 56% { transform: translateY(0); }
+      58% { transform: translateY(-2px); }
+      61% { transform: translateY(0); }
+      64% { transform: translateY(-2px); }
+      67%, 100% { transform: translateY(0); }
+    }
+    /* A 2.1% shift in a 3.8s cycle gives C2 an approximately 80ms phase lag. */
+    @keyframes c2-steps {
+      0%, 58.1% { transform: translateY(0); }
+      60.1% { transform: translateY(-2px); }
+      63.1% { transform: translateY(0); }
+      66.1% { transform: translateY(-2px); }
+      69.1%, 100% { transform: translateY(0); }
+    }
+    @keyframes c-facing {
+      0%, 69% { transform: rotate(-90deg); }
+      77%, 92% { transform: rotate(0deg); }
+      100% { transform: rotate(-90deg); }
+    }
+    @keyframes customer-appear {
+      0%, 70% { opacity: 0; }
+      77%, 92% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    @keyframes ready-pulse {
+      0%, 78% { opacity: 0; transform: scale(0.6); }
+      81% { opacity: 1; transform: scale(1.35); }
+      84% { opacity: 1; transform: scale(1); }
+      87%, 100% { opacity: 0; transform: scale(0.9); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .go-scene, .go-g, .go-o, .go-forms, .c-forms, .c-pair, .c1, .c2, .customer-dot, .ready-dot {
+        animation: none;
+      }
+      .go-forms { opacity: 0; }
+      .c-forms, .customer-dot { opacity: 1; }
+      .c-pair { transform: translate(0, 0) rotate(0deg); }
+      .ready-dot { opacity: 0; }
+    }
+  </style>
+
+  <g class="go-scene">
+    <g class="go-forms">
+      <g class="go-g" fill="none" stroke="#3867dc" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M35 31a18 18 0 1 0 0 34c7 0 12-4 15-9V48H38" />
+      </g>
+      <g class="go-o" fill="none" stroke="#3867dc" stroke-linecap="round">
+        <circle cx="68" cy="48" r="14" stroke-width="8" />
+        <path d="M68 38v5" stroke-width="3" />
+      </g>
+    </g>
+
+    <g class="c-forms">
+      <g class="c-pair" fill="none" stroke="#20242c" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+        <g class="c1">
+          <path class="c-shape" d="M31 30a18 18 0 1 0 0 36" />
+        </g>
+        <g class="c2">
+          <path class="c-shape" d="M65 30a18 18 0 1 1 0 36" />
+        </g>
+      </g>
+      <circle class="customer-dot" cx="48" cy="48" r="3.5" fill="#3867dc" />
+      <circle class="ready-dot" cx="48" cy="48" r="2.5" fill="#168454" />
+    </g>
+  </g>
+</svg>

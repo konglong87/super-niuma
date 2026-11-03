@@ -1,0 +1,3 @@
+unknown command: frobnicate
+
+Run --help to see available commands

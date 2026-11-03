@@ -1,0 +1,82 @@
+.global-settings-panel { color: var(--webui2-text); font-size: 13px; min-width: 0; }
+.global-settings-panel button { align-items: center; background: var(--webui2-surface); border: 1px solid var(--webui2-border); border-radius: 7px; color: inherit; display: inline-flex; font: inherit; gap: 6px; justify-content: center; min-height: 34px; padding: 6px 11px; }
+.global-settings-panel button:hover { background: var(--webui2-surface-muted); }
+.global-settings-panel button:disabled { cursor: not-allowed; opacity: .5; }
+.global-settings-panel svg { flex: 0 0 auto; }
+.global-settings-heading { align-items: center; display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+.global-settings-heading h1 { font-size: 24px; font-weight: 650; line-height: 1.4; margin: 0; }
+.global-settings-badge { background: var(--webui2-surface-muted); border: 1px solid var(--webui2-border); border-radius: 4px; color: var(--webui2-text-muted); font-size: 11px; padding: 3px 7px; }
+.global-settings-form { border: 0; margin: 0; min-width: 0; padding: 0; }
+.global-settings-provider-layout { display: grid; gap: 24px; grid-template-columns: 176px minmax(0, 1fr); }
+.global-settings-provider-list { align-self: start; display: grid; gap: 5px; min-width: 0; }
+.global-settings-provider-list button { background: transparent; border-color: transparent; gap: 10px; justify-content: flex-start; min-width: 0; padding: 11px 9px; text-align: left; width: 100%; }
+.global-settings-provider-list button.selected { background: var(--webui2-surface-muted); border-color: transparent; }
+.global-settings-provider-list button span { display: grid; gap: 4px; min-width: 0; }
+.global-settings-provider-list strong, .global-settings-provider-list small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.global-settings-provider-list strong { font-size: 13px; font-weight: 550; }
+.global-settings-provider-list small { color: var(--webui2-text-muted); font-size: 11px; }
+.global-settings-provider-body { min-width: 0; }
+.global-settings-provider-heading { align-items: center; display: flex; gap: 10px; margin-bottom: 20px; min-width: 0; }
+.global-settings-provider-heading h2 { font-size: 17px; line-height: 1.4; margin: 0; overflow-wrap: anywhere; }
+.global-settings-provider-actions { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+.global-settings-provider-heading .danger { color: var(--webui2-danger); }
+.global-settings-promote { border-color: var(--webui2-accent) !important; color: var(--webui2-accent) !important; }
+.global-settings-grid { display: grid; gap: 17px 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.global-settings-field { display: flex; flex-direction: column; font-size: 12px; gap: 7px; min-width: 0; }
+.global-settings-field.full { grid-column: 1 / -1; }
+.global-settings-field > span:first-child { color: var(--webui2-text-muted); }
+.global-settings-field input, .global-settings-field select { background: var(--webui2-surface); border: 1px solid var(--webui2-border); border-radius: 7px; color: var(--webui2-text); font: inherit; height: 36px; min-width: 0; padding: 7px 10px; width: 100%; }
+.global-settings-field small { color: var(--webui2-text-muted); font-size: 11px; }
+.global-settings-field textarea { background: var(--webui2-surface); border: 1px solid var(--webui2-border); border-radius: 7px; color: var(--webui2-text); font: inherit; line-height: 1.6; min-width: 0; padding: 8px 10px; resize: vertical; width: 100%; }
+.global-settings-input-row { display: flex; gap: 7px; min-width: 0; }
+.global-settings-panel .global-settings-icon { flex: 0 0 34px; height: 34px; min-width: 34px; padding: 0; }
+.global-settings-section { border-top: 1px solid var(--webui2-border); margin-top: 26px; padding-top: 23px; }
+.global-settings-section h3 { font-size: 15px; margin: 0 0 17px; }
+.global-settings-section-description { color: var(--webui2-text-muted); font-size: 12px; line-height: 1.65; margin: -7px 0 17px; max-width: 760px; }
+.global-settings-callout { align-items: flex-start; background: color-mix(in srgb, var(--webui2-accent) 8%, var(--webui2-surface)); border: 1px solid color-mix(in srgb, var(--webui2-accent) 28%, var(--webui2-border)); border-radius: 8px; color: var(--webui2-text); display: flex; gap: 10px; margin-bottom: 18px; padding: 12px 13px; }
+.global-settings-callout > svg { color: var(--webui2-accent); margin-top: 2px; }
+.global-settings-callout strong { display: block; font-size: 12px; font-weight: 650; }
+.global-settings-callout p { color: var(--webui2-text-muted); font-size: 11px; line-height: 1.6; margin: 4px 0 0; }
+.global-settings-callout-computer { background: color-mix(in srgb, var(--webui2-text) 4%, var(--webui2-surface)); border-color: var(--webui2-border); }
+.global-settings-callout-computer > svg { color: var(--webui2-text); }
+.global-settings-computer-routes { display: grid; gap: 8px; }
+.global-settings-computer-route { align-items: center; border: 1px solid var(--webui2-border); border-radius: 8px; cursor: pointer; display: flex; gap: 11px; min-width: 0; padding: 11px 12px; transition: border-color .15s ease, background .15s ease; }
+.global-settings-computer-route:hover { background: var(--webui2-surface-muted); }
+.global-settings-computer-route.checked { background: color-mix(in srgb, var(--webui2-accent) 7%, var(--webui2-surface)); border-color: color-mix(in srgb, var(--webui2-accent) 45%, var(--webui2-border)); }
+.global-settings-computer-route.disabled { cursor: not-allowed; opacity: .55; }
+.global-settings-computer-route input { accent-color: var(--webui2-accent); flex: 0 0 auto; height: 16px; width: 16px; }
+.global-settings-computer-route-copy { display: grid; gap: 3px; min-width: 0; }
+.global-settings-computer-route-copy strong, .global-settings-computer-route-copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.global-settings-computer-route-copy strong { font-size: 12px; font-weight: 600; }
+.global-settings-computer-route-copy small { color: var(--webui2-text-muted); font-size: 11px; }
+.global-settings-computer-route-status { color: var(--webui2-text-muted); font-size: 11px; margin-left: auto; text-align: right; white-space: nowrap; }
+.global-settings-route-empty, .global-settings-section-footnote { color: var(--webui2-text-muted); font-size: 11px; line-height: 1.6; }
+.global-settings-section-footnote { margin: 12px 0 0; }
+.global-settings-advanced { margin-top: 20px; }
+.global-settings-advanced summary { color: var(--webui2-text-muted); cursor: pointer; font-size: 12px; padding: 4px 0; }
+.global-settings-advanced[open] summary { margin-bottom: 14px; }
+.global-settings-connection { align-items: center; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; margin-top: 20px; }
+.global-settings-connection > span { color: var(--webui2-text-muted); flex: 1; font-size: 11px; min-width: 100px; overflow-wrap: anywhere; }
+.global-settings-error, .global-settings-success { align-items: center; display: flex; flex-wrap: wrap; gap: 9px; font-size: 12px; line-height: 1.65; margin: 16px 0; overflow-wrap: anywhere; }
+.global-settings-error { color: var(--webui2-danger); }
+.global-settings-error ul { margin: 0; padding-left: 20px; }
+.global-settings-success { color: var(--webui2-text-muted); }
+.global-settings-json { border: 1px solid var(--webui2-border); border-radius: 7px; overflow: hidden; }
+.global-settings-json-toolbar, .global-settings-json-meta { align-items: center; background: var(--webui2-surface-muted); color: var(--webui2-text-muted); display: flex; font-size: 11px; gap: 8px; justify-content: space-between; padding: 8px 12px; }
+.global-settings-json-toolbar > span { align-items: center; display: flex; gap: 7px; }
+.global-settings-json textarea { background: var(--webui2-surface); border: 0; border-bottom: 1px solid var(--webui2-border); border-radius: 0; color: var(--webui2-text); display: block; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; line-height: 1.8; min-height: 390px; padding: 18px; resize: vertical; tab-size: 2; width: 100%; }
+.global-settings-json textarea:focus-visible { outline: 2px solid var(--webui2-accent); outline-offset: -2px; }
+.global-settings-footer { align-items: center; border-top: 1px solid var(--webui2-border); display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; margin-top: 28px; padding-top: 18px; }
+.global-settings-footer > span { color: var(--webui2-text-muted); font-size: 11px; }
+.global-settings-footer-status { min-width: 0; overflow-wrap: anywhere; }
+.global-settings-footer > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.global-settings-panel button.primary { background: var(--webui2-text); border-color: var(--webui2-text); color: var(--webui2-surface); }
+@media (max-width: 760px) {
+  .global-settings-provider-layout { gap: 20px; grid-template-columns: minmax(0, 1fr); }
+  .global-settings-provider-list { border-bottom: 1px solid var(--webui2-border); display: flex; gap: 5px; overflow-x: auto; padding-bottom: 10px; }
+  .global-settings-provider-list button { flex: 0 0 155px; }
+  .global-settings-grid { gap: 15px; grid-template-columns: minmax(0, 1fr); }
+  .global-settings-heading h1 { font-size: 21px; }
+  .global-settings-json textarea { min-height: 330px; }
+  .global-settings-computer-route-status { font-size: 10px; }
+}

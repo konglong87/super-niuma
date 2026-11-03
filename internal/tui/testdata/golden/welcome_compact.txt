@@ -1,0 +1,6 @@
+niuma dev · ready
+模型     glm-5.1
+工作区    ~/GolandProjects/evaluation
+状态     tools 31 · sandbox off
+命令     /init 初始化项目说明 · /help 查看命令
+  权限 ask  shift+tab 切换权限模式

@@ -1,0 +1,22 @@
+{"type":"turn_start","turn":1}
+{"type":"message_start","turn":1,"message":{"id":"turn_1","type":"message","role":"assistant","model":"test-model","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":0,"output_tokens":0}}}
+{"type":"message_delta","turn":1,"usage":{},"delta":{"type":"message_delta","stop_reason":"tool_use"}}
+{"type":"message_stop","turn":1,"stop_reason":"tool_use"}
+{"type":"content_block_start","name":"Task","id":"toolu_task","index":0,"input":{"prompt":"work"},"content_block":{"type":"tool_use","name":"Task","id":"toolu_task","input":{"prompt":"work"}}}
+{"type":"input_json_delta","id":"toolu_task","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"prompt\":\"work\"}"}}
+{"type":"content_block_stop","index":0}
+{"type":"tool_call","name":"Task","id":"toolu_task","input":{"prompt":"work"}}
+{"type":"nested_agent_progress","event":"started","task_id":88,"payload":{"agent_name":"debugger","model":"test-model"}}
+{"type":"nested_agent_progress","event":"failed","task_id":88,"payload":{"turn":1,"error":"sub-agent failed"}}
+{"type":"nested_agent_progress","event":"cancelled","task_id":88,"payload":{"source":"retry-budget"}}
+{"type":"tool_result","name":"Task","id":"toolu_task","output":"sub-agent failed","is_error":true}
+{"type":"nested_agent_progress","name":"Task","id":"toolu_task","output":"sub-agent failed","is_error":true,"event":"completed"}
+{"type":"turn_start","turn":2}
+{"type":"message_start","turn":2,"message":{"id":"turn_2","type":"message","role":"assistant","model":"test-model","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":0,"output_tokens":0}}}
+{"type":"content_block_start","name":"text","index":0,"content_block":{"type":"text"}}
+{"type":"text_delta","text":"done","delta":{"type":"text_delta","text":"done"}}
+{"type":"content_block_stop","index":0}
+{"type":"message_delta","turn":2,"usage":{},"delta":{"type":"message_delta","stop_reason":"end_turn"}}
+{"type":"message_stop","turn":2,"stop_reason":"end_turn"}
+{"duration_api_ms":0,"duration_ms":0,"is_error":false,"modelUsage":{"test-model":{}},"num_turns":2,"permission_denials":[],"result":"done","session_id":"local","stop_reason":"end_turn","subtype":"success","total_cost_usd":0,"type":"result","usage":{},"uuid":"result"}
+{"type":"done"}

@@ -1,0 +1,47 @@
+{
+  "name": "niuma-webui",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -p tsconfig.app.json && vite build",
+    "build:bundle": "vite build",
+    "typecheck": "tsc -b --force",
+    "lint": "biome lint src e2e scripts vite.config.ts playwright.config.ts",
+    "lint:fix": "biome lint --write --only=correctness/noUnusedImports --only=correctness/noUnusedVariables --only=correctness/noUnusedFunctionParameters src e2e scripts vite.config.ts playwright.config.ts",
+    "generate:api-types": "node scripts/generate-openapi-types.mjs",
+    "test": "vitest run --maxWorkers=1",
+    "test:e2e": "playwright test",
+    "test:e2e:live": "NIUMA_WEBUI_LIVE_E2E=1 playwright test --project chromium-live",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.101.0",
+    "@types/three": "^0.186.0",
+    "lucide-react": "^1.18.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "three": "^0.186.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.5",
+    "@playwright/test": "^1.61.0",
+    "@types/node": "^25.0.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "jsdom": "^29.1.1",
+    "openapi-typescript": "^7.13.0",
+    "swagger2openapi": "^7.0.8",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "vitest": "^4.1.11"
+  },
+  "overrides": {
+    "brace-expansion": "^2.1.7"
+  }
+}

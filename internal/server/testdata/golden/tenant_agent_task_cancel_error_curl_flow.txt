@@ -1,0 +1,21 @@
+$ curl -s -X POST /tenant/agent-tasks/42/cancel
+HTTP OK
+{
+  "cancelled": true,
+  "id": 42,
+  "in_process": false
+}
+
+$ curl -s -X POST /tenant/agent-tasks/41/cancel
+HTTP OK
+{
+  "cancelled": true,
+  "id": 41,
+  "in_process": true
+}
+
+$ curl -s -X GET /tenant/agent-tasks/not-a-number/events?limit=8
+HTTP Bad Request
+{
+  "error": "agent task id is required"
+}

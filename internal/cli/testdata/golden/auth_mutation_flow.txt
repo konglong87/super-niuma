@@ -1,0 +1,23 @@
+$ auth login --api-key golden-key
+Logged in with API key
+
+$ auth status
+{
+  "apiProvider": "",
+  "authMethod": "api_key",
+  "hasAPIKey": true,
+  "hasAuthToken": false,
+  "loggedIn": true
+}
+
+$ auth logout
+Logged out
+
+$ auth status
+{
+  "apiProvider": "",
+  "authMethod": "none",
+  "hasAPIKey": false,
+  "hasAuthToken": false,
+  "loggedIn": false
+}

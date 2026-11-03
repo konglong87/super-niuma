@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Usage questions and ideas
+    url: https://github.com/konglong87/super-niuma/discussions
+    about: Ask questions, share workflows, and discuss roadmap ideas in Discussions.
+  - name: Security vulnerability
+    url: https://github.com/konglong87/super-niuma/security/advisories/new
+    about: Report sensitive security issues privately. Do not post exploit details publicly.

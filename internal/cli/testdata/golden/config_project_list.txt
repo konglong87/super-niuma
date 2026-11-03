@@ -1,0 +1,18 @@
+{
+  "model": "project-model",
+  "permissions": {
+    "allow": [
+      "Read"
+    ],
+    "defaultMode": "ask"
+  },
+  "mcpServers": {
+    "demo": {
+      "type": "stdio",
+      "command": "echo",
+      "args": [
+        "hello"
+      ]
+    }
+  }
+}

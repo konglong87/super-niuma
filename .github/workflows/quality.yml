@@ -1,0 +1,105 @@
+name: Quality and maintenance
+
+on:
+  # These checks are intentionally decoupled from every commit. They are
+  # useful maintenance signals, but generated-file drift, advisory database
+  # updates, and full offline acceptance should not make the release-relevant
+  # push gate look broken.
+  schedule:
+    - cron: "15 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GO_VERSION: '1.26.10'
+
+jobs:
+  topology:
+    name: runtime topology 最新性
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - name: 校验 registry、代码锚点与图件完整性
+        run: go run ./scripts/runtime-topology-check
+
+  swagger:
+    name: swagger 已同步
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: web/.nvmrc
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: go mod download
+      - run: go install github.com/swaggo/swag/cmd/swag@v1.16.4
+      - name: 重新生成 docs/swagger.json
+        run: swag init -g cmd/niuma/main.go --parseInternal --parseDependency
+      - name: swagger 生成物与注解一致
+        run: |
+          if ! git diff --exit-code -- docs/swagger.json docs/swagger.yaml docs/docs.go; then
+            echo "::error::docs/ 下的 swagger 生成物与 internal/server 的注解不一致。"
+            echo "::error::本地执行：swag init -g cmd/niuma/main.go --parseInternal --parseDependency"
+            exit 1
+          fi
+      - run: npm ci --legacy-peer-deps
+        working-directory: web
+      - name: 重新生成 web/src/lib/generated/api-types.ts
+        run: npm run generate:api-types
+        working-directory: web
+      - name: api-types 与 swagger.json 一致
+        run: |
+          if ! git diff --exit-code -- web/src/lib/generated/api-types.ts; then
+            echo "::error::web/src/lib/generated/api-types.ts 与 docs/swagger.json 不一致。"
+            echo "::error::本地执行：npm --prefix web run generate:api-types"
+            exit 1
+          fi
+
+  scripts:
+    name: scripts/offline-acceptance (static)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: web/.nvmrc
+      - run: node --test scripts/test-desktop-ci-prerequisites.mjs
+      - run: node scripts/test-release-assets.mjs
+      - run: scripts/offline-acceptance.sh --static-only
+
+  govulncheck:
+    name: govulncheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - run: go install golang.org/x/vuln/cmd/govulncheck@latest
+      - run: govulncheck ./...

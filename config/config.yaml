@@ -1,0 +1,76 @@
+# Model/provider routing inherits the user's global settings. See config/provider.example.yaml.
+effort: high
+
+fallback:
+  enabled: false
+  providers: []
+
+update:
+  enabled: true
+  checkOnStartup: true
+  checkOnly: false
+  autoPull: true
+  skipWhenDirty: true
+  strategy: git-ff-only
+  repoDir: ""
+  customCommand: ""
+  versionSourceURL: ""
+  scheduleInterval: ""
+  timeoutSeconds: 30
+
+multimodal:
+  enabled: true
+  defaultModel: ""
+  models:
+    image: ""
+    video: ""
+    audio: ""
+    file: ""
+
+autoCompact:
+  enabled: true
+  defaultThresholdRatio: 0.75
+  preserveRecentRounds: 6
+  summaryModel: ""
+  maxSummaryTokens: 8000
+  cooldownTurns: 1
+  maxFailures: 3
+  modelContext: {}
+  modelThresholdRatio: {}
+
+recap:
+  awayDelaySeconds: 120
+
+maxToolResultBytes: 200000
+
+webSearch:
+  endpoint: https://cn.bing.com/search
+
+permissions:
+  defaultMode: ask
+  allow:
+    - Read
+    - LS
+    - Glob
+    - Grep
+  deny: []
+
+sandbox:
+  enabled: false
+  failIfUnavailable: false
+  allowUnsandboxedCommands: true
+  autoAllowBashIfSandboxed: true
+  enabledPlatforms:
+    - macos
+    - linux
+  filesystem:
+    allowWrite:
+      - .
+    denyWrite:
+      - .claude/skills
+      - .git/hooks
+    denyRead: []
+
+mcpServers: {}
+hooks: {}
+additionalDirectories: []

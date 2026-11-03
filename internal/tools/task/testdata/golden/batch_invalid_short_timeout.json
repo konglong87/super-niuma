@@ -1,0 +1,31 @@
+{
+  "summary": {
+    "total": 2,
+    "completed": 0,
+    "failed": 2,
+    "retries": 0,
+    "max_concurrency": 2,
+    "schedule_strategy": "fifo",
+    "started_at": "<timestamp>",
+    "finished_at": "<timestamp>",
+    "duration_ms": 0
+  },
+  "tasks": [
+    {
+      "index": 0,
+      "description": "count breathe files",
+      "status": "invalid_timeout",
+      "attempts": 0,
+      "is_error": true,
+      "error": "multi-task sub-agent batch timeout_ms=15000 is too small; use >=30000 or omit timeout_ms. For repo-wide/deep-audit work, omit timeout_ms or use a longer lifecycle profile; for simple file search/count tasks, call local Glob/Grep/LS directly from the parent agent."
+    },
+    {
+      "index": 1,
+      "description": "count mobile files",
+      "status": "invalid_timeout",
+      "attempts": 0,
+      "is_error": true,
+      "error": "multi-task sub-agent batch timeout_ms=15000 is too small; use >=30000 or omit timeout_ms. For repo-wide/deep-audit work, omit timeout_ms or use a longer lifecycle profile; for simple file search/count tasks, call local Glob/Grep/LS directly from the parent agent."
+    }
+  ]
+}

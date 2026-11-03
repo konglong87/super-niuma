@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Runtime Message Flow and Closure Architecture</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Runtime Message Flow and Closure Architecture</h1>
+</header>
+<h1 id="runtime-message-flow-and-closure-architecture">Runtime Message
+Flow and Closure Architecture</h1>
+<p>更新时间：2026-07-10</p>
+<p>本文说明 Go Claude 在用户发送一条消息后，runtime
+如何组装上下文、调用模型、执行工具、处理工具失败、判断是否允许最终回复，以及
+subagent / multi-agent
+在什么时机触发。本文以当前实现为准，重点代码路径：</p>
+<ul>
+<li><code>internal/cli/cli.go</code>:
+<code>newQuerySession</code>、<code>coreRuntimeTools</code></li>
+<li><code>internal/query/query.go</code>:
+<code>Session.run</code>、<code>runTool</code>、closure event 记录</li>
+<li><code>internal/query/closure_gate.go</code>:
+<code>TaskContract</code>、<code>preToolClosureGate</code>、<code>completionGate</code></li>
+<li><code>internal/query/shell_intent.go</code>: Bash / Git / external
+action 分类</li>
+<li><code>internal/tools/task/task.go</code>: 同步 Task subagent</li>
+<li><code>internal/tools/agent/agent.go</code>:
+<code>AgentCreate</code>、<code>AgentGet</code>、<code>AgentMessage</code></li>
+<li><code>internal/agentruntime/runtime.go</code>: subagent
+独立运行时</li>
+</ul>
+<h2 id="术语表">术语表</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>术语</th>
+<th>含义</th>
+<th>代码/观察位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>runtime</td>
+<td>Go Claude
+执行一轮用户请求的本地控制层，负责上下文、工具、权限、闭环和输出，不等同于模型本身。</td>
+<td><code>internal/query/query.go</code></td>
+</tr>
+<tr>
+<td>entry</td>
+<td>用户请求进入系统的入口，当前主要是 TUI、CLI print/headless、API
+server。</td>
+<td><code>internal/cli/cli.go</code>、<code>internal/server</code></td>
+</tr>
+<tr>
+<td><code>query.Session</code></td>
+<td>主对话运行时对象；同一条消息最终由它执行模型请求、工具循环和 final
+gate。</td>
+<td><code>query.New</code>、<code>Session.run</code></td>
+</tr>
+<tr>
+<td>turn</td>
+<td>一次模型请求和响应。模型如果返回 tool_use，工具结果会进入下一
+turn；没有 tool_use 时可能进入 final gate。</td>
+<td><code>for turn := 1; turn &lt;= MaxTurns</code></td>
+</tr>
+<tr>
+<td><code>MaxTurns</code></td>
+<td>单次用户请求允许的最大模型 turn 数。gate 阻断 final 后会消耗后续
+turn。</td>
+<td><code>query.Options.MaxTurns</code></td>
+</tr>
+<tr>
+<td>system blocks</td>
+<td>发给模型的系统提示块，包括基础身份、工作流规则、memory、skills、环境、tenant
+runtime 等。</td>
+<td><code>effectiveSystemBlocks</code></td>
+</tr>
+<tr>
+<td>messages</td>
+<td>发给模型的对话消息数组，包含历史、用户 prompt、工具调用结果和
+runtime reminder。</td>
+<td><code>MessagesRequest.Messages</code></td>
+</tr>
+<tr>
+<td>tool registry</td>
+<td>当前 session 可用工具集合；core tools、MCP tools、Task/Agent tools
+都注册到这里。</td>
+<td><code>tools.Registry</code></td>
+</tr>
+<tr>
+<td>guarded tool</td>
+<td>被权限策略包裹后的工具。模型即使发起 tool_use，也要过 permission
+policy。</td>
+<td><code>tools.GuardAll</code>、<code>tools.Guard</code></td>
+</tr>
+<tr>
+<td>hook</td>
+<td>用户配置的工具前后拦截或通知脚本。<code>PreToolUse</code> 可以 deny
+或 rewrite input。</td>
+<td><code>internal/hooks</code></td>
+</tr>
+<tr>
+<td>permission policy</td>
+<td>由配置生成的工具权限边界，决定工具是否允许执行、是否需要 ask。</td>
+<td><code>permissions.FromSettings</code></td>
+</tr>
+<tr>
+<td>tool_use</td>
+<td>模型请求调用工具的结构化输出。runtime 收到后执行工具并把结果作为
+<code>tool_result</code> 回传。</td>
+<td><code>collectToolUses</code></td>
+</tr>
+<tr>
+<td>tool_result</td>
+<td>工具执行结果。成功和失败都会回传给模型，失败时
+<code>IsError=true</code>。</td>
+<td><code>anthropic.ContentBlock{Type:"tool_result"}</code></td>
+</tr>
+<tr>
+<td><code>ToolTrace</code></td>
+<td>runtime 对一次工具调用的结构化记录，包含
+name/input/output/is_error/file_changes。</td>
+<td><code>query.ToolTrace</code></td>
+</tr>
+<tr>
+<td><code>FileChanges</code></td>
+<td>工具执行导致的文件变化，供 post-action delta gate
+判断是否需要验证。</td>
+<td><code>tools.FileChange</code></td>
+</tr>
+<tr>
+<td><code>TaskContract</code></td>
+<td>runtime 从用户 prompt 推导出的任务闭环合同，包含 closure
+level、必读路径、共享状态操作。</td>
+<td><code>buildTaskContract</code></td>
+</tr>
+<tr>
+<td>closure level</td>
+<td>任务闭环强度等级：L0 简单回答到 L5 共享状态变更。</td>
+<td><code>closureLevel*</code></td>
+</tr>
+<tr>
+<td>evidence</td>
+<td>支撑 final claim 的证据，例如 Read/Grep/LS 结果、测试命令成功、git
+状态验证。</td>
+<td><code>evidence_record</code></td>
+</tr>
+<tr>
+<td>delta</td>
+<td>本轮产生的变更或潜在副作用，例如文件写入、Bash
+写操作、commit/push/tag。</td>
+<td><code>delta_record</code></td>
+</tr>
+<tr>
+<td>candidate final</td>
+<td>模型给出的“看起来要最终回复”的文本。它还没有通过
+<code>CompletionGate</code>，不能直接视为已接受输出。</td>
+<td><code>turnResponse</code></td>
+</tr>
+<tr>
+<td>accepted final</td>
+<td>通过 gate 后真正输出给用户并写入 accepted assistant transcript
+的最终回复。</td>
+<td><code>recordAssistant</code></td>
+</tr>
+<tr>
+<td><code>CompletionGate</code></td>
+<td>final 前硬闸门，检查 read scope、post-action delta、final claim
+是否有证据。</td>
+<td><code>completionGate</code></td>
+</tr>
+<tr>
+<td><code>preToolClosureGate</code></td>
+<td>工具执行前硬闸门，当前主要保护 Bash 的 commit/push/tag/external
+write 等高风险动作。</td>
+<td><code>preToolClosureGate</code></td>
+</tr>
+<tr>
+<td><code>block_continue</code></td>
+<td>final 不被接受，但允许模型继续下一 turn 补证据或修正表述。</td>
+<td><code>gateSeverityBlockContinue</code></td>
+</tr>
+<tr>
+<td><code>block_tool</code></td>
+<td>工具不执行，runtime 直接返回 failed
+tool_result，要求先补前置证据或授权。</td>
+<td><code>gateSeverityBlockTool</code></td>
+</tr>
+<tr>
+<td>synthetic tool_result</td>
+<td>runtime
+生成的失败工具结果，不是工具真实执行结果；用于告诉模型“这次工具调用被
+gate 拦截”。</td>
+<td><code>blockedToolTrace</code></td>
+</tr>
+<tr>
+<td><code>&lt;system-reminder&gt;</code></td>
+<td>runtime 插入给模型的系统提醒文本，用来说明 gate
+为什么阻断以及下一步要补什么。</td>
+<td>gate reminder 文本</td>
+</tr>
+<tr>
+<td>readback verification</td>
+<td>对已执行动作做只读回查，例如 commit 后看
+<code>git log -1</code>，push 后看 upstream/remote 状态。</td>
+<td><code>post*VerificationObserved</code></td>
+</tr>
+<tr>
+<td>checkpoint</td>
+<td>session transcript 中的回滚锚点。每条用户消息前会自动写入
+<code>auto-&lt;messageID&gt;</code>
+checkpoint，用户也可以手动创建。</td>
+<td><code>Recorder.Checkpoint</code>、<code>Store.Checkpoint</code></td>
+</tr>
+<tr>
+<td>rewind</td>
+<td>按 checkpoint 或 message id 回退会话/文件状态。可同时回退 transcript
+和文件，也可只回退文件或只回退 conversation。</td>
+<td><code>Store.Rewind</code>、<code>rewindFiles</code>、<code>/rewind</code></td>
+</tr>
+<tr>
+<td>fork</td>
+<td>从 checkpoint 截断复制一份新
+session，用于从历史锚点开新分支继续。</td>
+<td><code>Store.Fork</code>、<code>session fork</code></td>
+</tr>
+<tr>
+<td>subagent</td>
+<td>独立的子 agent conversation。它不自动继承父线程全文，必须由父 agent
+给完整 brief。</td>
+<td><code>internal/agentruntime</code></td>
+</tr>
+<tr>
+<td><code>capability_loop</code></td>
+<td>subagent 或长工具结果给父 agent 的结构化决策上下文，包含
+evidence、unknowns、verification、risks、next_action。</td>
+<td><code>agentruntime.CapabilityLoop</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="总体架构">总体架构</h2>
+<p>TUI、CLI print/headless、API server 最终都会进入同一个
+<code>query.Session</code> 主循环；差异主要在入口、输出形态、权限审批 UI
+和持久化方式。</p>
+<pre class="mermaid"><code>flowchart TD
+  U[&quot;User message&quot;] --&gt; E[&quot;Entry: TUI / CLI / API&quot;]
+  E --&gt; NQS[&quot;newQuerySession&quot;]
+  NQS --&gt; CFG[&quot;config.LoadForCWD + runtime options&quot;]
+  NQS --&gt; CLIENT[&quot;anthropic.NewClient(provider/base_url/model)&quot;]
+  NQS --&gt; POLICY[&quot;permissions.FromSettings&quot;]
+  NQS --&gt; HOOKS[&quot;hooks.New&quot;]
+  NQS --&gt; CORE[&quot;coreRuntimeTools&quot;]
+  NQS --&gt; MCP[&quot;MCP tools&quot;]
+  CORE --&gt; REG[&quot;tools.Registry&quot;]
+  MCP --&gt; REG
+  POLICY --&gt; GUARDED[&quot;tools.GuardAll / tools.Guard&quot;]
+  REG --&gt; GUARDED
+  GUARDED --&gt; Q[&quot;query.Session&quot;]
+  Q --&gt; MODEL[&quot;Model StreamMessages&quot;]
+  MODEL --&gt; LOOP[&quot;text / thinking / tool_use&quot;]
+  LOOP --&gt; TOOL[&quot;runTool&quot;]
+  TOOL --&gt; REG
+  TOOL --&gt; MODEL
+  LOOP --&gt; GATE[&quot;CompletionGate&quot;]
+  GATE --&gt; OUT[&quot;Final response&quot;]</code></pre>
+<p><code>coreRuntimeTools</code>
+默认注册文件、搜索、Bash、Todo、Plan、Skill、MCP
+resources、TaskOutput、AskUserQuestion、WebFetch/WebSearch、Worktree、WebBrowser、agent
+管理等工具。<code>Task</code>、<code>AgentCreate</code>、<code>AgentMessage</code>
+在 <code>newQuerySession</code> 里额外注册，并使用同一个 registry /
+permission policy。</p>
+<h3 id="多路闭环主线">多路闭环主线</h3>
+<p>运行时不是一条线性“模型回答”流程，而是同一条用户消息同时进入几条控制链路。动态太阳系架构图见
+<code>docs/architecture/go_claude_multi_loop_solar_runtime.html</code>。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>链路</th>
+<th>准确表述</th>
+<th>关键说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>交付闭环</td>
+<td><code>request -&gt; TaskContract -&gt; plan/do -&gt; ToolTrace evidence -&gt; gate -&gt; optional commit/readback -&gt; done</code></td>
+<td><code>commit/push/tag/deploy</code>
+不是所有任务的必经步骤；只有用户请求共享状态动作，或 final 声称已
+committed/pushed/tagged/deployed 时，才进入可选提交与 readback
+硬约束链路。</td>
+</tr>
+<tr>
+<td>Level Gate</td>
+<td><code>read/edit/Bash -&gt; closure level -&gt; completionGate/preToolClosureGate -&gt; block_continue/block_tool/pass</code></td>
+<td>Level 是任务风险标签；硬阻断由 Go gate 函数根据
+<code>TaskContract</code>、ToolTrace 和 Bash intent 判断。</td>
+</tr>
+<tr>
+<td>Query Loop</td>
+<td><code>LLM tool_use -&gt; runTool/preToolGate -&gt; tool_result -&gt; next turn -&gt; final gate</code></td>
+<td>只要模型返回 <code>tool_use</code>，runtime 就执行或阻断工具并把
+<code>tool_result</code> 回灌给模型；没有 tool_use 时才尝试 final。</td>
+</tr>
+<tr>
+<td>Trace</td>
+<td><code>closure event -&gt; transcript metadata -&gt; trace UI -&gt; resume sanitizer skip</code></td>
+<td>closure event 只用于可观测和回归排查；恢复上下文时会被 sanitizer
+跳过，不作为模型语义上下文恢复。</td>
+</tr>
+<tr>
+<td>Checkpoint Loop</td>
+<td><code>auto checkpoint -&gt; user message -&gt; file_change snapshots -&gt; rewind/fork -&gt; restore/copy -&gt; resume sanitizer skip metadata</code></td>
+<td>checkpoint/rewind/fork 是 session
+级闭环：保证每轮用户消息前有可回退锚点，必要时可以恢复文件或分叉会话；这些
+metadata 不作为模型上下文恢复。</td>
+</tr>
+</tbody>
+</table>
+<p>因此，普通读文件、排查或本地改代码任务可以在 evidence 和 final gate
+通过后闭环；只有 L5/shared-state 任务，或 final
+文本自己声称已经提交、推送、打
+tag、部署、发布，才需要对应的共享状态执行证据和 readback
+verification。</p>
+<h2 id="单条消息-runtime-流程">单条消息 Runtime 流程</h2>
+<pre class="mermaid"><code>sequenceDiagram
+  participant U as User
+  participant Q as query.Session.run
+  participant R as Recorder
+  participant M as Model
+  participant T as Tool Registry
+  participant G as Closure Gate
+
+  U-&gt;&gt;Q: prompt
+  Q-&gt;&gt;Q: run UserPromptSubmit hook
+  Q-&gt;&gt;Q: assembleContextMessages(system/memory/skills/git/env)
+  Q-&gt;&gt;Q: buildTaskContract(prompt)
+  Q-&gt;&gt;R: auto checkpoint + user message + task_contract
+  loop turn &lt;= MaxTurns
+    Q-&gt;&gt;Q: add runtime status / skill context / prompt cache
+    Q-&gt;&gt;M: StreamMessages(system, messages, tools)
+    M--&gt;&gt;Q: text/thinking/tool_use or final text
+    alt model returns tool_use
+      Q-&gt;&gt;G: preToolClosureGate(tool, input)
+      alt blocked by hard pre-tool gate
+        G--&gt;&gt;Q: synthetic tool_result IsError=true
+      else allowed
+        Q-&gt;&gt;T: runTool(pre-hook, permission, tool.Run)
+        T--&gt;&gt;Q: tool_result + FileChanges
+      end
+      Q-&gt;&gt;R: action_record/evidence_record/delta_record/tool_result
+      Q-&gt;&gt;M: continue with tool_result
+    else no tool_use
+      Q-&gt;&gt;G: completionVerificationNudge + completionGate(finalText)
+      alt missing required evidence and turns remain
+        G--&gt;&gt;Q: block_continue reminder as user message
+        Q-&gt;&gt;M: continue next turn
+      else accepted
+        Q-&gt;&gt;R: accepted assistant message
+        Q--&gt;&gt;U: final response
+      end
+    end
+  end</code></pre>
+<p>关键点：</p>
+<ul>
+<li>final 文本在没有工具调用的 turn 先进入
+<code>completionGate</code>；通过后才 replay 给 UI/stdout，并写入
+accepted assistant transcript。</li>
+<li>如果 final 被 gate 拦截，runtime 会移除本轮 candidate final，插入
+<code>&lt;system-reminder&gt;</code> 继续下一轮；被拦截的 premature
+final 不会作为已接受回复写入 transcript。</li>
+<li>工具调用轮的 assistant
+文本会先输出，因为这类文本是工具调用前的过程说明；真正最终结论仍要等无工具调用的
+final turn 通过 gate。</li>
+</ul>
+<h2 id="工具调用与错误处理">工具调用与错误处理</h2>
+<pre class="mermaid"><code>flowchart TD
+  TU[&quot;model tool_use&quot;] --&gt; PRE[&quot;preToolClosureGate&quot;]
+  PRE --&gt;|block_tool| SYN[&quot;blockedToolTrace(IsError=true)&quot;]
+  PRE --&gt;|allow| LOOKUP[&quot;registry.Get(tool_name)&quot;]
+  LOOKUP --&gt;|unknown| ERR1[&quot;ToolTrace IsError: unknown tool&quot;]
+  LOOKUP --&gt;|found| HOOK[&quot;PreToolUse hook&quot;]
+  HOOK --&gt;|hook error / deny| ERR2[&quot;ToolTrace IsError: hook reason&quot;]
+  HOOK --&gt;|updated input| RUN[&quot;tool.Run(ctx,input,tools.Context)&quot;]
+  HOOK --&gt;|allow| RUN
+  RUN --&gt; RES[&quot;tools.Result&quot;]
+  RES --&gt; TRACE[&quot;ToolTrace output/is_error/file_changes/context_messages&quot;]
+  SYN --&gt; TRACE
+  ERR1 --&gt; TRACE
+  ERR2 --&gt; TRACE
+  TRACE --&gt; NEXT[&quot;append tool_result and continue model loop&quot;]</code></pre>
+<p>工具错误不会让 runtime 自动伪造成功结果。错误会以
+<code>tool_result</code> 的 <code>IsError=true</code>
+回传给模型，模型必须选择修正参数、换工具、解释失败边界，或在需要时请求用户确认。典型错误来源：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>错误来源</th>
+<th>runtime 行为</th>
+<th>模型后续应做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>unknown tool</td>
+<td>返回 <code>unknown tool: &lt;name&gt;</code></td>
+<td>改用 registry 中存在的工具</td>
+</tr>
+<tr>
+<td>PreToolUse hook error/deny</td>
+<td>返回 hook 错误或拒绝原因</td>
+<td>根据 hook 反馈调整，不重复盲试</td>
+</tr>
+<tr>
+<td>permission deny</td>
+<td>guarded tool 返回拒绝结果并记录 audit</td>
+<td>说明权限边界或请求授权</td>
+</tr>
+<tr>
+<td>tool.Run 返回 IsError</td>
+<td>原样作为 tool_result 进入下一轮</td>
+<td>诊断错误、修正输入或披露失败</td>
+</tr>
+<tr>
+<td><code>preToolClosureGate</code> block_tool</td>
+<td>生成 synthetic failed tool_result</td>
+<td>补齐前置证据或请求授权</td>
+</tr>
+<tr>
+<td>subagent 失败/超时</td>
+<td>Task/Agent 工具返回错误或 partial result</td>
+<td>父 agent 保留 partial evidence，不把它当完整结论</td>
+</tr>
+</tbody>
+</table>
+<h2 id="闭环处理的触发与强度">闭环处理的触发与强度</h2>
+<p>闭环不是所有任务都走重型流程，而是由
+<code>buildTaskContract(prompt)</code> 给当前 turn 归类：</p>
+<pre class="mermaid"><code>flowchart LR
+  P[&quot;prompt&quot;] --&gt; C[&quot;buildTaskContract&quot;]
+  C --&gt; L0[&quot;L0 trivial_answer&quot;]
+  C --&gt; L1[&quot;L1 no_tool_answer&quot;]
+  C --&gt; L2[&quot;L2 read_only_scoped&quot;]
+  C --&gt; L3[&quot;L3 investigation_audit&quot;]
+  C --&gt; L4[&quot;L4 local_change&quot;]
+  C --&gt; L5[&quot;L5 shared_state_change&quot;]</code></pre>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Closure Level</th>
+<th>典型任务</th>
+<th>闭环要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L0 trivial</td>
+<td><code>1+1=?</code></td>
+<td>直接回答；不要求工具、不注入重型检查</td>
+</tr>
+<tr>
+<td>L1 no-tool</td>
+<td>一般解释、无需本地事实</td>
+<td>可以直接回答；不能声称已检查本地状态</td>
+</tr>
+<tr>
+<td>L2 read-only scoped</td>
+<td>读文件/目录并总结、解释、对比</td>
+<td>final 声称总结前必须有 Read/Grep/Glob/LS/read-only Bash
+evidence</td>
+</tr>
+<tr>
+<td>L3 investigation/audit</td>
+<td>排查、审计、找风险</td>
+<td>要有搜索/读取范围证据；不能无证据说“全仓库无问题”</td>
+</tr>
+<tr>
+<td>L4 local change</td>
+<td>修改文件、修 bug、实现功能</td>
+<td>修改后必须有 scope、metadata、semantic checks</td>
+</tr>
+<tr>
+<td>L5 shared state</td>
+<td>commit/push/tag/deploy/publish/send</td>
+<td>仅在用户请求或 final claim 涉及共享状态时触发；操作前有授权和状态
+precheck，操作后有 readback verification</td>
+</tr>
+</tbody>
+</table>
+<h3 id="closure-level-与-go-gate-的关系">Closure Level 与 Go Gate
+的关系</h3>
+<p>L0-L5 是 <code>TaskContract</code> 里的闭环强度标签，不是 6
+个一一对应的 gate 函数。当前 Go 实现里，Level 的主要作用是让 runtime
+知道任务的大致风险和必要证据；真正阻断由 <code>completionGate</code> 和
+<code>preToolClosureGate</code> 根据更具体的条件触发。</p>
+<pre class="mermaid"><code>flowchart TD
+  P[&quot;prompt&quot;] --&gt; BTC[&quot;buildTaskContract&quot;]
+  BTC --&gt; LEVEL[&quot;ClosureLevel L0-L5&quot;]
+  LEVEL --&gt; CG[&quot;completionGate(contract, calls, finalText)&quot;]
+  LEVEL --&gt; PTG[&quot;preToolClosureGate(contract, prompt, calls, toolName, input)&quot;]
+  CG --&gt; RSG[&quot;read_scope rule uses L2&quot;]
+  CG --&gt; DAG[&quot;post_action_delta rule uses ToolTrace delta + final claim&quot;]
+  CG --&gt; FCG[&quot;final_claim rule uses final claim + ToolTrace evidence&quot;]
+  PTG --&gt; BASH[&quot;Bash intent gates use command + ToolTrace evidence&quot;]</code></pre>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Level</th>
+<th><code>buildTaskContract</code> 触发条件</th>
+<th>直接关联的 Go check</th>
+<th>其他可能触发的 gate</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L0 <code>trivial_answer</code></td>
+<td><code>isTrivialAnswerPrompt(text)</code>，例如
+<code>1+1=?</code></td>
+<td>无专属 gate；<code>completionGate</code> 通常 allow</td>
+<td><code>final_claim</code> 仍可拦截无证据本地声明</td>
+<td>轻闭环：不要求工具，不注入 repo/test/git 负担。</td>
+</tr>
+<tr>
+<td>L1 <code>no_tool_answer</code></td>
+<td>空 prompt 或不匹配其他任务类型</td>
+<td>无专属 gate；<code>completionGate</code> 通常 allow</td>
+<td><code>final_claim</code> 仍可拦截 searched/tested/committed
+等无证据声明</td>
+<td>一般知识/解释类回答；不能声称检查过本地状态。</td>
+</tr>
+<tr>
+<td>L2 <code>read_only_scoped</code></td>
+<td><code>looksLikeReadOnlyScopedPrompt(text)</code> 且提取到 path</td>
+<td><code>read_scope</code></td>
+<td><code>final_claim</code> 也会检查 searched/full repo/no issues
+等声明</td>
+<td>唯一直接使用 <code>contract.ClosureLevel</code> 的 completion
+gate。</td>
+</tr>
+<tr>
+<td>L3 <code>investigation_audit</code></td>
+<td><code>classifyRuntimeTaskPrompt</code> 识别 repo/release/entrypoint
+audit</td>
+<td>无 L3 专属函数</td>
+<td><code>final_claim</code> 拦截无搜索证据的 searched/full repo/no
+issues；复杂输出仍靠审计策略 prompt 引导</td>
+<td>当前 L3 主要靠策略提示 + final claim gate，不是独立 audit
+gate。</td>
+</tr>
+<tr>
+<td>L4 <code>local_change</code></td>
+<td><code>classifyRuntimeTaskPrompt</code> 识别 repair/code change</td>
+<td>无 L4 专属函数</td>
+<td><code>post_action_delta</code> 在有 FileChanges 且 final 声称
+done/fixed 时硬拦截</td>
+<td>Level 标记任务风险；真正硬 gate 看工具是否产生 delta。</td>
+</tr>
+<tr>
+<td>L5 <code>shared_state_change</code></td>
+<td><code>looksLikeSharedStatePrompt(text)</code> 或含
+commit/push/tag/deploy/publish</td>
+<td>无 L5 专属函数</td>
+<td><code>preToolClosureGate</code> 拦截 Bash commit/push/tag/external
+write；<code>final_claim</code> 要求 post-action evidence</td>
+<td><code>contract.SharedStateOperations</code> 会记录意图，但当前
+pre-tool gate 主要按 Bash intent 和 prompt 授权判断；L5
+是共享状态路径，不是普通交付闭环的必经尾段。</td>
+</tr>
+</tbody>
+</table>
+<p>因此，当前 Level 与 gate 的关系可以概括为：</p>
+<ul>
+<li><code>L0/L1</code>：默认轻量；除非 final
+自己声称了本地检查、测试、提交、推送等高置信事实，否则不会被重型 gate
+拖慢。</li>
+<li><code>L2</code>：有明确专属硬 gate，即
+<code>Read Scope Gate</code>。</li>
+<li><code>L3</code>：没有独立 <code>investigationGate</code>；靠审计类
+prompt strategy 加 <code>Final Claim Gate</code> 防止无证据结论。</li>
+<li><code>L4</code>：没有独立 <code>localChangeGate</code>；只要工具产生
+<code>FileChanges</code>，<code>Post-Action Delta Gate</code> 就按 delta
+事实触发。</li>
+<li><code>L5</code>：没有独立 <code>sharedStateGate</code>
+函数；shared-state 的执行前硬约束在
+<code>preToolClosureGate</code>，执行后声明由
+<code>Final Claim Gate</code> 检查。普通任务没有 commit/push/tag/deploy
+请求或声明时，不会因为“交付闭环”而被强制提交。</li>
+</ul>
+<h3 id="l0-l5-与-check-func-速查">L0-L5 与 check func 速查</h3>
+<p>下面这张表可以直接回答“Level 和 Go check func gate 有什么区别”：</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Level 常量</th>
+<th>是否有专属 check func</th>
+<th>会进入哪些硬 gate</th>
+<th>硬阻断时机</th>
+<th>软约束/提示词部分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>L0_trivial_answer</code></td>
+<td>否</td>
+<td>通常只经过 <code>completionGate</code> 的空跑；若 final
+声称本地事实，会触发 <code>final_claim</code></td>
+<td>final 前</td>
+<td>不注入重型审计/验证策略，目标是直接回答</td>
+</tr>
+<tr>
+<td><code>L1_no_tool_answer</code></td>
+<td>否</td>
+<td>同 L0；<code>final_claim</code> 防止无证据声称
+searched/tested/committed/pushed</td>
+<td>final 前</td>
+<td>允许知识解释类直接答，但不能伪造本地检查</td>
+</tr>
+<tr>
+<td><code>L2_read_only_scoped</code></td>
+<td>是，<code>read_scope</code></td>
+<td><code>read_scope</code>，之后继续走 <code>post_action_delta</code>
+和 <code>final_claim</code></td>
+<td>final 前</td>
+<td>prompt 可提醒先读文件，但真正阻断看 <code>ToolTrace</code> read
+evidence</td>
+</tr>
+<tr>
+<td><code>L3_investigation_audit</code></td>
+<td>否</td>
+<td><code>final_claim</code>，必要时也会因工具 delta 进入
+<code>post_action_delta</code></td>
+<td>final 前</td>
+<td>审计策略主要来自 runtime prompt strategy；Go gate
+只兜底高置信结论证据</td>
+</tr>
+<tr>
+<td><code>L4_local_change</code></td>
+<td>否</td>
+<td>修改后由 <code>post_action_delta</code> 兜底；final
+声称测试/完成再由 <code>final_claim</code> 兜底</td>
+<td>final 前</td>
+<td>post-edit reminder 是软引导，硬阻断看最新 delta 后是否补
+scope/metadata/semantic checks</td>
+</tr>
+<tr>
+<td><code>L5_shared_state_change</code></td>
+<td>否</td>
+<td><code>preToolClosureGate</code> 拦 Bash 高风险动作；完成声明再走
+<code>final_claim</code></td>
+<td>工具前 + final 前</td>
+<td>prompt 授权是必要输入之一，但 commit/push/tag
+等还必须有本轮只读证据；非共享状态任务不强制走这条链路</td>
+</tr>
+</tbody>
+</table>
+<p>所以当前不是“Level -&gt; 单独专属 gate 函数”的架构，而是：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>contract <span class="op">:=</span> buildTaskContract<span class="op">(</span>prompt<span class="op">)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">// final path</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>completionGate<span class="op">(</span>contract<span class="op">,</span> calls<span class="op">,</span> finalText<span class="op">)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">// tool path</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>preToolClosureGate<span class="op">(</span>contract<span class="op">,</span> prompt<span class="op">,</span> calls<span class="op">,</span> toolName<span class="op">,</span> input<span class="op">)</span></span></code></pre></div>
+<p><code>contract.ClosureLevel</code> 只被部分 gate
+直接读取。当前最明确的一处是 <code>read_scope</code>：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> contract<span class="op">.</span>ClosureLevel <span class="op">!=</span> closureLevelReadOnlyScoped <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>post_action_delta</code> 和 <code>final_claim</code>
+更偏“事实驱动”：它们不要求 Level 必须等于
+L4/L5，而是看本轮是否真的出现了 <code>FileChanges</code>、write-like
+Bash、测试声明、commit/push/tag/deploy
+声明等证据条件。这能避免模型把任务误分级后绕过硬约束。</p>
+<h2 id="completiongate-判定逻辑">CompletionGate 判定逻辑</h2>
+<p>当前 <code>completionGate</code> 是 final 前硬 gate，由
+<code>completionGateRules</code>
+规则表按优先级短路执行。规则表当前包含三个主要检查：</p>
+<pre class="mermaid"><code>flowchart TD
+  F[&quot;candidate final text&quot;] --&gt; RSG[&quot;Read Scope Gate&quot;]
+  RSG --&gt;|missing read evidence| BLOCK1[&quot;block_continue&quot;]
+  RSG --&gt;|ok| DAG[&quot;Post-Action Delta Gate&quot;]
+  DAG --&gt;|missing post-change checks| BLOCK2[&quot;block_continue&quot;]
+  DAG --&gt;|ok| FCG[&quot;Final Claim Gate&quot;]
+  FCG --&gt;|unsupported claim| BLOCK3[&quot;block_continue&quot;]
+  FCG --&gt;|ok| ACCEPT[&quot;accept final&quot;]
+  BLOCK1 --&gt; REM[&quot;insert system-reminder and continue&quot;]
+  BLOCK2 --&gt; REM
+  BLOCK3 --&gt; REM</code></pre>
+<h3 id="read-scope-gate">Read Scope Gate</h3>
+<p>适用于 L2 read-only
+scoped。用户要求读取本地文件/目录并总结、解释、对比时，如果 final
+声称已经读过、总结过或覆盖完整范围，必须有本轮工具证据：</p>
+<ul>
+<li><code>Read</code></li>
+<li><code>Grep</code></li>
+<li><code>Glob</code></li>
+<li><code>LS</code></li>
+<li>read-only <code>Bash</code></li>
+</ul>
+<p>如果只读了片段，却声称全文覆盖，也会被拦截，要求继续读取或明确披露范围。</p>
+<h3 id="post-action-delta-gate">Post-Action Delta Gate</h3>
+<p>当本轮出现文件改动或高风险 Bash/shared-state 迹象，并且 final 声称
+done/fixed/completed 时，要求在最新 delta 之后出现最小验证：</p>
+<ul>
+<li>scope check: <code>git status --short</code> +
+<code>git diff --name-status</code></li>
+<li>metadata check: <code>git diff --summary</code></li>
+<li>semantic check:
+聚焦测试或确定性只读命令，用来验证被修改的不变量</li>
+</ul>
+<p>这保证“改了什么”和“改得对不对”不是只靠模型自述。</p>
+<h3 id="final-claim-gate">Final Claim Gate</h3>
+<p>final 中出现高置信声明时，会检查相应证据：</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>final 声明</th>
+<th>必要证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>searched / inspected</td>
+<td>Grep/Glob/LS/Read 或 read-only Bash</td>
+</tr>
+<tr>
+<td>full repo / all files</td>
+<td>broad local search/list evidence</td>
+</tr>
+<tr>
+<td>tests passed / checks passed</td>
+<td>成功 verification Bash</td>
+</tr>
+<tr>
+<td>committed</td>
+<td>成功 <code>git commit</code> + post-commit
+<code>git status</code>/<code>git log</code>/<code>rev-parse</code></td>
+</tr>
+<tr>
+<td>pushed</td>
+<td>成功 <code>git push</code> + post-push remote/branch
+verification</td>
+</tr>
+<tr>
+<td>tag created/updated</td>
+<td>成功 mutating <code>git tag</code> + post-tag object
+verification</td>
+</tr>
+<tr>
+<td>deployed/published/sent</td>
+<td>成功 external action evidence</td>
+</tr>
+<tr>
+<td>no issues found</td>
+<td>至少有本地 read/search evidence</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pretool-硬约束">PreTool 硬约束</h2>
+<p><code>preToolClosureGate</code> 是工具执行前的硬 gate，目前主要保护
+Bash 类高风险边界。它不是提示词建议；命中后工具不会执行，而是返回
+<code>IsError=true</code> 的 synthetic tool result。</p>
+<pre class="mermaid"><code>flowchart TD
+  B[&quot;Bash command&quot;] --&gt; SI[&quot;classifyShellIntent&quot;]
+  SI --&gt; COMMIT[&quot;git_commit&quot;]
+  SI --&gt; PUSH[&quot;git_push / destructive shared state&quot;]
+  SI --&gt; TAG[&quot;git_tag_mutate&quot;]
+  SI --&gt; EXT[&quot;external_write&quot;]
+  COMMIT --&gt; PC[&quot;require preCommitScopeVerified&quot;]
+  PUSH --&gt; PP[&quot;require branch + HEAD + remote/upstream evidence&quot;]
+  TAG --&gt; PT[&quot;require branch + HEAD + existing tag-state evidence&quot;]
+  EXT --&gt; EA[&quot;require prompt authorizes external action&quot;]
+  PC --&gt;|missing| BLOCK[&quot;block_tool&quot;]
+  PP --&gt;|missing| BLOCK
+  PT --&gt;|missing| BLOCK
+  EA --&gt;|missing| BLOCK
+  PC --&gt;|ok| ALLOW[&quot;allow tool.Run&quot;]
+  PP --&gt;|ok| ALLOW
+  PT --&gt;|ok| ALLOW
+  EA --&gt;|ok| ALLOW</code></pre>
+<p>当前硬拦截包括：</p>
+<ul>
+<li><code>git commit</code>: 必须先看到当前会话的 scope
+verification，尤其是最新写入/暂存后的
+<code>git status</code>、<code>git diff --name-status</code>、staged
+check。</li>
+<li><code>git push</code>: 必须先有 branch、HEAD、remote/upstream
+证据，例如
+<code>git status --short --branch</code>、<code>git rev-parse HEAD</code>、<code>git rev-parse @{u}</code>、<code>git branch -vv</code>、<code>git ls-remote</code>。</li>
+<li>mutating <code>git tag</code>: 必须先有 branch/object 证据和现有
+tag-state 证据。</li>
+<li>destructive shared-state: force push、远端 tag 删除、tag move
+等需要用户明确授权。</li>
+<li>external write: deploy/publish/send/release
+等外部副作用，当前用户请求没有明确授权时阻断；dry-run/preview/check/plan
+类命令按只读预览处理。</li>
+</ul>
+<h2 id="硬约束-vs-提示词软约束">硬约束 vs 提示词软约束</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>机制</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>System prompt / tool description</td>
+<td>软约束</td>
+<td>引导模型选择正确流程，但模型仍可能忽略</td>
+</tr>
+<tr>
+<td><code>tools.Guard</code> / permission policy</td>
+<td>硬约束</td>
+<td>工具执行层拒绝未授权操作</td>
+</tr>
+<tr>
+<td>PreToolUse hooks</td>
+<td>硬约束</td>
+<td>hook 可 deny 或 rewrite input</td>
+</tr>
+<tr>
+<td><code>preToolClosureGate</code></td>
+<td>硬约束</td>
+<td>命中后工具不执行，返回 failed tool_result</td>
+</tr>
+<tr>
+<td><code>completionGate</code></td>
+<td>硬约束</td>
+<td>final 不通过就不接受，插入 reminder 继续</td>
+</tr>
+<tr>
+<td>closure transcript events</td>
+<td>可观测证据</td>
+<td>记录 task/action/evidence/delta/gate，便于 trace 和回归</td>
+</tr>
+<tr>
+<td>checkpoint / rewind / fork</td>
+<td>session 硬机制</td>
+<td>checkpoint 写入 transcript；rewind/fork 由 Go 代码截断、复制
+transcript，并可根据 file_change snapshot 恢复文件，不依赖模型自觉</td>
+</tr>
+<tr>
+<td>subagent evidence contract</td>
+<td>软约束 + 结构化结果</td>
+<td>要求 subagent 输出 Evidence/Unknowns/Verification 等；父 agent
+仍需综合判断</td>
+</tr>
+</tbody>
+</table>
+<p>因此，Go Claude 当前闭环的关键边界已经不是纯 prompt。prompt
+负责让模型少走错路；runtime gate 负责阻止无证据 final
+和未满足前置条件的高风险工具动作。</p>
+<h2 id="checkpoint-闭环机制">Checkpoint 闭环机制</h2>
+<p>Checkpoint 闭环解决的是“会话和文件状态能否回到一个已知锚点”，它和
+<code>completionGate</code> / <code>preToolClosureGate</code>
+不同：checkpoint 不决定 final 是否通过，也不决定工具是否执行；它是
+session lifecycle 层的硬机制。</p>
+<pre class="mermaid"><code>flowchart TD
+  U[&quot;User prompt&quot;] --&gt; AUTO[&quot;Recorder.Checkpoint(auto-messageID, messageID)&quot;]
+  AUTO --&gt; MSG[&quot;append user message&quot;]
+  MSG --&gt; RUN[&quot;query.Session.run tool/final loop&quot;]
+  RUN --&gt; FC[&quot;file_change entries with before/after snapshots&quot;]
+  AUTO --&gt; REWIND[&quot;/rewind or session rewind&quot;]
+  REWIND --&gt; FIND[&quot;findCheckpoint / findCheckpointForMessage&quot;]
+  FIND --&gt; RESTORE[&quot;restoreFileChanges(removed entries)&quot;]
+  RESTORE --&gt; WRITE[&quot;write kept entries + rewind entry&quot;]
+  AUTO --&gt; FORK[&quot;session fork checkpoint&quot;]
+  FORK --&gt; COPY[&quot;copy entries through checkpoint + fork entry&quot;]
+  WRITE --&gt; RESUME[&quot;resume&quot;]
+  COPY --&gt; RESUME
+  RESUME --&gt; SKIP[&quot;sanitizeResumeEntriesWithReport skips checkpoint/rewind/fork&quot;]</code></pre>
+<p>关键 Go 逻辑：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>步骤</th>
+<th>Go 实现</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每轮用户消息前自动建锚点</td>
+<td><code>internal/query/query.go: Recorder.Checkpoint("auto-"+messageID, messageID)</code></td>
+<td>checkpoint 先于 user message 写入
+transcript，因此可以回到“这条用户消息之前”。</td>
+</tr>
+<tr>
+<td>手动 checkpoint</td>
+<td><code>internal/session/store.go: Store.Checkpoint</code>、<code>Recorder.Checkpoint</code></td>
+<td>CLI/TUI 可以创建命名 checkpoint。</td>
+</tr>
+<tr>
+<td>rewind 到 checkpoint</td>
+<td><code>Store.Rewind(sessionID, checkpoint)</code></td>
+<td>找到最近匹配 checkpoint，恢复被移除 entry 里的文件快照，然后重写
+transcript。</td>
+</tr>
+<tr>
+<td>rewind 到 message</td>
+<td><code>findCheckpointForMessage</code> +
+<code>rewindFiles</code></td>
+<td>优先用自动 checkpoint；没有 checkpoint 时按 message entry
+回退。</td>
+</tr>
+<tr>
+<td>文件恢复</td>
+<td><code>restoreFileChanges(removed)</code></td>
+<td>倒序读取 <code>file_change</code>，每个 path 只恢复一次；支持 inline
+before 内容和 large-file snapshot path。</td>
+</tr>
+<tr>
+<td>fork 新 session</td>
+<td><code>Store.Fork(sessionID, checkpoint, name)</code></td>
+<td>复制 checkpoint 之前的 entries 到新 session，并追加
+<code>fork</code> entry。</td>
+</tr>
+<tr>
+<td>resume 隔离</td>
+<td><code>sanitizeResumeEntriesWithReport</code></td>
+<td><code>checkpoint</code>、<code>rewind</code>、<code>fork</code> 属于
+metadata，恢复模型上下文时跳过，避免污染语义上下文。</td>
+</tr>
+</tbody>
+</table>
+<p>这个机制的闭环条件是：有 checkpoint 锚点、有可定位的
+message/checkpoint、有 <code>file_change</code>
+快照时可以恢复文件、rewind/fork 后 transcript 状态被重写或复制，并且
+resume 时不会把 checkpoint metadata 发回模型。</p>
+<h2 id="go-实现细节硬约束如何落地">Go 实现细节：硬约束如何落地</h2>
+<p>闭环硬约束没有做成独立 HTTP middleware，也不是只写在 system prompt
+里。当前实现直接嵌在 <code>query.Session.run</code>
+的主循环里，有两个强制执行点：</p>
+<ul>
+<li><strong>工具执行前</strong>：模型返回 <code>tool_use</code>
+后，runtime 先跑 <code>preToolClosureGate</code>。如果返回
+<code>block_tool</code>，真实工具不会执行。</li>
+<li><strong>最终回复前</strong>：模型没有返回 <code>tool_use</code>
+时，runtime 先跑 <code>completionGate</code>。如果返回
+<code>block_continue</code>，candidate final 不会输出给用户。</li>
+</ul>
+<h3 id="核心数据结构">核心数据结构</h3>
+<p><code>internal/query/closure_gate.go</code>
+定义了闭环最小控制面：</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> taskContract <span class="kw">struct</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    ClosureLevel          closureLevel</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    RequiredReadPath      <span class="op">[]</span><span class="dt">string</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    SharedStateOperations <span class="op">[]</span>sharedStateOperation</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> completionGateResult <span class="kw">struct</span> <span class="op">{</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    Severity        gateSeverity</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    Reminder        <span class="dt">string</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    RuleID          <span class="dt">string</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    MissingEvidence <span class="op">[]</span><span class="dt">string</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>gateSeverity</code> 当前最关键的两个硬约束值是：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>severity</th>
+<th>Go 行为</th>
+<th>用户可见效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>block_continue</code></td>
+<td>final 不接受，插入 reminder 并 <code>continue</code> 下一 turn</td>
+<td>用户看不到被拦截的 final</td>
+</tr>
+<tr>
+<td><code>block_tool</code></td>
+<td>不调用真实 tool，生成 failed <code>ToolTrace</code></td>
+<td>模型收到失败 tool_result，必须补证据或改方案</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gate-调度形态规则表-固定优先级">Gate 调度形态：规则表 +
+固定优先级</h3>
+<p>当前实现已经把 task classification、pre-tool gate、completion gate
+都收敛成显式规则表。规则表不是外部 YAML 配置，而是 Go 代码里的固定
+slice，优点是可测试、可 review、不会被 prompt 注入或运行时输入改写。</p>
+<p>主入口仍是两个函数：</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> completionGate<span class="op">(</span>contract taskContract<span class="op">,</span> calls <span class="op">[]</span>ToolTrace<span class="op">,</span> finalText <span class="dt">string</span><span class="op">)</span> completionGateResult</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> preToolClosureGate<span class="op">(</span>contract taskContract<span class="op">,</span> prompt <span class="dt">string</span><span class="op">,</span> calls <span class="op">[]</span>ToolTrace<span class="op">,</span> toolName<span class="op">,</span> input <span class="dt">string</span><span class="op">)</span> completionGateResult</span></code></pre></div>
+<p><code>completionGate</code> 内部遍历固定规则表：</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>completionGateRules <span class="op">=</span> <span class="op">[]</span>completionGateRule<span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span>ID<span class="op">:</span> <span class="st">&quot;read_scope&quot;</span><span class="op">,</span> Priority<span class="op">:</span> <span class="dv">300</span><span class="op">,</span> Check<span class="op">:</span> <span class="op">...},</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span>ID<span class="op">:</span> <span class="st">&quot;post_action_delta&quot;</span><span class="op">,</span> Priority<span class="op">:</span> <span class="dv">200</span><span class="op">,</span> Check<span class="op">:</span> <span class="op">...},</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span>ID<span class="op">:</span> <span class="st">&quot;final_claim&quot;</span><span class="op">,</span> Priority<span class="op">:</span> <span class="dv">100</span><span class="op">,</span> Check<span class="op">:</span> <span class="op">...},</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>preToolClosureGate</code> 内部也遍历固定规则表：</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>preToolGateRules <span class="op">=</span> <span class="op">[]</span>preToolGateRule<span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span>ID<span class="op">:</span> <span class="st">&quot;pre_commit_scope&quot;</span><span class="op">,</span> Priority<span class="op">:</span> <span class="dv">500</span><span class="op">,</span> Check<span class="op">:</span> <span class="op">...},</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span>ID<span class="op">:</span> <span class="st">&quot;destructive_shared_state&quot;</span><span class="op">,</span> Priority<span class="op">:</span> <span class="dv">400</span><span class="op">,</span> Check<span class="op">:</span> <span class="op">...},</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span>ID<span class="op">:</span> <span class="st">&quot;shared_state_git_push&quot;</span><span class="op">,</span> Priority<span class="op">:</span> <span class="dv">300</span><span class="op">,</span> Check<span class="op">:</span> <span class="op">...},</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span>ID<span class="op">:</span> <span class="st">&quot;shared_state_git_tag&quot;</span><span class="op">,</span> Priority<span class="op">:</span> <span class="dv">200</span><span class="op">,</span> Check<span class="op">:</span> <span class="op">...},</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span>ID<span class="op">:</span> <span class="st">&quot;external_action_authorization&quot;</span><span class="op">,</span> Priority<span class="op">:</span> <span class="dv">100</span><span class="op">,</span> Check<span class="op">:</span> <span class="op">...},</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>每条规则命中后会返回 <code>completionGateResult</code>，runtime 会把
+<code>rule_id</code> 和 <code>missing_evidence</code> 写入
+<code>completion_gate</code> transcript
+event。优先级顺序由单元测试锁定，防止后续新增规则时无意改变 gate
+顺序。</p>
+<h3 id="step-1进入-run-后先构造-taskcontract">Step 1：进入 run 后先构造
+TaskContract</h3>
+<p>在 <code>Session.run</code> 开始阶段，runtime 会把用户 prompt
+转成任务合同：</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>contract <span class="op">:=</span> buildTaskContract<span class="op">(</span>prompt<span class="op">)</span></span></code></pre></div>
+<p><code>buildTaskContract</code> 的判断顺序是：</p>
+<pre class="mermaid"><code>flowchart TD
+  P[&quot;prompt&quot;] --&gt; EMPTY[&quot;empty?&quot;]
+  EMPTY --&gt;|yes| L1[&quot;L1 no_tool_answer&quot;]
+  EMPTY --&gt;|no| TRIVIAL[&quot;isTrivialAnswerPrompt?&quot;]
+  TRIVIAL --&gt;|yes| L0[&quot;L0 trivial_answer&quot;]
+  TRIVIAL --&gt;|no| READ[&quot;looksLikeReadOnlyScopedPrompt?&quot;]
+  READ --&gt;|yes| L2[&quot;L2 read_only_scoped + RequiredReadPath&quot;]
+  READ --&gt;|no| CLASSIFY[&quot;classifyRuntimeTaskPrompt&quot;]
+  CLASSIFY --&gt; AUDIT[&quot;repo/release/entrypoint audit -&gt; L3&quot;]
+  CLASSIFY --&gt; REPAIR[&quot;repair/code change -&gt; L4&quot;]
+  CLASSIFY --&gt; SHARED[&quot;commit/push/tag/deploy/publish -&gt; L5&quot;]
+  CLASSIFY --&gt; DEFAULT[&quot;default -&gt; L1&quot;]</code></pre>
+<p>如果有 recorder，runtime 还会把合同写入 transcript：</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>s<span class="op">.</span>recordClosureEvent<span class="op">(</span><span class="st">&quot;task_contract&quot;</span><span class="op">,</span> contract<span class="op">)</span></span></code></pre></div>
+<p>这一步不是阻断点，它的作用是让后续 gate
+知道本轮任务属于轻闭环还是高风险闭环。</p>
+<h3 id="step-2模型返回-final-时先过-completiongate">Step 2：模型返回
+final 时，先过 CompletionGate</h3>
+<p>模型每一 turn 结束后，runtime 会提取文本和工具调用：</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>turnResponse <span class="op">:=</span> assistantText<span class="op">(</span>stream<span class="op">.</span>Message<span class="op">.</span>Content<span class="op">)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>toolUses <span class="op">:=</span> collectToolUses<span class="op">(</span>stream<span class="op">.</span>Message<span class="op">.</span>Content<span class="op">)</span></span></code></pre></div>
+<p>如果没有工具调用，说明这轮可能是
+final。此时不会立刻输出，而是先检查：</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>nudge <span class="op">:=</span> completionVerificationNudge<span class="op">(</span>requiredVerifications<span class="op">,</span> result<span class="op">.</span>ToolCalls<span class="op">,</span> turnResponse<span class="op">)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> nudge <span class="op">==</span> <span class="st">&quot;&quot;</span> <span class="op">{</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> gate <span class="op">:=</span> completionGate<span class="op">(</span>contract<span class="op">,</span> result<span class="op">.</span>ToolCalls<span class="op">,</span> turnResponse<span class="op">);</span> gate<span class="op">.</span>Severity <span class="op">==</span> gateSeverityBlockContinue <span class="op">{</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        nudge <span class="op">=</span> gate<span class="op">.</span>Reminder</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>命中 <code>block_continue</code> 时，Go 代码做三件事：</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>result<span class="op">.</span>Response <span class="op">=</span> strings<span class="op">.</span>TrimSuffix<span class="op">(</span>result<span class="op">.</span>Response<span class="op">,</span> turnResponse<span class="op">)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>s<span class="op">.</span>recordClosureEvent<span class="op">(</span><span class="st">&quot;completion_gate&quot;</span><span class="op">,</span> <span class="kw">map</span><span class="op">[</span><span class="dt">string</span><span class="op">]</span><span class="dt">any</span><span class="op">{...})</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>messages <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>messages<span class="op">,</span> anthropic<span class="op">.</span>MessageParam<span class="op">{</span>Role<span class="op">:</span> <span class="st">&quot;user&quot;</span><span class="op">,</span> Content<span class="op">:</span> reminder<span class="op">})</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="cf">continue</span></span></code></pre></div>
+<p>这就是“final 不泄漏”的关键实现：</p>
+<ol type="1">
+<li><code>turnResponse</code> 从 <code>result.Response</code>
+中移除。</li>
+<li>本轮 candidate final 不 replay 给 UI/stdout。</li>
+<li>runtime 把 gate reminder 作为新的 user message 塞回模型上下文。</li>
+<li><code>continue</code> 进入下一 turn，让模型补证据或改写 final。</li>
+</ol>
+<p>只有没有 nudge 时，runtime 才会执行：</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>streamEvents<span class="op">.</span>Replay<span class="op">(</span>cb<span class="op">,</span> <span class="op">&amp;</span>stream<span class="op">.</span>Message<span class="op">)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>s<span class="op">.</span>recordAssistant<span class="op">(</span>stream<span class="op">.</span>Message<span class="op">.</span>Content<span class="op">)</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> result<span class="op">,</span> <span class="ot">nil</span></span></code></pre></div>
+<p>因此 accepted final 是控制流结果，不是 prompt 约定。</p>
+<h3 id="step-3completiongate-内部规则表检查">Step 3：CompletionGate
+内部规则表检查</h3>
+<p><code>completionGate</code> 是规则表短路逻辑：</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _<span class="op">,</span> rule <span class="op">:=</span> <span class="kw">range</span> completionGateRules <span class="op">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> result<span class="op">,</span> blocked <span class="op">:=</span> rule<span class="op">.</span>Check<span class="op">(</span>input<span class="op">);</span> blocked <span class="op">{</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>        result<span class="op">.</span>RuleID <span class="op">=</span> rule<span class="op">.</span>ID</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> result</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> allow</span></code></pre></div>
+<p>三个检查各自负责不同硬边界：</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>检查</th>
+<th>触发条件</th>
+<th>主要数据来源</th>
+<th>阻断原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read_scope</code></td>
+<td>L2 read-only scoped 且 final 声称总结/读取</td>
+<td><code>collectReadEvidence(calls)</code></td>
+<td>未读指定文件/目录、只读片段却声称全文</td>
+</tr>
+<tr>
+<td><code>post_action_delta</code></td>
+<td>本轮有 delta 且 final 声称 done/fixed</td>
+<td><code>lastDeltaIndex</code>、<code>postDeltaChecksObserved</code></td>
+<td>最新变更后缺 status/diff/summary/test</td>
+</tr>
+<tr>
+<td><code>final_claim</code></td>
+<td>final 出现高置信声明</td>
+<td><code>ToolTrace</code> 列表</td>
+<td>声称 searched/tested/committed/pushed/deployed 但无证据</td>
+</tr>
+</tbody>
+</table>
+<p>被阻断时，<code>completion_gate</code> transcript event
+会记录结构化字段：</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;severity&quot;</span><span class="fu">:</span> <span class="st">&quot;block_continue&quot;</span><span class="fu">,</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;rule_id&quot;</span><span class="fu">:</span> <span class="st">&quot;final_claim&quot;</span><span class="fu">,</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;missing_evidence&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;tests/checks are claimed but no successful test or verification Bash command was observed&quot;</span><span class="ot">]</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>这里的 <code>calls []ToolTrace</code> 是本轮已经真实发生或被 gate
+合成的工具轨迹。gate 不看模型“我做了”的自然语言自述，而是看
+ToolTrace。</p>
+<h3 id="step-3.1read-file-tool-的硬约束怎么-check">Step 3.1：Read file
+tool 的硬约束怎么 check</h3>
+<p>Read 本身不是执行前硬拦截。模型可以调用
+<code>Read</code>，工具按权限和路径规则执行。Read 相关硬约束发生在 final
+前：如果用户要求读取/总结指定文件，模型没有读就想
+final，<code>Read Scope Gate</code> 会 <code>block_continue</code>。</p>
+<p>关键函数签名：</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> readScopeGateResult<span class="op">(</span>contract taskContract<span class="op">,</span> calls <span class="op">[]</span>ToolTrace<span class="op">,</span> finalText <span class="dt">string</span><span class="op">)</span> <span class="op">(</span>completionGateResult<span class="op">,</span> <span class="dt">bool</span><span class="op">)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> collectReadEvidence<span class="op">(</span>calls <span class="op">[]</span>ToolTrace<span class="op">)</span> <span class="op">[]</span>readEvidence</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> matchingReadEvidence<span class="op">(</span>reads <span class="op">[]</span>readEvidence<span class="op">,</span> required <span class="dt">string</span><span class="op">)</span> <span class="op">(</span>readEvidence<span class="op">,</span> <span class="dt">bool</span><span class="op">)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> readInputIsPartial<span class="op">(</span>input <span class="dt">string</span><span class="op">)</span> <span class="dt">bool</span></span></code></pre></div>
+<p>完整路径如下：</p>
+<pre class="mermaid"><code>flowchart TD
+  U[&quot;User asks: read/summarize internal/query/closure_gate.go&quot;] --&gt; BTC[&quot;buildTaskContract&quot;]
+  BTC --&gt; RP[&quot;RequiredReadPath = [internal/query/closure_gate.go]&quot;]
+  M[&quot;Model tool_use Read&quot;] --&gt; RT[&quot;ToolTrace{Name: Read, Input: file_path}&quot;]
+  RT --&gt; CRE[&quot;collectReadEvidence&quot;]
+  CRE --&gt; RE[&quot;readEvidence{Path, Source=read, Partial}&quot;]
+  F[&quot;candidate final&quot;] --&gt; RSG[&quot;read_scope&quot;]
+  RP --&gt; RSG
+  RE --&gt; RSG
+  RSG --&gt;|missing or partial full-claim| BLOCK[&quot;block_continue&quot;]
+  RSG --&gt;|matched| ALLOW[&quot;allow next gate&quot;]</code></pre>
+<p><code>collectReadEvidence</code> 对不同工具的处理：</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>工具</th>
+<th>evidence 生成方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Read</code></td>
+<td>从 <code>ToolTrace.Input</code> JSON 里取
+<code>file_path</code>，生成
+<code>readEvidence{Source:"read"}</code></td>
+</tr>
+<tr>
+<td><code>Grep</code> / <code>Glob</code> / <code>LS</code></td>
+<td>从 <code>path</code>、<code>file_path</code>、<code>pattern</code>
+中取一个路径，生成 <code>Source:"search"</code></td>
+</tr>
+<tr>
+<td>read-only <code>Bash</code></td>
+<td><code>classifyShellIntent(command).ReadOnly == true</code>
+时，提取命令里的 pathish 文本</td>
+</tr>
+</tbody>
+</table>
+<p>Read 的核心判断不是看工具输出文本，而是看工具调用轨迹：</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;read&quot;</span><span class="op">:</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> path <span class="op">:=</span> toolInputString<span class="op">(</span>call<span class="op">.</span>Input<span class="op">,</span> <span class="st">&quot;file_path&quot;</span><span class="op">);</span> path <span class="op">!=</span> <span class="st">&quot;&quot;</span> <span class="op">{</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>out<span class="op">,</span> readEvidence<span class="op">{</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>            Path<span class="op">:</span> path<span class="op">,</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>            Source<span class="op">:</span> <span class="st">&quot;read&quot;</span><span class="op">,</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>            Partial<span class="op">:</span> readInputIsPartial<span class="op">(</span>call<span class="op">.</span>Input<span class="op">),</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">})</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
+<p>路径匹配逻辑在 <code>matchingReadEvidence</code>：</p>
+<ul>
+<li>标准化 path：去空格、去引号、<code>filepath.Clean</code>、转
+slash、去 <code>./</code>。</li>
+<li>精确匹配允许通过。</li>
+<li>suffix 关系允许通过，例如绝对路径尾部匹配相对路径。</li>
+<li>如果用户要求目录，<code>Grep</code> / <code>Glob</code> /
+<code>LS</code> / read-only Bash 的目录型 evidence 也能通过。</li>
+</ul>
+<p>部分读取判断在 <code>readInputIsPartial</code>：</p>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>offset <span class="op">/</span> limit <span class="op">/</span> byte_offset <span class="op">/</span> byte_limit <span class="op">/</span> chunk_index <span class="op">/</span> pages</span></code></pre></div>
+<p>只要这些字段出现且不是空或 <code>0</code>，就认为是 partial
+read。此时如果 final 声称“全文、完整、all/full
+scope”，会被拦截，要求继续读取或披露读取范围。</p>
+<p>所以 “Read file tool 触发的硬约束” 更准确地说是：</p>
+<ol type="1">
+<li>用户 prompt 触发 L2 <code>read_only_scoped</code>，并提取
+<code>RequiredReadPath</code>。</li>
+<li><code>Read</code> 工具成功后留下 <code>ToolTrace</code>。</li>
+<li>final 前 <code>read_scope</code> rule 用
+<code>ToolTrace.Input</code> 形成 read evidence。</li>
+<li>required path 没匹配，或 partial evidence 支撑不了 full-scope
+claim，就返回 reminder。</li>
+<li><code>Session.run</code> 收到 reminder 后
+<code>block_continue</code>，candidate final 不输出。</li>
+</ol>
+<h3 id="step-4模型返回-tool_use-时先过-pretool-gate">Step 4：模型返回
+tool_use 时，先过 PreTool gate</h3>
+<p>如果模型返回工具调用，<code>Session.run</code>
+不会直接执行工具，而是先检查：</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> gate <span class="op">:=</span> preToolClosureGate<span class="op">(</span>contract<span class="op">,</span> prompt<span class="op">,</span> result<span class="op">.</span>ToolCalls<span class="op">,</span> block<span class="op">.</span>Name<span class="op">,</span> <span class="dt">string</span><span class="op">(</span>block<span class="op">.</span>Input<span class="op">));</span> gate<span class="op">.</span>Severity <span class="op">==</span> gateSeverityBlockTool <span class="op">{</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    trace <span class="op">=</span> blockedToolTrace<span class="op">(</span>block<span class="op">,</span> gate<span class="op">.</span>Reminder<span class="op">)</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    trace <span class="op">=</span> s<span class="op">.</span>runTool<span class="op">(</span>ctx<span class="op">,</span> registry<span class="op">,</span> block<span class="op">,</span> cb<span class="op">)</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>命中 <code>block_tool</code> 时，<code>s.runTool</code>
+不会被调用，所以真实 Bash / Git / deploy 命令不会执行。runtime
+会合成一个失败的 ToolTrace：</p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ToolTrace<span class="op">{</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    ID<span class="op">:</span> block<span class="op">.</span>ID<span class="op">,</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    Name<span class="op">:</span> block<span class="op">.</span>Name<span class="op">,</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    Input<span class="op">:</span> <span class="dt">string</span><span class="op">(</span>block<span class="op">.</span>Input<span class="op">),</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    Output<span class="op">:</span> reason<span class="op">,</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    IsError<span class="op">:</span> <span class="ot">true</span><span class="op">,</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>随后这条失败结果仍会被放进模型上下文：</p>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>toolResults <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>toolResults<span class="op">,</span> anthropic<span class="op">.</span>ContentBlock<span class="op">{</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    Type<span class="op">:</span>      <span class="st">&quot;tool_result&quot;</span><span class="op">,</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    ToolUseID<span class="op">:</span> block<span class="op">.</span>ID<span class="op">,</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    Content<span class="op">:</span>   trace<span class="op">.</span>Output<span class="op">,</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    IsError<span class="op">:</span>   trace<span class="op">.</span>IsError<span class="op">,</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="op">})</span></span></code></pre></div>
+<p>这保证模型知道“工具没执行，为什么没执行”，但不能越过 gate。</p>
+<h3 id="step-5pretool-gate-只拦高风险-bash-边界">Step 5：PreTool gate
+只拦高风险 Bash 边界</h3>
+<p><code>preToolClosureGate</code> 当前只对 <code>Bash</code>
+做闭环硬拦截：</p>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">!</span>strings<span class="op">.</span>EqualFold<span class="op">(</span>toolName<span class="op">,</span> <span class="st">&quot;Bash&quot;</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> allow</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>然后通过 <code>classifyShellIntent(command)</code> 把 Bash
+命令分类：</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>ShellIntent</th>
+<th>硬约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git_commit</code></td>
+<td>必须满足 <code>preCommitScopeVerified(calls)</code></td>
+</tr>
+<tr>
+<td><code>git_push</code> / destructive shared state</td>
+<td>必须满足 <code>prePushGitVerified(calls)</code></td>
+</tr>
+<tr>
+<td><code>git_tag_mutate</code></td>
+<td>必须满足 <code>preTagGitVerified(calls)</code></td>
+</tr>
+<tr>
+<td>destructive git</td>
+<td>必须有用户明确授权 force/delete/move</td>
+</tr>
+<tr>
+<td><code>external_write</code></td>
+<td>当前 prompt 必须明确授权 deploy/publish/send/release</td>
+</tr>
+</tbody>
+</table>
+<p>例如 <code>git push</code> 的 gate 条件不是“模型说我确认了”，而是本轮
+ToolTrace 中已经出现这些只读证据：</p>
+<ul>
+<li>branch evidence: <code>git status --short --branch</code></li>
+<li>object evidence: <code>git rev-parse HEAD</code></li>
+<li>remote/upstream evidence:
+<code>git rev-parse @{u}</code>、<code>git branch -vv</code> 或
+<code>git ls-remote</code></li>
+</ul>
+<p>缺少这些证据时，Go 代码返回 <code>gateSeverityBlockTool</code>，真实
+<code>git push</code> 不会执行。</p>
+<h3 id="step-6真实工具执行还有权限hook文件变化记录">Step
+6：真实工具执行还有权限、hook、文件变化记录</h3>
+<p>如果 pre-tool gate 允许，才进入
+<code>runTool</code>。这里还有几层硬边界：</p>
+<pre class="mermaid"><code>flowchart TD
+  A[&quot;registry.Get&quot;] --&gt;|missing| E1[&quot;IsError unknown tool&quot;]
+  A --&gt;|found| H[&quot;PreToolUse hook&quot;]
+  H --&gt;|deny/error| E2[&quot;IsError hook reason&quot;]
+  H --&gt;|allow/rewrite| T[&quot;tool.Run&quot;]
+  T --&gt; FC[&quot;FileChange callback&quot;]
+  T --&gt; POST[&quot;PostToolUse / PostToolUseFailure hook&quot;]
+  POST --&gt; TR[&quot;ToolTrace&quot;]</code></pre>
+<p>重要实现点：</p>
+<ul>
+<li>工具已经被 <code>tools.Guard</code> / <code>tools.GuardAll</code>
+包裹，permission policy 在工具执行层生效。</li>
+<li><code>PreToolUse</code> hook 可以拒绝或改写 input。</li>
+<li><code>tools.Context.FileChange</code> 回调会收集文件变化，写入
+<code>ToolTrace.FileChanges</code>。</li>
+<li>tool result 会经过 <code>toolresult.Process</code>
+做输出长度控制和持久化替换。</li>
+<li>工具失败时会追加 verification failure recovery
+reminder；成功写文件时会追加 post-edit verification reminder。</li>
+</ul>
+<p>所以闭环不是只靠 <code>closure_gate.go</code>，而是由 pre-tool
+gate、guarded tool、hook、FileChange、post-tool reminder 共同构成。</p>
+<h3 id="step-6.1edit-write-multiedit-的硬约束怎么-check">Step 6.1：Edit
+/ Write / MultiEdit 的硬约束怎么 check</h3>
+<p>Edit / Write / MultiEdit 也不是执行前被 closure gate
+阻断。它们的执行前硬边界主要来自权限、sandbox、writable roots
+和工具自己的输入校验；闭环硬约束发生在工具成功修改文件之后、final
+之前。</p>
+<p>关键函数签名：</p>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>s <span class="op">*</span>Session<span class="op">)</span> runTool<span class="op">(</span>ctx context<span class="op">.</span>Context<span class="op">,</span> registry <span class="op">*</span>tools<span class="op">.</span>Registry<span class="op">,</span> block anthropic<span class="op">.</span>ContentBlock<span class="op">,</span> cb runCallbacks<span class="op">)</span> ToolTrace</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> appendPostEditVerificationReminder<span class="op">(</span>toolName <span class="dt">string</span><span class="op">,</span> input json<span class="op">.</span>RawMessage<span class="op">,</span> output <span class="dt">string</span><span class="op">,</span> changes <span class="op">[]</span>tools<span class="op">.</span>FileChange<span class="op">)</span> <span class="dt">string</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> deltaClosureGateResult<span class="op">(</span>contract taskContract<span class="op">,</span> calls <span class="op">[]</span>ToolTrace<span class="op">,</span> finalText <span class="dt">string</span><span class="op">)</span> <span class="op">(</span>completionGateResult<span class="op">,</span> <span class="dt">bool</span><span class="op">)</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> lastDeltaIndex<span class="op">(</span>calls <span class="op">[]</span>ToolTrace<span class="op">)</span> <span class="dt">int</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> traceCreatesDelta<span class="op">(</span>call ToolTrace<span class="op">)</span> <span class="dt">bool</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> postDeltaChecksObserved<span class="op">(</span>calls <span class="op">[]</span>ToolTrace<span class="op">,</span> after <span class="dt">int</span><span class="op">)</span> <span class="op">(</span>scope <span class="dt">bool</span><span class="op">,</span> metadata <span class="dt">bool</span><span class="op">,</span> semantic <span class="dt">bool</span><span class="op">)</span></span></code></pre></div>
+<p>完整路径如下：</p>
+<pre class="mermaid"><code>flowchart TD
+  EDIT[&quot;Edit / MultiEdit / Write tool.Run&quot;] --&gt; FC[&quot;toolContext.FileChange(tools.FileChange)&quot;]
+  FC --&gt; TRACE[&quot;ToolTrace.FileChanges&quot;]
+  TRACE --&gt; REM[&quot;appendPostEditVerificationReminder&quot;]
+  TRACE --&gt; LDI[&quot;lastDeltaIndex&quot;]
+  LDI --&gt; TCD[&quot;traceCreatesDelta == true&quot;]
+  F[&quot;candidate final says done/fixed&quot;] --&gt; DCG[&quot;post_action_delta&quot;]
+  TCD --&gt; DCG
+  DCG --&gt; PDC[&quot;postDeltaChecksObserved after latest delta&quot;]
+  PDC --&gt;|missing scope/metadata/semantic| BLOCK[&quot;block_continue&quot;]
+  PDC --&gt;|all present| NEXT[&quot;allow finalClaimGate&quot;]</code></pre>
+<p>文件工具如何上报变化：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>工具</th>
+<th>上报位置</th>
+<th>上报内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Edit</code></td>
+<td><code>fileedit.Tool.Run</code></td>
+<td><code>tools.FileChange{Path, Before, After, BeforeExists:true, AfterExists:true, BeforeMode, AfterMode, ModeChanged}</code></td>
+</tr>
+<tr>
+<td><code>MultiEdit</code></td>
+<td><code>fileedit.MultiTool.Run</code></td>
+<td>同上，批量替换成功后一次性上报</td>
+</tr>
+<tr>
+<td><code>Write</code></td>
+<td><code>filewrite.Tool.Run</code></td>
+<td><code>Before</code> 可能为空，<code>BeforeExists</code>
+取决于文件是否已存在，<code>AfterExists:true</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>runTool</code> 把这些变化收集进本轮 trace：</p>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> fileChanges <span class="op">[]</span>tools<span class="op">.</span>FileChange</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>res <span class="op">:=</span> tool<span class="op">.</span>Run<span class="op">(</span>ctx<span class="op">,</span> input<span class="op">,</span> tools<span class="op">.</span>Context<span class="op">{</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    FileChange<span class="op">:</span> <span class="kw">func</span><span class="op">(</span>change tools<span class="op">.</span>FileChange<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>        fileChanges <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>fileChanges<span class="op">,</span> change<span class="op">)</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>        s<span class="op">.</span>recordFileChange<span class="op">(</span>change<span class="op">)</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">},</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="op">})</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>trace<span class="op">.</span>FileChanges <span class="op">=</span> <span class="bu">append</span><span class="op">([]</span>tools<span class="op">.</span>FileChange<span class="op">(</span><span class="ot">nil</span><span class="op">),</span> fileChanges<span class="op">...)</span></span></code></pre></div>
+<p>工具成功后会立刻把 post-edit reminder 附加到 tool result：</p>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> res<span class="op">.</span>IsError <span class="op">{</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    res<span class="op">.</span>Content <span class="op">=</span> appendVerificationFailureRecoveryReminder<span class="op">(...)</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    res<span class="op">.</span>Content <span class="op">=</span> appendPostEditVerificationReminder<span class="op">(</span>block<span class="op">.</span>Name<span class="op">,</span> input<span class="op">,</span> res<span class="op">.</span>Content<span class="op">,</span> fileChanges<span class="op">)</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>shouldAppendPostEditVerificationReminder</code>
+的触发条件：</p>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>Edit <span class="op">/</span> MultiEdit <span class="op">/</span> Write <span class="op">/</span> NotebookEdit <span class="op">-&gt;</span> <span class="ot">true</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>Bash <span class="op">-&gt;</span> looksLikeWriteLikeBashCommand<span class="op">(</span>input<span class="op">)</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>其他工具 <span class="op">-&gt;</span> <span class="bu">len</span><span class="op">(</span>changes<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span></span></code></pre></div>
+<p>这一步是提示模型补验证的软引导，但真正 final 前的硬阻断在
+<code>post_action_delta</code> rule。</p>
+<p><code>post_action_delta</code> 的触发条件：</p>
+<ol type="1">
+<li>final 文本声称 completed/fixed/done：</li>
+</ol>
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">!</span>finalTextClaimsCompletion<span class="op">(</span>finalText<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>finalTextClaimsFixed<span class="op">(</span>finalText<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<ol start="2" type="1">
+<li>本轮工具轨迹中存在 delta：</li>
+</ol>
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>lastDelta <span class="op">:=</span> lastDeltaIndex<span class="op">(</span>calls<span class="op">)</span></span></code></pre></div>
+<p><code>lastDeltaIndex</code> 从后往前找最近一次 delta：</p>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>traceCreatesDelta<span class="op">(</span>calls<span class="op">[</span>i<span class="op">])</span> <span class="op">||</span> traceStagesChanges<span class="op">(</span>calls<span class="op">[</span>i<span class="op">])</span></span></code></pre></div>
+<p><code>traceCreatesDelta</code> 对 Edit/Write/MultiEdit
+的判断非常直接：</p>
+<div class="sourceCode" id="cb41"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> call<span class="op">.</span>IsError <span class="op">{</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ot">false</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span><span class="op">(</span>call<span class="op">.</span>FileChanges<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">{</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ot">true</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>也就是说，只要文件工具成功上报了
+<code>FileChanges</code>，就会被视为本轮产生了 delta。</p>
+<ol start="3" type="1">
+<li>最新 delta 后必须有三类 Bash 验证：</li>
+</ol>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>scope<span class="op">,</span> metadata<span class="op">,</span> semantic <span class="op">:=</span> postDeltaChecksObserved<span class="op">(</span>calls<span class="op">,</span> lastDelta<span class="op">)</span></span></code></pre></div>
+<p><code>postDeltaChecksObserved</code> 只看 latest delta 之后的成功
+Bash 调用：</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>check</th>
+<th>Go 判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scope</td>
+<td>command 同时包含 <code>git status --short</code> 和
+<code>git diff --name-status</code></td>
+</tr>
+<tr>
+<td>metadata</td>
+<td>command 包含 <code>git diff --summary</code></td>
+</tr>
+<tr>
+<td>semantic</td>
+<td><code>isSemanticCheckCommand(command)</code> 为 true</td>
+</tr>
+</tbody>
+</table>
+<p><code>isSemanticCheckCommand</code> 识别
+<code>go test</code>、<code>npm test</code>、<code>pytest</code>、<code>cargo test</code>、<code>bash -n</code>、<code>test -x</code>、<code>rg</code>、<code>grep</code>、<code>node</code>、<code>python</code>、<code>go run</code>
+等确定性验证命令。</p>
+<p>缺任意一类时，返回 reminder：</p>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>Completion is blocked by Post<span class="op">-</span>Action Delta Gate<span class="op">:</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>files or shared state changed in this turn<span class="op">,</span> but these post<span class="op">-</span>change checks are still missing<span class="op">...</span></span></code></pre></div>
+<p>然后 <code>Session.run</code> 按 <code>block_continue</code>
+处理，candidate final 不输出。</p>
+<p>因此 Edit/Write/MultiEdit 的闭环硬约束可以总结为：</p>
+<ol type="1">
+<li>工具执行成功后必须通过 <code>FileChange</code> callback 留下
+delta。</li>
+<li>delta 写入 <code>ToolTrace.FileChanges</code>。</li>
+<li>final 声称完成/修复时，<code>post_action_delta</code> 查最近
+delta。</li>
+<li>最近 delta 之后缺
+<code>git status + git diff --name-status</code>、<code>git diff --summary</code>、语义验证任一项，就阻断
+final。</li>
+<li>阻断不是拒绝文件修改本身，而是拒绝“未验证就宣称完成”。</li>
+</ol>
+<h3 id="step-7action-evidence-delta-ledger-怎么写入">Step 7：Action /
+Evidence / Delta Ledger 怎么写入</h3>
+<p>每次工具调用后，runtime 都会执行：</p>
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>result<span class="op">.</span>ToolCalls <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>result<span class="op">.</span>ToolCalls<span class="op">,</span> trace<span class="op">)</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>s<span class="op">.</span>recordClosureTrace<span class="op">(</span>trace<span class="op">)</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>s<span class="op">.</span>recordTool<span class="op">(</span>trace<span class="op">)</span></span></code></pre></div>
+<p><code>recordClosureTrace</code> 会派生三类 transcript 事件：</p>
+<div class="sourceCode" id="cb45"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>s<span class="op">.</span>recordClosureEvent<span class="op">(</span><span class="st">&quot;action_record&quot;</span><span class="op">,</span> closureActionRecord<span class="op">(</span>trace<span class="op">))</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>s<span class="op">.</span>recordClosureEvent<span class="op">(</span><span class="st">&quot;evidence_record&quot;</span><span class="op">,</span> evidence<span class="op">)</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>s<span class="op">.</span>recordClosureEvent<span class="op">(</span><span class="st">&quot;delta_record&quot;</span><span class="op">,</span> delta<span class="op">)</span></span></code></pre></div>
+<p>三类事件的含义：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>事件</th>
+<th>生成逻辑</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>action_record</code></td>
+<td>每个 ToolTrace 都生成，记录工具、动作类型、路径、成功与否</td>
+<td>trace/审计时看 agent 做了什么</td>
+</tr>
+<tr>
+<td><code>evidence_record</code></td>
+<td>Read/Grep/Glob/LS/read-only Bash/test command 派生</td>
+<td>final claim gate 的证据来源</td>
+</tr>
+<tr>
+<td><code>delta_record</code></td>
+<td>文件变化或 write-like/shared-state Bash 派生</td>
+<td>post-action delta gate 判断是否需要补验证</td>
+</tr>
+</tbody>
+</table>
+<p>这些事件不会代替 ToolTrace 做判断，但让闭环过程可观测、可回放、可写
+acceptance。</p>
+<h3 id="step-8为什么这是硬约束">Step 8：为什么这是硬约束</h3>
+<p>判断一个机制是不是硬约束，看它是否改变 Go 控制流：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>场景</th>
+<th>Go 控制流</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>final 缺证据</td>
+<td><code>completionGate -&gt; block_continue -&gt; continue</code></td>
+<td>final 不输出、不记录为 accepted assistant</td>
+</tr>
+<tr>
+<td>git commit 缺 scope precheck</td>
+<td><code>preToolClosureGate -&gt; block_tool</code></td>
+<td><code>s.runTool</code> 不调用，真实 commit 不执行</td>
+</tr>
+<tr>
+<td>hook deny</td>
+<td><code>runTool -&gt; IsError return</code></td>
+<td>工具结果失败，模型必须处理</td>
+</tr>
+<tr>
+<td>permission deny</td>
+<td>guarded tool 返回失败</td>
+<td>工具副作用被权限层挡住</td>
+</tr>
+<tr>
+<td>工具成功但改了文件</td>
+<td><code>FileChanges -&gt; delta_record</code></td>
+<td>final 前必须补 scope/metadata/semantic checks</td>
+</tr>
+</tbody>
+</table>
+<p>提示词只能影响模型倾向；上表这些路径是 Go runtime 的分支、返回值和
+<code>continue</code>，所以属于硬约束。</p>
+<h2 id="如何保证闭环正确">如何保证闭环正确</h2>
+<p>当前实现通过四层约束保证闭环：</p>
+<pre class="mermaid"><code>flowchart TD
+  CLAIM[&quot;final claim&quot;] --&gt; LEDGER[&quot;ToolTrace / action_record / evidence_record / delta_record&quot;]
+  LEDGER --&gt; GATE[&quot;CompletionGate predicate&quot;]
+  GATE --&gt; TEST[&quot;targeted tests + closure acceptance script&quot;]
+  TEST --&gt; OBS[&quot;transcript / telemetry / prompt dump observability&quot;]</code></pre>
+<ol type="1">
+<li>工具执行生成 <code>ToolTrace</code>，包含 tool
+name、input、output、<code>IsError</code>、<code>FileChanges</code>。</li>
+<li>runtime 从 ToolTrace 派生 action/evidence/delta records，写入
+transcript。</li>
+<li>gate 根据 final claim 匹配本轮 evidence，而不是相信模型自述。</li>
+<li><code>internal/query</code> 有针对 read scope、post-action
+delta、commit/push/tag/external claim、blocked final
+不泄漏等测试；<code>scripts/closure-gate-acceptance.sh</code> 覆盖真实
+CLI stub 链路。</li>
+</ol>
+<p>当前边界也要明确：</p>
+<ul>
+<li>Bash 分类是 conservative best-effort，不解析完整 shell
+AST、变量展开、alias、subshell 或脚本内部副作用。</li>
+<li>gate
+主要防“无证据声明完成”和“高风险动作缺前置条件”，不等价于形式化证明业务逻辑一定正确。</li>
+<li>复杂发布/部署仍需要产品化 workflow；当前 External Action Gate
+主要做授权和 dry-run/preview 边界。</li>
+</ul>
+<h2 id="demo-演练">Demo 演练</h2>
+<p>本节用“用户输入 -&gt; runtime 行为 -&gt; 可观察证据 -&gt; 正确
+final”的形式说明闭环如何落地。demo
+的目标不是要求人工逐字复现模型输出，而是帮助读者判断一条链路应该看哪些证据。</p>
+<h3 id="demo-1简单问题不走重型闭环">Demo 1：简单问题不走重型闭环</h3>
+<p>用户输入：</p>
+<pre class="text"><code>1+1=?</code></pre>
+<p>runtime 行为：</p>
+<pre class="mermaid"><code>flowchart LR
+  U[&quot;1+1=?&quot;] --&gt; C[&quot;TaskContract L0 trivial_answer&quot;]
+  C --&gt; M[&quot;model answers directly&quot;]
+  M --&gt; G[&quot;CompletionGate allow&quot;]
+  G --&gt; A[&quot;accepted final: 2&quot;]</code></pre>
+<p>可观察证据：</p>
+<ul>
+<li><code>TaskContract.ClosureLevel</code> 是
+<code>L0_trivial_answer</code>。</li>
+<li>不需要 <code>Read</code>、<code>Bash</code>、<code>git status</code>
+或测试命令。</li>
+<li>如果模型声称“我检查了仓库”但没有工具证据，<code>Final Claim Gate</code>
+会拦截这类本地事实声明。</li>
+</ul>
+<p>正确 final：</p>
+<pre class="text"><code>2</code></pre>
+<h3 id="demo-2读文件总结必须先有-read-evidence">Demo
+2：读文件总结必须先有 read evidence</h3>
+<p>用户输入：</p>
+<pre class="text"><code>帮我看 internal/query/closure_gate.go 的闭环逻辑并总结。</code></pre>
+<p>正常路径：</p>
+<pre class="mermaid"><code>sequenceDiagram
+  participant Q as query.Session
+  participant M as Model
+  participant R as Recorder
+
+  Q-&gt;&gt;M: prompt + tools
+  M--&gt;&gt;Q: tool_use Read(file_path=internal/query/closure_gate.go)
+  Q-&gt;&gt;R: evidence_record(local_read)
+  Q-&gt;&gt;M: tool_result(file content)
+  M--&gt;&gt;Q: final summary
+  Q-&gt;&gt;Q: Read Scope Gate passes
+  Q--&gt;&gt;R: accepted assistant message</code></pre>
+<p>如果模型没读就总结，runtime 会插入类似提醒：</p>
+<pre class="text"><code>&lt;system-reminder&gt;Completion is blocked by Read Scope Gate: missing required read evidence for: internal/query/closure_gate.go...&lt;/system-reminder&gt;</code></pre>
+<p>可观察证据：</p>
+<ul>
+<li>transcript 中有 <code>task_contract</code>，closure level 为
+<code>L2_read_only_scoped</code>。</li>
+<li>transcript 中有 <code>tool_result</code>，tool name 为
+<code>Read</code>。</li>
+<li>transcript 中有
+<code>evidence_record</code>，<code>source_kind=local_read</code>。</li>
+<li>被拦截的 premature summary 不应作为 accepted assistant message
+出现。</li>
+</ul>
+<p>正确 final
+应该只基于读到的文件内容总结；如果只读了部分内容，必须说明读取范围。</p>
+<h3 id="demo-3修改文件后不能直接说完成">Demo
+3：修改文件后不能直接说完成</h3>
+<p>用户输入：</p>
+<pre class="text"><code>修复 internal/query/closure_gate.go 里的一个闭环判断问题，跑相关测试。</code></pre>
+<p>runtime 期望路径：</p>
+<pre class="mermaid"><code>flowchart TD
+  EDIT[&quot;Edit/MultiEdit/Write&quot;] --&gt; DELTA[&quot;delta_record(file modify)&quot;]
+  DELTA --&gt; SCOPE[&quot;git status --short + git diff --name-status&quot;]
+  SCOPE --&gt; META[&quot;git diff --summary&quot;]
+  META --&gt; SEM[&quot;go test ./internal/query -count=1&quot;]
+  SEM --&gt; FINAL[&quot;final claims fixed/tested&quot;]
+  FINAL --&gt; GATE[&quot;Post-Action Delta Gate allow&quot;]</code></pre>
+<p>如果模型在 Edit 后直接说“已修复并测试通过”，但没有测试或 diff
+证据，<code>Post-Action Delta Gate</code> /
+<code>Final Claim Gate</code> 会阻断。</p>
+<p>可观察证据：</p>
+<ul>
+<li><code>ToolTrace.FileChanges</code> 非空。</li>
+<li><code>delta_record</code> 记录变更路径。</li>
+<li>最新 delta 后出现 scope check、metadata check、semantic check。</li>
+<li>如果 final 声称测试通过，必须有成功 verification Bash，例如
+<code>go test ./internal/query -count=1</code>。</li>
+</ul>
+<p>正确 final 应拆开说明：</p>
+<pre class="text"><code>已修改 internal/query/closure_gate.go。
+验证：
+- git status --short / git diff --name-status 确认变更范围
+- git diff --summary 确认没有意外 metadata 变化
+- go test ./internal/query -count=1 通过</code></pre>
+<h3 id="demo-4commit-push-是工具前硬拦截">Demo 4：commit / push
+是工具前硬拦截</h3>
+<p>用户输入：</p>
+<pre class="text"><code>把这次改动提交并 push。</code></pre>
+<p>错误路径：</p>
+<pre class="mermaid"><code>flowchart TD
+  TRY[&quot;Bash: git commit -m ...&quot;] --&gt; PRE[&quot;preToolClosureGate&quot;]
+  PRE --&gt; MISS[&quot;preCommitScopeVerified=false&quot;]
+  MISS --&gt; BLOCK[&quot;block_tool synthetic tool_result&quot;]</code></pre>
+<p>runtime 会阻断 <code>git commit</code>，因为提交前必须先确认当前
+staged / unstaged scope。正确路径应该是：</p>
+<pre class="mermaid"><code>flowchart TD
+  STATUS[&quot;git status --short&quot;] --&gt; DIFF[&quot;git diff --name-status&quot;]
+  DIFF --&gt; CACHED[&quot;git diff --cached --name-status&quot;]
+  CACHED --&gt; COMMIT[&quot;git commit -m ...&quot;]
+  COMMIT --&gt; POST[&quot;git status --short + git log -1&quot;]
+  POST --&gt; PUSH_PRE[&quot;git status --short --branch + git rev-parse HEAD + upstream check&quot;]
+  PUSH_PRE --&gt; PUSH[&quot;git push&quot;]
+  PUSH --&gt; READBACK[&quot;post-push remote/upstream verification&quot;]</code></pre>
+<p>可观察证据：</p>
+<ul>
+<li>如果缺少 precheck，<code>tool_result</code> 的
+<code>IsError=true</code>，内容包含
+<code>Tool blocked by Pre-Commit Scope Gate</code> 或
+<code>Shared-State Git Gate</code>。</li>
+<li>commit 后 final 不能只说“已提交”，还要有 post-commit readback。</li>
+<li>push 后 final 不能只说“已推送”，还要有 post-push remote/branch
+verification。</li>
+</ul>
+<h3 id="demo-4a实际-l3-prompt-如何触发硬约束">Demo 4A：实际 L3 prompt
+如何触发硬约束</h3>
+<p>这个例子要特别注意：当前没有 <code>L3InvestigationGate</code>
+这个专属函数。L3 的“硬约束”体现为任务先被归类成
+<code>L3_investigation_audit</code>，runtime 注入 audit
+strategy；如果模型随后在没有本地 evidence
+的情况下输出审计结论，<code>Final Claim Gate</code> 会在 final
+前硬拦截。</p>
+<p>用户输入：</p>
+<pre class="text"><code>Run a repo health audit and find the highest ROI gaps.</code></pre>
+<p>Go 分类路径：</p>
+<pre class="mermaid"><code>flowchart TD
+  U[&quot;prompt: repo health audit&quot;] --&gt; BTC[&quot;buildTaskContract(prompt)&quot;]
+  BTC --&gt; CRT[&quot;classifyRuntimeTaskPrompt(prompt)&quot;]
+  CRT --&gt; TYPE[&quot;runtimeTaskRepoHealthAudit&quot;]
+  TYPE --&gt; L3[&quot;TaskContract.ClosureLevel = L3_investigation_audit&quot;]
+  L3 --&gt; STRATEGY[&quot;runtimeTaskStrategySection injects Repository health audit strategy&quot;]</code></pre>
+<p>对应代码判断：</p>
+<div class="sourceCode" id="cb61"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> classifyRuntimeTaskPrompt<span class="op">(</span>prompt<span class="op">).</span>Type <span class="op">{</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> runtimeTaskRepoHealthAudit<span class="op">,</span> runtimeTaskReleaseReadinessAudit<span class="op">,</span> runtimeTaskEntrypointAudit<span class="op">:</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> taskContract<span class="op">{</span>ClosureLevel<span class="op">:</span> closureLevelInvestigation<span class="op">}</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>错误路径：模型没有调用任何 Read/Grep/Glob/LS/read-only Bash，就直接
+final：</p>
+<pre class="text"><code>I inspected the entire repository and no issues found.</code></pre>
+<p>final 前 gate 路径：</p>
+<pre class="mermaid"><code>flowchart TD
+  F[&quot;candidate final: inspected entire repository + no issues found&quot;] --&gt; CG[&quot;completionGate&quot;]
+  CG --&gt; RSG[&quot;read_scope&quot;]
+  RSG --&gt;|not L2, skip| DCG[&quot;post_action_delta&quot;]
+  DCG --&gt;|no delta, skip| FCG[&quot;final_claim&quot;]
+  FCG --&gt; S1[&quot;finalTextClaimsSearched = true&quot;]
+  FCG --&gt; S2[&quot;finalTextClaimsFullRepositoryScope = true&quot;]
+  FCG --&gt; S3[&quot;finalTextClaimsNoIssuesFound = true&quot;]
+  S1 --&gt; E1[&quot;searchEvidenceObserved = false&quot;]
+  S2 --&gt; E2[&quot;broadSearchEvidenceObserved = false&quot;]
+  S3 --&gt; E3[&quot;collectReadEvidence empty&quot;]
+  E1 --&gt; BLOCK[&quot;block_continue: final not accepted&quot;]
+  E2 --&gt; BLOCK
+  E3 --&gt; BLOCK</code></pre>
+<p>硬约束触发点在 <code>final_claim</code> rule：</p>
+<div class="sourceCode" id="cb64"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> finalTextClaimsSearched<span class="op">(</span>finalText<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>searchEvidenceObserved<span class="op">(</span>calls<span class="op">)</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> finalTextClaimsFullRepositoryScope<span class="op">(</span>finalText<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>broadSearchEvidenceObserved<span class="op">(</span>calls<span class="op">)</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> finalTextClaimsNoIssuesFound<span class="op">(</span>finalText<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="bu">len</span><span class="op">(</span>collectReadEvidence<span class="op">(</span>calls<span class="op">))</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span></code></pre></div>
+<p>runtime 行为：</p>
+<ol type="1">
+<li><code>completionGate</code> 返回
+<code>gateSeverityBlockContinue</code>。</li>
+<li><code>Session.run</code> 把 candidate final 从
+<code>result.Response</code> 移除。</li>
+<li>被拦截 final 不 replay 给 UI/stdout，也不记录为 accepted
+assistant。</li>
+<li>runtime 插入
+<code>&lt;system-reminder&gt;Completion is blocked by Final Claim Gate...&lt;/system-reminder&gt;</code>，让模型继续补证据。</li>
+</ol>
+<p>正确路径至少要先产生本轮 evidence，例如：</p>
+<pre class="text"><code>Bash: git status --short --branch &amp;&amp; find . -maxdepth 2 -type f | wc -l
+Bash: rg -n &quot;TODO|FIXME|panic|deprecated&quot; .
+Read/Grep/Glob/LS: 对命中的关键文件继续核查</code></pre>
+<p>然后 final 只能基于观察到的 evidence
+给出审计结论，不能把未覆盖范围说成“全仓库已确认无问题”。</p>
+<h3 id="demo-4b实际-l5-prompt-如何触发硬约束">Demo 4B：实际 L5 prompt
+如何触发硬约束</h3>
+<p>L5 的典型硬约束发生在工具执行前。模型只要尝试执行
+<code>git push</code>、mutating tag、deploy/publish/send
+等共享状态写操作，<code>preToolClosureGate</code>
+会先于真实工具运行；缺少前置证据时真实命令不会执行。</p>
+<p>用户输入：</p>
+<pre class="text"><code>Push this branch to the remote.</code></pre>
+<p>Go 分类路径：</p>
+<pre class="mermaid"><code>flowchart TD
+  U[&quot;prompt: Push this branch to the remote&quot;] --&gt; BTC[&quot;buildTaskContract(prompt)&quot;]
+  BTC --&gt; CRT[&quot;classifyRuntimeTaskPrompt(prompt)&quot;]
+  CRT --&gt; UNKNOWN[&quot;no repo audit / no local repair type&quot;]
+  UNKNOWN --&gt; SHARED[&quot;looksLikeSharedStatePrompt = true&quot;]
+  SHARED --&gt; L5[&quot;TaskContract.ClosureLevel = L5_shared_state_change&quot;]
+  L5 --&gt; OPS[&quot;SharedStateOperations includes push&quot;]</code></pre>
+<p>对应代码判断：</p>
+<div class="sourceCode" id="cb68"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> looksLikeSharedStatePrompt<span class="op">(</span>text<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> taskContract<span class="op">{</span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>        ClosureLevel<span class="op">:</span>          closureLevelSharedStateChange<span class="op">,</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>        SharedStateOperations<span class="op">:</span> extractSharedStateOperations<span class="op">(</span>text<span class="op">),</span></span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>错误路径：模型直接调用 Bash：</p>
+<div class="sourceCode" id="cb69"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;command&quot;</span><span class="fu">:</span><span class="st">&quot;git push&quot;</span><span class="fu">}</span></span></code></pre></div>
+<p>工具前 gate 路径：</p>
+<pre class="mermaid"><code>flowchart TD
+  TU[&quot;tool_use Bash: git push&quot;] --&gt; PTG[&quot;preToolClosureGate(contract, prompt, calls, Bash, input)&quot;]
+  PTG --&gt; INTENT[&quot;classifyShellIntent(command)&quot;]
+  INTENT --&gt; KIND[&quot;intent.Kind = git_push&quot;]
+  KIND --&gt; CHECK[&quot;prePushGitVerified(calls)&quot;]
+  CHECK --&gt; BRANCH[&quot;gitBranchObjectPrecheckObserved?&quot;]
+  CHECK --&gt; REMOTE[&quot;gitRemoteOrUpstreamPrecheckObserved?&quot;]
+  BRANCH --&gt;|false| BLOCK[&quot;block_tool: s.runTool not called&quot;]
+  REMOTE --&gt;|false| BLOCK</code></pre>
+<p>硬约束触发点在 <code>preToolClosureGate</code>：</p>
+<div class="sourceCode" id="cb71"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>intent<span class="op">.</span>Kind <span class="op">==</span> shellIntentGitPush <span class="op">||</span> intent<span class="op">.</span>Kind <span class="op">==</span> shellIntentGitDestructiveSharedState<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>prePushGitVerified<span class="op">(</span>calls<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> completionGateResult<span class="op">{</span>Severity<span class="op">:</span> gateSeverityBlockTool<span class="op">,</span> Reminder<span class="op">:</span> <span class="st">&quot;...&quot;</span><span class="op">}</span></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>prePushGitVerified(calls)</code> 要求本轮已有两类只读证据：</p>
+<div class="sourceCode" id="cb72"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> prePushGitVerified<span class="op">(</span>calls <span class="op">[]</span>ToolTrace<span class="op">)</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gitBranchObjectPrecheckObserved<span class="op">(</span>calls<span class="op">)</span> <span class="op">&amp;&amp;</span> gitRemoteOrUpstreamPrecheckObserved<span class="op">(</span>calls<span class="op">)</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>具体证据例子：</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>证据类型</th>
+<th>可通过的 Bash evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>branch/object</td>
+<td>同一条或后续只读命令中出现
+<code>git status --short --branch</code>，并出现
+<code>git rev-parse</code> 或 <code>git log</code></td>
+</tr>
+<tr>
+<td>remote/upstream</td>
+<td><code>git rev-parse @{u}</code>、<code>git branch -vv</code>、<code>git remote -v</code>
+或 <code>git ls-remote</code></td>
+</tr>
+</tbody>
+</table>
+<p>如果这些 evidence 不存在，runtime 生成 synthetic failed tool
+result：</p>
+<pre class="text"><code>Tool blocked by Shared-State Git Gate: git push requires current branch, object-state, and remote/upstream evidence first...</code></pre>
+<p>此时真实 <code>git push</code> 没有执行。正确路径应该先补只读
+precheck：</p>
+<pre class="text"><code>Bash: git status --short --branch &amp;&amp; git rev-parse HEAD
+Bash: git rev-parse @{u} || git branch -vv
+Bash: git push
+Bash: git status --short --branch &amp;&amp; git rev-parse @{u}</code></pre>
+<p>最后如果 final 声称 “pushed / 已推送”，还会继续被
+<code>Final Claim Gate</code> 检查：</p>
+<div class="sourceCode" id="cb75"><pre
+class="sourceCode go"><code class="sourceCode go"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> finalTextClaimsPushed<span class="op">(</span>finalText<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>successfulBashCommandObserved<span class="op">(</span>calls<span class="op">,</span> git push matcher<span class="op">)</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> finalTextClaimsPushed<span class="op">(</span>finalText<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>postPushVerificationObserved<span class="op">(</span>calls<span class="op">)</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span></span></code></pre></div>
+<p>所以 L5 是两段式硬约束：</p>
+<ol type="1">
+<li><strong>工具前</strong>：<code>preToolClosureGate</code>
+防止缺证据的共享状态写操作真的执行。</li>
+<li><strong>final 前</strong>：<code>final_claim</code>
+防止模型无证据声称已经 push/deploy/publish。</li>
+</ol>
+<h3 id="demo-5subagent-不是自动分配必须由工具触发">Demo 5：subagent
+不是自动分配，必须由工具触发</h3>
+<p>用户输入：</p>
+<pre class="text"><code>并行检查 API 和 TUI 两块风险，最后你汇总。</code></pre>
+<p>合理路径：</p>
+<pre class="mermaid"><code>flowchart TD
+  P[&quot;parent model decides delegation is useful&quot;] --&gt; T[&quot;Task with tasks[] batch or AgentCreate&quot;]
+  T --&gt; A1[&quot;subagent: API review&quot;]
+  T --&gt; A2[&quot;subagent: TUI review&quot;]
+  A1 --&gt; R1[&quot;Result: Summary/Evidence/Unknowns/Verification/Risks&quot;]
+  A2 --&gt; R2[&quot;Result: Summary/Evidence/Unknowns/Verification/Risks&quot;]
+  R1 --&gt; S[&quot;parent synthesizes&quot;]
+  R2 --&gt; S
+  S --&gt; F[&quot;final answer to user&quot;]</code></pre>
+<p>关键边界：</p>
+<ul>
+<li>runtime 不会因为任务复杂就自动启动 subagent；必须由模型调用
+<code>Task</code> 或 <code>AgentCreate</code>。</li>
+<li><code>Task</code> 适合同步等待结果；<code>AgentCreate</code>
+适合后台长任务，返回 <code>task_id</code> 后必须用 <code>AgentGet</code>
+查结果。</li>
+<li>subagent 结果不是直接 final；父 agent 要综合多个子结果，处理
+unknowns 和 risks。</li>
+</ul>
+<p>可观察证据：</p>
+<ul>
+<li>parent transcript 有 <code>tool_result</code>，tool name 为
+<code>Task</code> 或 <code>AgentCreate</code>。</li>
+<li>background agent 有 task store
+event：started、turn_start、text_delta、tool_call、tool_result、completed/failed。</li>
+<li><code>AgentGet</code> 结果里可能有 <code>capability_loop</code>；父
+agent 应携带这些 evidence/unknowns/next_action 决策。</li>
+</ul>
+<h3 id="demo-6用-acceptance-脚本验证-final-不泄漏">Demo 6：用 acceptance
+脚本验证 final 不泄漏</h3>
+<p>闭环 gate 的真实 CLI 验收入口：</p>
+<div class="sourceCode" id="cb78"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scripts/closure-gate-acceptance.sh</span> <span class="at">--force</span></span></code></pre></div>
+<p>这个脚本会启动本地 OpenAI-compatible stub provider 和隔离 fixture
+repo，模拟模型先输出 premature final，再补 <code>Read</code> 和
+<code>git diff --check</code>。通过标准是：</p>
+<ul>
+<li>premature final marker 不出现在用户可见 accepted output。</li>
+<li><code>Read README.md</code> evidence 出现后，read summary claim
+才能通过。</li>
+<li><code>git diff --check</code> evidence 出现后，checks passed claim
+才能通过。</li>
+</ul>
+<p>这条 demo 用来验证“gate 是 runtime 硬流程，不是提示词建议”。</p>
+<h2 id="subagent-multi-agent-触发时机">Subagent / Multi-Agent
+触发时机</h2>
+<p>Go Claude 不会在 runtime 层“凭空自动分配 subagent”。subagent
+触发来自模型显式调用工具，或 active skill 配置了默认 agent 后模型调用
+<code>Task</code>。</p>
+<pre class="mermaid"><code>flowchart TD
+  NEED[&quot;Model decides work should be delegated&quot;] --&gt; CHOOSE{&quot;Which tool?&quot;}
+  CHOOSE --&gt;|sync focused work| TASK[&quot;Task&quot;]
+  CHOOSE --&gt;|background / long-running / parallel| CREATE[&quot;AgentCreate&quot;]
+  CHOOSE --&gt;|check background result| GET[&quot;AgentGet&quot;]
+  CHOOSE --&gt;|send more context| MSG[&quot;AgentMessage&quot;]
+  TASK --&gt; RT[&quot;agentruntime.Runtime.Run&quot;]
+  CREATE --&gt; BG[&quot;agentruntime.Runtime.RunBackground&quot;]
+  BG --&gt; STORE[&quot;agent task store + events&quot;]
+  GET --&gt; STORE
+  MSG --&gt; STORE</code></pre>
+<h3 id="task"><code>Task</code></h3>
+<p><code>Task</code> 用于同步、聚焦的 subagent 工作。父 agent
+会等待结果。输入可以是单个任务，也可以是 <code>tasks</code>
+批量任务；批量任务会并发执行，默认最大并发 4，支持 priority scheduling
+和 retry。简单文件搜索、计数、路径匹配应优先由父 agent 直接用
+<code>Glob</code> / <code>Grep</code> /
+<code>LS</code>，不要为了并发而创建 subagent。</p>
+<p>触发细节：</p>
+<ul>
+<li><code>subagent_type</code> 指向 <code>.claude/agents</code>、plugin
+agent 或 user agent 中的真实 agent 名称。</li>
+<li>如果 <code>subagent_type</code> 为空且当前 active skill 带
+<code>Agent</code> 配置，<code>Task</code> 会使用该 skill agent。</li>
+<li>如果目标 agent frontmatter 声明
+<code>background: true</code>，<code>Task</code> 会转为后台任务并返回
+task handle。</li>
+<li>如果设置了自动后台阈值，并且有 task store，长时间 single Task
+可返回后台 handle；父 agent 必须用 <code>AgentGet</code>
+查结果，不能编造。</li>
+</ul>
+<h3 id="agentcreate"><code>AgentCreate</code></h3>
+<p><code>AgentCreate</code> 用于后台 subagent。它立即返回
+<code>task_id</code>、status、agent_name、model、session_id 等
+handle；父 agent 后续必须用 <code>AgentGet</code>
+查询完成状态。适合长任务、并行任务、需要独立推进但不阻塞主线程的工作。</p>
+<h3 id="agentget"><code>AgentGet</code></h3>
+<p><code>AgentGet</code> 查询 task 状态、progress summary 和可安全回传的
+final result。subagent 的完整 tool input/output
+不直接塞回父上下文；只给进度摘要、结构化 result、capability loop 和
+transcript/output file 指针，避免父上下文膨胀。</p>
+<h3 id="agentmessage"><code>AgentMessage</code></h3>
+<p><code>AgentMessage</code> 给运行中的 subagent
+追加上下文或指令。消息会作为 subagent conversation 中的 user message
+进入后续 turn。如果 task 已完成/失败，当前实现会尝试 terminal
+resume；无法 resume 时返回错误，要求父 agent 用 <code>AgentGet</code>
+查看终态或创建新 agent。</p>
+<h2 id="subagent-runtime-内部流程">Subagent Runtime 内部流程</h2>
+<pre class="mermaid"><code>sequenceDiagram
+  participant P as Parent agent
+  participant T as Task/AgentCreate tool
+  participant AR as agentruntime.Runtime
+  participant S as TaskStore
+  participant M as Model
+  participant R as Agent registry/tools
+
+  P-&gt;&gt;T: delegated prompt + optional subagent_type
+  T-&gt;&gt;AR: Run or RunBackground
+  AR-&gt;&gt;AR: load agent definition / skills / memory / MCP
+  AR-&gt;&gt;R: clone/filter registry by tools/disallowedTools
+  AR-&gt;&gt;S: create task and emit started event
+  loop turn &lt;= maxTurns
+    AR-&gt;&gt;M: StreamMessages(subagent system, messages, filtered tools)
+    M--&gt;&gt;AR: text or tool_use
+    alt tool_use
+      AR-&gt;&gt;R: guarded tool.Run with agent policy
+      R--&gt;&gt;AR: tool_result
+      AR-&gt;&gt;S: progress tool_call/tool_result events
+    else final
+      AR-&gt;&gt;S: finish task with resultJSON
+      AR--&gt;&gt;T: Result / task handle
+    end
+  end</code></pre>
+<p>Subagent 与父线程的隔离边界：</p>
+<ul>
+<li>subagent 是新 conversation，不自动继承父对话全文或父工具结果。</li>
+<li>subagent 可以继承父 registry，但会按 agent <code>tools</code> /
+<code>disallowedTools</code> / permission policy 过滤。</li>
+<li>agent-local MCP、skills、memory 只注入目标 agent。</li>
+<li>background task 通过 task store/event store 管理，父 agent 只能通过
+<code>AgentGet</code> / <code>AgentMessage</code> /
+<code>AgentStop</code> 交互。</li>
+<li>父 agent 必须 synthesize subagent 结果；subagent 结果不是直接对用户
+final。</li>
+</ul>
+<h2 id="端到端图解">端到端图解</h2>
+<p>用户说：“帮我看 <code>internal/query/closure_gate.go</code>
+的闭环逻辑并总结。”</p>
+<pre class="mermaid"><code>flowchart TD
+  U[&quot;read and summarize closure_gate.go&quot;] --&gt; C[&quot;TaskContract L2 read_only_scoped&quot;]
+  C --&gt; M1[&quot;model may call Read&quot;]
+  M1 --&gt; EV[&quot;read evidence: file_path=internal/query/closure_gate.go&quot;]
+  EV --&gt; F[&quot;candidate final summary&quot;]
+  F --&gt; G[&quot;Read Scope Gate&quot;]
+  G --&gt;|evidence present| A[&quot;accepted final&quot;]</code></pre>
+<p>如果模型没读文件就总结，<code>Read Scope Gate</code> 会阻断
+final，插入 reminder，要求先读取指定范围。</p>
+<p>用户说：“修复 bug，跑测试，然后提交并 push。”</p>
+<p>这是 L5/shared-state 的端到端例子，因为 prompt 明确要求
+<code>commit</code> 和 <code>push</code>。如果用户只要求“修复
+bug，跑测试”，闭环会停在本地变更、测试证据和 final
+gate，不会自动强制提交或推送。</p>
+<pre class="mermaid"><code>flowchart TD
+  U[&quot;fix + test + commit + push&quot;] --&gt; C[&quot;TaskContract L5 shared_state_change&quot;]
+  C --&gt; E[&quot;Edit/Write/Bash changes&quot;]
+  E --&gt; D[&quot;Post-Action Delta Gate requires status/diff/summary/test&quot;]
+  D --&gt; COMMIT_PRE[&quot;preToolClosureGate before git commit&quot;]
+  COMMIT_PRE --&gt; COMMIT[&quot;git commit&quot;]
+  COMMIT --&gt; PCV[&quot;post-commit status/log verification&quot;]
+  PCV --&gt; PUSH_PRE[&quot;preToolClosureGate before git push&quot;]
+  PUSH_PRE --&gt; PUSH[&quot;git push&quot;]
+  PUSH --&gt; PPV[&quot;post-push remote/branch verification&quot;]
+  PPV --&gt; FINAL[&quot;final can claim committed and pushed&quot;]</code></pre>
+<p>如果任一步缺证据，runtime 要么阻断工具动作，要么阻断 final
+claim。</p>
+<h2 id="读代码时的定位表">读代码时的定位表</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>问题</th>
+<th>优先看</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一条消息怎么进入 runtime</td>
+<td><code>internal/query/query.go:Session.run</code></td>
+</tr>
+<tr>
+<td>system prompt / memory / skills 怎么拼装</td>
+<td><code>assembleContextMessages</code>、<code>effectiveSystemBlocks</code>、<code>dynamicSkillCatalogMessage</code></td>
+</tr>
+<tr>
+<td>工具列表从哪里来</td>
+<td><code>internal/cli/cli.go:coreRuntimeTools</code>、<code>newQuerySession</code></td>
+</tr>
+<tr>
+<td>工具权限和 hook 怎么执行</td>
+<td><code>internal/query/query.go:runTool</code>、<code>internal/tools/guarded.go</code></td>
+</tr>
+<tr>
+<td>final 为什么被继续而不是输出</td>
+<td><code>completionGate</code>、<code>completionVerificationNudge</code></td>
+</tr>
+<tr>
+<td>commit/push/tag 为什么被拦截</td>
+<td><code>preToolClosureGate</code> +
+<code>classifyShellIntent</code></td>
+</tr>
+<tr>
+<td>文件改动后为什么要求 status/diff/test</td>
+<td><code>post_action_delta</code></td>
+</tr>
+<tr>
+<td>subagent 为什么启动/失败/后台</td>
+<td><code>internal/tools/task/task.go</code>、<code>internal/tools/agent/agent.go</code>、<code>internal/agentruntime/runtime.go</code></td>
+</tr>
+<tr>
+<td>subagent 结果如何回父线程</td>
+<td><code>AgentGet</code>、<code>ResultWithCapabilityLoopDecisionContext</code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

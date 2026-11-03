@@ -1,0 +1,25 @@
+.webui2-inspector-details { display: grid; gap: 16px; min-width: 0; font-size: 12px; line-height: 1.5; }
+.webui2-inspector-details section { min-width: 0; }
+.webui2-inspector-details h3, .webui2-inspector-details h4 { display: flex; align-items: center; gap: 6px; margin: 0 0 8px; font-size: 12px; font-weight: 600; }
+.webui2-inspector-details h4 { margin-top: 12px; }
+.webui2-inspector-details p { margin: 6px 0; font-size: 12px; }
+.webui2-inspector-details .webui2-inspector-list { margin: 0; }
+.webui2-inspector-details .webui2-inspector-list > li { min-width: 0; }
+.webui2-inspector-details summary { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; cursor: pointer; min-height: 30px; }
+.webui2-inspector-details summary strong { flex: 1 1 120px; min-width: 0; overflow-wrap: anywhere; }
+.webui2-inspector-details summary svg { flex: 0 0 auto; }
+.webui2-inspector-details summary span { font-size: 11px; }
+.webui2-inspector-details pre { background: var(--webui2-surface-muted); border-radius: 6px; max-height: 320px; margin: 8px 0; padding: 9px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 11px; }
+.webui2-inspector-facts { display: grid; gap: 6px; margin: 6px 0; }
+.webui2-inspector-facts > div { display: grid; grid-template-columns: minmax(80px, 1fr) minmax(0, 1.5fr); gap: 12px; }
+.webui2-inspector-facts dt { color: var(--webui2-text-muted); }
+.webui2-inspector-facts dd { margin: 0; text-align: right; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.webui2-inspector-details .webui2-context-snapshot { border-top: 1px solid var(--webui2-border); padding-top: 12px; }
+.webui2-context-snapshot > a, .webui2-inspector-trace-link { display: inline-flex; align-items: center; gap: 5px; color: var(--webui2-accent); width: fit-content; max-width: 100%; overflow-wrap: anywhere; }
+.webui2-context-snapshot .agent-markdown { font-size: 12px; }
+.webui2-file-change-event { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--webui2-border); }
+.webui2-inspector-muted { color: var(--webui2-text-muted); }
+.webui2-run-usage > summary { justify-content: space-between; border-top: 1px solid var(--webui2-border); margin-top: 8px; padding-top: 6px; }
+.webui2-inspector-permission-status, [data-permission-status="pending"] { color: #996609; }
+[data-permission-status="allowed"] { color: #237c57; }
+[data-permission-status="denied"] { color: #ad3737; }

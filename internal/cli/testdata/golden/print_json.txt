@@ -1,0 +1,1 @@
+{"response":"Hello from fake model.","model":"test-model","stop_reason":"end_turn","turns":1,"usage":{"input_tokens":5,"output_tokens":2}}

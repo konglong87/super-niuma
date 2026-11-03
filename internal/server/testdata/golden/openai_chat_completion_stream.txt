@@ -1,0 +1,63 @@
+data: {
+  "choices": [
+    {
+      "delta": {
+        "role": "assistant"
+      },
+      "finish_reason": null,
+      "index": 0
+    }
+  ],
+  "created": 0,
+  "id": "<chatcmpl>",
+  "model": "gpt-test",
+  "object": "chat.completion.chunk"
+}
+
+data: {
+  "choices": [
+    {
+      "delta": {
+        "content": "H"
+      },
+      "finish_reason": null,
+      "index": 0
+    }
+  ],
+  "created": 0,
+  "id": "<chatcmpl>",
+  "model": "gpt-test",
+  "object": "chat.completion.chunk"
+}
+
+data: {
+  "choices": [
+    {
+      "delta": {
+        "content": "i"
+      },
+      "finish_reason": null,
+      "index": 0
+    }
+  ],
+  "created": 0,
+  "id": "<chatcmpl>",
+  "model": "gpt-test",
+  "object": "chat.completion.chunk"
+}
+
+data: {
+  "choices": [
+    {
+      "delta": {},
+      "finish_reason": "stop",
+      "index": 0
+    }
+  ],
+  "created": 0,
+  "id": "<chatcmpl>",
+  "model": "claude-test",
+  "object": "chat.completion.chunk"
+}
+
+data: [DONE]

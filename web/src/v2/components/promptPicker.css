@@ -1,0 +1,89 @@
+.prompt-picker-root { display: inline-flex; flex: 0 0 32px; }
+/* Legacy and v2 share the picker, while each page owns its theme tokens. */
+.web-agent-page .prompt-picker-root, .web-agent-page > .prompt-picker {
+  --webui2-text: var(--agent-ink);
+  --webui2-text-muted: var(--agent-muted);
+  --webui2-surface: var(--agent-surface);
+  --webui2-surface-muted: var(--agent-panel-soft);
+  --webui2-border: var(--agent-border);
+  --webui2-accent: var(--agent-accent);
+  --webui2-accent-surface: var(--agent-accent-soft);
+  --webui2-accent-text: var(--agent-on-accent);
+  --webui2-danger: var(--agent-danger);
+  --webui2-danger-surface: var(--agent-danger-soft);
+  --webui2-overlay: var(--agent-scrim);
+}
+:is(.webui2-page, .web-agent-page) .prompt-picker-trigger { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--webui2-text-muted); }
+:is(.webui2-page, .web-agent-page) .prompt-picker-trigger:hover { background: var(--webui2-surface-muted); color: var(--webui2-text); }
+:is(.webui2-page, .web-agent-page) .prompt-picker-trigger:focus-visible { outline: 2px solid var(--webui2-accent); outline-offset: 2px; }
+
+/* The top-layer dialog is a page child, never a descendant of Composer controls. */
+.prompt-picker { margin: auto; padding: 0; width: min(600px, calc(100% - 32px)); max-width: none; max-height: calc(100dvh - 40px); border: 1px solid var(--webui2-border, #d9dde3); border-radius: 8px; background: var(--webui2-surface, #fff); color: var(--webui2-text, #20252b); box-shadow: 0 16px 48px #0003; font-size: 14px; line-height: 1.5; letter-spacing: 0; overflow: hidden; }
+.prompt-picker::backdrop { background: var(--webui2-overlay, #20252b5c); }
+.prompt-picker *, .prompt-picker *::before, .prompt-picker *::after { box-sizing: border-box; }
+.prompt-picker .prompt-picker-panel { display: flex; flex-direction: column; max-height: calc(100dvh - 42px); min-height: 0; }
+.prompt-picker .prompt-picker-header { display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; gap: 12px; min-height: 64px; padding: 14px 20px; border-bottom: 1px solid var(--webui2-border); }
+.prompt-picker .prompt-picker-heading { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.prompt-picker .prompt-picker-heading > svg { color: var(--webui2-text-muted); flex-shrink: 0; }
+.prompt-picker .prompt-picker-heading h2 { margin: 0; font-size: 16px; font-weight: 650; line-height: 1.5; overflow-wrap: anywhere; }
+.prompt-picker .prompt-picker-count { color: var(--webui2-text-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.prompt-picker button { font: inherit; cursor: pointer; }
+.prompt-picker button:disabled { cursor: not-allowed; opacity: 0.55; }
+.prompt-picker .prompt-picker-icon { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 32px; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 5px; background: transparent; color: var(--webui2-text-muted); }
+.prompt-picker .prompt-picker-icon:hover { background: var(--webui2-surface-muted); color: var(--webui2-text); }
+.prompt-picker .prompt-picker-icon[aria-pressed="true"] { color: var(--webui2-accent); background: var(--webui2-accent-surface); }
+.prompt-picker .prompt-picker-icon.is-danger:hover { background: var(--webui2-danger-surface); color: var(--webui2-danger); }
+.prompt-picker button:focus-visible { outline: 2px solid var(--webui2-accent); outline-offset: 2px; }
+.prompt-picker .prompt-picker-toolbar { display: flex; align-items: center; gap: 12px; padding: 16px 20px 12px; flex: 0 0 auto; }
+.prompt-picker .prompt-picker-search { display: flex; align-items: center; flex: 1; gap: 8px; min-width: 0; height: 38px; padding: 0 10px; margin: 0; border: 1px solid var(--webui2-border); border-radius: 6px; background: var(--webui2-surface-muted); color: var(--webui2-text-muted); }
+.prompt-picker .prompt-picker-search svg { flex-shrink: 0; }
+.prompt-picker .prompt-picker-search:focus-within { border-color: var(--webui2-accent); outline: 2px solid var(--webui2-accent-surface); }
+.prompt-picker .prompt-picker-search input { width: 100%; min-width: 0; height: 100%; padding: 0; border: 0; border-radius: 0; outline: none; box-shadow: none; background: transparent; color: var(--webui2-text); font: inherit; font-size: 13px; }
+.prompt-picker .prompt-picker-button { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; gap: 6px; min-height: 36px; padding: 7px 13px; border: 1px solid var(--webui2-border); border-radius: 6px; background: var(--webui2-surface); color: var(--webui2-text); font-size: 13px; font-weight: 550; white-space: nowrap; }
+.prompt-picker .prompt-picker-button:hover { background: var(--webui2-surface-muted); }
+.prompt-picker .prompt-picker-button.is-primary { border-color: var(--webui2-accent); background: var(--webui2-accent); color: var(--webui2-accent-text); }
+.prompt-picker .prompt-picker-button.is-danger { border-color: var(--webui2-danger); background: var(--webui2-danger); color: var(--webui2-surface); }
+.prompt-picker .prompt-picker-results { flex: 1 1 auto; min-height: 0; height: 340px; max-height: 52dvh; padding: 0 12px 12px; overflow-y: auto; overscroll-behavior: contain; }
+.prompt-picker .prompt-picker-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: min(260px, 40dvh); padding: 24px 12px; text-align: center; color: var(--webui2-text-muted); }
+.prompt-picker .prompt-picker-empty h3, .prompt-picker .prompt-picker-empty p { margin: 0; font-size: 14px; font-weight: 400; }
+.prompt-picker .prompt-picker-list { list-style: none; margin: 0; padding: 0; }
+.prompt-picker .prompt-picker-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: start; padding: 4px 0; border-bottom: 1px solid var(--webui2-border); }
+.prompt-picker .prompt-picker-item:last-child { border-bottom: 0; }
+.prompt-picker .prompt-picker-select { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; min-width: 0; width: 100%; padding: 10px 8px; border: 0; border-radius: 5px; background: transparent; color: var(--webui2-text); text-align: left; }
+.prompt-picker .prompt-picker-select:hover { background: var(--webui2-surface-muted); }
+.prompt-picker .prompt-picker-item-title { max-width: 100%; font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+.prompt-picker .prompt-picker-preview { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; max-width: 100%; overflow: hidden; overflow-wrap: anywhere; white-space: pre-wrap; color: var(--webui2-text-muted); font-size: 13px; line-height: 1.55; }
+.prompt-picker .prompt-picker-category { max-width: 100%; font-size: 11px; color: var(--webui2-text-muted); overflow-wrap: anywhere; }
+.prompt-picker .prompt-picker-item-actions { display: flex; gap: 2px; padding: 6px 0; }
+.prompt-picker .prompt-picker-editor { display: flex; flex-direction: column; flex: 1; min-height: 0; margin: 0; padding: 0; }
+.prompt-picker .prompt-picker-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.prompt-picker .prompt-picker-fields { display: grid; gap: 16px; min-width: 0; border: 0; margin: 0; padding: 20px; }
+.prompt-picker .prompt-picker-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; margin: 0; color: var(--webui2-text); font-size: 13px; font-weight: 500; }
+.prompt-picker .prompt-picker-field input, .prompt-picker .prompt-picker-field textarea { width: 100%; min-width: 0; padding: 9px 11px; border: 1px solid var(--webui2-border); border-radius: 6px; background: var(--webui2-surface); color: var(--webui2-text); font: inherit; font-size: 14px; font-weight: 400; line-height: 1.5; }
+.prompt-picker .prompt-picker-field input { height: 38px; }
+.prompt-picker .prompt-picker-field textarea { display: block; min-height: 150px; max-height: 32dvh; resize: vertical; }
+.prompt-picker .prompt-picker-field input:focus, .prompt-picker .prompt-picker-field textarea:focus { outline: 2px solid var(--webui2-accent-surface); border-color: var(--webui2-accent); }
+.prompt-picker .prompt-picker-field-row { display: grid; grid-template-columns: minmax(0, 1fr) 100px; gap: 14px; }
+.prompt-picker .prompt-picker-pin { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 13px; color: var(--webui2-text-muted); }
+.prompt-picker .prompt-picker-pin input[type="checkbox"] { appearance: auto; flex: 0 0 16px; width: 16px; height: 16px; min-height: 0; padding: 0; margin: 0; accent-color: var(--webui2-accent); }
+.prompt-picker .prompt-picker-footer { display: flex; align-items: center; justify-content: flex-end; flex: 0 0 auto; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--webui2-border); background: var(--webui2-surface); }
+.prompt-picker .prompt-picker-error { flex: 0 0 auto; max-height: 100px; overflow: auto; margin: 12px 20px 0; padding: 9px 12px; border-radius: 5px; background: var(--webui2-danger-surface); color: var(--webui2-danger); font-size: 13px; overflow-wrap: anywhere; }
+.prompt-picker .prompt-picker-delete { padding: 28px 24px; min-height: 0; overflow: auto; overflow-wrap: anywhere; }
+.prompt-picker .prompt-picker-delete > svg { color: var(--webui2-danger); }
+.prompt-picker .prompt-picker-delete p { margin: 12px 0 0; }
+.prompt-picker .prompt-picker-delete p:last-child { color: var(--webui2-text-muted); font-size: 13px; }
+.prompt-picker-spinner { animation: prompt-picker-spin 1s linear infinite; }
+@keyframes prompt-picker-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .prompt-picker-spinner { animation: none; } }
+@media (max-width: 600px) {
+  .prompt-picker { width: calc(100% - 16px); max-height: calc(100dvh - 16px); }
+  .prompt-picker .prompt-picker-panel { max-height: calc(100dvh - 18px); }
+  .prompt-picker .prompt-picker-header { padding: 10px 12px; min-height: 56px; }
+  .prompt-picker .prompt-picker-toolbar { padding: 12px; gap: 8px; }
+  .prompt-picker .prompt-picker-results { padding: 0 6px 8px; height: 400px; max-height: 60dvh; }
+  .prompt-picker .prompt-picker-fields { padding: 16px; gap: 14px; }
+  .prompt-picker .prompt-picker-footer { padding: 12px 16px max(12px, env(safe-area-inset-bottom)); }
+  .prompt-picker .prompt-picker-item { gap: 0; }
+  .prompt-picker .prompt-picker-item-actions { flex-direction: column; }
+  .prompt-picker .prompt-picker-icon { width: 36px; height: 36px; flex-basis: 36px; }
+}

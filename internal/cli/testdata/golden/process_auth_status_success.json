@@ -1,0 +1,9 @@
+{
+  "args": [
+    "auth",
+    "status"
+  ],
+  "exit_code": 0,
+  "stderr": "",
+  "stdout": "{\n  \"apiProvider\": \"\",\n  \"authMethod\": \"none\",\n  \"hasAPIKey\": false,\n  \"hasAuthToken\": false,\n  \"loggedIn\": false\n}\n"
+}

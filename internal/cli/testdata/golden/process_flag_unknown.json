@@ -1,0 +1,8 @@
+{
+  "args": [
+    "--definitely-unknown"
+  ],
+  "exit_code": 1,
+  "stderr": "unknown flag: --definitely-unknown\n",
+  "stdout": ""
+}

@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Go Claude 多路闭环运行时架构图</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101214;
+      --panel: #171b1f;
+      --panel-2: #20252b;
+      --text: #f2f0e8;
+      --muted: #aeb3b8;
+      --line: rgba(242, 240, 232, 0.18);
+      --full-loop: #e7b84b;
+      --gate-loop: #5dc6a6;
+      --query-loop: #6ea6d9;
+      --trace-loop: #d27962;
+      --checkpoint-loop: #b6a4e8;
+      --risk: #e15f5f;
+      --ok: #7bcf75;
+      --shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(231, 184, 75, 0.08), transparent 26rem),
+        linear-gradient(135deg, #101214 0%, #151618 45%, #101214 100%);
+      color: var(--text);
+      letter-spacing: 0;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1680px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 22px 0 28px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 3.2vw, 44px);
+      line-height: 1.05;
+      font-weight: 760;
+    }
+
+    .subtitle {
+      margin: 0;
+      max-width: 900px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .mode-btn {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      min-height: 38px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .mode-btn:hover,
+    .mode-btn:focus-visible {
+      border-color: rgba(242, 240, 232, 0.48);
+      background: rgba(255, 255, 255, 0.08);
+      outline: none;
+    }
+
+    .mode-btn.active {
+      color: #111315;
+      border-color: transparent;
+      background: var(--active-color, var(--full-loop));
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(760px, 1fr) minmax(270px, 330px);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .workspace.panel-collapsed {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .orbit-stage {
+      position: relative;
+      min-height: 760px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+        rgba(12, 14, 16, 0.86);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .orbit-stage::before {
+      content: "";
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      pointer-events: none;
+    }
+
+    .legend {
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      display: grid;
+      gap: 8px;
+      z-index: 6;
+      width: min(280px, calc(100% - 36px));
+    }
+
+    .legend-row {
+      display: grid;
+      grid-template-columns: 12px 1fr;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--dot-color);
+      box-shadow: 0 0 14px var(--dot-color);
+    }
+
+    .system {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      transform: translateY(8px);
+    }
+
+    .orbits {
+      position: absolute;
+      width: min(76vw, 1120px);
+      max-width: calc(100% - 56px);
+      height: min(46vw, 690px);
+      max-height: calc(100% - 132px);
+      border-radius: 50%;
+    }
+
+    .workspace.panel-collapsed .orbit-stage {
+      min-height: 820px;
+    }
+
+    .workspace.panel-collapsed .orbits {
+      width: min(88vw, 1240px);
+      height: min(50vw, 720px);
+    }
+
+    .orbit-ring {
+      position: absolute;
+      inset: var(--inset);
+      border: 1px solid color-mix(in srgb, var(--ring-color) 42%, transparent);
+      border-radius: 50%;
+      box-shadow:
+        inset 0 0 18px rgba(255, 255, 255, 0.03),
+        0 0 20px color-mix(in srgb, var(--ring-color) 18%, transparent);
+      opacity: 0.72;
+      transition: opacity 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .orbit-ring.active {
+      opacity: 1;
+      border-color: color-mix(in srgb, var(--ring-color) 82%, transparent);
+      box-shadow:
+        inset 0 0 20px color-mix(in srgb, var(--ring-color) 8%, transparent),
+        0 0 34px color-mix(in srgb, var(--ring-color) 34%, transparent);
+    }
+
+    .planet {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: var(--size, 96px);
+      min-height: var(--size, 96px);
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      padding: 8px 7px;
+      border: 1px solid color-mix(in srgb, var(--node-color) 55%, transparent);
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--node-color) 24%, transparent), transparent 52%),
+        rgba(20, 23, 27, 0.94);
+      color: var(--text);
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.18;
+      box-shadow: 0 0 22px color-mix(in srgb, var(--node-color) 20%, transparent);
+      cursor: pointer;
+      transition: transform 180ms ease, opacity 180ms ease, filter 180ms ease, border-color 180ms ease;
+      z-index: 4;
+    }
+
+    .planet[data-size="small"] {
+      --size: 70px;
+      font-size: 11px;
+    }
+
+    .planet[data-size="large"] {
+      --size: 112px;
+      font-size: 12px;
+      font-weight: 720;
+    }
+
+    .planet-label {
+      display: block;
+      color: var(--text);
+      font-weight: 780;
+      max-width: 100%;
+    }
+
+    .planet-code {
+      display: block;
+      margin-top: 3px;
+      color: color-mix(in srgb, var(--node-color) 72%, #ffffff);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.76em;
+      font-weight: 650;
+      line-height: 1.12;
+      overflow-wrap: anywhere;
+    }
+
+    .planet:hover,
+    .planet:focus-visible,
+    .planet.selected {
+      outline: none;
+      z-index: 8;
+      border-color: var(--node-color);
+      transform: translate(-50%, -50%) scale(1.08);
+      filter: brightness(1.14);
+    }
+
+    .planet.dimmed {
+      opacity: 0.28;
+      filter: saturate(0.5);
+    }
+
+    .core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(140px, 12vw, 178px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 42% 34%, rgba(255, 255, 255, 0.24), transparent 20%),
+        radial-gradient(circle, rgba(231, 184, 75, 0.44), rgba(93, 198, 166, 0.2) 46%, rgba(16, 18, 20, 1) 68%);
+      border: 1px solid rgba(231, 184, 75, 0.64);
+      box-shadow: 0 0 80px rgba(231, 184, 75, 0.2), inset 0 0 42px rgba(0, 0, 0, 0.34);
+      z-index: 7;
+    }
+
+    .core h2 {
+      margin: 0 0 10px;
+      font-size: clamp(18px, 1.75vw, 25px);
+      line-height: 1.05;
+    }
+
+    .core p {
+      margin: 0;
+      color: #e8e4d4;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .path-line {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: left center;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--path-color), transparent);
+      opacity: 0.2;
+      z-index: 2;
+      transition: opacity 180ms ease;
+    }
+
+    .path-line.active {
+      opacity: 0.64;
+    }
+
+    .comet {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      margin: -7px 0 0 -7px;
+      border-radius: 50%;
+      background: var(--comet-color);
+      box-shadow: 0 0 22px var(--comet-color), 0 0 44px color-mix(in srgb, var(--comet-color) 44%, transparent);
+      z-index: 5;
+    }
+
+    .comet::after {
+      content: "";
+      position: absolute;
+      right: 8px;
+      top: 5px;
+      width: 44px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, var(--comet-color));
+      opacity: 0.72;
+    }
+
+    .detail-panel {
+      min-height: 820px;
+      height: 820px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(23, 27, 31, 0.94);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+    }
+
+    .workspace.panel-collapsed .detail-panel {
+      display: none;
+    }
+
+    .panel-head {
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-kicker {
+      margin: 0 0 8px;
+      color: var(--active-color, var(--full-loop));
+      font-size: 12px;
+      font-weight: 760;
+      text-transform: uppercase;
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .panel-summary {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .step-chip {
+      padding: 6px 8px;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.045);
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .panel-body {
+      padding: 16px 18px 18px;
+      overflow: auto;
+    }
+
+    .facts {
+      display: grid;
+      gap: 12px;
+    }
+
+    .fact {
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 8px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .fact h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+
+    .fact p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .code-ref {
+      display: block;
+      margin-top: 8px;
+      color: #d8d4c6;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .level-strip {
+      margin-top: 16px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .level-row {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 8px;
+      align-items: start;
+      padding: 8px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .level-name {
+      color: var(--text);
+      font-weight: 760;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    .status-bar {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .status {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      background: rgba(255, 255, 255, 0.035);
+      min-height: 76px;
+    }
+
+    .status b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .status span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 1050px) {
+      header {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .toolbar {
+        justify-content: flex-start;
+      }
+
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .workspace.panel-collapsed .orbit-stage {
+        min-height: 700px;
+      }
+
+      .orbit-stage {
+        min-height: 660px;
+      }
+
+      .detail-panel {
+        min-height: 660px;
+      }
+
+      .detail-panel {
+        height: auto;
+      }
+
+      .orbits,
+      .workspace.panel-collapsed .orbits {
+        width: min(92vw, 900px);
+        height: min(54vw, 540px);
+        max-width: calc(100% - 34px);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100vw - 18px, 100%);
+        padding-top: 12px;
+      }
+
+      .orbit-stage {
+        min-height: 610px;
+      }
+
+      .workspace.panel-collapsed .orbit-stage {
+        min-height: 640px;
+      }
+
+      .orbits,
+      .workspace.panel-collapsed .orbits {
+        height: min(74vw, 330px);
+      }
+
+      .legend {
+        position: static;
+        width: auto;
+        margin: 12px;
+      }
+
+      .system {
+        transform: translateY(34px);
+      }
+
+      .planet {
+        --size: 66px;
+        font-size: 10px;
+      }
+
+      .planet[data-size="small"] {
+        --size: 62px;
+      }
+
+      .planet[data-size="large"] {
+        --size: 82px;
+        font-size: 11px;
+      }
+
+      .core {
+        width: 92px;
+        padding: 11px;
+      }
+
+      .core h2 {
+        margin-bottom: 0;
+        font-size: 16px;
+      }
+
+      .planet-code {
+        font-size: 0.7em;
+      }
+
+      .core p {
+        display: none;
+      }
+
+      .status-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .comet {
+        animation: none;
+      }
+
+      .comet::after {
+        display: none;
+      }
+
+      .mode-btn,
+      .planet,
+      .orbit-ring,
+      .path-line {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <h1>Go Claude 多路闭环运行时架构</h1>
+        <p class="subtitle">
+          这张图把一条用户消息拆成五条并行控制路径：交付闭环、Level Gate、Query Loop、Trace 和 Checkpoint Loop。中心是同一个 <code>query.Session</code>，外圈是硬约束 gate、session transcript、trace 观测和可回滚锚点。
+        </p>
+      </div>
+      <nav class="toolbar" aria-label="flow selector">
+        <button class="mode-btn active" type="button" data-mode="all">全部</button>
+        <button class="mode-btn" type="button" data-mode="full">交付闭环</button>
+        <button class="mode-btn" type="button" data-mode="gate">Level Gate</button>
+        <button class="mode-btn" type="button" data-mode="query">Query Loop</button>
+        <button class="mode-btn" type="button" data-mode="trace">Trace</button>
+        <button class="mode-btn" type="button" data-mode="checkpoint">Checkpoint</button>
+        <button class="mode-btn" type="button" id="togglePanel" aria-controls="detailPanel" aria-expanded="true">隐藏说明</button>
+      </nav>
+    </header>
+
+    <main class="workspace" id="workspace">
+      <section class="orbit-stage" aria-label="solar runtime architecture diagram">
+        <div class="legend" aria-label="legend">
+          <div class="legend-row"><span class="legend-dot" style="--dot-color: var(--full-loop)"></span><span>交付闭环：request → TaskContract → plan/do → ToolTrace evidence → gate → optional commit/readback → done</span></div>
+          <div class="legend-row"><span class="legend-dot" style="--dot-color: var(--gate-loop)"></span><span>Level Gate：read/edit/Bash 触发硬闸门，证据不足时 block_continue 或 block_tool</span></div>
+          <div class="legend-row"><span class="legend-dot" style="--dot-color: var(--query-loop)"></span><span>Query Loop：LLM 返回 tool_use 就执行工具并回灌 tool_result，直到 final 通过</span></div>
+          <div class="legend-row"><span class="legend-dot" style="--dot-color: var(--trace-loop)"></span><span>Trace：closure event 只进入可观测链路，不作为模型上下文恢复</span></div>
+          <div class="legend-row"><span class="legend-dot" style="--dot-color: var(--checkpoint-loop)"></span><span>Checkpoint：用户消息前建锚点，rewind/fork 恢复或分叉 session，metadata 不进模型上下文</span></div>
+        </div>
+
+        <div class="system">
+          <div class="orbits" id="orbits" aria-hidden="true">
+            <div class="orbit-ring active" data-flow="full" style="--inset: 6%; --ring-color: var(--full-loop)"></div>
+            <div class="orbit-ring active" data-flow="trace" style="--inset: 13%; --ring-color: var(--trace-loop)"></div>
+            <div class="orbit-ring active" data-flow="checkpoint" style="--inset: 17%; --ring-color: var(--checkpoint-loop)"></div>
+            <div class="orbit-ring active" data-flow="gate" style="--inset: 21%; --ring-color: var(--gate-loop)"></div>
+            <div class="orbit-ring active" data-flow="query" style="--inset: 27%; --ring-color: var(--query-loop)"></div>
+          </div>
+
+          <div class="core" tabindex="0" data-node="core" aria-label="query session runtime core">
+            <div>
+              <h2>query.Session</h2>
+              <p>统一执行：上下文组装、模型 turn、工具调用、gate 阻断、transcript 记录、trace 观测。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="detail-panel" id="detailPanel" aria-live="polite">
+        <div class="panel-head">
+          <p class="panel-kicker" id="panelKicker">ALL LOOPS</p>
+          <h2 class="panel-title" id="panelTitle">多路闭环控制面</h2>
+          <p class="panel-summary" id="panelSummary">
+            用户消息进入后，runtime 不只等模型回答。它同时构建 TaskContract、记录 Action/Evidence/Delta、建立 checkpoint 锚点，并在工具前和 final 前执行硬 gate。
+          </p>
+        </div>
+        <div class="flow-steps" id="flowSteps" aria-label="selected flow steps"></div>
+        <div class="panel-body">
+          <div class="facts" id="facts"></div>
+          <div class="level-strip" aria-label="closure levels">
+            <div class="level-row"><span class="level-name">L0</span><span>trivial_answer：无本地证据需求，允许直接回答，例如简单算术或语言解释。</span></div>
+            <div class="level-row"><span class="level-name">L1</span><span>no_tool_answer：不需要工具的说明类回答，final claim 仍不能伪称测试、搜索、提交。</span></div>
+            <div class="level-row"><span class="level-name">L2</span><span>read_only_scoped：用户要求读文件、总结、解释、比较时，Read/Grep/Glob/LS 或只读 Bash 是硬证据。</span></div>
+            <div class="level-row"><span class="level-name">L3</span><span>investigation_audit：排查、review、全局检查类任务，需要足够搜索/读取证据，避免“已全面检查”的空 claim。</span></div>
+            <div class="level-row"><span class="level-name">L4</span><span>local_change：Edit/Write 或写入型 Bash 后，需要 scope、metadata、semantic 三类 post-action delta 检查。</span></div>
+            <div class="level-row"><span class="level-name">L5</span><span>shared_state_change：commit/push/tag/deploy 等共享状态动作，工具前 gate 要求前置证据和授权。</span></div>
+          </div>
+          <div class="status-bar">
+            <div class="status"><b>硬约束</b><span>Go 代码中的 gate 函数切片顺序执行，不是只靠提示词。</span></div>
+            <div class="status"><b>失败闭环</b><span>工具失败也生成 tool_result，模型继续 loop 处理错误或修正路径。</span></div>
+            <div class="status"><b>Transcript</b><span>closure/checkpoint metadata 在 resume sanitizer 里跳过，不污染模型上下文。</span></div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const flows = {
+      all: {
+        color: "var(--full-loop)",
+        kicker: "ALL LOOPS",
+        title: "多路闭环控制面",
+        summary: "用户消息进入后，runtime 同时维护交付闭环、Level Gate、query tool loop、trace 可观测性和 checkpoint 可回滚锚点。任何最终回复都必须先通过当前任务适用的硬约束。",
+        steps: ["request", "checkpoint", "TaskContract", "query.Session", "tool loop", "gate", "transcript", "trace", "done"],
+        facts: [
+          ["共同入口", "TUI、CLI、API 最终都进入 query.Session。入口差异主要是权限 UI、输出形态和持久化方式。", "internal/cli/cli.go -> newQuerySession"],
+          ["同一张账本", "Action/Evidence/Delta 都来自实际 ToolTrace，final gate 只看 runtime 已观察到的证据。", "internal/query/query.go -> recordClosureTrace"],
+          ["不污染恢复", "task_contract、completion_gate、action_record、evidence_record、delta_record、checkpoint、rewind、fork 被 sanitizeResumeEntriesWithReport 识别为 metadata。", "internal/query/query.go -> sanitizeResumeEntriesWithReport"]
+        ]
+      },
+      full: {
+        color: "var(--full-loop)",
+        kicker: "REQUEST TO DONE",
+        title: "交付闭环：request → evidence → optional commit → done",
+        summary: "完整交付不是模型说完成就完成。runtime 先看请求类型，再要求计划、动作、证据和 gate 检查能在 ToolTrace 里闭上；commit/push/tag/deploy 只在任务或 final claim 涉及共享状态时进入可选提交与读回证据链路。",
+        steps: ["request", "TaskContract", "plan/do", "ToolTrace evidence", "gate", "optional commit", "readback evidence", "done"],
+        facts: [
+          ["请求建约", "buildTaskContract(prompt) 给任务定级，并记录 required read path、shared state operation 和触发原因。", "internal/query/closure_gate.go -> buildTaskContract"],
+          ["动作后复核", "本轮出现文件 delta 后，Post-Action Delta Gate 要求 git status/diff scope、diff summary、语义验证。", "internal/query/closure_gate.go -> deltaClosureGateResult"],
+          ["共享状态读回", "final 文本如果声称 committed/pushed/tagged/deployed，Final Claim Gate 会检查对应成功 Bash 和 post verification；没有这类任务或 claim 时不强制 commit。", "internal/query/closure_gate.go -> finalClaimGateResult"]
+        ]
+      },
+      gate: {
+        color: "var(--gate-loop)",
+        kicker: "LEVEL GATE",
+        title: "Read / Edit 触发 Level 闭环 Gate",
+        summary: "read、edit、Bash 写操作会触发不同 Level 的 gate。读证据不足时 final 被挡住继续 loop；高风险 Bash 工具前证据不足时工具直接被 block_tool。",
+        steps: ["classify", "L0-L5", "read/edit/Bash", "completionGate", "preToolClosureGate", "block or pass"],
+        facts: [
+          ["读文件硬检查", "L2 read_only_scoped 且 final 声称读过或总结过时，readScopeGateResult 要求 Read/Grep/Glob/LS 或只读 Bash 证据。", "internal/query/closure_gate.go -> readScopeGateResult"],
+          ["改文件硬检查", "Edit/Write 或写入型 Bash 形成 FileChanges 后，deltaClosureGateResult 要求 scope、metadata、semantic 三类检查。", "internal/query/closure_gate.go -> deltaClosureGateResult"],
+          ["共享状态前置闸门", "git commit/push/tag/deploy 类 Bash 在执行前进入 preToolGateRules，缺少证据或授权会生成 synthetic failed tool_result。", "internal/query/closure_gate.go -> preToolClosureGate"]
+        ]
+      },
+      query: {
+        color: "var(--query-loop)",
+        kicker: "QUERY LOOP",
+        title: "Session Query Loop：tool_use 驱动循环",
+        summary: "每个 turn 调模型。只要模型返回 tool_use，runtime 就执行工具、记录 ToolTrace、追加 tool_result 到 messages，然后进入下一 turn。没有 tool_use 时才进入 final gate。",
+        steps: ["messages", "StreamMessages", "tool_use?", "runTool", "ToolTrace", "tool_result", "next turn", "final gate"],
+        facts: [
+          ["工具循环", "collectToolUses(stream.Message.Content) 非空时，assistant tool_use 会先被 replay 和 recordAssistant，再执行工具。", "internal/query/query.go -> Session.run"],
+          ["错误也回灌", "工具错误或 gate block 都会形成 IsError=true 的 tool_result，模型拿到失败原因后继续下一轮。", "internal/query/query.go -> blockedToolTrace / runTool"],
+          ["final 才落地", "没有 tool_use 且 gate 通过后，runtime 才 Replay final、recordAssistant，并返回 result。", "internal/query/query.go -> completionGate"]
+        ]
+      },
+      trace: {
+        color: "var(--trace-loop)",
+        kicker: "TRACE AND TRANSCRIPT",
+        title: "Trace 可观测，不改变模型恢复语义",
+        summary: "闭环事件被写入本地 session 供 trace UI 过滤查看。恢复 transcript 时它们作为 metadata 跳过，避免把 gate 内部状态塞回模型上下文。",
+        steps: ["recordClosureEvent", "session entry", "trace parser", "Closure only", "resume sanitizer", "skip metadata"],
+        facts: [
+          ["结构化展示", "trace.go 把 closure event 的 JSON content 展开为 Properties，并把 block 类型 completion_gate 标记为 error。", "internal/server/trace.go -> localTraceEventFromEntry"],
+          ["专用过滤", "trace_viewer.html 增加 Closure only，并展示 rule_id、severity、missing_evidence 和 Reasons。", "internal/server/trace_viewer.html -> isClosureEvent"],
+          ["恢复隔离", "sanitizeResumeEntriesWithReport 跳过 closure metadata，不影响 pending tool_use 修复和历史消息恢复。", "internal/query/query.go -> sanitizeResumeEntriesWithReport"]
+        ]
+      },
+      checkpoint: {
+        color: "var(--checkpoint-loop)",
+        kicker: "CHECKPOINT LOOP",
+        title: "Checkpoint 闭环：锚点、回滚与分叉",
+        summary: "Checkpoint 不是 final gate。它是 session lifecycle 的硬机制：用户消息前自动写入回滚锚点，rewind 可以恢复 transcript 和文件快照，fork 可以从锚点复制新 session；resume 时这些 metadata 不进入模型上下文。",
+        steps: ["auto checkpoint", "user message", "file_change snapshot", "rewind / fork", "restore / copy", "resume sanitizer", "skip metadata"],
+        facts: [
+          ["自动锚点", "每条用户消息写入前，Session.run 调 Recorder.Checkpoint(\"auto-\"+messageID, messageID)，保证能回到该消息之前。", "internal/query/query.go -> Session.run"],
+          ["回滚恢复", "Store.Rewind / rewindFiles 通过 checkpoint 或 message id 定位锚点，并用 removed entries 中的 file_change 快照恢复文件。", "internal/session/store.go -> Rewind / rewindFiles"],
+          ["分叉隔离", "Store.Fork 复制 checkpoint 之前的 entries 到新 session；resume sanitizer 跳过 checkpoint/rewind/fork metadata。", "internal/session/store.go -> Fork; internal/query/query.go -> sanitizeResumeEntriesWithReport"]
+        ]
+      }
+    };
+
+    const nodes = [
+      { id: "request", name: "用户请求", code: "Request", flow: "full", angle: -122, radius: 0.88, size: "small", color: "var(--full-loop)" },
+      { id: "evidence-plan", name: "证据计划", code: "Evidence Plan", flow: "full", angle: -47, radius: 0.88, color: "var(--full-loop)" },
+      { id: "do", name: "执行工具", code: "Do / Tool", flow: "full", angle: 0, radius: 0.88, size: "small", color: "var(--full-loop)" },
+      { id: "commit", name: "可选提交", code: "Commit / Push", flow: "full", angle: 54, radius: 0.88, color: "var(--full-loop)" },
+      { id: "done", name: "闭环完成", code: "Done", flow: "full", angle: 112, radius: 0.88, size: "small", color: "var(--full-loop)" },
+
+      { id: "levels", name: "闭环等级", code: "L0-L5", flow: "gate", angle: -129, radius: 0.58, color: "var(--gate-loop)" },
+      { id: "read-edit", name: "读改命令", code: "Read/Edit/Bash", flow: "gate", angle: -5, radius: 0.58, color: "var(--gate-loop)" },
+      { id: "completion-gate", name: "终答闸门", code: "CompletionGate", flow: "gate", angle: 84, radius: 0.58, color: "var(--gate-loop)" },
+      { id: "pretool-gate", name: "工具前闸门", code: "preToolGate", flow: "gate", angle: 165, radius: 0.58, color: "var(--gate-loop)" },
+
+      { id: "llm", name: "模型响应", code: "LLM Stream", flow: "query", angle: -88, radius: 0.54, color: "var(--query-loop)" },
+      { id: "tool-use", name: "工具请求", code: "tool_use", flow: "query", angle: 35, radius: 0.46, size: "small", color: "var(--query-loop)" },
+      { id: "tool-result", name: "工具结果", code: "tool_result", flow: "query", angle: 135, radius: 0.46, size: "small", color: "var(--query-loop)" },
+
+      { id: "trace", name: "观测视图", code: "Trace UI", flow: "trace", angle: 214, radius: 0.74, size: "small", color: "var(--trace-loop)" },
+      { id: "transcript", name: "会话记录", code: "Transcript", flow: "trace", angle: 256, radius: 0.74, size: "small", color: "var(--trace-loop)" },
+      { id: "core-node", name: "运行核心", code: "Runtime Core", flow: "trace", angle: 298, radius: 0.74, size: "small", color: "var(--trace-loop)" }
+    ];
+
+    const stage = document.querySelector(".orbit-stage");
+    const system = document.querySelector(".system");
+    const workspace = document.getElementById("workspace");
+    const togglePanel = document.getElementById("togglePanel");
+    const panelKicker = document.getElementById("panelKicker");
+    const panelTitle = document.getElementById("panelTitle");
+    const panelSummary = document.getElementById("panelSummary");
+    const flowSteps = document.getElementById("flowSteps");
+    const facts = document.getElementById("facts");
+    const highlightNodesByMode = {
+      checkpoint: new Set(["request", "transcript", "core-node"])
+    };
+
+    function createNode(node) {
+      const el = document.createElement("button");
+      el.type = "button";
+      el.className = "planet";
+      el.dataset.flow = node.flow;
+      el.dataset.node = node.id;
+      el.dataset.size = node.size || "large";
+      el.style.setProperty("--node-color", node.color);
+      const label = document.createElement("span");
+      label.className = "planet-label";
+      label.textContent = node.name;
+      const code = document.createElement("span");
+      code.className = "planet-code";
+      code.textContent = node.code;
+      el.append(label, code);
+      el.setAttribute("aria-label", `${node.name} ${node.code}`);
+      el.addEventListener("click", () => {
+        selectMode(node.flow);
+        el.classList.add("selected");
+        setTimeout(() => el.classList.remove("selected"), 900);
+      });
+      system.appendChild(el);
+      node.el = el;
+    }
+
+    function createComets() {
+      [
+        ["full", "var(--full-loop)", 13, 0.88, 0],
+        ["gate", "var(--gate-loop)", 11, 0.58, 180],
+        ["query", "var(--query-loop)", 8, 0.46, 80],
+        ["trace", "var(--trace-loop)", 16, 0.74, 210],
+        ["checkpoint", "var(--checkpoint-loop)", 14, 0.78, 315]
+      ].forEach(([flow, color, duration, radius, phase]) => {
+        const comet = document.createElement("div");
+        comet.className = "comet";
+        comet.dataset.flow = flow;
+        comet.style.setProperty("--comet-color", color);
+        comet.dataset.duration = String(duration);
+        comet.dataset.radiusRatio = radius;
+        comet.dataset.phase = String(phase || 0);
+        system.appendChild(comet);
+      });
+    }
+
+    function positionNodes() {
+      const rect = document.querySelector(".orbits").getBoundingClientRect();
+      const orbitRadiusX = rect.width / 2;
+      const orbitRadiusY = rect.height / 2;
+      const mobileRadii = { full: 0.88, gate: 0.84, query: 0.72, trace: 0.8, checkpoint: 0.82 };
+      const mobile = rect.width < 520;
+      nodes.forEach(node => {
+        const angle = node.angle * Math.PI / 180;
+        const ratio = mobile ? mobileRadii[node.flow] : node.radius;
+        const x = Math.cos(angle) * orbitRadiusX * ratio;
+        const y = Math.sin(angle) * orbitRadiusY * ratio;
+        node.el.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+      });
+      positionComets(performance.now());
+    }
+
+    function positionComets(timestamp) {
+      const rect = document.querySelector(".orbits").getBoundingClientRect();
+      const orbitRadiusX = rect.width / 2;
+      const orbitRadiusY = rect.height / 2;
+      document.querySelectorAll(".comet").forEach(comet => {
+        const ratio = Number(comet.dataset.radiusRatio);
+        const duration = Number(comet.dataset.duration) || 12;
+        const phase = Number(comet.dataset.phase) || 0;
+        const direction = comet.dataset.flow === "gate" ? -1 : 1;
+        const turn = direction * ((timestamp / 1000) / duration) * Math.PI * 2 + phase * Math.PI / 180;
+        const x = Math.cos(turn) * orbitRadiusX * ratio;
+        const y = Math.sin(turn) * orbitRadiusY * ratio;
+        const tangent = Math.atan2(Math.cos(turn) * orbitRadiusY, -Math.sin(turn) * orbitRadiusX) * 180 / Math.PI;
+        comet.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${tangent}deg)`;
+      });
+    }
+
+    function animateComets(timestamp) {
+      positionComets(timestamp);
+      requestAnimationFrame(animateComets);
+    }
+
+    function renderPanel(mode) {
+      const data = flows[mode] || flows.all;
+      document.documentElement.style.setProperty("--active-color", data.color);
+      panelKicker.textContent = data.kicker;
+      panelTitle.textContent = data.title;
+      panelSummary.textContent = data.summary;
+      flowSteps.innerHTML = "";
+      data.steps.forEach(step => {
+        const chip = document.createElement("span");
+        chip.className = "step-chip";
+        chip.textContent = step;
+        flowSteps.appendChild(chip);
+      });
+      facts.innerHTML = "";
+      data.facts.forEach(([title, body, ref]) => {
+        const item = document.createElement("article");
+        item.className = "fact";
+        item.innerHTML = `<h3></h3><p></p><code class="code-ref"></code>`;
+        item.querySelector("h3").textContent = title;
+        item.querySelector("p").textContent = body;
+        item.querySelector("code").textContent = ref;
+        facts.appendChild(item);
+      });
+    }
+
+    function selectMode(mode) {
+      const activeMode = mode || "all";
+      document.querySelectorAll(".mode-btn[data-mode]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.mode === activeMode);
+      });
+      document.querySelectorAll(".planet").forEach(node => {
+        const highlighted = node.dataset.flow === activeMode || highlightNodesByMode[activeMode]?.has(node.dataset.node);
+        node.classList.toggle("dimmed", activeMode !== "all" && !highlighted);
+      });
+      document.querySelectorAll(".orbit-ring").forEach(ring => {
+        ring.classList.toggle("active", activeMode === "all" || ring.dataset.flow === activeMode);
+      });
+      document.querySelectorAll(".comet").forEach(comet => {
+        comet.style.opacity = activeMode === "all" || comet.dataset.flow === activeMode ? "1" : "0.16";
+      });
+      renderPanel(activeMode);
+    }
+
+    nodes.forEach(createNode);
+    createComets();
+    document.querySelectorAll(".mode-btn[data-mode]").forEach(btn => {
+      btn.style.setProperty("--active-color", flows[btn.dataset.mode]?.color || flows.all.color);
+      btn.addEventListener("click", () => selectMode(btn.dataset.mode));
+    });
+    togglePanel.addEventListener("click", () => {
+      const collapsed = workspace.classList.toggle("panel-collapsed");
+      togglePanel.textContent = collapsed ? "显示说明" : "隐藏说明";
+      togglePanel.setAttribute("aria-expanded", String(!collapsed));
+      requestAnimationFrame(positionNodes);
+    });
+    window.addEventListener("resize", positionNodes);
+    requestAnimationFrame(() => {
+      positionNodes();
+      renderPanel("all");
+      requestAnimationFrame(animateComets);
+    });
+  </script>
+</body>
+</html>

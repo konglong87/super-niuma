@@ -1,0 +1,1 @@
+provider endpoint is missing; configure baseURL in ~/.niuma/settings.json

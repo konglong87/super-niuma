@@ -1,0 +1,71 @@
+.webui2-page .webui2-composer.webui2-composer { border: 0; gap: 7px; min-height: 0; padding: 10px 0 0; }
+.webui2-page .webui2-composer .webui2-composer-shell { position: relative; display: grid; gap: 8px; border: 1px solid var(--webui2-border); border-radius: 18px; background: var(--webui2-surface-raised, var(--webui2-surface)); box-shadow: var(--webui2-shadow-card); padding: 13px 12px 9px; transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease; }
+.webui2-page .webui2-composer .webui2-composer-shell:focus-within { border-color: var(--webui2-text-muted); box-shadow: 0 0 0 1px color-mix(in srgb, var(--webui2-border) 55%, transparent), var(--webui2-shadow-card); transform: translateY(-1px); }
+.webui2-page .webui2-composer.is-drag-over .webui2-composer-shell { outline: 2px solid var(--webui2-accent); outline-offset: -2px; background: var(--webui2-accent-surface); }
+.webui2-page .webui2-composer .webui2-composer-shell > textarea,
+.webui2-page .webui2-composer .webui2-composer-shell > textarea:focus,
+.webui2-page .webui2-composer .webui2-composer-shell > textarea:focus-visible { display: block; margin: 0; padding: 3px 4px 7px; min-height: 54px; max-height: 176px; border: 0; border-radius: 0; outline: none; box-shadow: none !important; background: transparent; color: var(--webui2-text); font-size: 14px; line-height: 1.55; resize: none; }
+.webui2-page .webui2-composer .webui2-composer-controls { display: flex; align-items: center; gap: 6px; min-height: 34px; }
+.webui2-composer-controls-left, .webui2-composer-controls-right { display: flex; align-items: center; gap: 3px; min-width: 0; }
+.webui2-page .webui2-composer .webui2-composer-controls-spacer { flex: 1; min-width: 0; }
+.webui2-page .webui2-composer .webui2-composer-icon-button { width: 30px; height: 30px; border-radius: 50%; flex: 0 0 30px; }
+.webui2-page .webui2-composer .webui2-composer-send,
+.webui2-page .webui2-composer .webui2-composer-stop { display: inline-flex; flex: 0 0 32px; align-items: center; justify-content: center; width: 32px; min-width: 32px; height: 32px; padding: 0; border-radius: 50%; border: 0; background: var(--webui2-text); color: var(--webui2-surface); }
+.webui2-page .webui2-composer .webui2-composer-stop { background: var(--webui2-surface-muted); color: var(--webui2-text); border: 1px solid var(--webui2-border); }
+.webui2-composer-status:empty { display: none; }
+.webui2-session-select[draggable], .webui2-drag-handle { user-select: none; -webkit-user-select: none; }
+.webui2-session-select[draggable] { cursor: grab; }
+.webui2-session-select[draggable]:active { cursor: grabbing; }
+.webui2-image-preview { width: 64px; height: 64px; object-fit: contain; flex: 0 0 64px; border-radius: 4px; background: var(--webui2-surface-muted); }
+.webui2-file-chip { max-width: 100%; }
+.webui2-file-chip > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.webui2-composer .webui2-context-wait { margin: 0; color: var(--webui2-text-muted); font-size: 12px; }
+.webui2-page .webui2-composer .webui2-runtime-select { position: relative; flex: 0 1 auto; min-width: 0; }
+.webui2-page .webui2-composer .webui2-runtime-select .agent-popover-trigger,
+.webui2-page .webui2-composer .webui2-runtime-locked { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; height: 30px; padding: 0 5px; border: 0; border-radius: 6px; background: transparent; color: var(--webui2-text-muted); font: inherit; font-size: 12px; white-space: nowrap; }
+.webui2-composer .webui2-runtime-select .agent-popover-value,
+.webui2-composer .webui2-runtime-locked > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.webui2-composer .webui2-runtime-select.model,
+.webui2-composer .webui2-runtime-locked.model { max-width: 138px; }
+.webui2-composer .webui2-runtime-select.provider,
+.webui2-composer .webui2-runtime-locked.provider { max-width: 104px; }
+.webui2-composer .webui2-runtime-select svg,
+.webui2-composer .webui2-runtime-locked svg { flex-shrink: 0; }
+.webui2-page .webui2-composer .webui2-runtime-select .agent-popover-menu { z-index: 55; left: auto; right: 0; bottom: calc(100% + 12px); min-width: 170px; max-width: min(320px, calc(100vw - 48px)); max-height: min(300px, 45vh); overflow-y: auto; border: 1px solid var(--webui2-border); border-radius: 8px; background: var(--webui2-surface); color: var(--webui2-text); box-shadow: 0 8px 24px #0002; }
+.webui2-page .webui2-composer .webui2-runtime-select.permission .agent-popover-menu { left: 0; right: auto; }
+.webui2-page .webui2-composer .webui2-runtime-select .agent-popover-option { font-size: 12px; padding: 9px 10px; white-space: normal; overflow-wrap: anywhere; }
+.webui2-page .webui2-composer .webui2-runtime-select .agent-popover-option.active { background: var(--webui2-surface-muted); }
+.webui2-page .webui2-composer .webui2-runtime-select .agent-popover-option.selected { color: var(--webui2-text); }
+.webui2-composer-metric { display: inline-flex; align-items: center; gap: 4px; color: var(--webui2-text-muted); padding: 0 4px; font-size: 12px; white-space: nowrap; }
+.webui2-composer-more { position: relative; flex: 0 0 auto; }
+.webui2-composer .webui2-composer-menu { position: absolute; z-index: 55; left: -2px; bottom: calc(100% + 12px); width: 210px; padding: 5px; border: 1px solid var(--webui2-border); border-radius: 8px; background: var(--webui2-surface); color: var(--webui2-text); box-shadow: 0 8px 24px #0002; }
+.webui2-composer .webui2-composer-menu button { display: flex; align-items: center; gap: 9px; width: 100%; min-height: 35px; padding: 7px 9px; border: 0; border-radius: 5px; background: transparent; color: inherit; text-align: left; font: inherit; font-size: 12px; }
+.webui2-composer .webui2-composer-menu button:hover,
+.webui2-composer .webui2-composer-menu button:focus-visible { background: var(--webui2-surface-muted); }
+.webui2-composer .webui2-slash-commands,
+.webui2-composer .webui2-slash-status { position: absolute; z-index: 50; left: 0; right: 0; bottom: calc(100% + 8px); max-height: min(300px, 42vh); overflow-y: auto; margin: 0; padding: 5px; border: 1px solid var(--webui2-border); border-radius: 8px; background: var(--webui2-surface); color: var(--webui2-text); box-shadow: 0 8px 24px #0002; }
+.webui2-composer .webui2-slash-commands button { display: grid; grid-template-columns: minmax(80px, 132px) minmax(0, 1fr); align-items: center; gap: 10px; width: 100%; min-height: 39px; padding: 8px 10px; border: 0; border-radius: 5px; background: transparent; color: inherit; text-align: left; font: inherit; font-size: 12px; }
+.webui2-composer .webui2-slash-commands button.is-selected { background: var(--webui2-surface-muted); }
+.webui2-composer .webui2-slash-commands strong { font-size: 12px; font-weight: 550; overflow-wrap: anywhere; }
+.webui2-composer .webui2-slash-commands span { min-width: 0; color: var(--webui2-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.webui2-composer .webui2-slash-status { padding: 12px; font-size: 12px; }
+.webui2-next-step-suggestions { display: flex; flex-wrap: wrap; gap: 6px; }
+.webui2-next-step-suggestions button { display: inline-flex; align-items: center; gap: 6px; min-width: 0; max-width: 100%; padding: 6px 8px; border: 1px solid var(--webui2-border); border-radius: 6px; background: transparent; color: var(--webui2-text-muted); font-size: 12px; text-align: left; }
+.webui2-next-step-suggestions span { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .webui2-page .webui2-composer .webui2-composer-controls { flex-wrap: wrap; }
+  .webui2-composer-controls-left { flex-wrap: wrap; }
+  .webui2-composer-controls-right { margin-left: auto; flex-wrap: wrap; justify-content: flex-end; max-width: 100%; }
+  .webui2-page .webui2-composer .webui2-composer-controls-spacer { display: none; }
+}
+@media (max-width: 600px) {
+  .webui2-page .webui2-composer .webui2-composer-shell { border-radius: 19px; padding: 10px 9px 8px; }
+  .webui2-composer-controls-left, .webui2-composer-controls-right { gap: 2px; }
+  .webui2-composer .webui2-runtime-select.model,
+  .webui2-composer .webui2-runtime-locked.model { max-width: 112px; }
+  .webui2-composer .webui2-runtime-select.provider,
+  .webui2-composer .webui2-runtime-locked.provider { max-width: 80px; }
+  .webui2-composer .webui2-runtime-select.provider .agent-popover-menu { right: auto; left: 0; }
+  .webui2-composer .webui2-runtime-select.permission .agent-popover-menu { left: -32px; }
+  .webui2-composer .webui2-slash-commands button { grid-template-columns: minmax(80px, 100px) minmax(0, 1fr); }
+}

@@ -1,0 +1,124 @@
+{
+  "result": {
+    "response": "done",
+    "model": "test-model",
+    "stop_reason": "end_turn",
+    "turns": 3,
+    "session_id": "93939393-9393-4939-8939-939393939393",
+    "transcript_path": "<TRANSCRIPT>",
+    "usage": {},
+    "tool_calls": [
+      {
+        "id": "toolu_continue",
+        "name": "Echo",
+        "input": "{\"text\":\"continued pending action\"}",
+        "output": "continued pending action"
+      }
+    ]
+  },
+  "resume_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "好"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_continue",
+          "name": "Echo",
+          "input": {
+            "text": "continued pending action"
+          }
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_continue",
+          "content": "continued pending action"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "done"
+        }
+      ]
+    }
+  ],
+  "text_sink": "done",
+  "transcript": [
+    {
+      "content": "<message_id>",
+      "name": "auto-<message_id>",
+      "timestamp": "<timestamp>",
+      "type": "checkpoint"
+    },
+    {
+      "content": "好",
+      "role": "user",
+      "timestamp": "<timestamp>",
+      "type": "message"
+    },
+    {
+      "content": "{\"active\":true,\"user_prompt\":\"好\",\"pending_action\":\"补强 3-ai-agents\",\"source\":\"assistant_history\",\"decision\":\"confirmed_pending_action\",\"reason\":\"short confirmation follows an actionable pending assistant proposal\"}",
+      "timestamp": "<timestamp>",
+      "type": "continuation_intent"
+    },
+    {
+      "content": "{\"ClosureLevel\":\"L4_local_change\",\"RequiredReadPath\":null,\"SharedStateOperations\":null,\"Reasons\":[{\"rule_id\":\"confirmed_pending_action\",\"matched\":\"补强 3-ai-agents\",\"detail\":\"short confirmation inherits actionable pending assistant proposal\"}],\"Confidence\":\"medium\"}",
+      "timestamp": "<timestamp>",
+      "type": "task_contract"
+    },
+    {
+      "content": "Prompt context manifest",
+      "role": "system",
+      "timestamp": "<timestamp>",
+      "tool_id": "<message_id>",
+      "type": "prompt_context"
+    },
+    {
+      "content": "{\"missing_evidence\":[\"tool progress for confirmed pending action\"],\"reason\":\"\\u003csystem-reminder\\u003eCompletion is blocked: the user confirmed a pending action (补强 3-ai-agents), but the assistant only acknowledged or asked for the next instruction. Continue the confirmed action now and use tools to make concrete progress.\\u003c/system-reminder\\u003e\",\"rule_id\":\"confirmed_pending_action_requires_progress\",\"severity\":\"block_continue\"}",
+      "timestamp": "<timestamp>",
+      "type": "completion_gate"
+    },
+    {
+      "content": "{\"text\":\"continued pending action\"}",
+      "timestamp": "<timestamp>",
+      "tool_id": "toolu_continue",
+      "tool_name": "Echo",
+      "type": "tool_call"
+    },
+    {
+      "content": "{\"tool_name\":\"Echo\",\"kind\":\"echo\",\"success\":true}",
+      "timestamp": "<timestamp>",
+      "type": "action_record"
+    },
+    {
+      "content": "continued pending action",
+      "timestamp": "<timestamp>",
+      "tool_id": "toolu_continue",
+      "tool_name": "Echo",
+      "type": "tool_result"
+    },
+    {
+      "content": "done",
+      "role": "assistant",
+      "timestamp": "<timestamp>",
+      "type": "message"
+    }
+  ]
+}

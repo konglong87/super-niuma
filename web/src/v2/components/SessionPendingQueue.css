@@ -1,0 +1,27 @@
+.webui2-pending-queue { font-size: 12px; min-width: 0; }
+.webui2-pending-queue-summary { display: flex; justify-content: flex-end; gap: 6px; min-height: 32px; }
+.webui2-pending-queue .webui2-pending-failure-toggle { color: var(--webui2-danger); }
+.webui2-pending-queue button { align-items: center; background: transparent; border: 0; border-radius: 4px; color: var(--webui2-text-muted); display: inline-flex; flex: 0 0 auto; gap: 6px; justify-content: center; min-height: 32px; min-width: 32px; padding: 6px; }
+.webui2-pending-queue button:hover { background: var(--webui2-surface-muted); }
+.webui2-pending-queue button:focus-visible { outline: 2px solid var(--webui2-accent); outline-offset: 1px; }
+.webui2-pending-queue-toggle span { overflow-wrap: anywhere; text-align: left; }
+.webui2-pending-failure-dot { background: var(--webui2-danger); border-radius: 50%; flex: 0 0 6px; height: 6px; width: 6px; }
+.webui2-pending-queue-panel { border-top: 1px solid var(--webui2-border); padding: 4px 0; }
+.webui2-pending-queue-toolbar { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; min-height: 34px; }
+.webui2-pending-queue-toolbar > span { margin-right: auto; }
+.webui2-pending-queue-toolbar label { align-items: center; display: flex; gap: 5px; }
+.webui2-pending-queue-panel p { margin: 4px 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+.webui2-pending-queue-list { list-style: none; margin: 0; max-height: 260px; overflow-y: auto; padding: 0; }
+.webui2-pending-queue-item { align-items: flex-start; border-top: 1px solid var(--webui2-border); display: flex; gap: 8px; padding: 7px 0; }
+.webui2-pending-item-body { flex: 1; min-width: 0; }
+.webui2-pending-item-body small { display: block; overflow-wrap: anywhere; }
+.webui2-pending-item-actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; justify-content: flex-end; }
+.webui2-pending-direction { color: var(--webui2-text-muted); }
+.webui2-pending-queue .webui2-pending-error { color: var(--webui2-danger); }
+.webui2-pending-editor { display: grid; gap: 6px; min-width: 0; width: 100%; }
+.webui2-pending-editor label { display: grid; gap: 4px; }
+.webui2-pending-editor textarea, .webui2-page .webui2-composer .webui2-pending-editor textarea { background: var(--webui2-surface); border: 1px solid var(--webui2-border); border-radius: 4px; color: var(--webui2-text); font: inherit; min-height: 54px; padding: 7px; resize: vertical; width: 100%; }
+@media (max-width: 600px) {
+  .webui2-pending-queue-item { flex-direction: column; }
+  .webui2-pending-item-actions { align-self: flex-end; }
+}

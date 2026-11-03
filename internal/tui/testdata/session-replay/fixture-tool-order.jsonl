@@ -1,0 +1,15 @@
+{"id":"11111111-0000-4000-8000-000000000001","timestamp":"2026-07-20T10:00:00.000001Z","type":"checkpoint","content":"11111111-0000-4000-8000-000000000002","name":"auto-11111111-0000-4000-8000-000000000002"}
+{"id":"11111111-0000-4000-8000-000000000002","timestamp":"2026-07-20T10:00:00.000002Z","type":"message","role":"user","content":"Check how the config loader merges global settings and project overrides."}
+{"timestamp":"2026-07-20T10:00:00.100000Z","type":"prompt_context","role":"system","content":"Prompt context manifest","tool_id":"11111111-0000-4000-8000-000000000002","metadata":{"mode":"repl_main_thread","profile":"code"}}
+{"timestamp":"2026-07-20T10:00:04.000000Z","type":"usage","model":"fixture-model","input_tokens":1284,"output_tokens":57}
+{"id":"11111111-0000-4000-8000-000000000003","timestamp":"2026-07-20T10:00:04.000001Z","type":"message","role":"assistant","content":"Reading the loader first so the merge order comes from code."}
+{"id":"11111111-0000-4000-8000-000000000004","timestamp":"2026-07-20T10:00:04.500000Z","type":"tool_call","content":"{\"file_path\": \"internal/config/loader.go\"}","tool_id":"call_fixture_read_1","tool_name":"Read"}
+{"timestamp":"2026-07-20T10:00:04.500100Z","type":"permission","content":"{\"allowed\":true,\"reason\":\"\",\"request\":\"internal/config/loader.go\"}","tool_name":"Read"}
+{"id":"11111111-0000-4000-8000-000000000005","timestamp":"2026-07-20T10:00:04.900000Z","type":"tool_result","content":"     1\tpackage config\n     2\t\n     3\tfunc Load(root string) (*Config, error) {","tool_id":"call_fixture_read_1","tool_name":"Read"}
+{"timestamp":"2026-07-20T10:00:09.000000Z","type":"usage","model":"fixture-model","input_tokens":1731,"output_tokens":42}
+{"id":"11111111-0000-4000-8000-000000000006","timestamp":"2026-07-20T10:00:09.000001Z","type":"message","role":"assistant","content":"Loader applies global settings first, then project overrides."}
+{"id":"11111111-0000-4000-8000-000000000007","timestamp":"2026-07-20T10:00:09.400000Z","type":"tool_call","content":"{\"command\": \"go test ./internal/config -count=1\"}","tool_id":"call_fixture_bash_1","tool_name":"Bash"}
+{"timestamp":"2026-07-20T10:00:09.400100Z","type":"permission","content":"{\"allowed\":true,\"reason\":\"\",\"request\":\"go test ./internal/config -count=1\"}","tool_name":"Bash"}
+{"id":"11111111-0000-4000-8000-000000000008","timestamp":"2026-07-20T10:00:12.000000Z","type":"tool_result","content":"ok  \tgo-claude/internal/config\t0.412s","tool_id":"call_fixture_bash_1","tool_name":"Bash"}
+{"timestamp":"2026-07-20T10:00:15.000000Z","type":"usage","model":"fixture-model","input_tokens":1902,"output_tokens":63}
+{"id":"11111111-0000-4000-8000-000000000009","timestamp":"2026-07-20T10:00:15.000001Z","type":"message","role":"assistant","content":"Merge order confirmed by the loader test.\n\nPrecedence stays global settings, then project overrides."}

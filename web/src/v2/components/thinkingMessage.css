@@ -1,0 +1,59 @@
+.webui2-page .webui2-thinking-surface {
+  background: var(--webui2-surface-muted);
+  border: 1px solid var(--webui2-border-subtle, var(--webui2-border));
+  border-radius: 12px;
+  padding: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.webui2-page .webui2-thinking-surface > summary,
+.webui2-page .webui2-thinking-surface > header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 40px;
+  padding: 10px 14px;
+  margin: 0;
+  border: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--webui2-text-muted);
+}
+.webui2-page .webui2-thinking-surface[open] > summary { border-bottom: 0; }
+.webui2-thinking-surface > summary > svg,
+.webui2-thinking-surface > header > svg { flex: 0 0 auto; }
+.webui2-thinking-title { font-weight: 500; }
+.webui2-thinking-meta { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-left: auto; font-size: 11px; }
+.webui2-thinking-duration { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.webui2-thinking-state[data-status="streaming"] { color: var(--webui2-accent); }
+.webui2-thinking-state[data-status="failed"] { color: var(--webui2-danger); }
+.webui2-page .webui2-thinking-body { padding: 2px 16px 14px; }
+.webui2-page .webui2-thinking-content,
+.webui2-page .webui2-thinking-surface .agent-markdown {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--webui2-text-muted);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.webui2-page .webui2-thinking-content[data-clamped="true"] { max-height: calc(var(--thinking-preview-lines) * 1lh); overflow: hidden; mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent); }
+.webui2-page .webui2-thinking-control select { background: var(--webui2-surface); color: var(--webui2-text); border-color: var(--webui2-border); }
+.webui2-page .webui2-thinking-surface .agent-markdown { max-width: 100%; padding: 0; }
+.webui2-page .webui2-thinking-surface .agent-markdown > :first-child { margin-top: 0; }
+.webui2-page .webui2-thinking-surface .agent-markdown > :last-child { margin-bottom: 0; }
+.webui2-page .webui2-thinking-surface .agent-markdown p { margin: 0 0 10px; line-height: inherit; }
+.webui2-page .webui2-thinking-surface .agent-markdown :is(h1, h2, h3) { font-size: 14px; font-weight: 600; line-height: 1.6; margin: 14px 0 6px; color: var(--webui2-text); }
+.webui2-page .webui2-thinking-surface .agent-markdown :is(ul, ol) { padding-left: 20px; margin: 8px 0 12px; }
+.webui2-page .webui2-thinking-surface .agent-markdown li { margin: 4px 0; }
+.webui2-page .webui2-thinking-surface .agent-markdown blockquote { border-left: 2px solid var(--webui2-border); margin: 10px 0; padding: 0 12px; background: transparent; }
+.webui2-page .webui2-thinking-surface .agent-codeblock { border-radius: 6px; margin: 10px 0; box-shadow: none; }
+.webui2-page .webui2-thinking-surface .agent-markdown pre { font-size: 12px; line-height: 1.65; padding: 12px; white-space: pre; overflow-x: auto; overflow-wrap: normal; word-break: normal; }
+.webui2-page .webui2-thinking-expand { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; padding: 3px 0; border: 0; background: transparent; color: var(--webui2-accent); font-size: 12px; cursor: pointer; }
+.webui2-thinking-expand:focus-visible { outline: 2px solid var(--webui2-accent); outline-offset: 4px; border-radius: 3px; }
+@media (max-width: 760px) {
+  .webui2-page .webui2-thinking-surface > summary,
+  .webui2-page .webui2-thinking-surface > header { gap: 6px; padding: 9px 12px; }
+  .webui2-thinking-meta { gap: 4px 8px; }
+  .webui2-page .webui2-thinking-body { padding: 2px 12px 12px; }
+}

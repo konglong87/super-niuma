@@ -1,0 +1,32 @@
+{"type":"turn_start","turn":1}
+{"type":"message_start","turn":1,"message":{"id":"turn_1","type":"message","role":"assistant","model":"test-model","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":0,"output_tokens":0}}}
+{"type":"message_delta","turn":1,"usage":{},"delta":{"type":"message_delta","stop_reason":"tool_use"}}
+{"type":"message_stop","turn":1,"stop_reason":"tool_use"}
+{"type":"content_block_start","name":"Task","id":"toolu_task","index":0,"input":{"prompt":"work"},"content_block":{"type":"tool_use","name":"Task","id":"toolu_task","input":{"prompt":"work"}}}
+{"type":"input_json_delta","id":"toolu_task","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"prompt\":\"work\"}"}}
+{"type":"content_block_stop","index":0}
+{"type":"tool_call","name":"Task","id":"toolu_task","input":{"prompt":"work"}}
+{"type":"hook_start","name":"Task","event":"PreToolUse"}
+{"type":"hook_result","name":"Task","output":"pre-ok","event":"PreToolUse"}
+{"type":"nested_agent_progress","event":"started","task_id":77,"payload":{"agent_name":"reviewer","model":"test-model"}}
+{"type":"nested_agent_progress","event":"turn_start","task_id":77,"payload":{"turn":1}}
+{"type":"nested_agent_progress","event":"text_delta","task_id":77,"payload":{"text":"checking"}}
+{"type":"nested_agent_progress","event":"tool_call","task_id":77,"payload":{"tool_name":"Read","tool_id":"toolu_read"}}
+{"type":"nested_agent_progress","event":"tool_result","task_id":77,"payload":{"tool_name":"Read","tool_id":"toolu_read","is_error":false}}
+{"type":"nested_agent_progress","event":"turn_start","task_id":77,"payload":{"turn":2}}
+{"type":"nested_agent_progress","event":"text_delta","task_id":77,"payload":{"text":"done"}}
+{"type":"nested_agent_progress","event":"completed","task_id":77,"payload":{"turns":2,"tool_calls":1}}
+{"type":"hook_start","name":"Task","event":"PostToolUse"}
+{"type":"hook_result","name":"Task","output":"post-ok","event":"PostToolUse"}
+{"type":"tool_result","name":"Task","id":"toolu_task","output":"task done"}
+{"type":"nested_agent_progress","name":"Task","id":"toolu_task","output":"task done","event":"completed"}
+{"type":"turn_start","turn":2}
+{"type":"message_start","turn":2,"message":{"id":"turn_2","type":"message","role":"assistant","model":"test-model","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":0,"output_tokens":0}}}
+{"type":"content_block_start","name":"text","index":0,"content_block":{"type":"text"}}
+{"type":"text_delta","text":"done","delta":{"type":"text_delta","text":"done"}}
+{"type":"partial_message","text":"done"}
+{"type":"content_block_stop","index":0}
+{"type":"message_delta","turn":2,"usage":{},"delta":{"type":"message_delta","stop_reason":"end_turn"}}
+{"type":"message_stop","turn":2,"stop_reason":"end_turn"}
+{"duration_api_ms":0,"duration_ms":0,"is_error":false,"modelUsage":{"test-model":{}},"num_turns":2,"permission_denials":[],"result":"done","session_id":"local","stop_reason":"end_turn","subtype":"success","total_cost_usd":0,"type":"result","usage":{},"uuid":"result"}
+{"type":"done"}

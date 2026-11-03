@@ -1,0 +1,67 @@
+SET NAMES utf8mb4;
+
+ALTER TABLE image_generations
+  ADD COLUMN batch_id VARCHAR(64) NULL AFTER generation_id,
+  ADD COLUMN origin_type VARCHAR(32) NOT NULL DEFAULT 'direct' AFTER operation,
+  ADD COLUMN origin_ref_json JSON NULL AFTER origin_type,
+  ADD COLUMN tool_use_id VARCHAR(255) NULL AFTER origin_ref_json,
+  ADD COLUMN attempts INT UNSIGNED NOT NULL DEFAULT 0 AFTER status,
+  ADD COLUMN max_attempts INT UNSIGNED NOT NULL DEFAULT 3 AFTER attempts,
+  ADD COLUMN next_attempt_at DATETIME(3) NULL AFTER max_attempts,
+  ADD COLUMN lease_owner VARCHAR(255) NULL AFTER next_attempt_at,
+  ADD COLUMN lease_until DATETIME(3) NULL AFTER lease_owner,
+  ADD COLUMN heartbeat_at DATETIME(3) NULL AFTER lease_until,
+  ADD COLUMN started_at DATETIME(3) NULL AFTER heartbeat_at,
+  ADD COLUMN cancel_requested_at DATETIME(3) NULL AFTER started_at,
+  ADD COLUMN provider_request_id VARCHAR(255) NULL AFTER cancel_requested_at,
+  ADD COLUMN retry_of_generation_id VARCHAR(64) NULL AFTER provider_request_id,
+  ADD COLUMN error_class VARCHAR(64) NULL AFTER error_code,
+  ADD COLUMN updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) AFTER finished_at,
+  ADD KEY idx_image_generations_claim (status, next_attempt_at, lease_until, id),
+  ADD KEY idx_image_generations_origin (tenant_id, origin_type, batch_id);
+
+CREATE TABLE IF NOT EXISTS image_generation_attempts (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  generation_id VARCHAR(64) NOT NULL,
+  tenant_id BIGINT UNSIGNED NOT NULL,
+  attempt_no INT UNSIGNED NOT NULL,
+  worker_id VARCHAR(255) NOT NULL,
+  provider VARCHAR(128) NOT NULL,
+  model VARCHAR(128) NOT NULL,
+  started_at DATETIME(3) NOT NULL,
+  finished_at DATETIME(3) NULL,
+  duration_ms BIGINT UNSIGNED NULL,
+  provider_request_id VARCHAR(255) NULL,
+  outcome VARCHAR(64) NULL,
+  error_class VARCHAR(64) NULL,
+  error_message VARCHAR(1024) NULL,
+  created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_image_generation_attempts_number (tenant_id, generation_id, attempt_no),
+  KEY idx_image_generation_attempts_generation (tenant_id, generation_id, started_at),
+  CONSTRAINT fk_image_generation_attempts_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS image_completion_outbox (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  tenant_id BIGINT UNSIGNED NOT NULL,
+  generation_id VARCHAR(64) NOT NULL,
+  event_type VARCHAR(64) NOT NULL,
+  origin_type VARCHAR(32) NOT NULL,
+  origin_ref_json JSON NULL,
+  idempotency_key VARCHAR(128) NOT NULL,
+  status VARCHAR(32) NOT NULL,
+  attempts INT UNSIGNED NOT NULL DEFAULT 0,
+  next_attempt_at DATETIME(3) NULL,
+  lease_owner VARCHAR(255) NULL,
+  lease_until DATETIME(3) NULL,
+  last_error_code VARCHAR(64) NULL,
+  last_error_message VARCHAR(1024) NULL,
+  created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  sent_at DATETIME(3) NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_image_completion_outbox_idempotency (tenant_id, generation_id, event_type, idempotency_key),
+  KEY idx_image_completion_outbox_claim (tenant_id, status, next_attempt_at, lease_until, id),
+  KEY idx_image_completion_outbox_generation (tenant_id, generation_id, created_at),
+  CONSTRAINT fk_image_completion_outbox_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

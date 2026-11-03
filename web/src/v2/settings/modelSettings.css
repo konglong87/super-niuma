@@ -1,0 +1,57 @@
+/* Only the model editor: keep the existing JSON/other settings toolbar intact. */
+.webui2-settings-center .model-settings-panel > .global-settings-footer {
+  order: 0; top: auto; bottom: 0; margin: 20px 0 0; padding: 12px 0;
+  border-top: 1px solid var(--webui2-border); border-bottom: 0; z-index: 4;
+}
+.model-settings-panel { --model-gap: 18px; }
+.model-settings-panel .model-settings-tabs { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--webui2-border); padding-bottom: 10px; margin-bottom: var(--model-gap); }
+.model-settings-tabs button { min-height: 40px; background: transparent; border-color: transparent; color: var(--webui2-text-muted); }
+.model-settings-tabs button[aria-selected="true"] { background: var(--webui2-surface-muted); border-color: var(--webui2-border); color: var(--webui2-text); font-weight: 600; }
+.model-settings-panel button:focus-visible, .model-settings-panel [role="tabpanel"]:focus-visible { outline: 2px solid var(--webui2-accent); outline-offset: 3px; }
+.model-settings-panel [role="tabpanel"][hidden] { display: none; }
+.model-settings-panel h3 { margin: 0 0 8px; font-size: 15px; }
+.model-settings-panel p { font-size: 12px; line-height: 1.6; }
+.model-settings-panel .global-settings-grid { gap: 12px 18px; }
+.model-settings-panel .global-settings-field input { height: 40px; font-size: 13px; }
+.model-status { display: flex; align-items: center; gap: 12px; background: var(--webui2-surface-muted); border-radius: 8px; padding: 12px 14px; margin-bottom: var(--model-gap); }
+.model-status-icon { color: var(--webui2-text-muted); flex-shrink: 0; }
+.model-status-icon[data-result="success"] { color: var(--webui2-accent); }
+.model-status-icon[data-result="error"] { color: var(--webui2-danger); }
+.model-status-copy { flex: 1 1 0; display: grid; min-width: 0; gap: 4px; }
+.model-status-copy strong { font-size: 15px; overflow-wrap: anywhere; }
+.model-status-copy span, .model-status-copy small { font-size: 12px; color: var(--webui2-text-muted); line-height: 1.5; overflow-wrap: anywhere; }
+.model-status button { margin-left: auto; flex-shrink: 0; }
+.model-quick-form > p { margin: 0 0 12px; color: var(--webui2-text-muted); }
+.model-quick-form > p.model-help { margin: 9px 0 0; }
+.model-help { color: var(--webui2-text-muted); }
+.model-advanced-hint { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; font-size: 12px; color: var(--webui2-text-muted); }
+.model-advanced-hint button { border: 0; padding-left: 0; color: var(--webui2-accent); }
+.model-connection-test { border-top: 1px solid var(--webui2-border); margin-top: 14px; padding-top: 12px; }
+.model-connection-test p { margin: 0; color: var(--webui2-text-muted); }
+.model-connection-test .global-settings-connection { margin-top: 8px; }
+.model-connection-test .global-settings-connection > span { font-size: 12px; }
+.model-capabilities { margin-top: 24px; border-top: 1px solid var(--webui2-border); padding-top: 16px; }
+.model-capabilities p { margin: 0 0 8px; color: var(--webui2-text-muted); }
+.model-capability-list { display: grid; }
+.model-settings-panel .model-capability-list button { width: 100%; min-height: 64px; justify-content: flex-start; border: 0; border-bottom: 1px solid var(--webui2-border); border-radius: 0; padding: 10px 4px; text-align: left; gap: 14px; }
+.model-capability-list button > span:first-child { display: grid; min-width: 0; gap: 5px; }
+.model-capability-list small { font-size: 12px; color: var(--webui2-text-muted); line-height: 1.5; }
+.model-capability-state { margin-left: auto; font-size: 12px; color: var(--webui2-text-muted); }
+.model-settings-panel [role="tabpanel"] > .global-settings-section { border-top: 0; margin-top: 0; padding-top: 0; }
+.model-settings-panel .global-settings-advanced { border: 1px solid var(--webui2-border); border-radius: 7px; padding: 10px 12px; margin-top: 16px; }
+.model-settings-panel .global-settings-advanced summary { font-size: 13px; color: var(--webui2-text); min-height: 24px; }
+.webui2-settings-center .model-config-details { margin: -8px 0 14px; color: var(--webui2-text-muted); font-size: 12px; }
+.model-config-details summary { cursor: pointer; min-height: 28px; line-height: 28px; }
+.model-config-details .settings-environment-notice { margin-top: 8px; margin-bottom: 0; }
+@media (max-width: 760px) {
+  .model-settings-panel button, .model-settings-panel .global-settings-field input { min-height: 44px; }
+  .model-settings-tabs { display: grid !important; grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .model-status { align-items: flex-start; }
+  .model-capability-list button { flex-wrap: wrap; }
+  .model-capability-state { margin-left: 0; }
+  .model-settings-panel .global-settings-footer { gap: 8px; }
+}
+
+.model-credential-help { flex: 1 1 250px; }
+.model-credential-help summary { cursor: pointer; padding: 8px 0; }
+.model-credential-help p { margin: 8px 0; }

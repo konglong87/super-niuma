@@ -1,0 +1,100 @@
+$ curl -s /tenant/tenants?limit=3
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Yutang",
+      "settings_json": "{\"tier\":\"pro\"}",
+      "status": "active",
+      "tenant_key": "yutang"
+    },
+    {
+      "id": 4,
+      "name": "Acme",
+      "status": "active",
+      "tenant_key": "acme"
+    }
+  ],
+  "has_more": false
+}
+
+$ curl -s -X POST -d '{"tenant_key":"acme","name":"Acme","status":"active","settings_json":"{\"tier\":\"team\"}"}' /tenant/tenants
+{
+  "id": 4
+}
+
+$ curl -s -X DELETE /tenant/tenants?tenant_key=acme
+{
+  "archived": true
+}
+
+$ curl -s -X POST -d '{"skill_key":"go-review","version":1,"target_version":3}' /tenant/skills/rollback
+{
+  "from_version": 1,
+  "id": 77,
+  "skill_key": "go-review",
+  "version": 3
+}
+
+$ curl -s /tenant/users?limit=2
+{
+  "data": [
+    {
+      "display_name": "User Test",
+      "email": "user-test@example.test",
+      "id": 2,
+      "role": "owner",
+      "status": "active",
+      "tenant_id": 1,
+      "updated_at": "2026-06-11T10:00:00Z",
+      "user_key": "user-test"
+    },
+    {
+      "display_name": "User Two",
+      "id": 3,
+      "role": "member",
+      "status": "active",
+      "tenant_id": 1,
+      "updated_at": "2026-06-11T10:01:00Z",
+      "user_key": "user-two"
+    }
+  ],
+  "has_more": false
+}
+
+$ curl -s -X POST -d '{"user_key":"user-three","email":"user-three@example.test","display_name":"User Three","role":"member","status":"active"}' /tenant/users
+{
+  "id": 3
+}
+
+$ curl -s -X DELETE /tenant/users?user_key=user-three
+{
+  "archived": true
+}
+
+$ curl -s /tenant/audit?limit=5
+{
+  "data": [
+    {
+      "action": "tenant.user.admin_save",
+      "actor_user_id": 2,
+      "created_at": "2026-06-11T10:02:00Z",
+      "id": 71,
+      "resource_id": "3",
+      "resource_type": "user",
+      "tenant_id": 1,
+      "trace_id": "trace-golden"
+    },
+    {
+      "action": "tenant.user.archive",
+      "actor_user_id": 2,
+      "created_at": "2026-06-11T10:03:00Z",
+      "id": 72,
+      "resource_id": "user-three",
+      "resource_type": "user",
+      "tenant_id": 1,
+      "trace_id": "trace-golden"
+    }
+  ],
+  "has_more": false
+}

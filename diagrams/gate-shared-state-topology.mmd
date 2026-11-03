@@ -1,0 +1,34 @@
+graph TD
+  subgraph CONTRACT["请求合同与动作识别"]
+    direction TB
+    U["用户请求<br/>是否授权共享状态"] --> C["Task Contract<br/>Closure Level Operations"]
+    C --> T["Model Tool Use<br/>Bash Git External"]
+    T --> I["Action Intent<br/>只读 修改 提交 推送 破坏性"]
+  end
+
+  subgraph CONTROL["执行前控制"]
+    direction TB
+    P["Gate 分类 变更评估框架<br/>Hard Soft Shadow None"] --> G["Pre-Tool Gate<br/>授权与前置证据"]
+    G -->|allow| X["真实执行<br/>Tool Registry Permission Sandbox"]
+    G -->|auto preflight 或 block| A["恢复路径<br/>只读检查与明确提示"]
+  end
+
+  subgraph VERIFY["证据、验证与完成"]
+    direction TB
+    R["ToolTrace 与 Delta<br/>结果 文件变化 共享状态"] --> V["执行后验证<br/>Test Diff Readback Remote"]
+    V --> F["Completion Gate<br/>Final Claim Evidence"]
+    R --> F
+    F -->|allow| O["Accepted Final<br/>Commit Push Deploy 状态分离"]
+    F -->|block_continue| L["额外 Turn<br/>补证据或收窄声明"]
+  end
+
+  I --> P
+  A --> T
+  X --> R
+  L --> T
+  G -.-> S["Transcript<br/>rule action missing evidence"]
+  R -.-> S
+  F -.-> S
+  A -.-> M["Gate 经济性 需观测<br/>触发率 误拦率 Turns Tokens 延迟"]
+  L -.-> M
+  O -.-> M

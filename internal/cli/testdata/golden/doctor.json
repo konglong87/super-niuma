@@ -1,0 +1,20 @@
+{
+  "baseURL": "",
+  "config": {
+    "globalSettingsPath": "<HOME>/.niuma/settings.json",
+    "sessionRoot": "<HOME>/.niuma"
+  },
+  "defaultModel": "",
+  "gitAvailable": "<bool>",
+  "hasAPIKey": false,
+  "runtime": "go",
+  "settings": {
+    "mcpServers": 0,
+    "permissionAllow": 0,
+    "permissionDeny": 0,
+    "permissionMode": "",
+    "sources": null
+  },
+  "shell": "/bin/sh",
+  "version": "test-version"
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "text",
+        "text": "Conversation summary so far:\n## Current Goal\nContinue implementing automatic compaction.\n## User Preferences / Constraints\nUse structured validation.\n## Decisions Made\nPreserve recent rounds.\n## Files / Code Changed\ninternal/query/query.go\nREADME.md\n## Commands / Test Results\ngo test ./internal/query\n## Open Tasks\nFinish tests.\n## Known Issues / Risks\nNone.\n## Important Raw Facts\ninternal/query/query.go and README.md were discussed; go test ./internal/query was requested.\n\n## Runtime Extracted Facts\nFiles:\n- ./internal/query\n- internal/query/query.go\nCommands:\n- go test ./internal/query\nTools:\n- Read"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "text",
+        "text": "Now continue with the implementation."
+      }
+    ]
+  }
+]

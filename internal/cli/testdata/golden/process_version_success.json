@@ -1,0 +1,8 @@
+{
+  "args": [
+    "--version"
+  ],
+  "exit_code": 0,
+  "stderr": "",
+  "stdout": "test-version (niuma)\n"
+}

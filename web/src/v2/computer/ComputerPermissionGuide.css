@@ -1,0 +1,10 @@
+.webui2-computer-permission-guide { background: var(--webui2-warning-surface, #fff8e6); border: 1px solid color-mix(in srgb, var(--webui2-warning, #9a6700) 32%, transparent); border-radius: 10px; display: flex; flex-direction: column; gap: 9px; padding: 11px; }
+.webui2-computer-permission-guide h3 { color: var(--webui2-text, #1e252b); font-size: 13px; margin: 0; }
+.webui2-computer-permission-guide > p { color: var(--webui2-text-muted, #66727c); font-size: 11px; line-height: 1.45; margin: 0; }
+.webui2-computer-permission-actions { display: flex; flex-direction: column; gap: 7px; }
+.webui2-computer-permission-action { align-items: center; background: var(--webui2-surface, #fff); border: 1px solid var(--webui2-border-subtle, #e6eaec); border-radius: 8px; display: flex; gap: 8px; justify-content: space-between; padding: 8px; }
+.webui2-computer-permission-action > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.webui2-computer-permission-action strong { color: var(--webui2-text, #1e252b); font-size: 11px; }
+.webui2-computer-permission-action span { color: var(--webui2-text-muted, #66727c); font-size: 10px; line-height: 1.35; }
+.webui2-computer-permission-action .webui2-computer-button { flex: 0 0 auto; font-size: 10px; padding: 6px 8px; }
+.webui2-computer-permission-guide > .webui2-computer-button { align-self: flex-start; font-size: 11px; padding: 6px 8px; }

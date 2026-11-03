@@ -1,0 +1,85 @@
+graph TD
+  subgraph ASSEMBLY["请求边界与会话装配"]
+    direction TB
+    E["多入口<br/>TUI CLI API Mobile OpenAI Feishu"] --> A["边界与路由<br/>鉴权 租户 Prompt Mode Slash Reaction"]
+    A --> W["会话装配<br/>Provider Tools Policy Hooks"]
+    W --> C["上下文与提示词<br/>Memory Skills Git Tenant"]
+  end
+
+  subgraph LOOP["模型与工具闭环"]
+    direction TB
+    M["模型 Provider<br/>StreamMessages"] --> D["模型响应<br/>Text Thinking Tool Use"]
+    D -->|tool_use| G["Pre-Tool Gate<br/>意图 风险 前置证据"]
+    G -->|allow 或 preflight| T["工具与 Agent<br/>Read Write Bash Task MCP"]
+    G -->|block_tool| X["运行证据<br/>ToolTrace FileChanges CapabilityLoop"]
+    T --> X
+  end
+
+  subgraph ACCEPT["完成、输出与状态"]
+    direction TB
+    F["Completion Gate<br/>声明与证据一致性"] -->|allow| O["输出适配<br/>TUI JSON SSE WebSocket Card Reaction"]
+    Q["Pending Input Queue<br/>Enter 入队 上移 编辑 方向"] -->|空闲时串行消费| O
+    O --> P["持久化<br/>Transcript Task Goal MySQL Inbox Run Callback"]
+    Q --> P
+  end
+
+  subgraph ASYNC_IMAGE["Channel 异步图片任务（账号灰度）"]
+    direction TB
+    IT["Channel GenerateImage / EditImage<br/>queued receipt"] --> S["imagegen.Scheduler<br/>tenant-scoped admission"]
+    S --> J[("image_generations<br/>queued / retry / running")]
+    IW["ImageWorker<br/>lease + 180s attempt"] --> J
+    IW --> PR["Image Provider"]
+    PR --> BL["BlobStore + media_assets"]
+    IW --> CO[("image_completion_outbox")]
+    CO --> CD["CompletionDispatcher<br/>claim/read"]
+    CD --> MAT["ChannelImageCompletionConsumer<br/>materialize"]
+    MAT --> CM[("channel_messages")]
+    MAT --> CBO[("channel_outbox")]
+    CBO --> FM["Feishu image message"]
+    J -.-> COST["Cost/latency telemetry<br/>queue, retry, delivery"]
+    IW -.-> COST
+    CD -.-> COST
+  end
+
+  subgraph SESSION_CONTROL["WebUI v2 Session Control（共享生产 composition）"]
+    direction TB
+    SCT["HTTP / CLI / 7 Tools<br/>namespaced ref + trusted RequestContext"] --> SCS["Session Control Service<br/>authorize -> operation-specific replay -> apply"]
+    SCS --> HLC["Prepare -> Handoff -> CAS Launch<br/>task + message transaction"]
+    SCS --> SCR["readback + audit<br/>Local read explicit opt-in only"]
+    SCS --> SSES["HTTP SSE<br/>cursor reconnect + bounded projection"]
+    SMON["SessionMonitor<br/>observed link authority"] --> SCH["existing Scheduler daemon / child"]
+    SCH --> SG["NewReadService -> SessionGet only"]
+    SG --> CAS["MySQL CAS observation<br/>link metadata + Message/Outbox transaction"]
+    CAS --> FO["Channel / Feishu Outbox"]
+  end
+
+  C --> M
+  X -->|tool_result 下一轮| M
+  D -->|candidate final| F
+  X --> F
+  F -->|block_continue| M
+  X --> P
+  P -->|resume rewind fork| W
+  R["长期编排<br/>Goal Scheduler Subagent"] --> W
+  B["预算与上下文治理<br/>Turns Tokens Compact Cache"] --> C
+  B --> M
+  C -.-> V["观测与评测<br/>Trace Telemetry Eval Metrics"]
+  M -.-> V
+  X -.-> V
+  F -.-> V
+  O -.-> V
+  V -.->|finished runtime_span| P
+  P -.->|Local Trace read| V
+  A -->|eligible account| IT
+  A --> SCT
+  W -->|WebUI v2 Orchestrator only| SCT
+  SCS --> P
+  HLC --> P
+  SCR --> O
+  SSES --> O
+  SCS --> SMON
+  SCH --> R
+  FO --> O
+  SCS -.-> V
+  CAS -.-> V
+  COST -.-> V

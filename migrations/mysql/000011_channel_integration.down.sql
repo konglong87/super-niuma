@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS channel_callbacks;
+DROP TABLE IF EXISTS channel_run_inputs;
+DROP TABLE IF EXISTS channel_outbox;
+DROP TABLE IF EXISTS channel_messages;
+DROP TABLE IF EXISTS channel_runs;
+DROP TABLE IF EXISTS channel_inbox_events;
+DROP TABLE IF EXISTS channel_conversations;
+DROP TABLE IF EXISTS channel_identities;
+DROP TABLE IF EXISTS channel_accounts;

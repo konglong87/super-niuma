@@ -1,0 +1,1 @@
+session show requires a session id

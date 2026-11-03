@@ -1,0 +1,177 @@
+.webui2-page .webui2-sidebar .webui2-workspace-sessions { border-left: 0; }
+.webui2-page .webui2-sidebar .webui2-workspace-toggle > svg:nth-child(2) { color: var(--webui2-text-muted); }
+.webui2-page .webui2-sidebar .webui2-session-row {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) 30px;
+  gap: 2px;
+  margin: 2px 0;
+  height: var(--session-row-height);
+  min-height: var(--session-row-height);
+  min-width: 0;
+  padding: 0 4px;
+  position: relative;
+}
+.webui2-page .webui2-sidebar .webui2-session-row:hover { background: color-mix(in srgb, var(--webui2-text) 4%, var(--webui2-surface)); }
+.webui2-page .webui2-sidebar .webui2-session-row[data-selected="true"] { background: color-mix(in srgb, var(--webui2-text) 9%, var(--webui2-surface)); }
+.webui2-page .webui2-session-row .webui2-session-select {
+  align-items: center;
+  align-self: stretch;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: none;
+  display: flex;
+  gap: 6px;
+  justify-content: flex-start;
+  padding: 0 5px;
+  min-width: 0;
+  text-align: left;
+  width: 100%;
+}
+.webui2-page .webui2-session-row .webui2-session-editing {
+  align-items: center;
+  display: grid;
+  grid-column: 2 / -1;
+  grid-template-columns: minmax(0, 1fr) 24px 24px;
+  gap: 2px;
+  min-width: 0;
+  position: relative;
+}
+.webui2-page .webui2-session-row .webui2-session-title-input {
+  background: var(--webui2-surface);
+  border: 1px solid var(--webui2-accent);
+  border-radius: 5px;
+  color: var(--webui2-text);
+  font: inherit;
+  font-size: var(--session-title-size);
+  box-sizing: border-box;
+  height: calc(var(--session-row-height) - 4px);
+  min-height: 0;
+  line-height: 20px;
+  min-width: 0;
+  outline: 0;
+  padding: 2px 6px;
+  width: 100%;
+}
+.webui2-page .webui2-session-row .webui2-session-title-input[aria-invalid="true"] { border-color: var(--webui2-danger); }
+.webui2-page .webui2-session-row .webui2-session-title-input[readonly] { cursor: wait; opacity: .65; }
+.webui2-page .webui2-session-editing button { align-items: center; background: transparent; border: 0; border-radius: 4px; color: var(--webui2-text-muted); display: inline-flex; height: 24px; min-height: 0; justify-content: center; padding: 0; width: 24px; }
+.webui2-page .webui2-session-editing button:hover { background: var(--webui2-surface-muted); color: var(--webui2-text); }
+.webui2-page .webui2-session-editing button:focus-visible { outline: 2px solid var(--webui2-accent); }
+.webui2-page .webui2-session-editing[aria-busy="true"] .lucide-loader-circle { animation: session-status-spin 1.6s linear infinite; }
+.webui2-page .webui2-session-rename-error { background: var(--webui2-surface); border: 1px solid var(--webui2-border); border-radius: 5px; color: var(--webui2-danger); font-size: 12px; left: 0; padding: 6px 8px; position: absolute; right: 0; top: 100%; z-index: 5; }
+.webui2-page .webui2-session-row .webui2-session-title {
+  display: block;
+  min-width: 0;
+  font-size: var(--session-title-size);
+  font-weight: 500;
+  line-height: 20px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.webui2-page .webui2-session-row .webui2-session-title-wrap {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+}
+.webui2-page .webui2-session-row .webui2-session-channel {
+  align-items: center;
+  background: color-mix(in srgb, var(--webui2-accent) 10%, var(--webui2-surface));
+  border: 1px solid color-mix(in srgb, var(--webui2-accent) 28%, var(--webui2-border));
+  border-radius: 4px;
+  color: var(--webui2-accent);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 10px;
+  font-weight: 600;
+  gap: 3px;
+  line-height: 16px;
+  max-width: 92px;
+  overflow: hidden;
+  padding: 0 5px;
+  white-space: nowrap;
+}
+.webui2-page .webui2-session-row .webui2-session-channel > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.webui2-page .webui2-session-row[data-selected="true"] .webui2-session-title { font-weight: 650; }
+.webui2-page .webui2-session-row .webui2-drag-handle { align-items: center; background: transparent; border: 0; color: var(--webui2-text-muted); cursor: grab; display: inline-flex; height: var(--session-row-height); justify-content: center; opacity: 0; padding: 0; width: 16px; }
+.webui2-page .webui2-session-row:hover .webui2-drag-handle,
+.webui2-page .webui2-session-row:focus-within .webui2-drag-handle { opacity: .65; }
+.webui2-page .webui2-session-row .webui2-session-actions { display: flex; opacity: 1; padding: 0; position: relative; }
+.webui2-page .webui2-session-row .webui2-session-actions > button { color: var(--webui2-text-muted); opacity: .45; }
+.webui2-page .webui2-session-row:is(:hover, :focus-within, [data-selected="true"]) .webui2-session-actions > button { opacity: 1; }
+.webui2-page .webui2-session-row .webui2-session-action-menu { top: var(--session-row-height); }
+.webui2-page .webui2-session-context-menu {
+  background: var(--webui2-surface);
+  border: 1px solid var(--webui2-border);
+  border-radius: 6px;
+  box-shadow: var(--webui2-shadow-card);
+  display: grid;
+  gap: 2px;
+  padding: 4px;
+  position: fixed;
+  z-index: 90;
+}
+.webui2-page .webui2-session-context-menu button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: var(--webui2-text);
+  display: flex;
+  font-size: 12px;
+  gap: 8px;
+  justify-content: flex-start;
+  min-height: 30px;
+  padding: 0 8px;
+  text-align: left;
+  width: 100%;
+}
+.webui2-page .webui2-session-context-menu button:hover { background: var(--webui2-surface-muted); }
+.webui2-page .webui2-session-context-menu button:focus-visible { outline: 2px solid var(--webui2-accent); outline-offset: -2px; }
+.webui2-page .webui2-session-status-icon { align-items: center; color: var(--webui2-text-muted); display: inline-flex; flex: 0 0 16px; height: 16px; justify-content: center; width: 16px; }
+.webui2-page .webui2-session-status-icon[data-tone="active"] { color: var(--webui2-accent); }
+.webui2-page .webui2-session-status-icon[data-tone="success"] { color: var(--webui2-success); }
+.webui2-page .webui2-session-status-icon[data-tone="warning"] { color: var(--webui2-warning); }
+.webui2-page .webui2-session-status-icon[data-tone="danger"] { color: var(--webui2-danger); }
+.webui2-page .webui2-session-status-icon[data-motion="spin"] svg { animation: session-status-spin 1.6s linear infinite; }
+.webui2-page .webui2-session-status-icon[data-motion="pulse"] svg { animation: session-status-pulse 2.2s ease-in-out infinite; }
+.webui2-page .webui2-session-preview {
+  background: var(--webui2-surface-raised);
+  border: 1px solid var(--webui2-border);
+  border-radius: 8px;
+  box-shadow: var(--webui2-shadow-card);
+  color: var(--webui2-text);
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  overflow-wrap: anywhere;
+  padding: 16px;
+  position: fixed;
+  z-index: 80;
+}
+.webui2-page .webui2-session-preview-title { display: block; font-size: 15px; font-weight: 650; line-height: 1.55; white-space: pre-wrap; }
+.webui2-page .webui2-session-preview-workspace { align-items: center; color: var(--webui2-text-muted); display: flex; font-size: 12px; gap: 7px; margin: 12px 0; }
+.webui2-page .webui2-session-preview-workspace svg { flex-shrink: 0; }
+.webui2-page .webui2-session-preview-details { border-top: 1px solid var(--webui2-border-subtle); color: var(--webui2-text-muted); display: grid; font-size: 11px; gap: 8px; padding-top: 12px; }
+.webui2-page .webui2-session-preview-details > span { align-items: center; display: flex; flex-wrap: wrap; gap: 6px; }
+.webui2-page .webui2-session-preview-details code { font-size: 10px; }
+@keyframes session-status-spin { to { transform: rotate(360deg); } }
+@keyframes session-status-pulse { 50% { opacity: .4; } }
+@media (prefers-reduced-motion: reduce) {
+  .webui2-page .webui2-session-status-icon[data-motion] svg { animation: none; }
+}
+@media (hover: none) {
+  .webui2-page .webui2-session-row .webui2-drag-handle,
+  .webui2-page .webui2-session-row .webui2-session-actions > button { opacity: .8; }
+}

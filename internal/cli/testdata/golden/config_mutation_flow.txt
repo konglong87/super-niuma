@@ -1,0 +1,14 @@
+$ config set model golden-model
+Set model
+
+$ config get model
+golden-model
+
+$ config set maxToolResultBytes 2048
+Set maxToolResultBytes
+
+$ config get maxToolResultBytes
+2048
+
+$ config unset model
+Unset model

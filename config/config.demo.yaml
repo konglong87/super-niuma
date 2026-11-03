@@ -1,0 +1,143 @@
+model: model-id
+provider: custom
+effort: high
+outputStyle: default # default|Explanatory|Learning|custom style name from .claude/output-styles
+language: "" # e.g. Chinese, English
+
+baseURL: https://model.example.com/v1
+apiKey: "replace-with-provider-key"
+  # Optional mobile attachment upload signing. Works with S3, MinIO, or
+  # S3-compatible OSS gateways when api-server mode enables mobile chat.
+  NIUMA_MOBILE_S3_ENDPOINT: https://s3.example.test
+  NIUMA_MOBILE_S3_REGION: us-east-1
+  NIUMA_MOBILE_S3_BUCKET: mobile-uploads
+  NIUMA_MOBILE_S3_ACCESS_KEY: "replace-with-access-key"
+  NIUMA_MOBILE_S3_SECRET_KEY: "replace-with-secret-key"
+  NIUMA_MOBILE_S3_PREFIX: uploads
+  NIUMA_MOBILE_S3_PUBLIC_BASE_URL: https://cdn.example.test/mobile
+  NIUMA_TELEMETRY_EXPORT_URL: ""
+  NIUMA_TELEMETRY_EXPORT_TOKEN: ""
+  NIUMA_TELEMETRY_EXPORT_FORMAT: "" # json|otel|datadog
+  NIUMA_TELEMETRY_EXPORT_SERVICE: niuma
+
+webSearch:
+  endpoint: https://cn.bing.com/search
+
+fallback:
+  enabled: true
+  providers:
+    - name: provider1
+      type: custom
+      baseURL: https://backup-model.example.com/v1
+      apiKey: ${BACKUP_PROVIDER_KEY}
+      model: backup-model
+    - name: provider2
+      type: openai-compatible
+      baseURL: http://127.0.0.1:8080
+      apiKey: ${LOCAL_PROVIDER_KEY}
+      model: local-model
+
+# niuma startup updater. By default niuma checks on startup and, when
+# running from this source repository with a clean git worktree, runs
+# `git fetch --quiet && git pull --ff-only --quiet`. Dirty worktrees are skipped.
+update:
+  enabled: true
+  checkOnStartup: true
+  checkOnly: false
+  autoPull: true
+  skipWhenDirty: true
+  strategy: git-ff-only # git-ff-only|check-only
+  repoDir: "" # optional explicit niuma repo path
+  customCommand: "" # optional shell command, for example "git pull --ff-only && make install"
+  versionSourceURL: "" # optional plain-text latest version endpoint
+  scheduleInterval: daily # empty, duration like 6h, or hourly/daily/weekly
+  timeoutSeconds: 30
+
+# Multimodal model routing. Empty values inherit the primary model above.
+multimodal:
+  enabled: true
+  defaultModel: "" # optional fallback for any multimodal input
+  models:
+    image: "" # e.g. gpt-4.1
+    video: ""
+    audio: ""
+    file: ""
+
+# TUI session recap. TUI defaults to away recap after 90s of idle time; set only
+# awayDelaySeconds for a quick local demo without changing mode/enabled fields.
+recap:
+  awayDelaySeconds: 120
+
+# Local GrowthBook-compatible feature source. Env vars still have highest
+# priority, then ant-only CLAUDE_INTERNAL_FC_OVERRIDES, then these config gates.
+growthbook:
+  enabled: true
+  # Optional remote GrowthBook-compatible JSON endpoint. The response may be
+  # {"features": {...}} or {"data":{"features": {...}}}; local overrides below
+  # still have priority over remote feature values.
+  url: ""
+  refreshIntervalSeconds: 300
+  headers: {}
+  features:
+    TOKEN_BUDGET:
+      enabled: false
+      userTypes: [ant]
+      querySources: ["repl_*"]
+    CACHED_MICROCOMPACT:
+      enabled: false
+      models: ["claude-*"]
+    KAIROS_BRIEF:
+      enabled: false
+      modes: [repl_main_thread]
+
+permissions:
+  defaultMode: ask
+  source: project
+  preference: alwaysAskRules
+  allow:
+    - Read
+    - LS
+    - Glob
+    - Grep
+    - Bash(go test:*)
+  deny:
+    - Bash(git reset:*)
+    - Bash(rm -rf:*)
+  alwaysAsk:
+    - Bash(curl:*)
+    - mcp__*:*
+
+sandbox:
+  enabled: true
+  failIfUnavailable: false
+  allowUnsandboxedCommands: false
+  enabledPlatforms:
+    - macos
+    - linux
+  filesystem:
+    allowWrite:
+      - .
+    denyWrite:
+      - .claude/skills
+      - .git/hooks
+      - .git/config
+    denyRead:
+      - ~/.ssh
+  network:
+    disabled: false
+    allowDomains: []
+    denyDomains: []
+    proxy:
+      url: ""
+      mode: optional # optional|required|direct
+      required: false
+    mitm:
+      caFile: ""
+      required: false
+  seccomp:
+    enabled: true
+    mode: bwrap-seccomp-bpf
+
+mcpServers: {}
+hooks: {}
+additionalDirectories: []

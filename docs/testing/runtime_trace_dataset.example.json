@@ -1,0 +1,16 @@
+{
+  "schema_version": "runtime-trace-dataset-v1",
+  "name": "local-coding-agent-smoke",
+  "runs": [
+    {
+      "case_id": "inspect-repository",
+      "group": "before",
+      "artifact": "artifacts/before/inspect-repository.json"
+    },
+    {
+      "case_id": "inspect-repository",
+      "group": "after",
+      "artifact": "artifacts/after/inspect-repository.json"
+    }
+  ]
+}

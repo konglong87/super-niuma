@@ -1,0 +1,21 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Hi there",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 0,
+  "id": "<chatcmpl>",
+  "model": "claude-test",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 2,
+    "prompt_tokens": 4,
+    "total_tokens": 6
+  }
+}

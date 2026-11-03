@@ -1,0 +1,87 @@
+{
+  "final_turn_tools": {
+    "request_tool_counts": [
+      1,
+      0
+    ],
+    "result_stop_reason": "end_turn",
+    "runtime_sections": [
+      [],
+      [
+        "turn_budget"
+      ]
+    ]
+  },
+  "partial_stream_recover": {
+    "assistant_message_recorded": true,
+    "response": "partial answer",
+    "result_stop_reason": "partial_stream_error",
+    "stdout": "partial answer"
+  },
+  "partial_task_recent_evidence": {
+    "recent_context_has_partial_evidence": true,
+    "recent_context_has_recovery_risk": true,
+    "recent_context_marks_failed": true,
+    "recent_context_not_marked_completed": true,
+    "request_count": 2,
+    "result_stop_reason": "end_turn",
+    "runtime_sections": [
+      [],
+      [
+        "turn_budget",
+        "agent_evidence_decision_context",
+        "agent_capability_follow_up_gate"
+      ]
+    ],
+    "tool_result_has_capability_loop": true
+  },
+  "runtime_status_context": {
+    "requests": [
+      {
+        "runtime_messages": 1,
+        "runtime_sections": [
+          "active_todos",
+          "plan_mode",
+          "background_agent_tasks"
+        ],
+        "tools": 1
+      },
+      {
+        "runtime_messages": 1,
+        "runtime_sections": [
+          "turn_budget",
+          "active_todos",
+          "plan_mode",
+          "background_agent_tasks"
+        ],
+        "tools": 0
+      }
+    ],
+    "result_stop_reason": "end_turn"
+  },
+  "terminal_task_store_recent_evidence": {
+    "background_mentions_unavailable": true,
+    "follow_up_has_next_action": true,
+    "follow_up_has_risk": true,
+    "follow_up_has_source": true,
+    "follow_up_has_source_action": true,
+    "follow_up_has_verification": true,
+    "recent_context_has_evidence": true,
+    "recent_context_has_source": true,
+    "recent_context_marks_failed": true,
+    "result_stop_reason": "end_turn",
+    "runtime_sections": [
+      "background_agent_tasks",
+      "agent_evidence_decision_context",
+      "agent_capability_follow_up_gate"
+    ]
+  },
+  "tool_result_budget": {
+    "content_replacement_count": 1,
+    "largest_persisted": true,
+    "medium_raw_preserved": true,
+    "result_stop_reason": "end_turn",
+    "small_raw_preserved": true,
+    "tool_result_count": 3
+  }
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Computer Use · Real-input acceptance</title>
+  <link rel="stylesheet" href="/fixture.css">
+  <script src="/fixture.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Computer Use · Real-input acceptance</h1>
+      <p>No generated actions. Use real mouse / keyboard input. Test text only — never enter credentials.</p>
+      <output id="connection" role="status">Connecting…</output>
+    </header>
+    <section class="targets" aria-label="Mouse targets">
+      <button id="click-target" data-target>1 · Click</button>
+      <button id="double-click-target" data-target>2 · Double-click</button>
+      <button id="context-menu-target" data-target>3 · Right-click</button>
+      <div id="mouse-move-target" data-target tabindex="0">4 · Move mouse here</div>
+      <div id="drag-source" data-target tabindex="0">7 · Drag source</div>
+      <div id="drag-drop-target" data-target tabindex="0">Drop here</div>
+    </section>
+    <section class="input-row">
+      <div>
+        <h2>5 · Scroll inside this box</h2>
+        <div id="scroll-target" data-target tabindex="0" aria-label="Scroll test area">
+          <div class="scroll-content">
+            <p>START — scroll down ↓</p><p>Scroll checkpoint 1</p>
+            <p>Scroll checkpoint 2</p><p>Scroll checkpoint 3</p><p>END</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2><label for="text-target">6 · Chinese / emoji / keys / hotkeys</label></h2>
+        <input id="text-target" data-target type="text" maxlength="1024" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入中文 🙂 · Shift / Ctrl / ⌘ + A">
+        <p>Type, use IME, edit and select. Ctrl/⌘+A and arrow keys keep native behavior. Browser/OS-reserved shortcuts may not reach this page.</p>
+        <output id="input-state"></output>
+      </div>
+    </section>
+    <section class="diagnostics">
+      <h2>Geometry · CSS pixels</h2>
+      <p>Client centers are measured. Screen centers below are <strong>estimates</strong> calibrated from the latest trusted mouse coordinate pair; unknown until mouse input arrives. Screenshot pixels require the harness's display origin and capture scale.</p>
+      <pre id="geometry"></pre>
+      <table><thead><tr><th>Target</th><th>Client center</th><th>Screen center (estimate)</th></tr></thead><tbody id="coordinates"></tbody></table>
+      <h2>Recent observed events</h2>
+      <p><code>isTrusted=true</code> is browser-reported, not server-attested. Untrusted events remain visible and must not satisfy real-input assertions. No DOM events are synthesized by this page.</p>
+      <pre id="event-log" aria-live="off">Waiting for real input…</pre>
+    </section>
+  </main>
+</body>
+</html>

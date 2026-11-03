@@ -1,0 +1,110 @@
+niuma
+
+Usage:
+  niuma [options]
+  niuma auth status|login|logout
+  niuma config [--project|--local] list|get|set|unset
+  niuma memory lint [--scope workspace|all] [--json]
+  niuma mcp list|show|add|remove|serve|tools|call|resources|resource|prompts|prompt
+  niuma session list [--source local|tenant|all]|create|get <tenant:key|local:id>|send <tenant:key> <text>|stop <tenant:key>|attach <tenant:target> --from <ref>|monitor <tenant:key> --every <duration> --channel feishu|locate|show|inspect|search|rename|delete|clear|checkpoint|rewind|branches|redo|fork|gc
+  niuma transcript import-claude-code <path> [--cwd <dir>]
+  niuma goal start|status|inspect|list|logs|run|stop|resume|unlock|help
+  niuma skills list|show|lint|install|sync|marketplace-search|marketplace-info|marketplace-status|context|feedback|watch|validate-bundled|package
+  niuma plugin list|show|install|remove
+  niuma server --port <port>
+  niuma channels onboard feishu|run
+  niuma image-worker run
+  niuma tenant migrate up|down|version --dsn <mysql_dsn>
+  niuma tenant agent-tasks list|events|cancel
+  niuma tenant skill-package import|render|publish|list|history|rollback
+  niuma usage
+  niuma init [--settings]
+  niuma status
+  niuma model get|set|list
+  niuma image generate|edit --prompt <text> [--image <path>] [--out <path>]
+  niuma permissions list|mode|allow|deny|remove|clear
+  niuma export <session_id> <output_file> [--format markdown|json]
+  niuma diff [--stat]
+  niuma branch
+  niuma review [--staged]
+  niuma ps
+  niuma logs <background_id>
+  niuma kill <background_id>
+  niuma attach <background_id> [--wait]
+  niuma completion <bash|zsh|fish>
+  niuma tools
+  niuma hooks list|add|remove|clear
+  niuma agents list|show|doctor
+  niuma eval agents [--profile local|live|live-agent-api|anthropic-thinking|golden-probe] [--suite default|golden] [--dataset file] [--runs N] [--provider name] [--output report.json|report.md]
+  niuma compact <session_id> [--max-bytes N]
+  niuma doctor
+  niuma help
+  niuma version [--json]
+
+Any command also accepts --help.
+
+Options:
+  -p, --print [prompt]         Print mode, runs one headless niuma turn
+      --bare                   Minimal code runtime (Read, Edit, Bash; no auto discovery)
+      --bg, --background       Queue print mode as a background session
+      --model <model>          Model ID (defaults to global settings.model)
+      --provider <name>        Select a named provider from fallback.providers
+      --output-format <fmt>    text, json, or stream-json (default text)
+      --input-format <fmt>     text or stream-json stdin format (default text)
+      --json-schema <schema>   Require final response JSON to match schema
+      --runtime-trace-output <path>
+                                Write a metadata-only runtime-trace-v1 artifact
+      --max-parallel-read-only-tools <n>
+                                Read-only tool workers: 0 defaults to 4; negative disables
+      --include-hook-events    Include hook_start/hook_result in stream-json
+      --include-partial-messages
+                                Include accumulated partial_message in stream-json
+      --include-stream-events   Include upstream-compatible stream_event envelopes
+      --max-turns <n>          Maximum tool-use continuations (default 100)
+      --max-tokens <n>         Maximum model output tokens per turn
+      --system-prompt <text>   Override the base system prompt
+      --system-prompt-file <file>
+                                Read base system prompt from a file
+      --append-system-prompt <text>
+                                Append extra instructions to the system prompt
+      --append-system-prompt-file <file>
+                                Append extra instructions from a file
+      --prompt-mode <mode>     code or chat (default code for CLI/TUI)
+      --agent <name>           Run as a main-thread agent from .claude/agents
+      --settings <file|json>   Merge runtime settings from a file or JSON
+      --mcp-config <file|json> Load MCP servers from file(s) or JSON
+      --strict-mcp-config      Use only MCP servers from --mcp-config
+      --tools <list>           Comma/space-separated enabled tool names
+      --allowedTools <list>    Comma-separated tool allow patterns for this run
+      --disallowedTools <list> Comma-separated tool deny patterns for this run
+      --permission-mode <mode> allow, ask, deny, acceptEdits, auto, plan, default,
+                                or bypassPermissions. acceptEdits auto-approves
+                                file edits only; bypassPermissions skips every
+                                check except explicit deny rules
+      --permission-prompt-tool <tool>
+                                Tool to ask for headless permission approvals
+      --add-dir <dir>          Additional writable directory for this run
+      --dangerously-skip-permissions
+                                Bypass permission policy for this run
+      --cwd <dir>              Working directory for tools
+  -r, --resume [session_id]    Resume context from a previous transcript
+      --resume-session-at <id> Resume only through the given transcript entry id
+      --rewind-files <id>      Restore files to a previous user message id and exit
+  -c, --continue               Continue the latest transcript
+      --session-id <uuid>      Create or continue this session (alias: --sessionId)
+  -n, --name <name>            Set a display name for this session
+      --no-session-persistence Do not write a transcript for this run
+  -v, --version                Show version
+  -h, --help                   Show help
+
+Environment:
+  NIUMA_CONFIG_DIR             Optional compatibility override for config directory
+  NIUMA_LOG_LEVEL             Diagnostic log level on stderr: debug, info, warn,
+                                error, dpanic, panic, fatal, silent. Unset means
+                                silent for CLI runs; the server always logs JSON
+  NIUMA_MYSQL_DSN             MySQL DSN for tenant migrations and agent tasks
+  NIUMA_TENANT_KEY            Tenant key for tenant CLI commands
+  NIUMA_USER_ID               User key for tenant CLI commands
+
+Implemented tools:
+  Task, TaskOutput, AskUserQuestion, EnterPlanMode, ExitPlanMode, ListMcpResources, ReadMcpResource, Read, Write, Edit, MultiEdit, NotebookRead, NotebookEdit, LS, Glob, Grep, LSP, TodoRead, TodoWrite, Skill, Workflow, Worktree, WebBrowser, WebFetch, WebSearch, PowerShell, Bash

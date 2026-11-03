@@ -1,0 +1,2 @@
+#compdef niuma
+_arguments '1:command:(auth config memory mcp session sessions transcript goal goals skills plugin plugins server channels image-worker tenant usage cost init status model image permissions export diff branch review ps logs kill attach completion tools hooks agents eval compact doctor help version)'

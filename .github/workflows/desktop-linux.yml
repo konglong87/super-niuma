@@ -1,0 +1,75 @@
+name: Linux desktop
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "desktop-v2/**"
+      - "web/**"
+      - "scripts/build-desktop-v2.sh"
+      - "scripts/package-desktop-v2-linux.sh"
+      - "go.mod"
+      - "go.sum"
+      - ".tool-versions"
+      - ".github/workflows/desktop-linux.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "desktop-v2/**"
+      - "web/**"
+      - "scripts/build-desktop-v2.sh"
+      - "scripts/package-desktop-v2-linux.sh"
+      - "go.mod"
+      - "go.sum"
+      - ".tool-versions"
+      - ".github/workflows/desktop-linux.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-linux-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CGO_ENABLED: '1'
+
+jobs:
+  native:
+    name: Linux desktop native compile
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve Go version
+        id: go
+        shell: bash
+        run: |
+          version="$(awk '$1 == "golang" { print $2; exit }' .tool-versions)"
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ steps.go.outputs.version }}
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: web/.nvmrc
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Linux Wails native dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y build-essential pkg-config libgtk-3-dev libwebkit2gtk-4.1-dev
+          pkg-config --exists gtk+-3.0 webkit2gtk-4.1
+
+      - run: npm ci --legacy-peer-deps
+        working-directory: web
+      - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.10.2
+
+      # Build the real frontend before embedding it in the CGO/Wails binary.
+      # Ubuntu 24.04 provides WebKit 4.1; the matching Wails tag is required.
+      - name: Build real frontend and native desktop
+        run: bash scripts/build-desktop-v2.sh -platform linux/amd64 -tags webkit2_41

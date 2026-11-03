@@ -1,0 +1,59 @@
+model: model-id
+provider: custom
+effort: high
+
+baseURL: http://127.0.0.1:8080/v1
+apiKey: test-key
+
+fallback:
+  enabled: false
+  providers: []
+
+update:
+  enabled: true
+  checkOnStartup: true
+  checkOnly: false
+  autoPull: true
+  skipWhenDirty: true
+  strategy: git-ff-only
+  repoDir: ""
+  customCommand: ""
+  versionSourceURL: ""
+  scheduleInterval: ""
+  timeoutSeconds: 30
+
+multimodal:
+  enabled: true
+  defaultModel: ""
+  models:
+    image: ""
+    video: ""
+    audio: ""
+    file: ""
+
+webSearch:
+  endpoint: https://cn.bing.com/search
+
+permissions:
+  defaultMode: ask
+  allow:
+    - Read
+    - LS
+    - Glob
+    - Grep
+    - Bash(go test:*)
+    - Bash(go run:*)
+    - Bash(git status:*)
+  deny:
+    - Bash(git reset:*)
+    - Bash(git clean:*)
+
+sandbox:
+  enabled: true
+  failIfUnavailable: false
+  allowUnsandboxedCommands: false
+  enabledPlatforms:
+    - macos
+    - linux
+
+additionalDirectories: []

@@ -1,0 +1,37 @@
+$ skills marketplace-info --source skills-index.yaml
+Marketplace skills: 2 (hashed 0, signed 0)
+market-install	inline	Installed marketplace skill
+market-sync	inline	Synced marketplace skill
+
+$ skills marketplace-search --source skills-index.yaml --query market
+Marketplace search: 2 skill(s)
+market-install	inline	unverified	Installed marketplace skill	install: skills install --source skills-index.yaml market-install
+market-sync	inline	unverified	Synced marketplace skill	install: skills install --source skills-index.yaml market-sync
+
+$ skills sync --source skills-index.yaml
+Synced 2 skill(s)
+
+$ skills install --source skills-index.yaml market-install
+Installed skill market-install
+
+$ skills list
+market-install	Installed marketplace skill
+market-sync	Synced marketplace skill
+
+$ skills context --prompt please use market
+# Available Skills
+Only the following skill metadata is preloaded. When a skill matches the user's request or the current files/paths/tool evidence, invoking the relevant Skill tool first is a blocking requirement before taking task-specific actions or giving task-specific answers. Use the skill's exact name to load the full SKILL.md instructions. After loading SKILL.md, read referenced files only if the skill asks for them.
+- market-install: Installed marketplace skill
+- market-sync: Synced marketplace skill
+
+$ skills feedback market-install --rating 5 --comment useful --target skill-feedback.jsonl
+Recorded feedback for market-install (5/5)
+
+$ skills show market-install
+---
+name: market-install
+description: Installed marketplace skill
+---
+# Market Install
+
+Use installed instructions.

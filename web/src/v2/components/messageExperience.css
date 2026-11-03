@@ -1,0 +1,76 @@
+.webui2-message-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 8px; padding-top: 0; color: var(--text-muted); font-size: 11px; }
+.webui2-message-footer > span { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+.webui2-message-model { overflow-wrap: anywhere; }
+.webui2-message-actions { display: inline-flex; align-items: center; gap: 4px; }
+.webui2-message-actions button, .webui2-jump-latest { display: inline-grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 1px solid transparent; border-radius: 6px; background: transparent; color: inherit; cursor: pointer; }
+.webui2-message-actions button:hover, .webui2-jump-latest:hover { background: var(--bg-hover, #edf1f0); border-color: var(--border-color, #dce2df); }
+.webui2-message-actions button:disabled { opacity: .4; cursor: default; }
+.webui2-message-error { color: var(--danger, #ad3737); }
+.webui2-message-attachments { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.webui2-message-attachments > span { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; overflow-wrap: anywhere; font-size: 12px; }
+.webui2-message-attachments svg { flex: 0 0 auto; }
+.webui2-thinking-control { display: flex; align-items: center; gap: 8px; justify-content: flex-end; font-size: 11px; color: var(--text-muted); }
+.webui2-thinking-control select { max-width: 150px; font: inherit; padding: 4px 6px; background: var(--surface, #fff); color: inherit; border: 1px solid var(--border-color, #dce2df); border-radius: 5px; }
+.webui2-thinking-full { color: var(--text-muted); font-size: 13px; }
+.webui2-tool-message { min-width: 0; }
+.webui2-tool-message > summary { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 12px; }
+.webui2-tool-message > summary > code { flex: 1 1 160px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.webui2-tool-message > div { margin-top: 10px; }
+.webui2-tool-message pre { max-height: 320px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }
+.webui2-tool-status { font-size: 11px; }
+.webui2-tool-status--running { color: #9a660b; }
+.webui2-tool-status--completed { color: #237c57; }
+.webui2-tool-status--failed { color: #ad3737; }
+.webui2-show-earlier { display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer; padding: 8px; }
+.webui2-conversation-status { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 0; color: var(--text-muted); font-size: 12px; }
+.webui2-conversation-status > span { display: inline-flex; align-items: center; gap: 7px; }
+.webui2-conversation-status i { width: 6px; height: 6px; background: #218260; border-radius: 50%; }
+.webui2-page .webui2-conversation-workspace .webui2-conversation-composer-slot { position: relative; }
+.webui2-jump-latest { position: absolute; top: -40px; right: 20px; background: var(--surface, #fff); border-color: var(--border-color, #dce2df); }
+.webui2-conversation-message .agent-generated-image { max-width: 100%; max-height: 480px; object-fit: contain; }
+/* Overflow-hidden details must keep their summary height inside a bounded history grid. */
+.webui2-page .webui2-conversation-stream { grid-auto-rows: max-content; }
+.webui2-page .webui2-tool-message, .webui2-page .webui2-compact-message { border-radius: 12px; background: var(--webui2-surface); box-shadow: var(--webui2-shadow-soft); }
+.webui2-page .webui2-tool-message > summary, .webui2-page .webui2-compact-message > summary { background: var(--webui2-surface-muted); min-height: 44px; padding: 8px 13px; gap: 7px; font-size: 12px; line-height: 1.4; }
+.webui2-page .webui2-tool-message > summary strong { color: var(--webui2-text); font-weight: 720; }
+.webui2-page .webui2-tool-status { border-radius: 999px; font-weight: 700; padding: 3px 7px; }
+.webui2-page .webui2-tool-status--running { background: var(--webui2-warning-surface); color: var(--webui2-warning); }
+.webui2-page .webui2-tool-status--completed { background: var(--webui2-success-surface); color: var(--webui2-success); }
+.webui2-page .webui2-tool-status--failed { background: var(--webui2-danger-surface); color: var(--webui2-danger); }
+.webui2-page .webui2-folded-message > summary { flex-wrap: wrap; }
+.webui2-disclosure-chevron { flex: 0 0 auto; transition: transform 120ms ease; }
+details[open] > summary > .webui2-disclosure-chevron { transform: rotate(90deg); }
+.webui2-page .webui2-tool-message > div { margin: 0; padding: 8px 12px 0; }
+.webui2-page .webui2-tool-message > div:last-child { padding-bottom: 10px; }
+.webui2-page .webui2-tool-message > div > pre { padding: 7px 0 0; }
+.webui2-stage-label { flex: 1 1 160px; min-width: 0; }
+.webui2-message-time { color: var(--webui2-text-muted); font-size: 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.webui2-message-footer--user { justify-content: flex-end; margin-top: 5px; }
+.webui2-live-elapsed, .webui2-tool-message summary small, .webui2-thinking-message summary small { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.webui2-page .agent-message-artifacts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin: 10px 0; max-width: min(100%, 600px); }
+.webui2-page .agent-generated-image-wrap { max-width: 100%; overflow: hidden; border-radius: 8px; }
+.webui2-message-attachment { margin: 0; max-width: min(100%, 320px); }
+.webui2-message-attachment > img { display: block; width: auto; height: auto; max-width: 100%; max-height: 240px; object-fit: contain; border-radius: 6px; }
+.webui2-message-attachment figcaption { display: flex; gap: 5px; align-items: center; font-size: 11px; margin-top: 5px; overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .webui2-page .webui2-tool-message > summary > code { flex-basis: 100%; order: 2; padding-left: 20px; }
+  .webui2-message-footer { gap: 6px 9px; }
+}
+
+.webui2-tool-message-container { min-width: 0; }
+.webui2-tool-observation {
+  /* Change only the divisor to try 1/6 or 1/8; keep the original asset untouched. */
+  --computer-observation-thumbnail-divisor: 4;
+  --computer-observation-thumbnail-size: calc(640px / var(--computer-observation-thumbnail-divisor));
+  margin-top: 10px;
+  max-width: min(100%, 640px);
+}
+.webui2-tool-observation .agent-generated-image-wrap { width: min(100%, var(--computer-observation-thumbnail-size)); }
+.webui2-tool-observation .agent-generated-image {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: var(--computer-observation-thumbnail-size);
+  object-fit: contain;
+}
+.webui2-tool-observation > small { display: block; margin: 0 0 6px; color: var(--webui2-text-muted); }

@@ -1,0 +1,19 @@
+Analyze this repository and create or improve `niuma.md` for future Niuma sessions in this workspace.
+
+Requirements:
+1. Read the existing repository evidence first: README, manifest files, build/test/lint configuration, CI configuration, existing `niuma.md`, `CLAUDE.md`, `AGENTS.md`, `.claude/rules/`, `.cursor/rules/`, `.cursorrules`, and `.github/copilot-instructions.md` when present.
+2. Write a concise agent operating guide, not a README summary. Include only durable instructions that future Niuma sessions need to avoid mistakes: project-specific working rules, non-obvious commands and verification gates, architecture constraints, safety/permissions/data/compatibility boundaries, and unusual coding or testing conventions.
+3. Detail level: `balanced` - include a short Key Entrypoints or Core API surface section only when stable entrypoints encode behavior future agents may otherwise misunderstand. Keep each item to path, responsibility, and non-obvious behavior.
+4. Do not mirror source code, list every file or function, include generic development advice, copy obvious commands directly discoverable from manifests without context, or invent sections.
+5. If `niuma.md` already exists, read it first and make the smallest useful improvement instead of overwriting it blindly.
+6. If `niuma.md` does not exist but `CLAUDE.md` exists, preserve only applicable project guidance in the new `niuma.md`; do not create or restore any older product-specific guidance filename.
+7. Prefer this section shape when useful: Project Goal, Working Rules, Key Entrypoints, Commands, Verification Gate, Safety / Permissions, Known Boundaries. Omit sections that would be empty or generic.
+8. Keep the result concise. Prefer references such as `@docs/path.md` for long or frequently changing material.
+
+Start the file with exactly this header:
+
+```md
+# niuma.md
+
+This file provides guidance to Niuma when working in this repository.
+```

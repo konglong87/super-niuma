@@ -1,0 +1,15 @@
+Large file detected: <PATH>
+size_bytes: 26
+mime_type: text/plain; charset=utf-8
+chunk_size: 12
+chunk_count: 2
+sha256_prefix: <SHA256_PREFIX>
+chunks:
+  - index: 1 byte_offset: 0 byte_length: 20 line_start: 1 line_end: 3
+  - index: 2 byte_offset: 20 byte_length: 6 line_start: 4 line_end: 4
+
+Preview byte_offset=0 bytes=12:
+alpha
+bravo
+
+Use chunk_index, byte_offset/byte_limit, or offset/limit to read the next segment.

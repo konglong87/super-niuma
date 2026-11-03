@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "created": 0,
+      "id": "model-a",
+      "object": "model",
+      "owned_by": "niuma"
+    },
+    {
+      "created": 0,
+      "id": "model-b",
+      "object": "model",
+      "owned_by": "niuma"
+    }
+  ],
+  "object": "list"
+}

@@ -1,0 +1,32 @@
+{
+  "session_id": "golden",
+  "url": "http://webbrowser.test/",
+  "status": 200,
+  "title": "Playwright Golden",
+  "text": "Rendered by JavaScript\nNext Page\n Submit",
+  "links": [
+    {
+      "text": "Next Page",
+      "href": "http://webbrowser.test/next"
+    }
+  ],
+  "forms": [
+    {
+      "action": "http://webbrowser.test/submitted",
+      "method": "GET",
+      "inputs": [
+        "email"
+      ]
+    }
+  ],
+  "console": [
+    "log: golden ready"
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "url": "http://webbrowser.test/",
+      "status": 200
+    }
+  ]
+}

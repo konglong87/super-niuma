@@ -1,0 +1,15 @@
+{"id":"22222222-0000-4000-8000-000000000001","timestamp":"2026-07-21T09:30:00.000001Z","type":"checkpoint","content":"22222222-0000-4000-8000-000000000002","name":"auto-22222222-0000-4000-8000-000000000002"}
+{"id":"22222222-0000-4000-8000-000000000002","timestamp":"2026-07-21T09:30:00.000002Z","type":"message","role":"user","content":"复现一下会话回放里工具和文本顺序错乱的问题。"}
+{"timestamp":"2026-07-21T09:30:00.100000Z","type":"usage","model":"fixture-model","input_tokens":1420,"output_tokens":51}
+{"id":"22222222-0000-4000-8000-000000000003","timestamp":"2026-07-21T09:30:03.000000Z","type":"message","role":"assistant","content":"先回放最近的一条会话，确认工具与文本的先后顺序。"}
+{"id":"22222222-0000-4000-8000-000000000004","timestamp":"2026-07-21T09:30:03.400000Z","type":"tool_call","content":"{\"pattern\": \"internal/tui/*.go\"}","tool_id":"call_fixture_glob_1","tool_name":"Glob"}
+{"id":"22222222-0000-4000-8000-000000000005","timestamp":"2026-07-21T09:30:03.700000Z","type":"tool_result","content":"internal/tui/app.go\ninternal/tui/app_test.go","tool_id":"call_fixture_glob_1","tool_name":"Glob"}
+{"id":"22222222-0000-4000-8000-000000000006","timestamp":"2026-07-21T09:30:03.800000Z","type":"message","role":"status","content":"已切换到紧凑显示模式。"}
+{"id":"22222222-0000-4000-8000-000000000007","timestamp":"2026-07-21T09:30:07.000000Z","type":"message","role":"assistant","content":"工具结果已经落位，接着检查 recap 是否仍然可见。"}
+{"id":"22222222-0000-4000-8000-000000000008","timestamp":"2026-07-21T09:30:07.400000Z","type":"tool_call","content":"{\"command\": \"go test ./internal/tui -run TestModelSessionReplay -count=1\"}","tool_id":"call_fixture_bash_2","tool_name":"Bash"}
+{"id":"22222222-0000-4000-8000-000000000009","timestamp":"2026-07-21T09:30:10.000000Z","type":"tool_result","content":"FAIL\tgo-claude/internal/tui\texit status 1","tool_id":"call_fixture_bash_2","tool_name":"Bash","is_error":true}
+{"id":"22222222-0000-4000-8000-00000000000a","timestamp":"2026-07-21T09:30:10.100000Z","type":"message","role":"error","content":"Bash 以状态码 1 退出。"}
+{"id":"22222222-0000-4000-8000-00000000000b","timestamp":"2026-07-21T09:30:12.000000Z","type":"recap_summary","role":"system","content":"回放过程中工具顺序保持稳定。","model":"fixture-model","metadata":{"version":1,"source":"away","status":"ok"}}
+{"id":"22222222-0000-4000-8000-00000000000c","timestamp":"2026-07-21T09:30:12.100000Z","type":"message","role":"recap","content":"已确认工具顺序与 recap 可见性。"}
+{"timestamp":"2026-07-21T09:30:15.000000Z","type":"usage","model":"fixture-model","input_tokens":2044,"output_tokens":58}
+{"id":"22222222-0000-4000-8000-00000000000d","timestamp":"2026-07-21T09:30:15.000001Z","type":"message","role":"assistant","content":"结论：工具顺序与 recap 都符合预期。\n\n收尾：把结论写进 SOP 报告。"}

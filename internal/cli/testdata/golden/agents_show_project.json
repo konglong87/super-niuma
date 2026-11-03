@@ -1,0 +1,40 @@
+{
+  "name": "reviewer",
+  "description": "Reviews code",
+  "tools": [
+    "Read",
+    "Grep"
+  ],
+  "disallowedTools": [
+    "Bash"
+  ],
+  "mcpServers": [
+    {
+      "name": "local"
+    },
+    {
+      "name": "search",
+      "config": {
+        "type": "http",
+        "url": "https://example.test/mcp"
+      }
+    }
+  ],
+  "criticalSystemReminder_EXPERIMENTAL": "Stay focused.",
+  "skills": [
+    "code-review"
+  ],
+  "model": "claude-sonnet",
+  "initialPrompt": "/status",
+  "maxTurns": 7,
+  "background": true,
+  "memory": "project",
+  "effort": "high",
+  "permissionMode": "ask",
+  "path": "<PROJECT>/.claude/agents/reviewer.md",
+  "source": "project",
+  "prompt": "Review carefully.",
+  "unknown_fields": {
+    "futureField": "keep-me-visible"
+  }
+}

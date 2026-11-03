@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  # Branch pushes and PRs run only the fast, release-relevant gate. Tag pushes
+  # are intentionally excluded: release.yml owns the tag build and acceptance.
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# 同一 ref 上只保留最新一次运行，避免连续 push 排队占满 runner。
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Keep CI and release on the same patched Go toolchain. The source of truth
+  # for release jobs is .tool-versions; this explicit pin keeps the fast gate
+  # reproducible and prevents a runner image update from changing the result.
+  GO_VERSION: '1.26.10'
+
+jobs:
+  build:
+    name: build / vet / gofmt
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      # Tracked frontend/dist/.gitkeep satisfies embed on a fresh checkout.
+      # Untagged Wails v2.10.2 uses its non-GUI implementation, so these checks
+      # neither need GTK/WebKit nor prove a runnable desktop build.
+      - run: go build ./...
+      - name: Super migration boundary
+        run: python3 scripts/super-niuma-boundary-test.py
+      - run: go vet ./...
+
+      - name: gofmt
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [ -n "$unformatted" ]; then
+            echo "::error::gofmt 报告以下文件未格式化"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: go.mod / go.sum 已 tidy
+        run: |
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum
+
+  test:
+    name: go test -race (impact-aware)
+    runs-on: ubuntu-latest
+    # Full race remains on main, tags and manual runs. PRs and feature-branch
+    # pushes test the changed packages plus their reverse dependency closure.
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      - name: Full race suite on main and manual runs
+        if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+        run: go test -race ./... -count=1
+
+      - name: Impact-aware race suite on PRs and feature branches
+        if: github.event_name != 'workflow_dispatch' && github.ref != 'refs/heads/main'
+        env:
+          BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        run: scripts/race-impacted.sh "$BASE_SHA"
+
+  web:
+    name: web typecheck / build / test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: web/.nvmrc
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      # --legacy-peer-deps is required because TypeScript 6 and
+      # openapi-typescript 7.13 declare incompatible peer ranges.
+      - run: npm ci --legacy-peer-deps
+        working-directory: web
+
+      # typecheck covers src plus vite/playwright/e2e configuration.
+      - run: npm run typecheck
+        working-directory: web
+      - run: npm run build:bundle
+        working-directory: web
+      - run: npm run test
+        working-directory: web

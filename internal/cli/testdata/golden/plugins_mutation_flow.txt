@@ -1,0 +1,11 @@
+$ plugin install plugin-src --project
+Installed plugin demo
+
+$ plugin list
+demo	0.1.0	Demo plugin
+
+$ plugin remove demo --project
+Removed plugin demo
+
+$ plugin list
+No plugins found

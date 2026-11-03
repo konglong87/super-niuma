@@ -1,0 +1,23 @@
+$ mcp add demo --env FOO=bar echo hello
+Added MCP server demo
+
+$ mcp show demo
+{
+  "type": "stdio",
+  "command": "echo",
+  "args": [
+    "hello"
+  ],
+  "env": {
+    "FOO": "bar"
+  }
+}
+
+$ mcp list
+demo	stdio	echo
+
+$ mcp remove demo
+Removed MCP server demo
+
+$ mcp list
+No MCP servers configured

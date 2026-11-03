@@ -1,0 +1,86 @@
+.webui2-settings-center .webui2-profile-settings,
+.webui2-settings-center .webui2-agent-settings { min-width: 0; }
+.webui2-settings-center .settings-profile-workbench { display: block; border: 0; border-radius: 0; box-shadow: none; background: transparent; overflow: visible; }
+.webui2-settings-center .settings-profile-workbench [hidden] { display: none; }
+.webui2-settings-center .settings-profile-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+.webui2-settings-center .settings-concept-notice { display: grid; gap: 4px; margin-bottom: 18px; padding: 13px 15px; border: 1px solid var(--webui2-border); border-left: 3px solid var(--webui2-accent); border-radius: 7px; background: var(--webui2-surface-muted); color: var(--webui2-text-muted); font-size: 12px; line-height: 1.6; }
+.webui2-settings-center .settings-concept-notice strong { color: var(--webui2-text); font-size: 13px; }
+.webui2-settings-center .settings-profile-heading { min-width: 0; }
+.webui2-settings-center .settings-profile-toolbar h2 { margin: 0; font-size: 15px; font-weight: 600; }
+.webui2-settings-center .settings-profile-toolbar h2 span { color: var(--webui2-text-muted); margin-left: 8px; font-size: 12px; font-weight: 400; }
+.webui2-settings-center .settings-profile-heading p { margin: 6px 0 0; color: var(--webui2-text-muted); font-size: 12px; line-height: 1.6; }
+.webui2-settings-center .settings-profile-catalog { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 27px; }
+.webui2-settings-center .settings-profile-catalog > button { display: flex; flex-direction: column; align-items: flex-start; text-align: left; min-width: 0; min-height: 142px; padding: 17px; gap: 10px; border: 1px solid var(--webui2-border); border-radius: 7px; background: var(--webui2-surface); color: var(--webui2-text); }
+.webui2-settings-center .settings-profile-catalog > button.selected { background: var(--webui2-surface-muted); border-color: transparent; }
+.webui2-settings-center .settings-profile-catalog > button strong { font-size: 14px; overflow-wrap: anywhere; }
+.webui2-settings-center .settings-profile-catalog p { margin: 0; color: var(--webui2-text-muted); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.webui2-settings-center .settings-profile-catalog footer { display: flex; justify-content: space-between; width: 100%; margin-top: auto; color: var(--webui2-text-muted); font-size: 11px; }
+.webui2-settings-center .settings-profile-empty { display: grid; justify-items: start; gap: 9px; grid-column: 1 / -1; padding: 28px 22px; border: 1px dashed var(--webui2-border); color: var(--webui2-text-muted); }
+.webui2-settings-center .settings-profile-empty svg { color: var(--webui2-accent); }
+.webui2-settings-center .settings-profile-empty strong { color: var(--webui2-text); font-size: 14px; }
+.webui2-settings-center .settings-profile-empty p { margin: 0; max-width: 520px; }
+.webui2-settings-center .settings-profile-empty button { margin-top: 4px; }
+.webui2-settings-center .settings-profile-workarea { display: grid; grid-template-columns: 152px minmax(0, 1fr); gap: 24px; align-items: start; min-width: 0; }
+.webui2-settings-center .settings-profile-workbench .agent-workbench-tabs { background: transparent; border-top: 0; padding: 0; gap: 16px; }
+.webui2-settings-center .settings-profile-workarea .agent-workbench-tabs { display: grid; align-content: start; gap: 3px; position: sticky; top: 16px; }
+.webui2-settings-center .settings-profile-workarea .agent-workbench-tabs button { justify-content: flex-start; border: 0; border-left: 2px solid transparent; border-radius: 4px; padding: 10px 9px; font-size: 12px; font-weight: 500; text-align: left; }
+.webui2-settings-center .settings-profile-workarea .agent-workbench-tabs button.active { background: var(--webui2-surface-muted); color: var(--webui2-text); border-left-color: transparent; }
+.webui2-settings-center .settings-profile-workbench .agent-workbench-body { display: block; min-height: 0; }
+.webui2-settings-center .settings-profile-workbench .agent-workbench-main { background: var(--webui2-surface); }
+.webui2-settings-center .settings-profile-workbench .agent-workbench-tabs button { color: var(--webui2-text-muted); }
+.webui2-settings-center :is(.webui2-profile-settings, .webui2-agent-settings) :is(.secondary-button, .icon-button) { color: var(--webui2-text); }
+.webui2-settings-center :is(.webui2-profile-settings, .webui2-agent-settings) .primary-button { background: var(--webui2-accent); border-color: var(--webui2-accent); color: var(--webui2-accent-text); }
+.webui2-settings-center .settings-profile-workbench .agent-detail-view { padding: 25px 0; gap: 23px; grid-template-columns: minmax(0, 1fr); }
+.webui2-settings-center .settings-profile-workbench .profile-policy-card code { white-space: normal; overflow-wrap: anywhere; }
+.webui2-settings-center .settings-profile-workbench .agent-detail-view h3 { font-size: 17px; }
+.webui2-settings-center .settings-profile-workbench .detail-hero { padding-bottom: 22px; }
+.webui2-settings-center .settings-profile-workbench .profile-form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 19px 25px; }
+.webui2-settings-center .settings-profile-workbench .profile-form-grid label { display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--webui2-text-muted); min-width: 0; }
+.webui2-settings-center .settings-profile-workbench .profile-form-grid input,
+.webui2-settings-center .settings-profile-workbench .profile-form-grid textarea,
+.webui2-settings-center .settings-profile-workbench .profile-form-grid select,
+.webui2-settings-center .settings-assignment-row select { width: 100%; min-width: 0; padding: 9px 11px; border: 1px solid var(--webui2-border); border-radius: 6px; background: var(--webui2-surface); color: var(--webui2-text); font: inherit; font-size: 13px; }
+.webui2-settings-center .settings-profile-workbench .profile-source-card,
+.webui2-settings-center .settings-profile-workbench .profile-policy-card,
+.webui2-settings-center .settings-profile-workbench .profile-metric { border: 0; border-radius: 0; background: transparent; padding: 0; }
+.webui2-settings-center .settings-profile-workbench .profile-source-card { padding: 15px 0; border-bottom: 1px solid var(--webui2-border); }
+.webui2-settings-center .settings-profile-workbench .profile-source-card :is(strong, code) { color: var(--webui2-text); }
+.webui2-settings-center .settings-profile-workbench :is(.eyebrow, .profile-source-card span, .profile-policy-card pre) { color: var(--webui2-text-muted); }
+.webui2-settings-center .settings-profile-workbench :is(.binding-security-note, .validation-callout.valid) { background: var(--webui2-accent-surface); border-color: var(--webui2-border); color: var(--webui2-accent); }
+.webui2-settings-center .settings-profile-workbench .validation-callout.invalid { background: var(--webui2-danger-surface); border-color: var(--webui2-danger); color: var(--webui2-danger); }
+.webui2-settings-center .settings-profile-workbench .valid-text { color: var(--webui2-accent); }
+.webui2-settings-center .settings-profile-workbench .error-text { color: var(--webui2-danger); }
+.webui2-settings-center .settings-profile-workbench .dirty-dot { color: var(--webui2-warning); }
+.webui2-settings-center .settings-profile-workbench .profile-metric strong { white-space: normal; overflow-wrap: anywhere; }
+.webui2-settings-center .settings-profile-workbench .raw-json-editor textarea,
+.webui2-settings-center .settings-profile-workbench .preview-columns pre { background: var(--webui2-surface-muted); color: var(--webui2-text); border-color: var(--webui2-border); }
+.webui2-settings-center .settings-profile-status { padding: 10px 0; font-size: 13px; color: var(--webui2-accent); }
+.webui2-settings-center .settings-profile-error { padding: 10px 0; font-size: 13px; color: var(--webui2-danger); overflow-wrap: anywhere; }
+.webui2-settings-center .settings-profile-stale { padding: 12px 0; font-size: 13px; color: var(--webui2-warning); line-height: 1.6; }
+.webui2-settings-center .settings-profile-boundary { margin: 15px 0 0; color: var(--webui2-text-muted); font-size: 12px; line-height: 1.7; }
+.webui2-settings-center .settings-agent-overview { display: flex; align-items: center; gap: 17px; padding: 10px 0 25px; }
+.webui2-settings-center .settings-agent-overview > svg { color: var(--webui2-accent); flex-shrink: 0; }
+.webui2-settings-center .settings-agent-overview h3 { font-size: 18px; margin: 0 0 7px; overflow-wrap: anywhere; }
+.webui2-settings-center .settings-agent-overview p { color: var(--webui2-text-muted); font-size: 12px; margin: 0; overflow-wrap: anywhere; }
+.webui2-settings-center .settings-agent-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; border-block: 1px solid var(--webui2-border); padding: 20px 0; margin: 0 0 15px; }
+.webui2-settings-center .settings-agent-facts dt { font-size: 12px; color: var(--webui2-text-muted); margin-bottom: 8px; }
+.webui2-settings-center .settings-agent-facts dd { font-size: 13px; margin: 0; overflow-wrap: anywhere; }
+.webui2-settings-center .settings-assignment-row { display: grid; grid-template-columns: minmax(130px, .8fr) minmax(0, 1.3fr) 65px; align-items: center; gap: 20px; border-bottom: 1px solid var(--webui2-border); padding: 20px 0; }
+.webui2-settings-center .settings-assignment-row label { font-size: 13px; font-weight: 500; }
+.webui2-settings-center .settings-assignment-row small { display: block; color: var(--webui2-text-muted); margin-top: 7px; font-size: 11px; overflow-wrap: anywhere; }
+.webui2-settings-center .settings-assignment-state { font-size: 11px; color: var(--webui2-text-muted); text-align: right; }
+@media (max-width: 760px) {
+  .webui2-settings-center .settings-profile-catalog { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .webui2-settings-center .settings-profile-toolbar { flex-wrap: wrap; }
+  .webui2-settings-center .settings-profile-workarea { grid-template-columns: 132px minmax(0, 1fr); gap: 16px; }
+  .webui2-settings-center .settings-profile-workbench .profile-form-grid,
+  .webui2-settings-center .settings-profile-workbench .profile-source-card,
+  .webui2-settings-center .settings-profile-workbench .preview-columns { grid-template-columns: minmax(0, 1fr); }
+  .webui2-settings-center .settings-profile-workbench .profile-source-card code { white-space: normal; overflow-wrap: anywhere; overflow: visible; text-overflow: clip; }
+  .webui2-settings-center .settings-profile-workbench .profile-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .webui2-settings-center .settings-profile-workbench .section-heading,
+  .webui2-settings-center .settings-profile-workbench .detail-hero { flex-wrap: wrap; }
+  .webui2-settings-center .settings-agent-facts { grid-template-columns: minmax(0, 1fr); }
+  .webui2-settings-center .settings-assignment-row { grid-template-columns: minmax(0, 1fr) 65px; gap: 12px; }
+  .webui2-settings-center .settings-assignment-row > div:first-child { grid-column: 1 / -1; }
+}

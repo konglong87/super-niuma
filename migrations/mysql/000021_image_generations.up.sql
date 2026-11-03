@@ -1,0 +1,32 @@
+SET NAMES utf8mb4;
+
+CREATE TABLE IF NOT EXISTS image_generations (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  generation_id VARCHAR(64) NOT NULL,
+  tenant_id BIGINT UNSIGNED NOT NULL,
+  user_id BIGINT UNSIGNED NOT NULL,
+  session_id BIGINT UNSIGNED NOT NULL,
+  asset_id VARCHAR(128) NULL,
+  source_asset_id VARCHAR(128) NULL,
+  operation VARCHAR(16) NOT NULL,
+  status VARCHAR(16) NOT NULL,
+  prompt LONGTEXT NOT NULL,
+  provider VARCHAR(128) NOT NULL,
+  model VARCHAR(128) NOT NULL,
+  request_json JSON NULL,
+  error_code VARCHAR(64) NULL,
+  error_message TEXT NULL,
+  trace_id VARCHAR(128) NULL,
+  idempotency_key VARCHAR(128) NULL,
+  created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  finished_at DATETIME(6) NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_image_generations_generation_id (generation_id),
+  UNIQUE KEY uk_image_generations_idempotency (tenant_id, user_id, session_id, idempotency_key),
+  KEY idx_image_generations_session (tenant_id, user_id, session_id, created_at),
+  KEY idx_image_generations_asset (tenant_id, asset_id),
+  KEY idx_image_generations_source_asset (tenant_id, source_asset_id),
+  CONSTRAINT fk_image_generations_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(id),
+  CONSTRAINT fk_image_generations_user FOREIGN KEY (tenant_id, user_id) REFERENCES tenant_users(tenant_id, id),
+  CONSTRAINT fk_image_generations_session FOREIGN KEY (tenant_id, session_id) REFERENCES tenant_sessions(tenant_id, id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

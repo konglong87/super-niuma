@@ -1,0 +1,11 @@
+Binary file detected: <PATH>
+size_bytes: 11
+mime_type: application/octet-stream
+chunk_size: 8
+chunk_count: 2
+sha256_prefix: <SHA256_PREFIX>
+chunks:
+  - index: 1 byte_offset: 0 byte_length: 8
+  - index: 2 byte_offset: 8 byte_length: 3
+
+Binary/media content is intentionally not inlined. Use external tooling or an attachment-aware flow to inspect the payload safely.

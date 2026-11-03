@@ -1,0 +1,45 @@
+{
+  "resume_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "inspect the repo"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "I will inspect it."
+        },
+        {
+          "type": "tool_use",
+          "id": "toolu_missing",
+          "name": "Read",
+          "input": {
+            "file_path": "README.md"
+          }
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_missing",
+          "content": "[Tool result missing due to internal error]",
+          "is_error": true
+        },
+        {
+          "type": "text",
+          "text": "Continue from where you left off."
+        }
+      ]
+    }
+  ]
+}

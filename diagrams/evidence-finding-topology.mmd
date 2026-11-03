@@ -1,0 +1,20 @@
+graph LR
+  R["读取与查询<br/>Read Grep Glob LS"] --> TR["Tool Result<br/>成功 失败 输出"]
+  W["修改与执行<br/>Write Edit Bash"] --> TR
+  W --> FC["FileChanges 与 Delta<br/>内容 模式 路径"]
+  A["Task 与 Agent<br/>同步 后台 恢复"] --> TR
+  A --> CL["CapabilityLoop<br/>Evidence Unknowns Risks Next"]
+  TR --> QT["Query ToolTrace<br/>输入 输出 错误"]
+  FC --> QT
+  CL --> N["证据归一化<br/>协议解析 去占位 来源标记"]
+  QT --> N
+  QT --> S["Transcript 与 Store<br/>action evidence delta tool_result"]
+  N --> DC["父会话决策上下文<br/>follow-up gate compact 保真"]
+  N --> GE["GoalEvidence<br/>criterion passed partial failed"]
+  DC --> G["决策门<br/>Completion Gate 与 Evaluator"]
+  GE --> G
+  G -->|allow| O["Final Complete<br/>对外声明"]
+  G -->|continue| O
+  DC --> UI["消费者视图<br/>TUI API Trace WebUI"]
+  GE --> UI
+  S --> UI

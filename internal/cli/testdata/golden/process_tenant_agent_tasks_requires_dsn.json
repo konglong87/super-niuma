@@ -1,0 +1,10 @@
+{
+  "args": [
+    "tenant",
+    "agent-tasks",
+    "list"
+  ],
+  "exit_code": 1,
+  "stderr": "tenant agent-tasks requires --dsn or NIUMA_MYSQL_DSN\n",
+  "stdout": ""
+}

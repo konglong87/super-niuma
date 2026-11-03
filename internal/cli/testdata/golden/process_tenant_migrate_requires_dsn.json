@@ -1,0 +1,10 @@
+{
+  "args": [
+    "tenant",
+    "migrate",
+    "up"
+  ],
+  "exit_code": 1,
+  "stderr": "tenant migrate requires --dsn or NIUMA_MYSQL_DSN\n",
+  "stdout": ""
+}

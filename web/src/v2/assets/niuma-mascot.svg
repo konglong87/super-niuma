@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 560" role="img" aria-labelledby="title desc">
+  <title id="title">牛马 Niuma mascot</title>
+  <desc id="desc">A cheerful bull-horse robot carrying a small task lantern.</desc>
+  <ellipse cx="280" cy="504" rx="145" ry="22" fill="#171B22" opacity=".10"/>
+  <path d="M179 169c-42-13-68-44-79-91 46 12 84 37 111 76M381 169c42-13 68-44 79-91-46 12-84 37-111 76" fill="none" stroke="#F07848" stroke-width="31" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M164 174c-32-6-59-3-84 11 23 31 52 48 87 51M396 174c32-6 59-3 84 11-23 31-52 48-87 51" fill="#8DE0BD"/>
+  <path d="M280 119c-90 0-158 58-158 146 0 81 49 146 122 179 23 11 49 11 72 0 73-33 122-98 122-179 0-88-68-146-158-146h-1Z" fill="#F07848"/>
+  <path d="M210 258a20 20 0 1 0 0 40 20 20 0 0 0 0-40ZM350 258a20 20 0 1 0 0 40 20 20 0 0 0 0-40Z" fill="#171B22"/>
+  <path d="M200 344c0-24 35-43 80-43s80 19 80 43-35 47-80 47-80-23-80-47Z" fill="#F6E9D2"/>
+  <path d="M247 342a10 10 0 1 0 0 20 10 10 0 0 0 0-20ZM313 342a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z" fill="#171B22"/>
+  <circle cx="389" cy="215" r="14" fill="#8DE0BD"/>
+  <path d="M173 441c-31 8-52 25-66 53h100M387 441c31 8 52 25 66 53H353" fill="#171B22" stroke="#171B22" stroke-width="25" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M212 438h136v34c0 25-20 45-45 45h-46c-25 0-45-20-45-45z" fill="#F6E9D2"/>
+  <path d="M280 444v41" stroke="#F07848" stroke-width="13" stroke-linecap="round"/>
+  <path d="M430 322v66M410 388h40l-5 34h-30z" fill="#8DE0BD" stroke="#171B22" stroke-width="9" stroke-linejoin="round"/>
+  <circle cx="430" cy="310" r="13" fill="#F6E9D2" stroke="#171B22" stroke-width="8"/>
+</svg>

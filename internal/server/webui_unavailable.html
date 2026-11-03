@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>niuma WebUI — not built yet</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f6f7f9;
+        --fg: #1c1f23;
+        --muted: #5b6470;
+        --card: #ffffff;
+        --border: #d9dde3;
+        --code-bg: #11151a;
+        --code-fg: #e7ecf3;
+        --accent: #2f6feb;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1216;
+          --fg: #e7ecf3;
+          --muted: #9aa4b2;
+          --card: #171b21;
+          --border: #2a313a;
+          --code-bg: #0a0d11;
+          --code-fg: #e7ecf3;
+          --accent: #6c9bff;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 2.5rem 1.25rem;
+        background: var(--bg);
+        color: var(--fg);
+        font: 15px/1.6 ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      main {
+        max-width: 46rem;
+        margin: 0 auto;
+      }
+      h1 {
+        margin: 0 0 0.25rem;
+        font-size: 1.5rem;
+      }
+      .lede {
+        margin: 0 0 1.75rem;
+        color: var(--muted);
+      }
+      section {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1.25rem 1.4rem;
+        margin-bottom: 1.1rem;
+      }
+      h2 {
+        margin: 0 0 0.75rem;
+        font-size: 1rem;
+        letter-spacing: 0.01em;
+      }
+      pre {
+        margin: 0.6rem 0 0;
+        padding: 0.85rem 1rem;
+        background: var(--code-bg);
+        color: var(--code-fg);
+        border-radius: 8px;
+        overflow-x: auto;
+        font: 13px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.92em;
+      }
+      p {
+        margin: 0.5rem 0 0;
+      }
+      ul {
+        margin: 0.5rem 0 0;
+        padding-left: 1.25rem;
+      }
+      li + li {
+        margin-top: 0.35rem;
+      }
+      a {
+        color: var(--accent);
+      }
+      .note {
+        color: var(--muted);
+        font-size: 0.92em;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>The WebUI has not been built yet</h1>
+      <p class="lede">
+        The server is running and its HTTP API is healthy — only the browser
+        frontend is missing. The frontend is a Vite bundle that is compiled from
+        source rather than shipped inside this binary, so it has to be built
+        once before <code>/webui/</code> can serve anything.
+      </p>
+
+      <section>
+        <h2>Build it</h2>
+        <p>From the repository root, using Node 20.19+ or 22.12+:</p>
+        <pre>npm --prefix web ci --legacy-peer-deps
+npm --prefix web run build</pre>
+        <p class="note">
+          <code>--legacy-peer-deps</code> is required: <code>typescript@6</code>
+          and <code>openapi-typescript@7</code> declare a known, harmless peer
+          conflict.
+        </p>
+        <p>
+          Then reload this page. If you started the server from the repository
+          root, the freshly built <code>web/dist</code> is picked up
+          automatically — no environment variable needed.
+        </p>
+      </section>
+
+      <section>
+        <h2>Or point the server at an existing build</h2>
+        <p>
+          If you build elsewhere, or run the server from another directory, set
+          the directory explicitly and restart:
+        </p>
+        <pre>NIUMA_WEBUI_DIR=/path/to/web/dist niuma server</pre>
+        <p class="note">
+          The directory must be the build output itself — the one that contains
+          <code>index.html</code>.
+        </p>
+      </section>
+
+      <section>
+        <h2>Meanwhile, these work right now</h2>
+        <p>Both are served straight from this binary and need no build step:</p>
+        <ul>
+          <li><a href="/trace">/trace</a> — session, span, and tool-call trace viewer</li>
+          <li><a href="/prompt-dump">/prompt-dump</a> — captured prompt inspector</li>
+        </ul>
+      </section>
+
+      <p class="note">
+        Serving this page instead of a bare 404 is deliberate: a 404 here is
+        indistinguishable from a build that has no web UI at all.
+      </p>
+    </main>
+  </body>
+</html>

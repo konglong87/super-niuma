@@ -1,0 +1,1 @@
+tenant agent-tasks requires --dsn or NIUMA_MYSQL_DSN

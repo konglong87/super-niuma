@@ -1,0 +1,75 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.5/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "includes": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.css",
+      "e2e/**/*.ts",
+      "scripts/**/*.mjs",
+      "vite.config.ts",
+      "playwright.config.ts",
+      "!src/lib/generated/**"
+    ]
+  },
+  "formatter": {
+    "enabled": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 180,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "none",
+      "arrowParentheses": "always"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "noUnusedFunctionParameters": "error",
+        "useExhaustiveDependencies": "warn"
+      },
+      "suspicious": {
+        "noExplicitAny": "off",
+        "useIterableCallbackReturn": "error",
+        "noArrayIndexKey": "error",
+        "noAssignInExpressions": "error",
+        "noEmptyBlock": "error"
+      },
+      "style": {
+        "noDescendingSpecificity": "off",
+        "noNonNullAssertion": "off",
+        "useTemplate": "off"
+      },
+      "complexity": {
+        "useOptionalChain": "error",
+        "noUselessFragments": "error",
+        "noExtraBooleanCast": "error",
+        "noImportantStyles": "off"
+      },
+      "a11y": {
+        "recommended": true,
+        "useButtonType": "error",
+        "useAriaPropsSupportedByRole": "error",
+        "useSemanticElements": "error",
+        "useFocusableInteractive": "error",
+        "useKeyWithClickEvents": "error",
+        "noNoninteractiveTabindex": "warn",
+        "noStaticElementInteractions": "warn"
+      }
+    }
+  }
+}

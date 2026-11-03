@@ -1,0 +1,28 @@
+{
+  "provider": "openai-compatible",
+  "providerProtocol": "openai-chat-completions",
+  "baseURL": "https://model.example.com/v1",
+  "apiKey": "replace-me",
+  "model": "model-id",
+  "effort": "high",
+  "fallback": {
+    "enabled": false,
+    "providers": [
+      {
+        "name": "backup",
+        "type": "openai-compatible",
+        "protocol": "openai-chat-completions",
+        "baseURL": "https://backup.example.com/v1",
+        "apiKey": "replace-me",
+        "model": "backup-model-id"
+      }
+    ]
+  },
+  "permissions": {
+    "defaultMode": "ask",
+    "allow": ["Read", "Grep", "Glob", "LS"],
+    "ask": ["Bash"],
+    "deny": []
+  },
+  "language": "zh-CN"
+}

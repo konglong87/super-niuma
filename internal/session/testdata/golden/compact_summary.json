@@ -1,0 +1,40 @@
+[
+  {
+    "content": "please inspect README",
+    "role": "user",
+    "timestamp": "<timestamp>",
+    "type": "message"
+  },
+  {
+    "content": "{\"file_path\":\"README.md\"}",
+    "timestamp": "<timestamp>",
+    "tool_id": "toolu_read",
+    "tool_name": "Read",
+    "type": "tool_call"
+  },
+  {
+    "content": "# Project",
+    "timestamp": "<timestamp>",
+    "tool_id": "toolu_read",
+    "tool_name": "Read",
+    "type": "tool_result"
+  },
+  {
+    "content": "README starts with a project heading.",
+    "role": "assistant",
+    "timestamp": "<timestamp>",
+    "type": "message"
+  },
+  {
+    "input_tokens": 8,
+    "model": "claude-sonnet-4-6",
+    "output_tokens": 6,
+    "timestamp": "<timestamp>",
+    "type": "usage"
+  },
+  {
+    "content": "Conversation summary:\nUSER: please inspect README\nTOOL CALL Read: {\"file_path\":\"README.md\"}\nTOOL RESULT Read: # Project\nASSISTANT: README starts with a project heading.",
+    "timestamp": "<timestamp>",
+    "type": "compact_summary"
+  }
+]

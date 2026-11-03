@@ -1,0 +1,436 @@
+version: 1
+document: docs/architecture/global_runtime_topology.md
+
+# Every tracked file under these roots must map to at least one RT-* node.
+# Adding a new runtime package outside the registered paths therefore fails CI.
+coverage_roots:
+  - cmd/
+  - config/
+  - go.mod
+  - go.sum
+  - internal/
+  - migrations/
+  - package.json
+  - package-lock.json
+  - web/
+
+# Every topology artifact under these roots must belong to a registered view.
+view_roots:
+  - diagrams/
+
+nodes:
+  - id: RT-ENTRY
+    summary: CLI、TUI、API、Goal、scheduler 与命令入口；Managed Session CLI 与 Scheduler child 复用 Session Control composition，channel runner 持久配置、screen/supervisor 与 live streaming callback 装配；独立 image-worker 入口
+    paths:
+      - cmd/
+      - internal/buildinfo/
+      - internal/cli/
+      - internal/goalcmd/
+      - internal/nextsteps/
+      - internal/product/
+      - internal/supervisor/
+      - internal/slashcommands/
+      - internal/updater/
+      - desktop-v2/
+      - scripts/channel-worker-screen.sh
+      - scripts/channel-worker-screen_test.sh
+    downstream: [RT-BOUNDARY, RT-WIRING]
+    tests:
+      - go test ./internal/buildinfo -count=1
+      - go test ./desktop-v2 -count=1
+      - go test ./internal/cli ./internal/supervisor ./internal/slashcommands ./internal/updater -count=1
+      - bash scripts/channel-worker-screen_test.sh
+
+  - id: RT-BOUNDARY
+    summary: 鉴权、租户、配额、prompt mode、请求归一化、Web/TUI pending-input queue、Session Control HTTP 写入/Idempotency-Key/SSE readback，以及全局 Settings 条件保存/路由校验/脱敏来源/显式目录连接测试；渠道事件/Scope/slash/Reaction/Callback/Card/图片附件边界（含有序 channel timeline、Card 2.0 分页与逐工具折叠、SDK app_id mention、Reaction 事件确认及 Feishu image upload 协议）
+    paths:
+      # Settings environment allowlist binds independent tenant services while chat identity remains unchanged.
+      - internal/server/settings_environments.go
+      - internal/server/
+      - internal/promptmode/
+      - internal/identity/
+      - internal/quota/
+      - internal/tenant/
+      - internal/tenantpkg/
+      - internal/pendinginput/
+      - internal/prompttemplate/
+      - internal/channel/
+      - internal/credentials/
+      - internal/feishuprovision/
+    downstream: [RT-WIRING, RT-SESSION-CONTROL, RT-PERSIST, RT-OUTPUT]
+    tests:
+      - go test ./internal/channel ./internal/channel/feishu ./internal/channel/runtime ./internal/server ./internal/tenant ./internal/tenantpkg ./internal/pendinginput -count=1
+
+  - id: RT-WIRING
+    summary: provider、工具、权限、hook、配置、skill、Agent Profile 与运行策略装配；默认配置与 WebUI 文件预览仅加载全局 settings.json，保留 CONFIG_DIR 重定位和 CLI 显式 --settings；仅 WebUI v2 Orchestrator Profile 注册七个 Session Control tools，普通 profile 不增加 prompt/tool 成本
+    paths:
+      - go.mod
+      - go.sum
+      - config/
+      - internal/config/
+      - internal/defaults/
+      - internal/hooks/
+      - internal/agentprofile/
+      - internal/outputstyle/
+      - internal/plugins/
+      - internal/procenv/
+      - internal/runtimeprofile/
+      - internal/provisioning/
+      - internal/skilllint/
+      - internal/skills/
+    downstream: [RT-PROMPT, RT-TOOLS, RT-PERSIST]
+    tests:
+      - go test ./internal/agentprofile ./internal/config ./internal/hooks ./internal/plugins ./internal/skills -count=1
+
+  - id: RT-PROMPT
+    summary: system prompt、memory、rooted bounded project-memory recall 与 YAML summary、skills、Git context 与动态策略注入
+    paths:
+      - internal/query/
+      - internal/memory/
+      - internal/memorylint/
+      - internal/gitcontext/
+      - internal/outputstyle/
+      - internal/skills/
+    downstream: [RT-CACHE, RT-MODEL, RT-OBSERVE]
+    tests:
+      - go test ./internal/query ./internal/memory ./internal/promptdump -count=1
+      - scripts/prompt-acceptance-matrix.sh
+
+  - id: RT-CACHE
+    summary: prompt cache、compact、tool-result externalization 与会话 recap
+    paths:
+      - internal/compact/
+      - internal/promptcache/
+      - internal/toolresult/
+      - internal/recap/
+      - internal/sessiondiag/
+    downstream: [RT-MODEL, RT-EVIDENCE, RT-PERSIST]
+    tests:
+      - go test ./internal/compact ./internal/promptcache ./internal/toolresult ./internal/recap -count=1
+
+  - id: RT-MODEL
+    summary: provider 请求、流式响应、usage、错误与兼容层；多 provider 图片 catalog、协议 adapter、Agnes generations 与安全 URL 归档
+    paths:
+      - internal/anthropic/
+      - internal/imagegen/
+      - internal/provider/
+    downstream: [RT-PRETOOL, RT-COMPLETION, RT-OBSERVE]
+    tests:
+      - go test ./internal/anthropic ./internal/provider ./internal/query -count=1
+
+  - id: RT-PRETOOL
+    summary: 工具意图、一次性 Git 确认授权、语义重试、权限、沙箱与执行前 gate
+    paths:
+      - internal/gitpolicy/
+      - internal/query/
+      - internal/permissions/
+      - internal/sandbox/
+      - internal/shellcmd/
+      - internal/toolpolicy/
+    downstream: [RT-TOOLS, RT-EVIDENCE, RT-OBSERVE]
+    tests:
+      - go test ./internal/gitpolicy ./internal/query ./internal/permissions ./internal/sandbox ./internal/shellcmd ./internal/toolpolicy -count=1
+
+  - id: RT-TOOLS
+    summary: 文件、Bash、MCP、Skill、Task、Agent、图片工具与 Git 工具执行；ComputerUse 只在显式 capability、图片输入和租户身份满足时注册，并通过 ComputerSession 进入平台 backend；七个 narrow Session Control tools 只将可信 tools.Context 交给共享 service；channel 图片异步受理
+    paths:
+      - internal/files/
+      - internal/gitutil/
+      - internal/mcp/
+      - internal/tools/
+      - internal/tools/imagegen/
+      - internal/tools/computeruse/
+      - internal/computeruse/
+      - internal/computeracceptance/
+      - internal/computerbridge/
+      - internal/computerbackend/
+      - native/macos/
+    downstream: [RT-SUBAGENT, RT-EVIDENCE, RT-PERSIST, RT-SESSION-CONTROL]
+    tests:
+      - go test ./internal/tools/... ./internal/mcp ./internal/gitutil -count=1
+
+  - id: RT-SUBAGENT
+    summary: agent loop、任务存储、预算、worktree、provider-neutral client resolver、per-run provider/model/effort/token overrides、Agent Team orchestrator 与 CapabilityLoop producer
+    paths:
+      - internal/agentbudget/
+      - internal/agentruntime/
+      - internal/agents/
+      - internal/agenttasks/
+      - internal/agentworktree/
+      - internal/agentteam/
+      - internal/capabilityloop/
+    downstream: [RT-EVIDENCE, RT-PERSIST]
+    tests:
+      - go test ./internal/agentbudget ./internal/agentruntime ./internal/agenttasks ./internal/agentworktree ./internal/agentteam ./internal/capabilityloop -count=1
+
+  - id: RT-EVIDENCE
+    summary: ToolTrace、FileChanges、CapabilityLoop 与 GoalEvidence 归一化
+    paths:
+      - internal/query/
+      - internal/capabilityloop/
+    downstream: [RT-COMPLETION, RT-GOAL, RT-SESSION-CONTROL, RT-PERSIST, RT-OUTPUT]
+    tests:
+      - go test ./internal/query ./internal/capabilityloop ./internal/goal -count=1
+
+  - id: RT-COMPLETION
+    summary: final claim、closure、loop guard 与 repair 完成判定
+    paths:
+      - internal/query/
+      - internal/loopguard/
+      - internal/repair/
+    downstream: [RT-MODEL, RT-OUTPUT, RT-OBSERVE]
+    tests:
+      - go test ./internal/query ./internal/loopguard ./internal/repair -count=1
+      - scripts/closure-gate-acceptance.sh
+
+  - id: RT-GOAL
+    summary: Goal plan、criteria、evidence evaluator 与 closing policy
+    paths:
+      - internal/goal/
+    downstream: [RT-WIRING, RT-PERSIST, RT-OUTPUT]
+    tests:
+      - go test ./internal/goal -count=1
+
+  - id: RT-SCHEDULER
+    summary: recurring schedule、后台 worker、child query 与 run history；SessionMonitor 的 observed-link 为 authority，scheduler 文件在跨进程 registry lock 内回读 authority 后投影，daemon identity 以环境摘要、进程身份和 Unix flock/Windows LockFileEx 防重复，child 仅通过共享 SessionGet 读取并经 Channel/Feishu outbox 投递
+    paths:
+      - internal/background/
+      - internal/scheduler/
+    downstream: [RT-ENTRY, RT-SESSION-CONTROL, RT-PERSIST, RT-OUTPUT, RT-OBSERVE]
+    tests:
+      - go test ./internal/background ./internal/scheduler -count=1
+
+  - id: RT-PERSIST
+    summary: transcript、session、task、pending-input FIFO/consumer lease、Goal、tenant、TurnUsage、MediaAsset、图片 generation/artifact、Session Control operation-specific replay/link/task idempotency，以及 SessionMonitor observed-link authority、CAS observation + Message/Outbox transaction 和 scheduler 文件 projection
+    paths:
+      - internal/imagegen/
+      - internal/media/
+      - internal/pendinginput/
+      - internal/session/
+      - internal/storage/
+      - internal/supervisor/
+      - migrations/
+      - migrations/mysql/000025_session_control_links.up.sql
+      - migrations/mysql/000025_session_control_links.down.sql
+    downstream: [RT-WIRING, RT-SESSION-CONTROL, RT-OUTPUT, RT-OBSERVE]
+    tests:
+      - go test ./internal/session ./internal/query ./internal/storage/mysql ./internal/pendinginput -count=1
+
+  - id: RT-SESSION-CONTROL
+    summary: HTTP、CLI、七个 tools 与 Scheduler child 共享的 Managed/Local Session 控制面；operation-specific replay、prepare-to-Handoff-to-CAS launch、task/message transaction、SSE readback、授权/幂等/审计协调 tenant-scoped 写操作；五字段 Run 配置预检、busy 拒绝与 Session 默认值 CAS 更新；输入图片按会话归档并在执行前校验读取，旁路 ready task 受限接管；主 Web 来源提取有界请求和完成回复并校验正文证据；Local read 仅显式 opt-in 且保持只读
+    paths:
+      - internal/sessioncontrol/
+    downstream: [RT-PERSIST, RT-EVIDENCE, RT-OUTPUT, RT-OBSERVE]
+    tests:
+      - go test ./internal/sessioncontrol ./internal/storage/mysql ./internal/tenant -count=1
+
+  - id: RT-OUTPUT
+    summary: TUI、JSON、Session Control SSE、WebSocket、pending-input 脱敏状态事件、独立图片工作台、渠道图片消息及 Feishu 多卡实时 timeline 输出适配；WebUI 2.0 复用打字机、有序思考/工具/图片、Computer Preview/Timeline/Approval/Pause/Stop 控制面，生命周期缓存和按会话过滤后限量查询提供实际配置与 Inspector 用量/权限/Trace；全页设置中心共享模型与 JSON 草稿，复用 Profile 定义/分配 API，区分文件解析/启动快照/Run 记录且保持聊天订阅
+    paths:
+      - package.json
+      - package-lock.json
+      - web/
+      - internal/tui/
+      - internal/server/
+      - internal/recap/
+    downstream: [RT-PERSIST, RT-OBSERVE]
+    tests:
+      - go test ./internal/tui ./internal/server -count=1
+      - npm --prefix web run test
+      # Shared prompt picker consumers: WebUI v2/go-e2e and legacy Web Agent/golang-cc.
+      - npm --prefix web run test:e2e -- --grep "prompt picker"
+
+  - id: RT-OBSERVE
+    summary: logs、runtime trace/span、脱敏执行配置、telemetry、prompt dump、eval 与影响指标；Session Control 记录操作/replay/readback/审计与 monitor schedule/outbox delivery 的边界元数据，不记录内容或凭据
+    paths:
+      - internal/agenteval/
+      - internal/buildinfo/
+      - internal/observability/
+      - internal/promptdump/
+      - internal/server/trace.go
+      - internal/server/trace_analysis.go
+      - internal/server/runtime_trace_artifact.go
+      - internal/telemetry/
+      - internal/sessiondiag/
+      - internal/computerdiag/
+      - scripts/runtime-trace-baseline/
+    downstream: [RT-PERSIST]
+    tests:
+      - go test ./internal/buildinfo -count=1
+      - go test ./internal/agenteval ./internal/observability ./internal/promptdump ./internal/telemetry ./internal/server -count=1
+
+  - id: RT-COST
+    summary: 图片队列等待、provider attempt、重试、租约和 completion delivery 的成本与时延观测；防止 outcome_unknown 重复计费
+    paths:
+      - internal/cli/imagegen_runtime.go
+      - internal/imagegen/retry.go
+      - internal/imagegen/worker.go
+      - internal/imagegen/completion_dispatcher.go
+    downstream: [RT-OBSERVE, RT-PERSIST]
+    tests:
+      - go test ./internal/imagegen ./internal/cli -count=1
+
+views:
+  - id: agent-platform-architecture
+    source: diagrams/agent-platform-architecture.mmd
+    artifacts:
+      - diagrams/agent-platform-architecture.svg
+      - diagrams/agent-platform-architecture.png
+      - diagrams/agent-platform-architecture.excalidraw
+    covers: [RT-ENTRY, RT-BOUNDARY, RT-WIRING, RT-PROMPT, RT-CACHE, RT-MODEL, RT-PRETOOL, RT-TOOLS, RT-SUBAGENT, RT-EVIDENCE, RT-COMPLETION, RT-GOAL, RT-SCHEDULER, RT-PERSIST, RT-SESSION-CONTROL, RT-OUTPUT, RT-OBSERVE, RT-COST]
+
+  - id: global-runtime
+    source: diagrams/global-runtime-topology.mmd
+    artifacts:
+      - diagrams/global-runtime-topology.svg
+      - diagrams/global-runtime-topology.png
+      - diagrams/global-runtime-topology.excalidraw
+    covers:
+      - RT-ENTRY
+      - RT-BOUNDARY
+      - RT-WIRING
+      - RT-PROMPT
+      - RT-CACHE
+      - RT-MODEL
+      - RT-PRETOOL
+      - RT-TOOLS
+      - RT-SUBAGENT
+      - RT-EVIDENCE
+      - RT-COMPLETION
+      - RT-GOAL
+      - RT-SCHEDULER
+      - RT-PERSIST
+      - RT-SESSION-CONTROL
+      - RT-OUTPUT
+      - RT-OBSERVE
+      - RT-COST
+
+  - id: evidence-finding
+    source: diagrams/evidence-finding-topology.mmd
+    artifacts:
+      - diagrams/evidence-finding-topology.svg
+      - diagrams/evidence-finding-topology.png
+      - diagrams/evidence-finding-topology.excalidraw
+    covers: [RT-TOOLS, RT-SUBAGENT, RT-EVIDENCE, RT-COMPLETION, RT-GOAL, RT-PERSIST, RT-OUTPUT]
+
+  - id: prompt-blast-radius
+    source: diagrams/prompt-blast-radius.mmd
+    artifacts:
+      - diagrams/prompt-blast-radius.svg
+      - diagrams/prompt-blast-radius.png
+      - diagrams/prompt-blast-radius.excalidraw
+    covers: [RT-PROMPT, RT-CACHE, RT-MODEL, RT-PRETOOL, RT-TOOLS, RT-COMPLETION, RT-OBSERVE]
+
+  - id: gate-shared-state
+    source: diagrams/gate-shared-state-topology.mmd
+    artifacts:
+      - diagrams/gate-shared-state-topology.svg
+      - diagrams/gate-shared-state-topology.png
+      - diagrams/gate-shared-state-topology.excalidraw
+    covers: [RT-ENTRY, RT-PRETOOL, RT-TOOLS, RT-EVIDENCE, RT-COMPLETION, RT-PERSIST, RT-OUTPUT, RT-OBSERVE]
+
+# Anchors are deliberately small and stable. The checker verifies that each file
+# and symbol still exists, catching silent documentation drift after renames.
+anchors:
+  - path: internal/buildinfo/buildinfo.go
+    symbols: [Info, Current]
+  - path: internal/cli/cli.go
+    symbols: [newQuerySession]
+  - path: internal/cli/interactive.go
+    symbols: [coreRuntimeTools]
+  - path: internal/query/query.go
+    symbols: [ToolTrace, defaultSystemPromptParts, assembleContextMessages, withRuntimeSpanRecorder, recordClosureTrace, runTool, runToolWithAuthorization]
+  - path: internal/memory/memory.go
+    symbols: [LoadCodeWithOptions, loadClaudeCodeProjectMemory, recallProjectMemoryFiles, openProjectMemoryFile, memoryFrontmatterSummary, PreparePromptDocuments]
+  - path: internal/channel/runtime/interaction.go
+    symbols: [QuestionBroker, InteractionRepository]
+  - path: internal/channel/runtime/service.go
+    symbols: [Service, processPendingInteraction, handleQuestionCallback]
+  - path: internal/channel/interaction.go
+    symbols: [InteractionQuestion, InteractionResume]
+  - path: internal/session/runtime_span.go
+    symbols: [EntryTypeRuntimeSpan, RuntimeSpanSink, DecodeRuntimeSpanEntry]
+  - path: internal/sessioncontrol/service.go
+    symbols: [Service, NewService]
+  - path: internal/sessioncontrol/managed.go
+    symbols: [ManagedAdapter, NewManagedAdapter]
+  - path: internal/sessioncontrol/runtimecompose/runtime.go
+    symbols: [NewReadService, NewService]
+  - path: internal/storage/mysql/operation_lock.go
+    symbols: [AcquireSessionControlOperationLock]
+  - path: internal/sessioncontrol/session_monitor.go
+    symbols: [SessionMonitor, SessionMonitorChild]
+  - path: internal/tools/sessioncontrol/session_control.go
+    symbols: [New, SessionGet, SessionMonitor]
+  - path: internal/agentprofile/builtin.go
+    symbols: [builtinWebUIV2Orchestrator]
+  - path: internal/server/session_control_runtime.go
+    symbols: [NewSessionControlService, PrepareRun, LaunchRun]
+  - path: internal/server/session_control_stream.go
+    symbols: [tenantSessionControlStreamHandler, newSessionControlStateStream, writeSessionControlSSE]
+  - path: internal/server/session_conversation.go
+    symbols: [readSessionConversation, tenantSessionConversationHandler, tenantSessionConversationsStreamHandler]
+  - path: internal/server/agent_task_questions.go
+    symbols: [AgentTaskQuestionRegistry, OnUserQuestion, tenantAgentTaskQuestionHandler, resolveQuestionAnswer]
+  - path: internal/cli/cmd_server.go
+    symbols: [applyServerUserQuestionPrompt]
+  - path: internal/storage/mysql/session_conversation.go
+    symbols: [ListSessionConversationEvents]
+  - path: internal/server/handlers_session_control.go
+    symbols: [requireSessionControlIdempotencyKey]
+  - path: internal/cli/cmd_session_control.go
+    symbols: [productionSessionControlRuntime, sessionManagedMonitorCommand]
+  - path: internal/cli/cli.go
+    symbols: [scheduleRunCommand, runSessionMonitorChild]
+  - path: internal/storage/mysql/session_monitor_repository.go
+    symbols: [ResolveSessionMonitorByScheduleID, CommitSessionMonitorObservation]
+  - path: internal/telemetry/telemetry.go
+    symbols: [StartSpan, FinishEvent, EmitCompletedSpan, WithTurnIndex, ValidateRuntimeTraceEvent]
+  - path: internal/server/trace.go
+    symbols: [buildLocalTraceDetail, localTraceSpans, tenantTraceSpans, finalizeTraceSpans]
+  - path: internal/server/trace_analysis.go
+    symbols: [analyzeTrace, traceDiagnostics]
+  - path: internal/server/runtime_trace_artifact.go
+    symbols: [RuntimeTraceArtifact, ExportLocalRuntimeTrace]
+  - path: internal/query/continuation_intent.go
+    symbols: [resolveContinuationIntent, confirmedSharedStateEffects, continuationTaskContract]
+  - path: internal/query/shared_state_gate_retry.go
+    symbols: [sharedStateGateRetryTracker]
+  - path: internal/query/closure_gate.go
+    symbols: [completionGate, preToolClosureGate]
+  - path: internal/gitpolicy/gitpolicy.go
+    symbols: [Analyze, ParseAuthorization, AuthorizationFromEffects, EffectKey, AnalysisFingerprint, Check]
+  - path: internal/toolpolicy/toolpolicy.go
+    symbols: [Check]
+  - path: internal/query/systemsections.go
+    symbols: [repoHealthAuditStrategySection, repairSafetyStrategySection, actionsSection]
+  - path: internal/capabilityloop/protocol.go
+    symbols: [FieldEvidence, FieldVerification, FollowUpFieldNextAction]
+  - path: internal/goal/plan.go
+    symbols: [GoalEvidence]
+  - path: internal/goal/runner.go
+    symbols: [RunOnce, RunUntilStop]
+  - path: internal/scheduler/scheduler.go
+    symbols: [EnsureProjectionFromAuthority, EnsureDaemon, Runner, Run]
+  - path: internal/scheduler/daemon_lock.go
+    symbols: [withDaemonLock]
+  - path: internal/scheduler/registry_lock.go
+    symbols: [withRegistryLock]
+  - path: internal/cli/cmd_image_worker.go
+    symbols: [imageWorkerCommand, independentImageWorkerContext]
+  - path: internal/cli/imagegen_runtime.go
+    symbols: [configureImageWorkerRuntime, imageWorkerObservability]
+  - path: internal/imagegen/scheduler.go
+    symbols: [Scheduler, NewScheduler, RuntimeIdempotencyKey]
+  - path: internal/imagegen/worker.go
+    symbols: [ImageWorker, NewWorker, NewExecutor]
+  - path: internal/imagegen/completion_dispatcher.go
+    symbols: [CompletionDispatcher, NewCompletionDispatcher]
+  - path: internal/imagegen/retry.go
+    symbols: [imageRetryDelay, imageRetryJitter]
+  - path: internal/channel/runtime/image_completion.go
+    symbols: [ChannelImageCompletionConsumer, ConsumeImageCompletion]
+  - path: internal/storage/mysql/image_generation_repository.go
+    symbols: [AdmitImageGeneration, ClaimDueImageGenerations, CompleteClaimedImageAttempt, ClaimDueImageCompletionEvents]
+  - path: internal/storage/mysql/channel_repository.go
+    symbols: [MaterializeChannelImageCompletion, ResolveChannelImageCompletion]

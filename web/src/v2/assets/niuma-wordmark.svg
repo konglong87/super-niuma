@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" role="img" aria-labelledby="title">
+  <title id="title">牛马 Niuma — 让 AI 当牛马，人类去生活。</title>
+  <g transform="translate(8 8) scale(.28)">
+    <rect width="512" height="512" rx="116" fill="#171B22"/>
+    <path d="M166 177c-39-14-63-43-73-86 42 12 78 35 103 72M346 177c39-14 63-43 73-86-42 12-78 35-103 72" fill="none" stroke="#F6E9D2" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M153 177c-29-6-53-3-76 10 21 28 47 44 79 47M359 177c29-6 53-3 76 10-21 28-47 44-79 47" fill="#F07848"/>
+    <path d="M256 126c-82 0-144 53-144 133 0 74 45 133 111 163 22 10 47 10 69 0 66-30 111-89 111-163 0-80-62-133-144-133h-3Z" fill="#F07848"/>
+    <path d="M192 254a18 18 0 1 0 0 36 18 18 0 0 0 0-36ZM320 254a18 18 0 1 0 0 36 18 18 0 0 0 0-36Z" fill="#171B22"/>
+    <path d="M184 333c0-22 32-39 72-39s72 17 72 39-32 43-72 43-72-21-72-43Z" fill="#F6E9D2"/>
+    <path d="M227 331a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM285 331a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" fill="#171B22"/>
+    <circle cx="354" cy="214" r="12" fill="#8DE0BD"/>
+  </g>
+  <text x="170" y="92" fill="#F6E9D2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="72" font-weight="750" letter-spacing="-2">牛马</text>
+  <text x="310" y="92" fill="#F07848" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="48" font-weight="650" letter-spacing="1">NIUMA</text>
+  <text x="174" y="132" fill="#89939F" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="18" letter-spacing="1">让 AI 当牛马，人类去生活。</text>
+</svg>

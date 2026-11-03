@@ -1,0 +1,11 @@
+{
+  "name": "niuma-browser-runner",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "webbrowser:self-test": "node ./scripts/playwright-browser-runner.mjs --self-test"
+  },
+  "devDependencies": {
+    "playwright": "^1.57.0"
+  }
+}

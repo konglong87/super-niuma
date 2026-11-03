@@ -1,0 +1,190 @@
+name: Desktop Windows
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "desktop-v2/**"
+      - "web/**"
+      - "internal/**"
+      - "cmd/**"
+      - "scripts/build-desktop-v2-windows.ps1"
+      - "scripts/test-desktop-v2-windows-packaging.mjs"
+      - ".github/workflows/desktop-windows.yml"
+      - "go.mod"
+      - "go.sum"
+      - ".tool-versions"
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-windows-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build niuma Windows installer
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read Go version
+        id: go
+        shell: pwsh
+        run: |
+          $version = (Get-Content .tool-versions | Where-Object { $_ -match '^golang\s+' } | ForEach-Object { ($_ -split '\s+')[1] } | Select-Object -First 1)
+          if (-not $version) {
+            throw ".tool-versions does not define a Go version"
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ steps.go.outputs.version }}
+          cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: web/.nvmrc
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: web
+        run: npm ci --legacy-peer-deps
+
+      - name: Verify native Windows amd64 C compiler
+        shell: pwsh
+        run: |
+          # The runner can expose both native MinGW and Strawberry/MSYS gcc.
+          # Probe every candidate instead of invoking a multi-valued Source property.
+          $compiler = $null
+          $target = $null
+          foreach ($candidate in @(Get-Command gcc -CommandType Application -ErrorAction Stop)) {
+            $candidateTarget = (& $candidate.Source -dumpmachine | Out-String).Trim()
+            if ($LASTEXITCODE -eq 0 -and $candidateTarget -eq "x86_64-w64-mingw32") {
+              $compiler = $candidate
+              $target = $candidateTarget
+              break
+            }
+          }
+          if ($null -eq $compiler) {
+            throw "SQLite requires a Windows amd64 C compiler; no x86_64-w64-mingw32 gcc was found"
+          }
+          "CC=$($compiler.Source)" >> $env:GITHUB_ENV
+          "CGO_ENABLED=1" >> $env:GITHUB_ENV
+
+      - name: Install Wails CLI
+        shell: pwsh
+        run: |
+          go install github.com/wailsapp/wails/v2/cmd/wails@v2.10.2
+          if ($LASTEXITCODE -ne 0) { throw "Wails CLI installation failed" }
+
+      - name: Install NSIS
+        shell: pwsh
+        run: |
+          choco install nsis --no-progress --yes
+          if ($LASTEXITCODE -ne 0) { throw "NSIS installation failed" }
+          $nsis = Join-Path ${env:ProgramFiles(x86)} "NSIS"
+          if (-not (Test-Path (Join-Path $nsis "makensis.exe"))) {
+            throw "NSIS installation did not provide makensis.exe"
+          }
+          "$nsis" >> $env:GITHUB_PATH
+
+      - name: Packaging regression tests
+        shell: pwsh
+        run: |
+          node scripts/test-desktop-v2-windows-packaging.mjs --require-pwsh
+          if ($LASTEXITCODE -ne 0) { throw "Packaging regression tests failed" }
+
+      - name: Build installer
+        shell: pwsh
+        run: ./scripts/build-desktop-v2-windows.ps1
+
+      - name: Install, read back payload, and uninstall
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $installer = (Resolve-Path "dist/niuma-setup.exe").Path
+          $installDir = Join-Path $env:RUNNER_TEMP ("niuma packaging " + [guid]::NewGuid())
+          $registryKey = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\niuma"
+          $shortcuts = @(
+            (Join-Path ([Environment]::GetFolderPath("CommonPrograms")) "niuma.lnk"),
+            (Join-Path ([Environment]::GetFolderPath("CommonDesktopDirectory")) "niuma.lnk")
+          )
+          # Never replace an existing installation or its shortcuts.
+          foreach ($path in @($registryKey, $installDir) + $shortcuts) {
+            if (Test-Path $path) { throw "Refusing to overwrite existing state: $path" }
+          }
+          New-Item $installDir -ItemType Directory | Out-Null
+          $sentinel = Join-Path $installDir "user-data.txt"
+          Set-Content $sentinel "preserve me"
+          $sentinelHash = (Get-FileHash $sentinel).Hash
+          $payload = @{
+            "niuma-desktop.exe" = "desktop-v2/build/bin/niuma-desktop.exe"
+            "niuma.exe" = "desktop-v2/niuma.exe"
+          }
+          try {
+            # NSIS /D must be the last argument, without quotes even when it contains spaces.
+            $process = Start-Process $installer -ArgumentList "/S /D=$installDir" -Wait -PassThru
+            if ($process.ExitCode -ne 0) { throw "Install failed: $($process.ExitCode)" }
+            foreach ($name in $payload.Keys) {
+              $installed = Join-Path $installDir $name
+              if ((Get-FileHash $installed).Hash -ne (Get-FileHash $payload[$name]).Hash) {
+                throw "Installed payload mismatch: $name"
+              }
+            }
+            $buildInfo = go version -m (Join-Path $installDir "niuma.exe")
+            if ($LASTEXITCODE -ne 0) { throw "Cannot read installed sidecar build settings" }
+            if (($buildInfo -join "`n") -notmatch '\bCGO_ENABLED=1\b') {
+              throw "Installed sidecar was built without CGO; SQLite would be unavailable"
+            }
+            if (-not (Test-Path $registryKey)) { throw "Missing uninstall registration" }
+            if (-not (Test-Path (Join-Path $installDir "uninstall.exe") -PathType Leaf)) {
+              throw "Missing uninstaller"
+            }
+            foreach ($path in $shortcuts) {
+              if (-not (Test-Path $path)) { throw "Missing shortcut: $path" }
+            }
+            Get-FileHash $installer -Algorithm SHA256 | Format-List
+          }
+          finally {
+            $uninstaller = Join-Path $installDir "uninstall.exe"
+            if (Test-Path $uninstaller) {
+              # _?= prevents NSIS spawning an unwaited temporary uninstaller.
+              $process = Start-Process $uninstaller -ArgumentList "/S _?=$installDir" -Wait -PassThru
+              if ($process.ExitCode -ne 0) { throw "Uninstall failed: $($process.ExitCode)" }
+              foreach ($name in $payload.Keys) {
+                if (Test-Path (Join-Path $installDir $name)) { throw "Payload survived uninstall: $name" }
+              }
+              foreach ($path in @($registryKey) + $shortcuts) {
+                if (Test-Path $path) { throw "Uninstall left registration/shortcut: $path" }
+              }
+              if ((Get-FileHash $sentinel).Hash -ne $sentinelHash) { throw "Uninstall changed user data" }
+              # _?= can leave the executing uninstaller; only remove this test-owned file.
+              Remove-Item $uninstaller -ErrorAction SilentlyContinue
+            }
+            Remove-Item $sentinel
+            # Delete only an empty test directory; unexpected files should fail, not prompt.
+            [System.IO.Directory]::Delete($installDir)
+          }
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-windows-${{ inputs.version || github.ref_name }}
+          path: dist/niuma-setup.exe
+          if-no-files-found: error

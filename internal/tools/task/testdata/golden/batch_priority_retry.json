@@ -1,0 +1,48 @@
+{
+  "summary": {
+    "total": 3,
+    "completed": 3,
+    "failed": 0,
+    "retries": 1,
+    "max_concurrency": 1,
+    "schedule_strategy": "priority",
+    "started_at": "<timestamp>",
+    "finished_at": "<timestamp>",
+    "duration_ms": 0
+  },
+  "tasks": [
+    {
+      "index": 0,
+      "description": "low priority",
+      "status": "completed",
+      "priority": 1,
+      "attempts": 1,
+      "started_at": "<timestamp>",
+      "finished_at": "<timestamp>",
+      "content": "low done",
+      "model": "model"
+    },
+    {
+      "index": 1,
+      "description": "high priority",
+      "status": "completed",
+      "priority": 10,
+      "attempts": 2,
+      "started_at": "<timestamp>",
+      "finished_at": "<timestamp>",
+      "content": "high done",
+      "model": "model"
+    },
+    {
+      "index": 2,
+      "description": "mid priority",
+      "status": "completed",
+      "priority": 5,
+      "attempts": 1,
+      "started_at": "<timestamp>",
+      "finished_at": "<timestamp>",
+      "content": "mid done",
+      "model": "model"
+    }
+  ]
+}

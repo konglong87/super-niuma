@@ -1,0 +1,28 @@
+name: Idea
+description: Propose a focused improvement or workflow idea
+title: "[Idea]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share the user problem, expected outcome, and a small acceptance criterion.
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem
+      description: Who has the problem and when does it happen?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What should be possible after this idea is implemented?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Add examples, screenshots, links, or alternatives.

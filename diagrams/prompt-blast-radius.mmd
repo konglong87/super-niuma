@@ -1,0 +1,21 @@
+graph TD
+  I["偏僻场景问题<br/>单一失败样本"] --> S["作用域分类<br/>入口 模式 任务类型 工具"]
+  S -->|B1 单场景| L["任务专用策略<br/>runtime reminder classifier"]
+  S -->|B2 单模式| P["Mode 专用提示<br/>Code Chat Subagent"]
+  S -->|B3 全局| G["共享 System Prompt<br/>所有主流 Code 任务"]
+  L --> A["Prompt Assembly<br/>稳定段 动态段 上下文"]
+  P --> A
+  G --> A
+  A --> C["上下文与缓存<br/>Prompt Bytes Cache Hit"]
+  C --> B["模型行为<br/>规划 工具选择 输出"]
+  B --> T["工具调用拓扑<br/>次数 顺序 并行度"]
+  T --> K["Gate 交互<br/>通过 误拦 恢复"]
+  K --> O["任务结果<br/>主流成功率与场景成功率"]
+  A --> R["成本<br/>Input Tokens 延迟"]
+  T --> R
+  K --> R
+  O --> X["观测样本<br/>Prompt Dump Transcript Metrics"]
+  R --> X
+  X --> E["A/B 回归矩阵<br/>模式 Provider 任务族"]
+  E --> D["决策<br/>保留 扩大作用域 回滚"]
+  D --> S

@@ -1,0 +1,17 @@
+$ hooks add PreToolUse printf ok
+Added hook
+
+$ hooks list
+{
+  "PreToolUse": [
+    {
+      "command": "printf ok"
+    }
+  ]
+}
+
+$ hooks remove PreToolUse 0
+Removed hook
+
+$ hooks list
+null

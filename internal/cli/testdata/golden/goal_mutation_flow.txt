@@ -1,0 +1,24 @@
+$ goal start Ship golden goal --turn-budget 4 --token-budget 1000
+Started goal <GOAL_ID>
+Session: <SESSION_ID>
+Status: active
+
+$ goal list
+<GOAL_ID>	active	turns 0/4	tokens 0/1000	Ship golden goal
+
+$ goal status
+Goal <GOAL_ID>
+Status: active
+Session: <SESSION_ID>
+Turns: 0/4
+Tokens: 0/1000
+Objective: Ship golden goal
+
+$ goal logs --limit 2
+<TIME>	turn=0	goal_started	status=active	goal started
+
+$ goal stop
+Goal <GOAL_ID> is stopped
+
+$ goal resume
+Resumed goal <GOAL_ID>

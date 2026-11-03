@@ -1,0 +1,7 @@
+{
+  "apiProvider": "",
+  "authMethod": "none",
+  "hasAPIKey": false,
+  "hasAuthToken": false,
+  "loggedIn": false
+}

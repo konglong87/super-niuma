@@ -1,0 +1,17 @@
+$ session rename 11111111-1111-4111-8111-111111111111 Golden Session
+Renamed session 11111111-1111-4111-8111-111111111111
+
+$ session checkpoint 11111111-1111-4111-8111-111111111111 before-edit
+Checkpointed session 11111111-1111-4111-8111-111111111111 at before-edit
+
+$ session rewind 11111111-1111-4111-8111-111111111111 before-edit
+{
+  "session_id": "11111111-1111-4111-8111-111111111111",
+  "checkpoint": "before-edit",
+  "entries_kept": 4,
+  "entries_removed": 0,
+  "files_restored": 0
+}
+
+$ session delete 11111111-1111-4111-8111-111111111111
+Deleted session 11111111-1111-4111-8111-111111111111

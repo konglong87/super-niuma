@@ -1,0 +1,27 @@
+{
+  "summary": {
+    "total": 1,
+    "completed": 0,
+    "timeout": 1,
+    "failed": 1,
+    "retries": 0,
+    "max_concurrency": 1,
+    "schedule_strategy": "fifo",
+    "started_at": "<timestamp>",
+    "finished_at": "<timestamp>",
+    "duration_ms": 0
+  },
+  "tasks": [
+    {
+      "index": 0,
+      "description": "slow task",
+      "status": "timeout",
+      "attempts": 1,
+      "started_at": "<timestamp>",
+      "finished_at": "<timestamp>",
+      "is_error": true,
+      "error": "context deadline exceeded",
+      "model": "model"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS agent_team_run_events (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  tenant_id BIGINT UNSIGNED NOT NULL,
+  team_run_id CHAR(36) NOT NULL,
+  sequence_no BIGINT UNSIGNED NOT NULL,
+  event_type VARCHAR(48) NOT NULL,
+  member_key VARCHAR(64) NOT NULL DEFAULT '',
+  from_member_key VARCHAR(64) NOT NULL DEFAULT '',
+  to_member_key VARCHAR(64) NOT NULL DEFAULT '',
+  status VARCHAR(32) NOT NULL DEFAULT '',
+  summary VARCHAR(1024) NOT NULL DEFAULT '',
+  payload_json JSON NULL,
+  artifact_ref VARCHAR(1024) NULL,
+  created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_agent_team_run_events_tenant_id (tenant_id, id),
+  KEY idx_agent_team_run_events_timeline (tenant_id, team_run_id, sequence_no, id),
+  KEY idx_agent_team_run_events_member (tenant_id, team_run_id, member_key, sequence_no),
+  CONSTRAINT fk_agent_team_run_events_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(id),
+  CONSTRAINT fk_agent_team_run_events_run_tenant FOREIGN KEY (tenant_id, team_run_id) REFERENCES agent_team_runs(tenant_id, id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

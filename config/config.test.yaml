@@ -1,0 +1,61 @@
+model: claude-sonnet-4-6
+provider: anthropic
+effort: high
+
+env:
+  ANTHROPIC_BASE_URL: http://127.0.0.1:8080
+  ANTHROPIC_API_KEY: test-key
+
+fallback:
+  enabled: false
+  providers: []
+
+update:
+  enabled: false
+  checkOnStartup: false
+  checkOnly: true
+  autoPull: false
+  skipWhenDirty: true
+  strategy: check-only
+  repoDir: ""
+  customCommand: ""
+  versionSourceURL: ""
+  scheduleInterval: ""
+  timeoutSeconds: 5
+
+multimodal:
+  enabled: true
+  defaultModel: ""
+  models:
+    image: ""
+    video: ""
+    audio: ""
+    file: ""
+
+autoCompact:
+  enabled: false
+  defaultThresholdRatio: 0.75
+  preserveRecentRounds: 6
+  summaryModel: ""
+  maxSummaryTokens: 8000
+  cooldownTurns: 1
+  maxFailures: 3
+  modelContext: {}
+  modelThresholdRatio: {}
+
+permissions:
+  defaultMode: allow
+  allow:
+    - Read
+    - LS
+    - Glob
+    - Grep
+    - Bash(go test:*)
+  deny: []
+
+sandbox:
+  enabled: false
+  failIfUnavailable: false
+
+maxToolResultBytes: 100000
+additionalDirectories: []

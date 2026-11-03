@@ -1,0 +1,9 @@
+{
+  "args": [
+    "session",
+    "show"
+  ],
+  "exit_code": 1,
+  "stderr": "session show requires a session id\n",
+  "stdout": ""
+}
