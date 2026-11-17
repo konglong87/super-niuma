@@ -48,7 +48,22 @@ press() { # allow | deny | stop: a real touch where the overlay button is
 	local at; at=$(logs | grep '^overlay {' | grep "\"$1\"" | tail -1 | cut -d' ' -f2- | jq -r ".$1 | \"\(.[0]) \(.[1])\"")
 	[ -n "$at" ] && [ "$at" != "null null" ] && adb shell input tap $at
 }
-answer_all() { # allow|deny seconds
+# Notifications of the app as `dumpsys notification` lists them.
+notices() { adb shell dumpsys notification --noredact | tr -d '\r'; }
+notice_posted() { notices | grep -q "pkg=$P user=UserHandle{0} id=$1 "; }
+notice_titled() { notices | grep -A 30 "pkg=$P user=UserHandle{0} id=$1 " | grep -qF "android.title=String ($2)"; }
+# press_notification allow|deny: opens the shade and touches the button of
+# the approval notification, found by the app's debug-only locate query.
+press_notification() {
+	local text=允许一次 at
+	[ "$1" = deny ] && text=拒绝
+	adb shell cmd statusbar expand-notifications; sleep 2
+	adb shell am broadcast -n $P/.M0Receiver --es m0 locate --es text "$text" --es pkg com.android.systemui >/dev/null
+	sleep 1
+	at=$(logs | grep '^locate {' | tail -1 | cut -d' ' -f2- | jq -r 'select(.found) | "\(.x) \(.y)"')
+	[ -n "$at" ] && adb shell input tap $at
+}
+answer_all() { # allow|deny seconds [notification]
 	local seen=0 n
 	for _ in $(seq 1 "$2"); do
 		n=$(logs | grep '^approval {' | grep -cF "\"task\":\"${TASK_ID}")
@@ -56,7 +71,14 @@ answer_all() { # allow|deny seconds
 			sleep 1.5
 			# The first card of a run is kept as evidence when CARD_SHOT names it.
 			[ -n "${CARD_SHOT:-}" ] && { shot "$CARD_SHOT"; CARD_SHOT=; }
-			press "$1"; seen=$n
+			if [ "${3:-}" = notification ]; then
+				# Kept for the checks: how the approval notification was posted.
+				notices | grep -A 30 "pkg=$P user=UserHandle{0} id=1001 " > "$OUT/.approval-notice"
+				press_notification "$1"
+			else
+				press "$1"
+			fi
+			seen=$n
 		fi
 		last_task | grep -q '"status":"running"' || [ -z "$(last_task)" ] || break
 		sleep 1
@@ -93,7 +115,10 @@ task_run() {
 	local attempt
 	for attempt in 1 2; do
 		start_task "$1" "$2" "$3"
-		case $4 in allow | deny) answer_all "$4" 300 ;; esac
+		case $4 in
+		allow | deny) answer_all "$4" 300 ;;
+		allow-notification | deny-notification) answer_all "${4%-notification}" 300 notification ;;
+		esac
 		T=$(wait_task 300)
 		if [ "$attempt" = 1 ] && echo "$T" | grep -Eq 'rate_limited|output_truncated'; then
 			note "provider problem ($(echo "$T" | jq -r .code)); retrying once after ${COOLDOWN}s"
@@ -124,7 +149,7 @@ start_relay() { # [--inject STATUS:EVERY[:RETRY_AFTER]]...; appends to relay.log
 	for _ in $(seq 1 20); do [ "$(grep -c "relay ready" "$OUT/relay.log")" -gt "$(cat "$OUT/.relay-count" 2>/dev/null || echo 0)" ] && break; sleep 0.5; done
 	grep -c "relay ready" "$OUT/relay.log" > "$OUT/.relay-count"
 }
-trap 'kill $RELAY 2>/dev/null; adb reverse --remove-all >/dev/null 2>&1; rm -f "$TOKEN_FILE" "$OUT/.relay-count"' EXIT
+trap 'kill $RELAY 2>/dev/null; adb reverse --remove-all >/dev/null 2>&1; rm -f "$TOKEN_FILE" "$OUT/.relay-count" "$OUT/.approval-notice"' EXIT
 start_relay
 adb reverse tcp:18080 tcp:18080 >/dev/null
 MODEL=$(jq -r --arg n "$PROVIDER" '.fallback.providers[] | select(.name==$n) | .model' ~/.niuma/settings.json)
@@ -148,10 +173,13 @@ fresh_clock
 task_run "set an alarm (verified)" "设一个早上 7:00 的闹钟" "7:00" none
 check "alarm task done and verified" 'echo "$T" | jq -e ".status==\"done\" and .verified==true" >/dev/null'
 check "7:00 AM alarm exists (positive control for the checks below)" 'alarm_shown "7:00"'
+check "the result was notified: 任务完成，已验收" 'notice_titled 1002 "任务完成，已验收"'
 shot alarm-set
 
 sleep "$COOLDOWN"
-task_run "delete, person denies" "删除早上 7:00 的闹钟" "" deny
+task_run "delete, person denies from the notification" "删除早上 7:00 的闹钟" "" deny-notification
+check "approval notification: private on the lock screen, two actions" 'grep -q "vis=PRIVATE publicVersion=" "$OUT/.approval-notice" && grep -q "actions=2" "$OUT/.approval-notice" && grep -qF "android.title=String (需要你确认)" "$OUT/.approval-notice"'
+check "denied from the notification" 'logs | grep -q "^decide {\"via\":\"notification\".*\"decision\":\"deny\".*\"ok\":true"'
 check "the delete step waited for approval" 'logs | grep -q "^approval {.*\"risk\":\"delete\""'
 check "denied: task needs attention" 'echo "$T" | jq -e ".status==\"needs_attention\"" >/dev/null'
 check "denied: 7:00 AM alarm still exists" 'alarm_shown "7:00"'
@@ -163,6 +191,15 @@ task_run "delete, person allows" "删除早上 7:00 的闹钟" "" allow
 check "allowed: the approved delete step ran" 'logs | grep -q "^step {.*\"decision\":\"approved\",\"reason\":\"\"" || logs | grep -q "\"outcome\":\"done\",\"decision\":\"approved\""'
 check "allowed: 7:00 AM alarm is gone" '! alarm_shown "7:00" && alarm_shown "8:30"'
 shot alarm-deleted
+
+sleep "$COOLDOWN"
+# A new 7:00 alarm, set by the test itself, for a delete approved from the shade.
+adb shell am start -a android.intent.action.SET_ALARM --ei android.intent.extra.alarm.HOUR 7 --ei android.intent.extra.alarm.MINUTES 0 --ez android.intent.extra.alarm.SKIP_UI true >/dev/null 2>&1; sleep 2
+CARD_SHOT=approval-notification
+task_run "delete, person allows from the notification" "删除早上 7:00 的闹钟" "" allow-notification
+check "allowed from the notification" 'logs | grep -q "^decide {\"via\":\"notification\".*\"decision\":\"allow_once\".*\"ok\":true"'
+check "the step approved from the shade ran once the app was back" 'logs | grep -q "\"outcome\":\"done\",\"decision\":\"approved\""'
+check "allowed from the notification: 7:00 AM alarm is gone" '! alarm_shown "7:00" && alarm_shown "8:30"'
 
 sleep "$COOLDOWN"
 fresh_clock
@@ -194,6 +231,53 @@ check "no tap, type or swipe ran inside an app outside the task" 'echo "$S" | jq
 check "any attempt outside the task was refused as scope_denied" '! echo "$S" | jq -e "[.task.steps[] | select(.kind==\"launch\" and .target!=\"$CLOCK\")] | length > 0" >/dev/null || logs_all_scope_denied'
 note "steps: $(echo "$S" | jq -c '[.task.steps[] | {kind, app, target, outcome}]')"
 adb shell cmd statusbar collapse >/dev/null 2>&1
+
+echo "== screen reader reminders" | tee -a "$OUT/result.txt"
+fresh_clock
+start_task "screen reader turned off mid-task" "设一个早上 6:30 的闹钟" "6:30"
+wait_line '^step {"task":"[^"]*","seq":2' 120
+adb shell settings put secure enabled_accessibility_services null
+T=$(wait_task 30); note "$T" | cut -c1-200
+check "turning the reader off interrupts the task (screen_reader_off)" 'echo "$T" | jq -e ".status==\"interrupted\" and .code==\"screen_reader_off\"" >/dev/null'
+check "reminder posted at once" 'logs | grep -q "^reader {\"on\":false,\"reminded\":\"unbound\"}" && notice_titled 1003 "超级牛马的屏幕助手已关闭"'
+check "the interrupted task was notified" 'notice_titled 1002 "任务中断"'
+adb shell cmd statusbar expand-notifications; sleep 2
+shot reader-reminder
+# The reader is off, so uiautomator (which suspends accessibility services)
+# disturbs nothing here: use it to find the reminder and touch it.
+adb shell uiautomator dump /sdcard/shade.xml >/dev/null 2>&1
+AT=$(adb shell cat /sdcard/shade.xml | tr '>' '\n' | grep -F 'text="超级牛马的屏幕助手已关闭"' | sed -n 's/.*bounds="\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]".*/\1 \2 \3 \4/p' | head -1 | awk '{print int(($1+$3)/2), int(($2+$4)/2)}')
+[ -n "$AT" ] && adb shell input tap $AT; sleep 3
+check "touching the reminder opens the accessibility settings" 'adb shell dumpsys window | grep mCurrentFocus | grep -q "com.android.settings"'
+adb shell input keyevent KEYCODE_HOME
+adb logcat -c
+adb shell settings put secure enabled_accessibility_services $P/$P.UiTreeService
+wait_line "^service connected" 20
+check "turning the reader back on withdraws the reminder" '! notice_posted 1003'
+
+adb logcat -c
+adb shell am force-stop $P; sleep 2
+adb shell am start -n $P/.MainActivity >/dev/null 2>&1; sleep 4
+check "a force stop is caught when the app next starts" 'logs | grep -q "^reader {\"on\":false,\"reminded\":\"app_start\"}" && notice_posted 1003'
+adb shell input keyevent KEYCODE_HOME
+adb logcat -c
+adb shell settings put secure enabled_accessibility_services $P/$P.UiTreeService
+adb shell settings put secure accessibility_enabled 1
+wait_line "^service connected" 20
+
+# Notifications not allowed: nothing is posted, the rest keeps working.
+adb logcat -c
+adb shell pm revoke $P android.permission.POST_NOTIFICATIONS; sleep 3
+adb shell settings put secure enabled_accessibility_services $P/$P.UiTreeService
+wait_line "^service connected" 20
+adb logcat -c
+adb shell settings put secure enabled_accessibility_services null; sleep 3
+check "without the notification permission the reminder is skipped, not crashed" 'logs | grep -q "^notice skipped {\"id\":1003" && ! notice_posted 1003'
+adb shell pm grant $P android.permission.POST_NOTIFICATIONS
+adb logcat -c
+adb shell settings put secure enabled_accessibility_services $P/$P.UiTreeService
+adb shell settings put secure accessibility_enabled 1
+wait_line "^service connected" 20
 
 sleep "$COOLDOWN"
 # Every 3rd model request is answered 429 with Retry-After 6 (not processed:

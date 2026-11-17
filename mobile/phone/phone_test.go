@@ -373,6 +373,55 @@ func TestGateDoesNothingWhenScreenChangesDuringApproval(t *testing.T) {
 	}
 }
 
+func TestGateWaitsForTheAppToReturnAfterApproval(t *testing.T) {
+	shade := Snapshot{Package: "com.android.systemui", Nodes: []Node{{Parent: -1, Class: "x", Text: "允许一次", Clickable: true}}}
+	for _, tc := range []struct {
+		name    string
+		covered int // snapshots that still show the shade after the answer
+		ran     bool
+	}{{"returns", 3, true}, {"never returns", 100, false}} {
+		t.Run(tc.name, func(t *testing.T) {
+			p := &fakePhone{screen: clockScreen("7:00 AM")}
+			approvals := NewApprovals(time.Second, nil)
+			g, _ := newGate(p, approvals, nil)
+			act(t, g, execution.DeviceAction{Kind: "screen"})
+			covered := tc.covered
+			answerNext(t, approvals, Allow, func() {
+				p.mu.Lock()
+				p.screen = shade
+				p.mu.Unlock()
+			})
+			p.mu.Lock()
+			p.onPerform = nil
+			p.mu.Unlock()
+			// The shade stays for `covered` snapshots, then the clock is back.
+			go func() {
+				for approvals.Pending() == nil {
+					time.Sleep(time.Millisecond)
+				}
+				for approvals.Pending() != nil {
+					time.Sleep(time.Millisecond)
+				}
+				for i := 0; i < covered; i++ {
+					time.Sleep(2 * time.Millisecond)
+				}
+				if tc.ran {
+					p.mu.Lock()
+					p.screen = clockScreen("7:00 AM")
+					p.mu.Unlock()
+				}
+			}()
+			_, err := act(t, g, execution.DeviceAction{Kind: "tap", Ref: 5})
+			if tc.ran && (err != nil || len(p.actions()) != 1) {
+				t.Fatalf("approved step lost after the shade closed: %v actions=%d", err, len(p.actions()))
+			}
+			if !tc.ran && (!refused(err, "changed while waiting") || len(p.actions()) != 0) {
+				t.Fatalf("acted while another app was in front: %v", err)
+			}
+		})
+	}
+}
+
 func TestGateApprovalTimeoutDenies(t *testing.T) {
 	p := &fakePhone{screen: clockScreen("7:00 AM")}
 	g, _ := newGate(p, NewApprovals(5*time.Millisecond, nil), nil)
@@ -674,6 +723,28 @@ func TestRunnerDeliversStatesInOrder(t *testing.T) {
 	}
 }
 
+func TestLosingTheScreenReaderInterruptsTheTask(t *testing.T) {
+	agent := scriptedAgent{steps: []execution.DeviceAction{{Kind: "screen"}, {Kind: "tap", Ref: 5}, {Kind: "screen"}}}
+	r, _ := newRunner(t, agent)
+	p := &fakePhone{screen: clockScreen("7:00 AM")}
+	r.SetBridge(p)
+	if _, err := r.Start(spec()); err != nil {
+		t.Fatal(err)
+	}
+	for r.approvals.Pending() == nil {
+		time.Sleep(time.Millisecond)
+	}
+	r.SetBridge(nil)
+	r.Wait()
+	s := r.State()
+	if s.ScreenReader || s.Task.Status != StatusInterrupted || s.Task.Code != "screen_reader_off" || len(p.actions()) != 0 {
+		t.Fatalf("after losing the reader: %+v actions=%d", s.Task, len(p.actions()))
+	}
+	if _, err := r.Start(spec()); !errors.Is(err, ErrNoBridge) {
+		t.Fatal("started without a screen reader")
+	}
+}
+
 func TestRunnerRejectsInvalidSpecs(t *testing.T) {
 	r, _ := newRunner(t, scriptedAgent{})
 	r.SetBridge(&fakePhone{screen: clockScreen("")})
@@ -685,6 +756,8 @@ func TestRunnerRejectsInvalidSpecs(t *testing.T) {
 		{Goal: "x", Apps: []string{clock}, Route: Route{BaseURL: "ftp://x", Model: "m", Token: "t"}},
 		{Goal: "x", Apps: []string{clock}, Route: spec().Route, MaxMinutes: 99},
 		{Goal: "x", Apps: []string{clock}, Route: Route{BaseURL: "http://gateway.example/v1", Model: "m", Token: "t"}},
+		{Goal: "x", Apps: []string{clock, "com.android.systemui"}, Route: spec().Route},
+		{Goal: "x", Apps: []string{own}, Route: spec().Route},
 	}
 	for _, s := range bad {
 		if _, err := r.Start(s); !errors.Is(err, ErrInvalidSpec) {

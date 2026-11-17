@@ -123,6 +123,7 @@ data class TaskSnapshot(
 object StateHub {
     private val main = Handler(Looper.getMainLooper())
     private val observers = CopyOnWriteArrayList<(TaskSnapshot) -> Unit>()
+    private val transitions = CopyOnWriteArrayList<(TaskSnapshot?, TaskSnapshot) -> Unit>()
     private var last: TaskSnapshot? = null
 
     @Volatile
@@ -138,9 +139,18 @@ object StateHub {
             return
         }
         TaskSnapshot.changes(last, next).forEach { Log.i(MainActivity.TAG, it) }
+        val prev = last
         last = next
         latest = next
-        main.post { observers.forEach { it(next) } }
+        main.post {
+            observers.forEach { it(next) }
+            transitions.forEach { it(prev, next) }
+        }
+    }
+
+    /** Observes each change with the state before it, on the main thread. */
+    fun observeTransitions(observer: (TaskSnapshot?, TaskSnapshot) -> Unit) {
+        transitions += observer
     }
 
     fun observe(observer: (TaskSnapshot) -> Unit) {

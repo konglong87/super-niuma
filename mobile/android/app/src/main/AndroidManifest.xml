@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Package visibility: the agent may open only apps that have a launcher
          entry, and the home screen package is part of every task's scope. -->
@@ -43,6 +44,21 @@
             android:exported="true"
             android:permission="android.permission.DUMP"
             android:targetActivity=".MainActivity" />
+
+        <!-- Test-script queries that must not bring an activity to the front
+             (it would close the notification shade): debug builds only, and
+             only adb shell holds DUMP. -->
+        <receiver
+            android:name=".M0Receiver"
+            android:enabled="@bool/m0_commands"
+            android:exported="true"
+            android:permission="android.permission.DUMP" />
+
+        <!-- Allow once / Deny from the approval notification; only the app's own
+             immutable PendingIntents reach it. -->
+        <receiver
+            android:name=".ApprovalActionReceiver"
+            android:exported="false" />
 
         <service
             android:name=".UiTreeService"

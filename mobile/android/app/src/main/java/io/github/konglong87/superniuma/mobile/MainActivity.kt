@@ -1,7 +1,10 @@
 package io.github.konglong87.superniuma.mobile
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.InputType
@@ -51,6 +54,12 @@ class MainActivity : Activity() {
         secrets = SecretStore(this)
         setContentView(ScrollView(this).apply { addView(buildUi()) })
         StateHub.observe(render)
+        // Approvals and results reach the person through notifications too.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
+        }
         // A recreated activity (rotation, theme change) keeps its intent; run
         // the command only on the first creation, never again.
         if (savedInstanceState == null) handle(intent)
@@ -130,7 +139,8 @@ class MainActivity : Activity() {
 
     private fun refreshReader() {
         val on = UiTreeService.instance != null
-        readerStatus.text = "核心 ${Niumacore.version()} · 屏幕助手${if (on) "已开启" else "未开启：任务需要在系统无障碍设置里打开“超级牛马 · 屏幕助手”"}"
+        val notices = if (Notifier.allowed(this)) "通知已开启" else "通知未开启：审批只能在悬浮卡片和这里处理"
+        readerStatus.text = "核心 ${Niumacore.version()} · 屏幕助手${if (on) "已开启" else "未开启：任务需要在系统无障碍设置里打开“超级牛马 · 屏幕助手”"} · $notices"
         openSettings.visibility = if (on) View.GONE else View.VISIBLE
     }
 
@@ -200,7 +210,11 @@ class MainActivity : Activity() {
             log("decide", "{\"ok\":false,\"error\":\"no pending approval\"}")
             return
         }
-        log("decide", Niumacore.decide(target, decision))
+        val result = Niumacore.decide(target, decision)
+        log("decide", result)
+        // This screen covers the app the step runs in; step aside so it is in
+        // front again (the core waits a few seconds for that).
+        if (decision == "allow_once" && result.contains("\"ok\":true")) moveTaskToBack(true)
     }
 
     private fun split(s: String) = s.split(',', '，').map { it.trim() }.filter { it.isNotEmpty() }

@@ -61,6 +61,9 @@ const (
 	outputTokens     = 2048
 )
 
+// systemUI draws the status bar, the notification shade and its buttons.
+const systemUI = "com.android.systemui"
+
 var packageName = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)+$`)
 
 // Executor runs one execution attempt; tests replace it.
@@ -91,8 +94,27 @@ type running struct {
 	stopped atomic.Bool
 	done    chan struct{}
 
-	mu    sync.Mutex
-	retry *RetryView
+	mu        sync.Mutex
+	retry     *RetryView
+	endStatus string
+	endCode   string
+}
+
+// end stops the task from outside; the first reason given is the one kept.
+func (run *running) end(status, code string) {
+	run.mu.Lock()
+	if run.endStatus == "" {
+		run.endStatus, run.endCode = status, code
+	}
+	run.mu.Unlock()
+	run.stopped.Store(true)
+	run.cancel()
+}
+
+func (run *running) endedAs() (string, string) {
+	run.mu.Lock()
+	defer run.mu.Unlock()
+	return run.endStatus, run.endCode
 }
 
 func (run *running) retrying() *RetryView {
@@ -121,10 +143,18 @@ func (r *Runner) SetApprovalTimeout(d time.Duration) {
 	r.approvals = NewApprovals(d, r.notify)
 }
 
+// SetBridge connects the screen reader, or with nil disconnects it. A task
+// cannot go on without it: a running task ends as interrupted
+// (screen_reader_off), so the person is told it did not finish. It does not
+// wait for the task to wind down.
 func (r *Runner) SetBridge(b Bridge) {
 	r.mu.Lock()
 	r.bridge = b
+	run := r.current
 	r.mu.Unlock()
+	if b == nil && run != nil {
+		run.end(StatusInterrupted, "screen_reader_off")
+	}
 	r.notify()
 }
 
@@ -175,6 +205,13 @@ func (r *Runner) Start(spec TaskSpec) (string, error) {
 	if err := validSpec(spec); err != nil {
 		return "", err
 	}
+	// The notification shade carries the approval buttons and Super Niuma's
+	// own screens answer approvals: no task may operate either.
+	for _, a := range spec.Apps {
+		if a == systemUI || a == r.own {
+			return "", fmt.Errorf("%w: a task may not operate %s", ErrInvalidSpec, a)
+		}
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if r.bridge == nil {
@@ -211,8 +248,7 @@ func (r *Runner) Stop() error {
 	if run == nil {
 		return ErrNotRunning
 	}
-	run.stopped.Store(true)
-	run.cancel()
+	run.end(StatusStopped, "stopped_by_person")
 	<-run.done
 	return nil
 }
@@ -273,7 +309,7 @@ func (r *Runner) run(ctx context.Context, run *running, spec TaskSpec, view Task
 	view.EndedMS = time.Now().UnixMilli()
 	switch {
 	case run.stopped.Load():
-		view.Status, view.Code = StatusStopped, "stopped_by_person"
+		view.Status, view.Code = run.endedAs()
 	case err != nil && errors.Is(ctx.Err(), context.DeadlineExceeded):
 		view.Status, view.Code = StatusFailed, "time_limit"
 	case err != nil:

@@ -18,9 +18,12 @@ class NiumaApp : Application() {
         val init = Niumacore.init(File(filesDir, "super-state").apply { mkdirs() }.canonicalPath)
         val open = Niumacore.openTasks(filesDir.canonicalPath, packageName)
         Log.i(MainActivity.TAG, "core ${Niumacore.version()} init $init tasks $open")
+        Notifier.createChannels(this)
+        StateHub.observeTransitions { prev, next -> Notifier.apply(this, NoticePlan.plan(prev, next)) }
         Niumacore.setListener(object : Listener {
             override fun onState(stateJSON: String) = StateHub.publish(stateJSON)
         })
         StateHub.publish(Niumacore.taskState())
+        ReaderWatch.checkAtStart(this)
     }
 }

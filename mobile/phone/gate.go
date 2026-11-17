@@ -98,6 +98,10 @@ var _ execution.Device = (*Gate)(nil)
 
 func refusal(reason string) error { return execution.DeviceRefusal{Reason: reason} }
 
+// returnTries bounds the wait (tries × retry, about 3 s) for the app to be in
+// front again after an approval was answered elsewhere.
+const returnTries = 8
+
 // Act runs one model action through scope, credential, risk and approval
 // checks, and returns the screen after it.
 func (g *Gate) Act(ctx context.Context, a execution.DeviceAction) (string, error) {
@@ -194,7 +198,20 @@ func (g *Gate) Act(ctx context.Context, a execution.DeviceAction) (string, error
 		}
 		step.Decision = "approved"
 		// The person approved what they saw; act only if it is still there.
+		// Approving from the notification shade or from Super Niuma covers
+		// the app for a moment: give it a few seconds to come back first.
 		again, err := g.snapshot(ctx)
+		for i := 0; i < returnTries && (errors.Is(err, ErrNoWindow) || (err == nil && again.Package != cur.Package)); i++ {
+			select {
+			case <-ctx.Done():
+				return "", ctx.Err()
+			case <-time.After(g.retry):
+			}
+			if g.stopped() {
+				return "", execution.ErrDeviceStopped
+			}
+			again, err = g.snapshot(ctx)
+		}
 		if err != nil && !errors.Is(err, ErrNoWindow) {
 			return "", err
 		}

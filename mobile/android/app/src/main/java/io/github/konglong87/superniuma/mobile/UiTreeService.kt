@@ -20,7 +20,6 @@ import org.json.JSONObject
 import java.util.Locale
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
 
 /**
  * The phone as the Go core sees it. As a [DeviceBridge] it reads the active
@@ -53,6 +52,7 @@ class UiTreeService : AccessibilityService(), DeviceBridge {
         instance = this
         Niumacore.setBridge(this)
         StateHub.observe(renderOverlay)
+        ReaderWatch.connected(this)
         Log.i(MainActivity.TAG, "service connected")
     }
 
@@ -79,15 +79,18 @@ class UiTreeService : AccessibilityService(), DeviceBridge {
         super.onDestroy()
     }
 
-    /** Without the screen reader a task cannot continue safely: stop it. */
+    /**
+     * Without the screen reader a task cannot continue: clearing the bridge
+     * ends a running task as interrupted (screen_reader_off).
+     */
     private fun disconnect() {
         if (instance !== this) return
         instance = null
         Niumacore.clearBridge()
         StateHub.forget(renderOverlay)
         overlay.hide()
-        if (StateHub.latest?.running == true) thread(name = "stop-task") { Niumacore.stopTask() }
         worker.quitSafely()
+        ReaderWatch.disconnected(this)
         Log.i(MainActivity.TAG, "service disconnected")
     }
 
@@ -236,6 +239,40 @@ class UiTreeService : AccessibilityService(), DeviceBridge {
     private fun done() = "{\"status\":\"done\"}"
     private fun uncertain() = "{\"status\":\"uncertain\"}"
     private fun failed(why: String) = JSONObject().put("status", "failed").put("error", why).toString()
+
+    /**
+     * Closes the notification shade after the person answered an approval
+     * there, so the app the agent works in is in front again.
+     */
+    fun dismissShade() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+        } else if (rootInActiveWindow?.packageName?.toString() == "com.android.systemui") {
+            performGlobalAction(GLOBAL_ACTION_BACK)
+        }
+    }
+
+    /**
+     * Test support (debug builds, adb shell only): the centre of the first
+     * visible element in any window of [pkg] (any app when null), the
+     * notification shade included, whose text or description is [text].
+     */
+    fun locate(text: String, pkg: String?): IntArray? {
+        val r = Rect()
+        for (w in windows) {
+            val queue = ArrayDeque<AccessibilityNodeInfo>()
+            w.root?.takeIf { pkg == null || it.packageName?.toString() == pkg }?.let { queue.addLast(it) }
+            while (queue.isNotEmpty()) {
+                val n = queue.removeFirst()
+                if (n.isVisibleToUser && (n.text?.toString() == text || n.contentDescription?.toString() == text)) {
+                    n.getBoundsInScreen(r)
+                    return intArrayOf(r.centerX(), r.centerY())
+                }
+                for (i in 0 until n.childCount) n.getChild(i)?.let { queue.addLast(it) }
+            }
+        }
+        return null
+    }
 
     // --- M0 timing reads ---
 
