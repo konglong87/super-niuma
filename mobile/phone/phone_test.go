@@ -3,6 +3,7 @@ package phone
 import (
 	"context"
 	"errors"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
@@ -630,6 +631,46 @@ func TestRunnerShowsRetryWaitsWhileTheyLast(t *testing.T) {
 	}
 	if after := r.State(); after.Task.Retry != nil {
 		t.Fatal("retry shown after the task ended")
+	}
+}
+
+// Every delivered state must be at least as new as the one before it, even
+// though steps, approvals and the task's end notify from different goroutines.
+func TestRunnerDeliversStatesInOrder(t *testing.T) {
+	agent := scriptedAgent{steps: []execution.DeviceAction{{Kind: "screen"}, {Kind: "tap", Ref: 5}, {Kind: "screen"}, {Kind: "tap", Ref: 1}}, text: "done"}
+	r, _ := newRunner(t, agent)
+	r.SetApprovalTimeout(5 * time.Millisecond)
+	r.SetBridge(&fakePhone{screen: clockScreen("7:00 AM")})
+	var mu sync.Mutex
+	var seen []State
+	r.SetListener(func(s State) {
+		time.Sleep(time.Duration(rand.Intn(3000)) * time.Microsecond) // let deliveries overtake each other
+		mu.Lock()
+		seen = append(seen, s)
+		mu.Unlock()
+	})
+	for i := 0; i < 5; i++ {
+		go r.notify()
+	}
+	if _, err := r.Start(spec()); err != nil {
+		t.Fatal(err)
+	}
+	r.Wait()
+	time.Sleep(50 * time.Millisecond)
+	mu.Lock()
+	defer mu.Unlock()
+	steps, ended := 0, false
+	for i, s := range seen {
+		if s.Task == nil {
+			continue
+		}
+		if len(s.Task.Steps) < steps || (ended && s.Task.Status == StatusRunning) {
+			t.Fatalf("state %d is older than one delivered before it: %d steps, status %s", i, len(s.Task.Steps), s.Task.Status)
+		}
+		steps, ended = len(s.Task.Steps), s.Task.Status != StatusRunning
+	}
+	if !ended {
+		t.Fatal("final state never delivered")
 	}
 }
 

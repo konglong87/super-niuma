@@ -32,7 +32,9 @@ cmd() {
 	for a in "$@"; do s+=" '${a//$q/$q\\$q$q}'"; done
 	adb shell "$s" >/dev/null 2>&1
 }
-last_task() { logs | grep '^task {' | tail -1 | cut -d' ' -f2-; }
+# Only lines of the task this scenario started count (TASK_ID from its start).
+TASK_ID=
+last_task() { logs | grep '^task {' | grep -F "\"id\":\"${TASK_ID}" | tail -1 | cut -d' ' -f2-; }
 wait_task() { # seconds; prints the final task line
 	for _ in $(seq 1 "$1"); do
 		local t; t=$(last_task)
@@ -49,7 +51,7 @@ press() { # allow | deny | stop: a real touch where the overlay button is
 answer_all() { # allow|deny seconds
 	local seen=0 n
 	for _ in $(seq 1 "$2"); do
-		n=$(logs | grep -c '^approval {')
+		n=$(logs | grep '^approval {' | grep -cF "\"task\":\"${TASK_ID}")
 		if [ "$n" -gt "$seen" ]; then
 			sleep 1.5
 			# The first card of a run is kept as evidence when CARD_SHOT names it.
@@ -78,6 +80,12 @@ start_task() { # name goal [expect]
 	adb shell input keyevent KEYCODE_HOME; adb logcat -c
 	echo "--- $1" >> "$OUT/steps.txt"
 	if [ -n "${3:-}" ]; then cmd m1_start --es goal "$2" --es apps $CLOCK --es expect "$3"; else cmd m1_start --es goal "$2" --es apps $CLOCK; fi
+	TASK_ID=
+	for _ in $(seq 1 30); do
+		TASK_ID=$(logs | grep '^start {"ok":true' | tail -1 | sed -n 's/.*"id":"\([^"]*\)".*/\1/p')
+		[ -n "$TASK_ID" ] && break
+		sleep 1
+	done
 }
 # task_run name goal expect allow|deny|none: runs one task; a provider problem
 # (HTTP 429 or a truncated reply) is retried once after a cooldown and noted.
@@ -204,7 +212,7 @@ T=$(wait_task 120); note "$T" | cut -c1-200; steps >/dev/null
 note "retries: $(logs | grep -c '^retry {'), relay: $(grep -c 'injected' "$OUT/relay.log") injected"
 check "task with injected 429s and 500s still done and verified" 'echo "$T" | jq -e ".status==\"done\" and .verified==true" >/dev/null'
 check "429 waits were shown with their Retry-After" 'logs | grep -q "^retry {.*\"wait_ms\":6000.*rate_limited"'
-check "500s were retried after a backoff" 'logs | grep -q "^retry {.*execution_http_failure"'
+check "500s were retried after a backoff" 'logs | grep -q "^retry {.*\"wait_ms\":2000.*execution_http_failed"'
 check "injected failures never reached the provider" '[ "$(grep -c "(injected).*-> 429" "$OUT/relay.log")" -ge 1 ] && [ "$(grep -c "(injected).*-> 500" "$OUT/relay.log")" -ge 1 ]'
 start_relay
 

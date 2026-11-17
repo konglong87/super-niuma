@@ -1,0 +1,68 @@
+relay ready on 127.0.0.1:18080 for provider agnes-2.5-flash
+relay POST /v1/chat/completions -> 200 in 4983 ms
+relay POST /v1/chat/completions -> 200 in 1144 ms
+relay POST /v1/chat/completions -> 200 in 5125 ms
+relay POST /v1/chat/completions -> 200 in 1266 ms
+relay POST /v1/chat/completions -> 200 in 1564 ms
+relay POST /v1/chat/completions -> 200 in 1069 ms
+relay POST /v1/chat/completions -> 200 in 3817 ms
+relay POST /v1/chat/completions -> 200 in 3196 ms
+relay POST /v1/chat/completions -> 200 in 3271 ms
+relay POST /v1/chat/completions -> 200 in 1284 ms
+relay POST /v1/chat/completions -> 429 in 263 ms
+relay POST /v1/chat/completions -> 429 in 254 ms
+relay POST /v1/chat/completions -> 429 in 312 ms
+relay POST /v1/chat/completions -> 429 in 220 ms
+relay POST /v1/chat/completions -> 200 in 708 ms
+relay POST /v1/chat/completions -> 200 in 1127 ms
+relay POST /v1/chat/completions -> 200 in 1675 ms
+relay POST /v1/chat/completions -> 200 in 2217 ms
+relay POST /v1/chat/completions -> 200 in 1095 ms
+relay POST /v1/chat/completions -> 200 in 1084 ms
+relay POST /v1/chat/completions -> 200 in 722 ms
+relay POST /v1/chat/completions -> 200 in 5061 ms
+relay POST /v1/chat/completions -> 200 in 1620 ms
+relay POST /v1/chat/completions -> 200 in 1357 ms
+relay POST /v1/chat/completions -> 200 in 1229 ms
+relay POST /v1/chat/completions -> 200 in 1041 ms
+relay POST /v1/chat/completions -> 200 in 1027 ms
+relay POST /v1/chat/completions -> 200 in 1423 ms
+relay POST /v1/chat/completions -> 200 in 996 ms
+relay POST /v1/chat/completions -> 200 in 1533 ms
+relay POST /v1/chat/completions -> 200 in 1134 ms
+relay POST /v1/chat/completions -> 200 in 1989 ms
+relay POST /v1/chat/completions -> 200 in 5965 ms
+relay POST /v1/chat/completions -> 200 in 1487 ms
+relay POST /v1/chat/completions -> 200 in 1772 ms
+relay POST /v1/chat/completions -> 200 in 2243 ms
+relay ready on 127.0.0.1:18080 for provider agnes-2.5-flash injecting ['429:3:6', '500:5']
+relay POST /v1/chat/completions -> 200 in 5199 ms
+relay POST /v1/chat/completions -> 200 in 668 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 1200 ms
+relay POST (injected) /v1/chat/completions -> 500 in 0 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 1664 ms
+relay POST /v1/chat/completions -> 200 in 1464 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST (injected) /v1/chat/completions -> 500 in 0 ms
+relay POST /v1/chat/completions -> 200 in 1537 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 2351 ms
+relay POST /v1/chat/completions -> 200 in 889 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 2520 ms
+relay POST /v1/chat/completions -> 200 in 1555 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 1424 ms
+relay POST (injected) /v1/chat/completions -> 500 in 0 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 5059 ms
+relay POST /v1/chat/completions -> 200 in 1444 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST (injected) /v1/chat/completions -> 500 in 0 ms
+relay POST /v1/chat/completions -> 200 in 1124 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 1298 ms
+relay POST /v1/chat/completions -> 200 in 2076 ms
+relay ready on 127.0.0.1:18080 for provider agnes-2.5-flash

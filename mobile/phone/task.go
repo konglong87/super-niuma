@@ -81,6 +81,7 @@ type Runner struct {
 	mu       sync.Mutex
 	bridge   Bridge
 	listener func(State)
+	notifyMu sync.Mutex
 	current  *running
 }
 
@@ -369,7 +370,14 @@ func (r *Runner) State() State {
 	return s
 }
 
+// notify delivers the current state. Steps, approvals, retries and the end
+// of a task notify from different goroutines; reading and delivering the
+// state under one lock keeps deliveries in the order the states were read,
+// so the app never shows an older state after a newer one (an approval card
+// that was already answered, a finished task as running).
 func (r *Runner) notify() {
+	r.notifyMu.Lock()
+	defer r.notifyMu.Unlock()
 	r.mu.Lock()
 	l := r.listener
 	r.mu.Unlock()
