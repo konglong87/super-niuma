@@ -17,8 +17,9 @@ import java.util.concurrent.Executors
 /**
  * M0 feasibility screen: runs the Go core's probes and shows each report.
  *
- * Debug builds also accept an `m0` extra so a test script can drive the same
- * actions over adb (`am start ... --es m0 probe`). Release builds ignore it.
+ * Debug builds also accept an `m0` extra through the `.M0Commands` alias, which
+ * only `adb shell` may start (`am start -n <pkg>/.M0Commands --es m0 probe`).
+ * Release builds disable the alias and ignore extras.
  * The model route's token is a credential for a loopback relay on the
  * developer's computer, never a provider key; it is not stored.
  */
@@ -56,8 +57,10 @@ class MainActivity : Activity() {
     }
 
     private fun handle(intent: Intent?) {
-        val action = intent?.getStringExtra(EXTRA_ACTION) ?: return
-        if (!BuildConfig.DEBUG) return
+        // Only the DUMP-protected alias carries test commands; the launcher
+        // entry ignores extras, so other apps cannot trigger these actions.
+        if (!BuildConfig.DEBUG || intent?.component?.className != "$packageName$COMMANDS_ALIAS") return
+        val action = intent.getStringExtra(EXTRA_ACTION) ?: return
         run(action, intent)
     }
 
@@ -70,8 +73,12 @@ class MainActivity : Activity() {
             }
             "tree" -> {
                 val service = UiTreeService.instance
-                if (service == null) report(action, "{\"ok\":false,\"error\":\"screen reader is off\"}")
-                else service.measureNow("on request")
+                if (service == null) {
+                    report(action, "{\"ok\":false,\"error\":\"screen reader is off\"}")
+                } else {
+                    service.measureNow("on request")
+                    report(action, "{\"ok\":true,\"requested\":true,\"result\":\"logcat tag $TAG\"}")
+                }
                 return
             }
         }
@@ -114,6 +121,7 @@ class MainActivity : Activity() {
     companion object {
         const val TAG = "NiumaM0"
         private const val EXTRA_ACTION = "m0"
+        private const val COMMANDS_ALIAS = ".M0Commands"
         private const val DEFAULT_RELAY_URL = "http://127.0.0.1:18080/v1"
         private const val DEFAULT_HTTPS_URL = "https://connectivitycheck.gstatic.com/generate_204"
     }

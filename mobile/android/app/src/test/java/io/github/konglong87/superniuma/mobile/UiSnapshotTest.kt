@@ -42,12 +42,17 @@ class UiSnapshotTest {
 
     @Test
     fun describeKeepsOnlyUsableNodes() {
+        val list = UiNode(0, "androidx.recyclerview.widget.RecyclerView", null, null, null, 0, 10, 100, 30, false, false, true)
         val lines = UiSnapshot.describe(
-            listOf(node(-1), node(0, text = "Network\ninternet", click = true), node(0, desc = "Search", edit = true)),
+            listOf(node(-1), node(0, text = "Network\ninternet", click = true), node(0, desc = "Search", edit = true), list),
             max = 5,
         )
         assertEquals(
-            listOf("[1] TextView \"Network internet\" @50,20 click", "[2] TextView \"Search\" @50,20 edit"),
+            listOf(
+                "[1] TextView \"Network internet\" @50,20 click",
+                "[2] TextView \"Search\" @50,20 edit",
+                "[3] RecyclerView \"\" @50,20 scroll",
+            ),
             lines,
         )
     }

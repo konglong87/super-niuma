@@ -88,6 +88,13 @@ jobs:
           BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
         run: scripts/race-impacted.sh "$BASE_SHA"
 
+      # mobile/ is a nested module, so ./... above never reaches it.
+      - name: Phone core (mobile module)
+        working-directory: mobile
+        run: |
+          go vet ./niumacore
+          go test -race -count=1 ./niumacore
+
   web:
     name: web typecheck / build / test
     runs-on: ubuntu-latest

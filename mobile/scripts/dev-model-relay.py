@@ -26,7 +26,11 @@ TEST_TOKEN = os.environ["RELAY_TEST_TOKEN"]
 
 with open(os.path.expanduser("~/.niuma/settings.json"), encoding="utf-8") as f:
     settings = json.load(f)
-entry = next(p for p in settings["fallback"]["providers"] if p.get("name") == PROVIDER)
+MAX_BODY = 4 << 20
+providers = settings.get("fallback", {}).get("providers", [])
+entry = next((p for p in providers if p.get("name") == PROVIDER), None)
+if entry is None:
+    sys.exit(f"provider {PROVIDER!r} not found; available: {', '.join(sorted(p.get('name', '') for p in providers))}")
 if entry.get("protocol") != "openai-chat-completions":
     sys.exit("relay supports openai-chat-completions providers only")
 UPSTREAM = entry["baseURL"].rstrip("/")
@@ -60,6 +64,10 @@ class Relay(BaseHTTPRequestHandler):
                 self._send(404, b'{"error":"not found"}')
                 return
             length = int(self.headers.get("Content-Length", "0"))
+            if length < 0 or length > MAX_BODY:
+                status = 413
+                self._send(413, b'{"error":"body too large"}')
+                return
             body = self.rfile.read(length)
             req = urllib.request.Request(
                 UPSTREAM + "/chat/completions",

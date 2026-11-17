@@ -8,6 +8,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import android.view.accessibility.AccessibilityWindowInfo
 import io.github.konglong87.superniuma.niumacore.Niumacore
 import java.util.Locale
 
@@ -20,6 +21,7 @@ import java.util.Locale
 class UiTreeService : AccessibilityService() {
     private lateinit var worker: HandlerThread
     private lateinit var handler: Handler
+    @Volatile
     private var pendingPackage: String? = null
 
     override fun onServiceConnected() {
@@ -51,11 +53,16 @@ class UiTreeService : AccessibilityService() {
         handler.post { measure(reason) }
     }
 
-    private fun measure(reason: String) {
+    private fun measure(reason: String, retried: Boolean = false) {
         val start = SystemClock.elapsedRealtimeNanos()
-        val root = rootInActiveWindow
+        val root = activeRoot()
         if (root == null) {
-            Log.w(MainActivity.TAG, "tree $reason: no active window")
+            // A window in transition (e.g. a deep-link trampoline) has no root yet.
+            if (!retried) {
+                handler.postDelayed({ measure(reason, retried = true) }, RETRY_MS)
+            } else {
+                Log.w(MainActivity.TAG, "tree $reason: no active window")
+            }
             return
         }
         val pkg = root.packageName?.toString() ?: pendingPackage ?: "unknown"
@@ -73,6 +80,17 @@ class UiTreeService : AccessibilityService() {
                 "\"json_bytes\":${json.length},\"core\":$summary}",
         )
         UiSnapshot.describe(nodes, 12).forEach { Log.i(MainActivity.TAG, "tree-line $it") }
+    }
+
+    /**
+     * The active window's root, or else the root of the app window the system
+     * lists as active (or the first app window): some screens, such as the
+     * Wi-Fi page reached through a deep link, report no active-window root.
+     */
+    private fun activeRoot(): AccessibilityNodeInfo? {
+        rootInActiveWindow?.let { return it }
+        val apps = windows.filter { it.type == AccessibilityWindowInfo.TYPE_APPLICATION }
+        return (apps.firstOrNull { it.isActive } ?: apps.firstOrNull())?.root
     }
 
     private fun readTree(root: AccessibilityNodeInfo): List<UiNode> {
@@ -109,6 +127,7 @@ class UiTreeService : AccessibilityService() {
 
     companion object {
         private const val SETTLE_MS = 800L
+        private const val RETRY_MS = 500L
         private const val MAX_NODES = 2000
 
         @Volatile

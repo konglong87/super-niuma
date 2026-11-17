@@ -57,7 +57,10 @@ object UiSnapshot {
     /** A few human-readable lines for logs: index, short class, label, centre. */
     fun describe(nodes: List<UiNode>, max: Int): List<String> =
         nodes.withIndex()
-            .filter { (_, n) -> !n.text.isNullOrBlank() || !n.desc.isNullOrBlank() || n.clickable || n.editable }
+            .filter { (_, n) ->
+                // Same notion of "usable" as the core: labelled or actionable.
+                !n.text.isNullOrBlank() || !n.desc.isNullOrBlank() || n.clickable || n.editable || n.scrollable
+            }
             .take(max)
             .map { (i, n) ->
                 val label = (n.text?.takeIf { it.isNotBlank() } ?: n.desc ?: "").replace('\n', ' ').take(40)

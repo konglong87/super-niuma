@@ -19,6 +19,16 @@
             </intent-filter>
         </activity>
 
+        <!-- Test-script entry, enabled in debug builds only. The DUMP permission
+             is held by `adb shell` and cannot be granted to ordinary apps, so no
+             other app on the phone can drive the m0 actions. -->
+        <activity-alias
+            android:name=".M0Commands"
+            android:enabled="@bool/m0_commands"
+            android:exported="true"
+            android:permission="android.permission.DUMP"
+            android:targetActivity=".MainActivity" />
+
         <service
             android:name=".UiTreeService"
             android:exported="false"

@@ -205,6 +205,10 @@ func ModelCall(routeJSON, workspace, objective string) string {
 	if strings.TrimSpace(rt.BaseURL) == "" || strings.TrimSpace(rt.Model) == "" || rt.Token == "" {
 		return encode(modelReport{Error: "route needs base_url, model and token"})
 	}
+	// Execution would refuse too, but only as revoked authority; say why.
+	if _, err := super.StateDirectory(); err != nil {
+		return encode(modelReport{Error: "Super state directory unavailable: call Init first"})
+	}
 	cfg := config.Config{
 		Provider:         "openai",
 		ProviderProtocol: config.ProviderProtocolOpenAIChatCompletions,
@@ -318,6 +322,9 @@ func (b *tokenBudget) Reserve(ctx context.Context, id string, input, output int)
 	defer b.mu.Unlock()
 	if b.reserved == nil {
 		b.reserved = map[string]int{}
+	}
+	if _, dup := b.reserved[id]; dup {
+		return errors.New("reservation id already held")
 	}
 	held := 0
 	for _, n := range b.reserved {

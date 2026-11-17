@@ -39,7 +39,7 @@ adb install -r -g mobile/android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
 ```bash
-adb shell am start -n io.github.konglong87.superniuma.mobile/.MainActivity --es m0 probe
+adb shell am start -n io.github.konglong87.superniuma.mobile/.M0Commands --es m0 probe
 ```
 
 ```bash
@@ -50,4 +50,4 @@ adb logcat -s NiumaM0
 - **真实模型调用**：先在电脑上启动中转（`RELAY_TEST_TOKEN=... python3 -I mobile/scripts/dev-model-relay.py <provider 名称>`），再 `adb reverse tcp:18080 tcp:18080`，然后 `--es m0 model --es model <模型> --es token <同一个测试令牌>`。令牌只用于这个回环中转，不是模型密钥。
 - **读界面**：在系统设置的无障碍里打开 “Super Niuma screen reader (M0)”（或 `adb shell settings put secure enabled_accessibility_services io.github.konglong87.superniuma.mobile/io.github.konglong87.superniuma.mobile.UiTreeService`），`--es m0 measure_on` 后切到其他 App，每次切换约 0.8 秒后记录一行 `tree {...}`。
 
-调试入口（`m0` extra）只在 debug 构建生效，release 构建忽略。
+调试入口（`m0` extra）只走 `.M0Commands` 别名：它只在 debug 构建启用，并要求 `android.permission.DUMP`。这个权限只有 `adb shell` 拥有，普通 App 拿不到；从桌面图标进入的 `MainActivity` 忽略所有 extra。

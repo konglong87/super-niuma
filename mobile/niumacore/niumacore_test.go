@@ -209,4 +209,20 @@ func TestTokenBudgetKeepsUnknownUsageAndRefusesOverLimit(t *testing.T) {
 	if err := b.Settle(ctx, "missing", execution.Usage{}, true); err == nil {
 		t.Fatal("unknown reservation settled")
 	}
+	if err := b.Reserve(ctx, "c", 10, 10); err != nil {
+		t.Fatal(err)
+	}
+	if err := b.Reserve(ctx, "c", 1, 1); err == nil || b.reserved["c"] != 20 {
+		t.Fatalf("duplicate reservation id accepted: held=%d", b.reserved["c"])
+	}
+}
+
+func TestModelCallExplainsMissingStateDirectory(t *testing.T) {
+	t.Setenv(super.StateDirectoryEnv, "relative")
+	route := `{"base_url":"http://127.0.0.1:1/v1","model":"m0-model","token":"test-token"}`
+	var r modelReport
+	decode(t, ModelCall(route, canonicalTempDir(t), "Hello"), &r)
+	if r.OK || !strings.Contains(r.Error, "call Init first") {
+		t.Fatalf("missing state directory not explained: %+v", r)
+	}
 }
