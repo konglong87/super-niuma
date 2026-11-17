@@ -1,7 +1,12 @@
 package io.github.konglong87.superniuma.mobile
 
 import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.GestureDescription
+import android.content.Intent
+import android.graphics.Path
 import android.graphics.Rect
+import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.SystemClock
@@ -9,29 +14,50 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityWindowInfo
+import io.github.konglong87.superniuma.niumacore.DeviceBridge
 import io.github.konglong87.superniuma.niumacore.Niumacore
+import org.json.JSONObject
 import java.util.Locale
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 
 /**
- * M0's accessibility service. It only reads: when measuring is on and another
- * app's window comes to the front, it reads that window's elements once the
- * screen has been quiet for [SETTLE_MS], hands the snapshot to the Go core and
- * logs the timings under the tag [MainActivity.TAG]. It never acts on a screen.
+ * The phone as the Go core sees it. As a [DeviceBridge] it reads the active
+ * app window and performs one action at a time, then waits for the screen
+ * to settle; the core decides what may run. It also keeps the M0 timing
+ * reads (measure_on / tree) for comparison.
  */
-class UiTreeService : AccessibilityService() {
+class UiTreeService : AccessibilityService(), DeviceBridge {
     private lateinit var worker: HandlerThread
     private lateinit var handler: Handler
+    private lateinit var overlay: Overlay
+    private val renderOverlay: (TaskSnapshot) -> Unit = { overlay.render(it) }
+
     @Volatile
     private var pendingPackage: String? = null
+
+    @Volatile
+    private var lastEventAt = 0L
+
+    private val bridgeLock = Any()
+    private var latestNodes: List<AccessibilityNodeInfo> = emptyList()
+    private var home: String? = null
 
     override fun onServiceConnected() {
         worker = HandlerThread("ui-tree").also { it.start() }
         handler = Handler(worker.looper)
+        overlay = Overlay(this)
+        home = packageManager.resolveActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME), 0)
+            ?.activityInfo?.packageName
         instance = this
+        Niumacore.setBridge(this)
+        StateHub.observe(renderOverlay)
         Log.i(MainActivity.TAG, "service connected")
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
+        lastEventAt = SystemClock.uptimeMillis()
         if (!measuring || event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
         val pkg = event.packageName?.toString() ?: return
         if (pkg == packageName) return
@@ -43,26 +69,185 @@ class UiTreeService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
+    override fun onUnbind(intent: Intent?): Boolean {
+        disconnect()
+        return super.onUnbind(intent)
+    }
+
     override fun onDestroy() {
-        instance = null
-        if (::worker.isInitialized) worker.quitSafely()
+        disconnect()
         super.onDestroy()
     }
+
+    /** Without the screen reader a task cannot continue safely: stop it. */
+    private fun disconnect() {
+        if (instance !== this) return
+        instance = null
+        Niumacore.clearBridge()
+        StateHub.forget(renderOverlay)
+        overlay.hide()
+        if (StateHub.latest?.running == true) thread(name = "stop-task") { Niumacore.stopTask() }
+        worker.quitSafely()
+        Log.i(MainActivity.TAG, "service disconnected")
+    }
+
+    // --- DeviceBridge ---
+
+    override fun snapshot(): String = synchronized(bridgeLock) {
+        val root = activeRoot(null)
+        val pkg = root?.packageName?.toString()
+        if (root == null || pkg == null) {
+            latestNodes = emptyList()
+            return ""
+        }
+        val infos = ArrayList<AccessibilityNodeInfo>(256)
+        val nodes = readTree(root, infos)
+        latestNodes = infos
+        UiSnapshot.encode(pkg, nodes, home)
+    }
+
+    override fun perform(actionJSON: String): String = synchronized(bridgeLock) {
+        val result = try {
+            val a = JSONObject(actionJSON)
+            val target = latestNodes.getOrNull(a.optInt("index", -1))?.takeIf { it.refresh() }
+            // Never act on an element whose app is no longer in front: a
+            // click on a covered window can report success and do nothing.
+            val front = activeRoot(null)?.packageName?.toString()
+            if (target != null && target.packageName?.toString() != front) {
+                debug("refused: ${target.packageName} is not in front ($front)")
+                return failed("the app is no longer in front; read the screen again")
+            }
+            when (a.getString("kind")) {
+                "tap" -> target?.let { tap(it) } ?: failed("the element is gone")
+                "type" -> target?.let { type(it, a.optString("text"), a.optBoolean("submit")) } ?: failed("the element is gone")
+                "swipe" -> swipe(target, a.optString("direction"), a.optInt("index", -1) >= 0)
+                "key" -> key(a.optString("key"))
+                "launch" -> launch(a.optString("app"))
+                else -> failed("unknown action")
+            }
+        } catch (e: Exception) {
+            failed("action could not run")
+        }
+        waitForSettle()
+        result
+    }
+
+    private fun tap(node: AccessibilityNodeInfo): String {
+        var target: AccessibilityNodeInfo? = node
+        var depth = 0
+        while (target != null && !target.isClickable && depth < 6) {
+            target = target.parent
+            depth++
+        }
+        val clicked = target != null && target.isClickable && target.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+        debug("tap ${describe(node)} via ${target?.let { describe(it) } ?: "none"} click=$clicked")
+        if (clicked) return done()
+        val r = Rect().also { node.getBoundsInScreen(it) }
+        return gesture(Path().apply { moveTo(r.exactCenterX(), r.exactCenterY()) }, 60)
+    }
+
+    private fun type(node: AccessibilityNodeInfo, text: String, submit: Boolean): String {
+        val args = Bundle().apply { putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, text) }
+        if (!node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, args)) return failed("the field did not accept text")
+        return if (submit) imeEnter(node) else done()
+    }
+
+    private fun swipe(node: AccessibilityNodeInfo?, direction: String, hasTarget: Boolean): String {
+        val forward = direction == "down" || direction == "right"
+        if (hasTarget) {
+            node ?: return failed("the element is gone")
+            val action = if (forward) AccessibilityNodeInfo.ACTION_SCROLL_FORWARD else AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD
+            return if (node.performAction(action)) done() else failed("cannot scroll further that way")
+        }
+        val m = resources.displayMetrics
+        val (cx, cy) = m.widthPixels / 2f to m.heightPixels / 2f
+        val dx = m.widthPixels * 0.3f
+        val dy = m.heightPixels * 0.25f
+        val path = Path().apply {
+            when (direction) {
+                "down" -> { moveTo(cx, cy + dy); lineTo(cx, cy - dy) }
+                "up" -> { moveTo(cx, cy - dy); lineTo(cx, cy + dy) }
+                "right" -> { moveTo(cx + dx, cy); lineTo(cx - dx, cy) }
+                else -> { moveTo(cx - dx, cy); lineTo(cx + dx, cy) }
+            }
+        }
+        return gesture(path, 350)
+    }
+
+    private fun key(key: String): String = when (key) {
+        "back" -> if (performGlobalAction(GLOBAL_ACTION_BACK)) done() else failed("back not available")
+        "home" -> if (performGlobalAction(GLOBAL_ACTION_HOME)) done() else failed("home not available")
+        "enter" -> rootInActiveWindow?.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)?.let { imeEnter(it) } ?: failed("no focused text field")
+        else -> failed("unknown key")
+    }
+
+    private fun imeEnter(node: AccessibilityNodeInfo): String {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return failed("enter needs Android 11")
+        return if (node.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_IME_ENTER.id)) done() else failed("the field has no action key")
+    }
+
+    private fun launch(app: String): String {
+        val intent = packageManager.getLaunchIntentForPackage(app) ?: return failed("app not installed")
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED))
+        return done()
+    }
+
+    /** Injects a gesture with the overlay letting touches through; uncertain if it was cancelled. */
+    private fun gesture(path: Path, durationMs: Long): String {
+        overlay.setPassThrough(true)
+        try {
+            val finished = CountDownLatch(1)
+            var completed = false
+            val stroke = GestureDescription.StrokeDescription(path, 0, durationMs)
+            val sent = dispatchGesture(GestureDescription.Builder().addStroke(stroke).build(), object : GestureResultCallback() {
+                override fun onCompleted(g: GestureDescription?) { completed = true; finished.countDown() }
+                override fun onCancelled(g: GestureDescription?) { finished.countDown() }
+            }, null)
+            if (!sent) return failed("gesture not accepted")
+            finished.await(3, TimeUnit.SECONDS)
+            return if (completed) done() else uncertain()
+        } finally {
+            overlay.setPassThrough(false)
+        }
+    }
+
+    /** Waits until no accessibility event arrived for [QUIET_MS], within [MIN_SETTLE_MS]..[MAX_SETTLE_MS]. */
+    private fun waitForSettle() {
+        val start = SystemClock.uptimeMillis()
+        while (true) {
+            val now = SystemClock.uptimeMillis()
+            if (now - start >= MIN_SETTLE_MS && now - lastEventAt >= QUIET_MS) return
+            if (now - start >= MAX_SETTLE_MS) return
+            SystemClock.sleep(50)
+        }
+    }
+
+    /** Debug builds log which element an action reached (never typed text). */
+    private fun debug(line: String) {
+        if (BuildConfig.DEBUG) Log.i(MainActivity.TAG, "perform $line")
+    }
+
+    private fun describe(n: AccessibilityNodeInfo): String {
+        val r = Rect().also { n.getBoundsInScreen(it) }
+        val label = (n.text ?: n.contentDescription)?.toString()?.take(24) ?: ""
+        return "${n.className?.toString()?.substringAfterLast('.')}/${n.viewIdResourceName?.substringAfterLast('/') ?: ""}\"$label\"$r"
+    }
+
+    private fun done() = "{\"status\":\"done\"}"
+    private fun uncertain() = "{\"status\":\"uncertain\"}"
+    private fun failed(why: String) = JSONObject().put("status", "failed").put("error", why).toString()
+
+    // --- M0 timing reads ---
 
     /** Reads the active window now, on the service's worker thread. */
     fun measureNow(reason: String) {
         handler.post { measure(reason, null) }
     }
 
-    /**
-     * Reads one window. [expected] is the package whose window event asked for
-     * the read; the fallback never reads another app's window in its place.
-     */
     private fun measure(reason: String, expected: String?, retried: Boolean = false) {
         val start = SystemClock.elapsedRealtimeNanos()
         val root = activeRoot(expected)
         if (root == null) {
-            // A window in transition (e.g. a deep-link trampoline) has no root yet.
             if (!retried) {
                 handler.postDelayed({ measure(reason, expected, retried = true) }, SETTLE_TOKEN, RETRY_MS)
             } else {
@@ -71,7 +256,7 @@ class UiTreeService : AccessibilityService() {
             return
         }
         val pkg = root.packageName?.toString() ?: pendingPackage ?: "unknown"
-        val nodes = readTree(root)
+        val nodes = readTree(root, null)
         val read = SystemClock.elapsedRealtimeNanos()
         val json = UiSnapshot.encode(pkg, nodes)
         val encoded = SystemClock.elapsedRealtimeNanos()
@@ -99,7 +284,7 @@ class UiTreeService : AccessibilityService() {
         return root.takeIf { expected == null || root.packageName?.toString() == expected }
     }
 
-    private fun readTree(root: AccessibilityNodeInfo): List<UiNode> {
+    private fun readTree(root: AccessibilityNodeInfo, infos: MutableList<AccessibilityNodeInfo>?): List<UiNode> {
         val nodes = ArrayList<UiNode>(256)
         val stack = ArrayDeque<Pair<AccessibilityNodeInfo, Int>>()
         stack.addLast(root to -1)
@@ -111,7 +296,7 @@ class UiTreeService : AccessibilityService() {
             nodes += UiNode(
                 parent = parent,
                 cls = info.className?.toString() ?: "",
-                text = info.text?.toString(),
+                text = if (info.isPassword) null else info.text?.toString(),
                 desc = info.contentDescription?.toString(),
                 viewId = info.viewIdResourceName,
                 left = bounds.left,
@@ -121,7 +306,10 @@ class UiTreeService : AccessibilityService() {
                 clickable = info.isClickable,
                 editable = info.isEditable,
                 scrollable = info.isScrollable,
+                password = info.isPassword,
+                checked = info.isChecked,
             )
+            infos?.add(info)
             for (i in info.childCount - 1 downTo 0) {
                 info.getChild(i)?.let { stack.addLast(it to index) }
             }
@@ -134,8 +322,11 @@ class UiTreeService : AccessibilityService() {
     companion object {
         private const val SETTLE_MS = 800L
         private const val RETRY_MS = 500L
-        private val SETTLE_TOKEN = Any()
         private const val MAX_NODES = 2000
+        private const val MIN_SETTLE_MS = 300L
+        private const val QUIET_MS = 400L
+        private const val MAX_SETTLE_MS = 3000L
+        private val SETTLE_TOKEN = Any()
 
         @Volatile
         var measuring = false

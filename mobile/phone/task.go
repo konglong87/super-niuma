@@ -257,10 +257,29 @@ func (r *Runner) run(ctx context.Context, run *running, spec TaskSpec, view Task
 	case err != nil:
 		view.Status, view.Code = StatusFailed, execution.FailureCode(err)
 	default:
-		view.Result = res.Text
+		view.Result = strings.TrimSpace(res.Text)
 		view.Status, view.Verified, view.Code = r.verify(spec, bridge)
+		// Without expected texts nothing proves the goal was reached; a
+		// refused or denied step makes that worth the person's look.
+		if view.Status == StatusDone && view.Verified == nil && r.hadSetback(run.id) {
+			view.Status, view.Code = StatusNeedsAttention, "steps_refused"
+		}
 	}
 	_ = r.store.Finish(view)
+}
+
+func (r *Runner) hadSetback(id string) bool {
+	t, err := r.store.Get(id)
+	if err != nil {
+		return true
+	}
+	for _, st := range t.Steps {
+		switch st.Outcome {
+		case "denied", "refused", "failed", "uncertain":
+			return true
+		}
+	}
+	return false
 }
 
 // verify re-reads the screen, read-only, and checks the expected texts. The

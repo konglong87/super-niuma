@@ -29,6 +29,16 @@ class UiSnapshotTest {
     }
 
     @Test
+    fun encodesHomePasswordAndCheckedFlags() {
+        val pin = UiNode(0, "android.widget.EditText", null, null, "pin", 0, 0, 10, 10, false, true, false, password = true, checked = false)
+        val toggle = UiNode(0, "android.widget.Switch", "Alarm", null, null, 0, 0, 10, 10, true, false, false, checked = true)
+        val json = UiSnapshot.encode("com.example.clock", listOf(node(-1), pin, toggle), home = "com.example.home")
+        assertTrue(json, json.startsWith("{\"package\":\"com.example.clock\",\"home\":\"com.example.home\",\"nodes\":["))
+        assertTrue(json, json.contains("\"rid\":\"pin\",\"b\":[0,0,10,10],\"edit\":true,\"pwd\":true}"))
+        assertTrue(json, json.contains("\"text\":\"Alarm\",\"b\":[0,0,10,10],\"click\":true,\"checked\":true}"))
+    }
+
+    @Test
     fun escapesLabelsThatWouldBreakJson() {
         val json = UiSnapshot.encode("p", listOf(node(-1, text = "say \"hi\"\\\n\u0001 ")))
         assertTrue(json, json.contains("\"text\":\"say \\\"hi\\\"\\\\\\n\\u0001\\u2028\""))

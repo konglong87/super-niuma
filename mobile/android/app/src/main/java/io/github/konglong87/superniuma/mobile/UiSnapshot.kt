@@ -18,14 +18,21 @@ data class UiNode(
     val clickable: Boolean,
     val editable: Boolean,
     val scrollable: Boolean,
+    val password: Boolean = false,
+    val checked: Boolean = false,
 )
 
-/** The snapshot format the Go core's ScreenSummary reads. */
+/** The snapshot format the Go core reads (phone.Snapshot). */
 object UiSnapshot {
-    fun encode(packageName: String, nodes: List<UiNode>): String {
+    /** [home] is the package of the phone's home screen, when known. */
+    fun encode(packageName: String, nodes: List<UiNode>, home: String? = null): String {
         val out = StringBuilder(64 + nodes.size * 96)
         out.append("{\"package\":")
         appendString(out, packageName)
+        if (!home.isNullOrEmpty()) {
+            out.append(",\"home\":")
+            appendString(out, home)
+        }
         out.append(",\"nodes\":[")
         nodes.forEachIndexed { i, n ->
             if (i > 0) out.append(',')
@@ -48,6 +55,8 @@ object UiSnapshot {
             if (n.clickable) out.append(",\"click\":true")
             if (n.editable) out.append(",\"edit\":true")
             if (n.scrollable) out.append(",\"scroll\":true")
+            if (n.password) out.append(",\"pwd\":true")
+            if (n.checked) out.append(",\"checked\":true")
             out.append('}')
         }
         out.append("]}")

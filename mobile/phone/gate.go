@@ -249,9 +249,15 @@ func (g *Gate) scopeReason(s Snapshot) string {
 	return fmt.Sprintf("scope_denied: %s is not one of this task's apps (%s); press back or home, or launch an allowed app", s.Package, g.appList)
 }
 
+// view is what the model may see of a screen: only the task's apps and the
+// home screen. Anything else (Super Niuma itself, the notification shade,
+// another app) is named but its content stays hidden.
 func (g *Gate) view(s Snapshot) string {
 	if s.Package == g.own {
 		return "app: Super Niuma (its own screen is hidden)\nLaunch one of this task's apps: " + g.appList + "\n"
+	}
+	if !g.inScope(s) {
+		return fmt.Sprintf("app: %s (not one of this task's apps; its content is hidden)\nPress back or home, or launch one of: %s\n", s.Package, g.appList)
 	}
 	text := s.Render()
 	if len(text) > execution.MaxDeviceResultBytes-256 {

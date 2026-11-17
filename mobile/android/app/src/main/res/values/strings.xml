@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Super Niuma M0</string>
-    <string name="service_label">Super Niuma screen reader (M0)</string>
-    <string name="service_description">Reads the elements on the current screen so Super Niuma can measure how fast it sees an app. M0 never taps, types or sends anything.</string>
+    <string name="app_name">超级牛马</string>
+    <string name="service_label">超级牛马 · 屏幕助手</string>
+    <string name="service_description">让超级牛马读取当前屏幕，并且只在你发起的任务中、只在你允许的应用里点击、输入和滚动。发送、付款、删除等风险步骤会先等你确认；随时可以按“停止”。</string>
 </resources>

@@ -3,7 +3,21 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Package visibility: the agent may open only apps that have a launcher
+         entry, and the home screen package is part of every task's scope. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.HOME" />
+        </intent>
+    </queries>
+
     <application
+        android:name=".NiumaApp"
         android:allowBackup="false"
         android:icon="@android:drawable/sym_def_app_icon"
         android:label="@string/app_name"
@@ -12,7 +26,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,7 +36,7 @@
 
         <!-- Test-script entry, enabled in debug builds only. The DUMP permission
              is held by `adb shell` and cannot be granted to ordinary apps, so no
-             other app on the phone can drive the m0 actions. -->
+             other app on the phone can drive the test commands. -->
         <activity-alias
             android:name=".M0Commands"
             android:enabled="@bool/m0_commands"

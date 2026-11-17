@@ -46,4 +46,6 @@ dependencies {
     // The Go core, built by ../build-core.sh with gomobile.
     implementation(files("libs/niumacore.aar"))
     testImplementation("junit:junit:4.13.2")
+    // The Android framework's org.json is a stub in JVM unit tests.
+    testImplementation("org.json:json:20240303")
 }

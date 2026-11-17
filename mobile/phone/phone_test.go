@@ -220,6 +220,27 @@ func TestGateScreenLaunchAndScope(t *testing.T) {
 	}
 }
 
+func TestGateHidesScreensOutsideTheTask(t *testing.T) {
+	shade := Snapshot{Package: "com.android.systemui", Nodes: []Node{{Parent: -1, Class: "x"}, {Parent: 0, Class: "android.widget.Switch", Text: "Wi-Fi", Checked: true, Clickable: true}}}
+	home := Snapshot{Package: "com.example.home", Home: "com.example.home", Nodes: []Node{{Parent: -1, Class: "x"}, {Parent: 0, Class: "android.widget.TextView", Text: "Clock", Clickable: true}}}
+	p := &fakePhone{screen: home}
+	g, _ := newGate(p, NewApprovals(time.Second, nil), nil)
+	out, err := act(t, g, execution.DeviceAction{Kind: "screen"})
+	if err != nil || !strings.Contains(out, `"Clock"`) {
+		t.Fatalf("home screen hidden: %q %v", out, err)
+	}
+	// A swipe on the home screen pulls down the notification shade.
+	p.onPerform = func(p *fakePhone, a Action) { p.screen = shade }
+	out, err = act(t, g, execution.DeviceAction{Kind: "swipe", Ref: -1, Direction: "up"})
+	if err != nil || strings.Contains(out, "Wi-Fi") || !strings.Contains(out, "content is hidden") {
+		t.Fatalf("out-of-scope screen shown after an action: %q %v", out, err)
+	}
+	out, err = act(t, g, execution.DeviceAction{Kind: "screen"})
+	if err != nil || strings.Contains(out, "Wi-Fi") || !strings.Contains(out, "com.android.systemui") {
+		t.Fatalf("out-of-scope screen shown on read: %q %v", out, err)
+	}
+}
+
 func TestGateRequiresFreshTargets(t *testing.T) {
 	p := &fakePhone{screen: clockScreen("")}
 	g, _ := newGate(p, NewApprovals(time.Second, nil), nil)
@@ -519,6 +540,21 @@ func TestRunnerStopDuringApproval(t *testing.T) {
 	}
 	if err := r.Stop(); !errors.Is(err, ErrNotRunning) {
 		t.Fatal("stop with nothing running")
+	}
+}
+
+func TestRunnerFlagsUnverifiedTaskWithDeniedStep(t *testing.T) {
+	agent := scriptedAgent{steps: []execution.DeviceAction{{Kind: "screen"}, {Kind: "tap", Ref: 5}}, text: "\n\n  Could not delete it.  \n"}
+	r, _ := newRunner(t, agent)
+	r.SetApprovalTimeout(5 * time.Millisecond)
+	r.SetBridge(&fakePhone{screen: clockScreen("7:00 AM")})
+	if _, err := r.Start(spec()); err != nil {
+		t.Fatal(err)
+	}
+	r.Wait()
+	s := r.State()
+	if s.Task.Status != StatusNeedsAttention || s.Task.Code != "steps_refused" || s.Task.Result != "Could not delete it." {
+		t.Fatalf("task %+v", s.Task)
 	}
 }
 

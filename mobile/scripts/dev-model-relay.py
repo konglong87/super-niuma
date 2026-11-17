@@ -81,6 +81,8 @@ class Relay(BaseHTTPRequestHandler):
                     ctype = resp.headers.get("Content-Type", "application/json")
             except urllib.error.HTTPError as e:
                 status, data, ctype = e.code, e.read(), e.headers.get("Content-Type", "application/json")
+            except (urllib.error.URLError, OSError):
+                status, data, ctype = 502, b'{"error":"upstream unreachable"}', "application/json"
             self._send(status, data, ctype)
         finally:
             print(f"relay {self.command} {self.path} -> {status} in {int((time.time() - start) * 1000)} ms", flush=True)

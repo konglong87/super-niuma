@@ -41,7 +41,7 @@ const (
 )
 
 // Version names this core build. It changes whenever the JSON contract does.
-func Version() string { return "m0-2" }
+func Version() string { return "m1-1" }
 
 var (
 	initMu   sync.Mutex
