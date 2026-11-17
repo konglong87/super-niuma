@@ -9,10 +9,17 @@ computer and Super's execution adapter accepts the plain-http loopback route.
 It logs method, path, status and latency only: never bodies, tokens or keys.
 
 usage:
-  RELAY_TEST_TOKEN=$(openssl rand -hex 16) python3 -I dev-model-relay.py <provider-name> [port]
+  RELAY_TEST_TOKEN=$(openssl rand -hex 16) python3 -I dev-model-relay.py <provider-name> [port] [--inject STATUS:EVERY[:RETRY_AFTER]]...
+
+--inject answers every EVERY-th request with STATUS itself, without
+forwarding it (so nothing is billed), adding Retry-After when given, for
+testing how the phone core retries: e.g. --inject 429:3:4 --inject 500:5.
 """
+import argparse
 import hmac
+import itertools
 import json
+import threading
 import os
 import sys
 import time
@@ -20,8 +27,20 @@ import urllib.error
 import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-PROVIDER = sys.argv[1]
-PORT = int(sys.argv[2]) if len(sys.argv) > 2 else 18080
+parser = argparse.ArgumentParser()
+parser.add_argument("provider")
+parser.add_argument("port", nargs="?", type=int, default=18080)
+parser.add_argument("--inject", action="append", default=[], help="STATUS:EVERY[:RETRY_AFTER]")
+args = parser.parse_args()
+PROVIDER, PORT = args.provider, args.port
+INJECT = []
+for rule in args.inject:
+    parts = rule.split(":")
+    if len(parts) not in (2, 3) or not all(x.isdigit() for x in parts) or int(parts[1]) < 1:
+        sys.exit(f"bad --inject {rule!r}; want STATUS:EVERY[:RETRY_AFTER]")
+    INJECT.append((int(parts[0]), int(parts[1]), parts[2] if len(parts) == 3 else None))
+COUNTER = itertools.count(1)
+COUNTER_LOCK = threading.Lock()
 TEST_TOKEN = os.environ["RELAY_TEST_TOKEN"]
 
 with open(os.path.expanduser("~/.niuma/settings.json"), encoding="utf-8") as f:
@@ -69,6 +88,21 @@ class Relay(BaseHTTPRequestHandler):
                 self._send(413, b'{"error":"body too large"}')
                 return
             body = self.rfile.read(length)
+            with COUNTER_LOCK:
+                n = next(COUNTER)
+            for code, every, retry_after in INJECT:
+                if n % every == 0:
+                    status = code
+                    self.send_response(code)
+                    if retry_after is not None:
+                        self.send_header("Retry-After", retry_after)
+                    payload = b'{"error":{"type":"injected","message":"injected by dev-model-relay"}}'
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Content-Length", str(len(payload)))
+                    self.end_headers()
+                    self.wfile.write(payload)
+                    self.command += " (injected)"
+                    return
             req = urllib.request.Request(
                 UPSTREAM + "/chat/completions",
                 data=body,
@@ -88,5 +122,5 @@ class Relay(BaseHTTPRequestHandler):
             print(f"relay {self.command} {self.path} -> {status} in {int((time.time() - start) * 1000)} ms", flush=True)
 
 
-print(f"relay ready on 127.0.0.1:{PORT} for provider {PROVIDER}", flush=True)
+print(f"relay ready on 127.0.0.1:{PORT} for provider {PROVIDER}" + (f" injecting {args.inject}" if INJECT else ""), flush=True)
 ThreadingHTTPServer(("127.0.0.1", PORT), Relay).serve_forever()

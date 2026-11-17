@@ -86,7 +86,10 @@ func TestTaskRunsEndToEndThroughExecution(t *testing.T) {
 
 	var mu sync.Mutex
 	var calls int
+	// The first request is rate limited once; execution waits Retry-After
+	// and sends it again.
 	script := []string{
+		"429",
 		`{"choices":[{"message":{"role":"assistant","tool_calls":[{"id":"c1","type":"function","function":{"name":"super_launch","arguments":"{\"app\":\"com.example.clock\",\"intent\":\"open clock\"}"}}]},"finish_reason":"tool_calls"}],"usage":{"prompt_tokens":50,"completion_tokens":5}}`,
 		`{"choices":[{"message":{"role":"assistant","tool_calls":[{"id":"c2","type":"function","function":{"name":"super_tap","arguments":"{\"ref\":1,\"intent\":\"add alarm\"}"}}]},"finish_reason":"tool_calls"}],"usage":{"prompt_tokens":60,"completion_tokens":5}}`,
 		`{"choices":[{"message":{"role":"assistant","content":"Added a 7:00 alarm."},"finish_reason":"stop"}],"usage":{"prompt_tokens":70,"completion_tokens":6}}`,
@@ -104,6 +107,11 @@ func TestTaskRunsEndToEndThroughExecution(t *testing.T) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
+		if script[n] == "429" {
+			w.Header().Set("Retry-After", "1")
+			w.WriteHeader(http.StatusTooManyRequests)
+			return
+		}
 		io.WriteString(w, script[n])
 	}))
 	defer server.Close()
@@ -140,14 +148,25 @@ func TestTaskRunsEndToEndThroughExecution(t *testing.T) {
 		case <-time.After(20 * time.Millisecond):
 		}
 	}
-	if len(p.acts) != 2 || calls != 3 {
+	if len(p.acts) != 2 || calls != 4 {
 		t.Fatalf("actions %v, model calls %d", p.acts, calls)
 	}
-	if !strings.Contains(bodies[1], "Add alarm") {
-		t.Fatalf("model did not see the clock screen after launching: %.400s", bodies[1])
+	if bodies[0] != bodies[1] {
+		t.Fatal("the rate-limited request was not re-sent unchanged")
 	}
-	if len(states.ch) == 0 {
-		t.Fatal("listener never called")
+	if !strings.Contains(bodies[2], "Add alarm") {
+		t.Fatalf("model did not see the clock screen after launching: %.400s", bodies[2])
+	}
+	sawRetry := false
+	for len(states.ch) > 0 {
+		var s phone.State
+		json.Unmarshal([]byte(<-states.ch), &s)
+		if s.Task != nil && s.Task.Retry != nil && s.Task.Retry.Code == "execution_http_rate_limited" && s.Task.Retry.WaitMS == 1000 {
+			sawRetry = true
+		}
+	}
+	if !sawRetry {
+		t.Fatal("the retry wait was never shown")
 	}
 	if r := StopTask(); !strings.Contains(r, "no task is running") {
 		t.Fatalf("stop after finish: %s", r)

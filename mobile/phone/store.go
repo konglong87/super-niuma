@@ -21,20 +21,31 @@ const (
 
 // TaskView is a task as the app's screens show it.
 type TaskView struct {
-	ID           string    `json:"id"`
-	Goal         string    `json:"goal"`
-	Apps         []string  `json:"apps"`
-	Expect       []string  `json:"expect,omitempty"`
-	Status       string    `json:"status"`
-	Code         string    `json:"code,omitempty"`
-	Result       string    `json:"result,omitempty"`
-	Verified     *bool     `json:"verified,omitempty"`
-	InputTokens  int       `json:"input_tokens,omitempty"`
-	OutputTokens int       `json:"output_tokens,omitempty"`
-	StartedMS    int64     `json:"started_ms"`
-	EndedMS      int64     `json:"ended_ms,omitempty"`
-	Steps        []Step    `json:"steps,omitempty"`
-	Pending      *Approval `json:"pending,omitempty"`
+	ID           string     `json:"id"`
+	Goal         string     `json:"goal"`
+	Apps         []string   `json:"apps"`
+	Expect       []string   `json:"expect,omitempty"`
+	Status       string     `json:"status"`
+	Code         string     `json:"code,omitempty"`
+	Result       string     `json:"result,omitempty"`
+	Verified     *bool      `json:"verified,omitempty"`
+	InputTokens  int        `json:"input_tokens,omitempty"`
+	OutputTokens int        `json:"output_tokens,omitempty"`
+	StartedMS    int64      `json:"started_ms"`
+	EndedMS      int64      `json:"ended_ms,omitempty"`
+	Steps        []Step     `json:"steps,omitempty"`
+	Pending      *Approval  `json:"pending,omitempty"`
+	Retry        *RetryView `json:"retry,omitempty"`
+}
+
+// RetryView is a model request waiting to be re-sent after a transient
+// failure. It is shown only while the wait lasts and never stored.
+type RetryView struct {
+	Retry   int    `json:"retry"`
+	Max     int    `json:"max"`
+	WaitMS  int64  `json:"wait_ms"`
+	UntilMS int64  `json:"until_ms"`
+	Code    string `json:"code"`
 }
 
 // Store keeps tasks and their steps. It never holds the model credential.

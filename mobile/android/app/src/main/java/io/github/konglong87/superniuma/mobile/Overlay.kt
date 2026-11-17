@@ -64,7 +64,12 @@ class Overlay(private val service: AccessibilityService) {
 
     private fun showBar(s: TaskSnapshot) {
         val last = s.steps.lastOrNull()
-        val text = "牛马 · 第 ${s.steps.size} 步" + (last?.let { " · ${it.kind}" } ?: "")
+        val r = s.retry
+        val text = if (r != null) {
+            "牛马 · ${r.reason}，${(r.waitMs + 999) / 1000} 秒后重试（${r.retry}/${r.max}）"
+        } else {
+            "牛马 · 第 ${s.steps.size} 步" + (last?.let { " · ${it.kind}" } ?: "")
+        }
         if (bar == null) {
             barText = TextView(service).apply { setTextColor(Color.WHITE); textSize = 13f }
             val stop = Button(service).apply {

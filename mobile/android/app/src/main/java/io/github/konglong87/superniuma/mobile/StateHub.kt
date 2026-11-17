@@ -15,6 +15,16 @@ data class PendingApproval(
     val expiresMs: Long,
 )
 
+/** A model request waiting to be re-sent after a transient failure. */
+data class RetryWait(val retry: Int, val max: Int, val waitMs: Long, val untilMs: Long, val code: String) {
+    val reason: String
+        get() = when (code) {
+            "execution_http_rate_limited" -> "模型服务限流"
+            "execution_network_failed", "execution_timeout" -> "网络不稳定"
+            else -> "模型服务暂时不可用"
+        }
+}
+
 data class StepView(val seq: Int, val kind: String, val target: String, val outcome: String, val decision: String, val reason: String)
 
 /** The Go core's phone.State, as the screens need it. */
@@ -28,6 +38,7 @@ data class TaskSnapshot(
     val verified: Boolean?,
     val steps: List<StepView>,
     val pending: PendingApproval?,
+    val retry: RetryWait? = null,
 ) {
     val running: Boolean get() = status == "running"
 
@@ -51,6 +62,9 @@ data class TaskSnapshot(
                     it.optString("app"), it.optString("intent"), it.optLong("expires_ms"),
                 )
             }
+            val retry = task?.optJSONObject("retry")?.let {
+                RetryWait(it.optInt("retry"), it.optInt("max"), it.optLong("wait_ms"), it.optLong("until_ms"), it.optString("code"))
+            }
             return TaskSnapshot(
                 screenReader = root.optBoolean("screen_reader"),
                 id = task?.optString("id"),
@@ -61,6 +75,7 @@ data class TaskSnapshot(
                 verified = if (task != null && task.has("verified")) task.optBoolean("verified") else null,
                 steps = steps,
                 pending = pending,
+                retry = retry,
             )
         }
 
@@ -83,6 +98,11 @@ data class TaskSnapshot(
             if (p != null && (!sameTask || prev!!.pending?.id != p.id)) {
                 lines += "approval " + JSONObject()
                     .put("task", next.id).put("id", p.id).put("risk", p.risk).put("what", p.what).put("app", p.app).toString()
+            }
+            val r = next.retry
+            if (r != null && (!sameTask || prev!!.retry?.untilMs != r.untilMs)) {
+                lines += "retry " + JSONObject()
+                    .put("task", next.id).put("retry", r.retry).put("max", r.max).put("wait_ms", r.waitMs).put("code", r.code).toString()
             }
             if (!sameTask || prev!!.status != next.status) {
                 val o = JSONObject().put("id", next.id).put("status", next.status).put("code", next.code)

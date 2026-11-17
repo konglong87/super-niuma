@@ -108,10 +108,16 @@ echo "== model route" | tee -a "$OUT/result.txt"
 # The relay's test token lives outside the evidence directory.
 TOKEN_FILE=$(mktemp)
 (umask 077; openssl rand -hex 16 > "$TOKEN_FILE")
-RELAY_TEST_TOKEN=$(cat "$TOKEN_FILE") nohup python3 -I "$REPO/mobile/scripts/dev-model-relay.py" "$PROVIDER" 18080 > "$OUT/relay.log" 2>&1 &
-RELAY=$!
-trap 'kill $RELAY 2>/dev/null; adb reverse --remove-all >/dev/null 2>&1; rm -f "$TOKEN_FILE"' EXIT
-for _ in $(seq 1 20); do grep -q "relay ready" "$OUT/relay.log" && break; sleep 0.5; done
+RELAY=
+start_relay() { # [--inject STATUS:EVERY[:RETRY_AFTER]]...; appends to relay.log
+	[ -n "$RELAY" ] && kill "$RELAY" 2>/dev/null && sleep 1
+	RELAY_TEST_TOKEN=$(cat "$TOKEN_FILE") nohup python3 -I "$REPO/mobile/scripts/dev-model-relay.py" "$PROVIDER" 18080 "$@" >> "$OUT/relay.log" 2>&1 &
+	RELAY=$!
+	for _ in $(seq 1 20); do [ "$(grep -c "relay ready" "$OUT/relay.log")" -gt "$(cat "$OUT/.relay-count" 2>/dev/null || echo 0)" ] && break; sleep 0.5; done
+	grep -c "relay ready" "$OUT/relay.log" > "$OUT/.relay-count"
+}
+trap 'kill $RELAY 2>/dev/null; adb reverse --remove-all >/dev/null 2>&1; rm -f "$TOKEN_FILE" "$OUT/.relay-count"' EXIT
+start_relay
 adb reverse tcp:18080 tcp:18080 >/dev/null
 MODEL=$(jq -r --arg n "$PROVIDER" '.fallback.providers[] | select(.name==$n) | .model' ~/.niuma/settings.json)
 adb logcat -c
@@ -181,9 +187,30 @@ check "any attempt outside the task was refused as scope_denied" '! echo "$S" | 
 note "steps: $(echo "$S" | jq -c '[.task.steps[] | {kind, app, target, outcome}]')"
 adb shell cmd statusbar collapse >/dev/null 2>&1
 
+sleep "$COOLDOWN"
+# Every 3rd model request is answered 429 with Retry-After 6 (not processed:
+# re-sent in the same reservation) and every 5th 500 (possibly processed:
+# re-sent with a new reservation). Neither reaches the provider.
+start_relay --inject 429:3:6 --inject 500:5
+fresh_clock
+RETRY_SHOT=retry-pill
+start_task "provider failures are retried" "设一个早上 7:00 的闹钟" "7:00"
+for _ in $(seq 1 300); do
+	if [ -n "$RETRY_SHOT" ] && logs | grep -q '^retry {.*rate_limited'; then sleep 1.5; shot "$RETRY_SHOT"; RETRY_SHOT=; fi
+	last_task | grep -q '"status":"running"' || [ -z "$(last_task)" ] || break
+	sleep 1
+done
+T=$(wait_task 120); note "$T" | cut -c1-200; steps >/dev/null
+note "retries: $(logs | grep -c '^retry {'), relay: $(grep -c 'injected' "$OUT/relay.log") injected"
+check "task with injected 429s and 500s still done and verified" 'echo "$T" | jq -e ".status==\"done\" and .verified==true" >/dev/null'
+check "429 waits were shown with their Retry-After" 'logs | grep -q "^retry {.*\"wait_ms\":6000.*rate_limited"'
+check "500s were retried after a backoff" 'logs | grep -q "^retry {.*execution_http_failure"'
+check "injected failures never reached the provider" '[ "$(grep -c "(injected).*-> 429" "$OUT/relay.log")" -ge 1 ] && [ "$(grep -c "(injected).*-> 500" "$OUT/relay.log")" -ge 1 ]'
+start_relay
+
 echo "== builds and health" | tee -a "$OUT/result.txt"
 check "release build disables the test commands" '"$AAPT2" dump resources "$REL" | grep -A1 "bool/m0_commands" | grep -q false'
 check "no crash from the app" '[ "$(adb logcat -d -b crash | grep -c "$P")" = 0 ]'
-note "model requests: $(grep -c 'relay POST' "$OUT/relay.log"), statuses: $(grep 'relay POST' "$OUT/relay.log" | awk '{print $5}' | sort | uniq -c | tr '\n' ' ')"
+note "model requests: $(grep -c 'relay POST' "$OUT/relay.log"), statuses: $(grep 'relay POST' "$OUT/relay.log" | awk '{for (i = 1; i <= NF; i++) if ($i == "->") print $(i + 1)}' | sort | uniq -c | tr '\n' ' ')"
 echo "== $pass passed, $fail failed" | tee -a "$OUT/result.txt"
 [ "$fail" = 0 ]

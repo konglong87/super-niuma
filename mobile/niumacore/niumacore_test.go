@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync/atomic"
 	"testing"
 
 	"github.com/konglong87/super-niuma/internal/super"
@@ -136,10 +137,13 @@ func TestModelCallRunsOneExecutionAttempt(t *testing.T) {
 	}
 }
 
-func TestModelCallDoesNotRetryOrLeakProviderErrors(t *testing.T) {
-	calls := 0
+// Rate limits are retried under execution's default policy (Retry-After 0
+// keeps the test fast); a lasting one still fails without leaking the body.
+func TestModelCallRetriesRateLimitsWithoutLeakingProviderErrors(t *testing.T) {
+	var calls atomic.Int32
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		calls++
+		calls.Add(1)
+		w.Header().Set("Retry-After", "0")
 		http.Error(w, "upstream secret detail", http.StatusTooManyRequests)
 	}))
 	defer server.Close()
@@ -147,8 +151,9 @@ func TestModelCallDoesNotRetryOrLeakProviderErrors(t *testing.T) {
 	out := ModelCall(route, canonicalTempDir(t), "Hello")
 	var r modelReport
 	decode(t, out, &r)
-	if r.OK || calls != 1 || r.HTTPStatus != http.StatusTooManyRequests || strings.Contains(out, "secret") {
-		t.Fatalf("429 handled wrongly: %s calls=%d", out, calls)
+	want := int32(1 + execution.DefaultRetryPolicy.MaxRetries)
+	if r.OK || calls.Load() != want || r.HTTPStatus != http.StatusTooManyRequests || strings.Contains(out, "secret") {
+		t.Fatalf("429 handled wrongly: %s calls=%d want %d", out, calls.Load(), want)
 	}
 }
 

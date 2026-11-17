@@ -144,6 +144,7 @@ class MainActivity : Activity() {
             return
         }
         val lines = mutableListOf("任务：${s.goal}", "状态：${statusName(s)}${if (s.code.isNotBlank()) "（${s.code}）" else ""}")
+        s.retry?.let { lines += "${it.reason}，${(it.waitMs + 999) / 1000} 秒后重试（第 ${it.retry}/${it.max} 次）" }
         if (s.result.isNotBlank()) lines += "牛马的说明：${s.result}"
         s.steps.takeLast(12).forEach { st ->
             lines += "  ${st.seq}. ${st.kind} ${st.target.take(30)} → ${st.outcome}${if (st.decision.isNotBlank()) "（${st.decision}）" else ""}"

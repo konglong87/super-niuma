@@ -24,6 +24,21 @@ class TaskSnapshotTest {
     }
 
     @Test
+    fun parsesAndLogsEachRetryWaitOnce() {
+        val waiting = TaskSnapshot.parse(
+            """{"screen_reader":true,"task":{"id":"t1","goal":"g","status":"running","steps":[],
+            "retry":{"retry":1,"max":3,"wait_ms":7000,"until_ms":100,"code":"execution_http_rate_limited"}}}""",
+        )
+        assertEquals(RetryWait(1, 3, 7000, 100, "execution_http_rate_limited"), waiting.retry)
+        assertEquals("模型服务限流", waiting.retry?.reason)
+        val running = TaskSnapshot.parse("""{"screen_reader":true,"task":{"id":"t1","goal":"g","status":"running","steps":[]}}""")
+        val lines = TaskSnapshot.changes(running, waiting)
+        assertEquals(1, lines.size)
+        assertTrue(lines[0], lines[0].startsWith("retry ") && lines[0].contains("\"wait_ms\":7000"))
+        assertTrue(TaskSnapshot.changes(waiting, waiting).isEmpty())
+    }
+
+    @Test
     fun parsesEmptyState() {
         val s = TaskSnapshot.parse("""{"screen_reader":false}""")
         assertNull(s.id)

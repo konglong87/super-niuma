@@ -89,6 +89,19 @@ type running struct {
 	cancel  context.CancelFunc
 	stopped atomic.Bool
 	done    chan struct{}
+
+	mu    sync.Mutex
+	retry *RetryView
+}
+
+func (run *running) retrying() *RetryView {
+	run.mu.Lock()
+	defer run.mu.Unlock()
+	if run.retry == nil || time.Now().UnixMilli() > run.retry.UntilMS {
+		return nil
+	}
+	r := *run.retry
+	return &r
 }
 
 // NewRunner builds a runner. workspace is the attempt root execution needs
@@ -250,6 +263,7 @@ func (r *Runner) run(ctx context.Context, run *running, spec TaskSpec, view Task
 		},
 		Budget: &tokenBudget{limit: maxTokens},
 		Device: gate,
+		Retry:  r.retryPolicy(run),
 	})
 	view.InputTokens, view.OutputTokens = res.Usage.InputTokens, res.Usage.OutputTokens
 	view.EndedMS = time.Now().UnixMilli()
@@ -270,6 +284,20 @@ func (r *Runner) run(ctx context.Context, run *running, spec TaskSpec, view Task
 		}
 	}
 	_ = r.store.Finish(view)
+}
+
+// retryPolicy is execution's default policy, with each wait shown to the
+// person so a paused task does not look stuck.
+func (r *Runner) retryPolicy(run *running) *execution.RetryPolicy {
+	p := execution.DefaultRetryPolicy
+	p.OnRetry = func(n execution.RetryNotice) {
+		run.mu.Lock()
+		run.retry = &RetryView{Retry: n.Retry, Max: n.Max, WaitMS: n.Wait.Milliseconds(),
+			UntilMS: time.Now().Add(n.Wait).UnixMilli(), Code: string(n.Code)}
+		run.mu.Unlock()
+		r.notify()
+	}
+	return &p
 }
 
 func (r *Runner) hadSetback(id string) bool {
@@ -333,6 +361,7 @@ func (r *Runner) State() State {
 	}
 	if run != nil {
 		t.Pending = r.approvals.Pending()
+		t.Retry = run.retrying()
 	}
 	s.Task = &t
 	return s

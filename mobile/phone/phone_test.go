@@ -597,6 +597,42 @@ func TestRunnerFlagsUnverifiedTaskWithDeniedStep(t *testing.T) {
 	}
 }
 
+func TestRunnerShowsRetryWaitsWhileTheyLast(t *testing.T) {
+	var during, policy State
+	var r *Runner
+	run := func(ctx context.Context, cfg config.Config, req execution.Request) (execution.Result, error) {
+		if req.Retry == nil || req.Retry.MaxRetries != execution.DefaultRetryPolicy.MaxRetries || req.Retry.OnRetry == nil {
+			return execution.Result{}, errors.New("phone tasks must use the default retry policy with a notice")
+		}
+		policy = r.State()
+		req.Retry.OnRetry(execution.RetryNotice{Retry: 1, Max: 3, Wait: time.Minute, Code: "execution_http_rate_limited"})
+		during = r.State()
+		return execution.Result{Text: "done", Retries: 1}, nil
+	}
+	dir := t.TempDir()
+	store, err := OpenStore(filepath.Join(dir, "phone.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer store.Close()
+	r = NewRunner(store, dir, own, run)
+	r.SetBridge(&fakePhone{screen: clockScreen("")})
+	if _, err := r.Start(spec()); err != nil {
+		t.Fatal(err)
+	}
+	r.Wait()
+	if policy.Task == nil || policy.Task.Retry != nil {
+		t.Fatalf("retry shown before any retry: %+v", policy.Task)
+	}
+	rv := during.Task.Retry
+	if rv == nil || rv.Retry != 1 || rv.Max != 3 || rv.WaitMS != 60000 || rv.Code != "execution_http_rate_limited" || rv.UntilMS <= time.Now().UnixMilli() {
+		t.Fatalf("retry view %+v", rv)
+	}
+	if after := r.State(); after.Task.Retry != nil {
+		t.Fatal("retry shown after the task ended")
+	}
+}
+
 func TestRunnerRejectsInvalidSpecs(t *testing.T) {
 	r, _ := newRunner(t, scriptedAgent{})
 	r.SetBridge(&fakePhone{screen: clockScreen("")})
