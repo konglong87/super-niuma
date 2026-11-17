@@ -171,6 +171,18 @@ func TestModelCallRejectsIncompleteRoute(t *testing.T) {
 	}
 }
 
+func TestVerifyProbePassesAndCleansUp(t *testing.T) {
+	workspace := canonicalTempDir(t)
+	var r verifyReport
+	decode(t, VerifyProbe(workspace), &r)
+	if !r.OK || !r.Passed || r.Checks == 0 {
+		t.Fatalf("verify probe failed: %+v", r)
+	}
+	if _, err := os.Stat(filepath.Join(workspace, "verify-probe")); !os.IsNotExist(err) {
+		t.Fatal("probe artifact left behind")
+	}
+}
+
 func TestScreenSummaryCountsUsableNodes(t *testing.T) {
 	snapshot := `{"package":"com.android.settings","nodes":[
 		{"parent":-1,"cls":"android.widget.FrameLayout","b":[0,0,1080,2400]},

@@ -29,6 +29,7 @@ import (
 	"github.com/konglong87/super-niuma/internal/config"
 	"github.com/konglong87/super-niuma/internal/super"
 	"github.com/konglong87/super-niuma/internal/super/execution"
+	"github.com/konglong87/super-niuma/internal/super/verification"
 )
 
 const (
@@ -246,6 +247,42 @@ func ModelCall(routeJSON, workspace, objective string) string {
 		return encode(r)
 	}
 	r.OK, r.Text = true, truncateRunes(result.Text, maxReportTextRunes)
+	return encode(r)
+}
+
+type verifyReport struct {
+	OK     bool   `json:"ok"`
+	Passed bool   `json:"passed"`
+	Checks int    `json:"checks"`
+	Millis int64  `json:"ms"`
+	Error  string `json:"error,omitempty"`
+}
+
+// VerifyProbe writes one artifact into workspace and runs Super's
+// independent file verifier on it, so the verifier is exercised with the
+// app's own permissions (SELinux domain and uid), which adb shell does not
+// share. The artifact is removed again.
+func VerifyProbe(workspace string) string {
+	dir := filepath.Join(workspace, "verify-probe")
+	if err := os.MkdirAll(dir, 0o700); err != nil {
+		return encode(verifyReport{Error: "create probe directory"})
+	}
+	defer os.RemoveAll(dir)
+	if err := os.WriteFile(filepath.Join(dir, "artifact.txt"), []byte("phone verifier ok\n"), 0o600); err != nil {
+		return encode(verifyReport{Error: "write probe artifact"})
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), httpsProbeTimeout)
+	defer cancel()
+	start := time.Now()
+	report, err := verification.Verify(ctx, workspace, verification.Policy{Version: "mobile-probe-1", Rules: []verification.Rule{
+		{Path: "verify-probe/artifact.txt", Kind: verification.KindTextContains, Expected: "verifier ok"},
+	}})
+	r := verifyReport{Millis: time.Since(start).Milliseconds(), Checks: len(report.Checks), Passed: report.Passed}
+	if err != nil {
+		r.Error = err.Error()
+		return encode(r)
+	}
+	r.OK = report.Passed
 	return encode(r)
 }
 

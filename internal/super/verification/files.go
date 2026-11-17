@@ -34,6 +34,17 @@ func openWorkspace(ctx context.Context, workspace string) (*os.Root, error) {
 	if len(parts) > maxWorkspaceDepth {
 		return nil, ErrInvalidWorkspace
 	}
+	for _, part := range parts {
+		if part == "" || reservedComponent(part) {
+			return nil, ErrInvalidWorkspace
+		}
+	}
+	return walkWorkspace(ctx, workspace, anchor, parts)
+}
+
+// walkRootChain opens every component as an os.Root, which needs read
+// permission on each ancestor.
+func walkRootChain(ctx context.Context, anchor string, parts []string) (*os.Root, error) {
 	current, err := os.OpenRoot(anchor)
 	if err != nil {
 		return nil, ErrInvalidWorkspace
@@ -42,10 +53,6 @@ func openWorkspace(ctx context.Context, workspace string) (*os.Root, error) {
 		if err := ctx.Err(); err != nil {
 			current.Close()
 			return nil, err
-		}
-		if part == "" || reservedComponent(part) {
-			current.Close()
-			return nil, ErrInvalidWorkspace
 		}
 		next, err := openChildDirectory(current, part)
 		current.Close()

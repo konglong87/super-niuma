@@ -90,6 +90,7 @@ class MainActivity : Activity() {
                 "probe" -> Niumacore.probe(filesDir.canonicalPath)
                 "https" -> Niumacore.httpsProbe(intent?.getStringExtra("url") ?: DEFAULT_HTTPS_URL)
                 "model" -> modelCall(intent)
+                "verify" -> Niumacore.verifyProbe(File(filesDir, "m0-workspace").apply { mkdirs() }.canonicalPath)
                 else -> "{\"ok\":false,\"error\":\"unknown action\"}"
             }
             report(action, result)
