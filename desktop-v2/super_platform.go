@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"errors"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/konglong87/super-niuma/internal/super"
@@ -29,6 +31,23 @@ func (b *superWorkOrderBridge) platformService() (*platform.Service, error) {
 	}
 	b.platform = platform.New(store, directory, b.logger)
 	return b.platform, nil
+}
+// resumeConfiguredPlatform restarts durable Super workers and channel
+// transports after a Desktop restart instead of waiting for the Super page to
+// be opened. It only inspects the platform configuration path: users who never
+// configured Super get no Super store, files or goroutines.
+func (b *superWorkOrderBridge) resumeConfiguredPlatform() {
+	directory, err := super.StateDirectory()
+	if err != nil {
+		return
+	}
+	if _, err := os.Lstat(filepath.Join(directory, platform.ConfigFileName)); err != nil {
+		return
+	}
+	_ = b.call("platform.resume", func(context.Context, *workorder.Service) error {
+		_, err := b.platformService()
+		return err
+	})
 }
 func (a *app) callSuperPlatform(action string, fn func(context.Context, *platform.Service, *workorder.Service) error) error {
 	return a.superWorkOrders.call(action, func(ctx context.Context, intake *workorder.Service) error {

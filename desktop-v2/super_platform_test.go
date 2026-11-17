@@ -332,3 +332,46 @@ func TestSuperPlatformDesktopWorkOrderCancelStopsItsRuns(t *testing.T) {
 		t.Fatalf("run not stopped with intake reason: %+v err=%v", saved.Status, err)
 	}
 }
+
+func TestSuperPlatformResumesConfiguredWorkersAtStartup(t *testing.T) {
+	root, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	dir := filepath.Join(root, "super")
+	t.Setenv(super.StateDirectoryEnv, dir)
+	if err = os.Mkdir(dir, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(filepath.Join(dir, platform.ConfigFileName), []byte(`{"version":1,"workers":1,"profiles":[]}`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	a := &app{}
+	t.Cleanup(a.superWorkOrders.close)
+	a.superWorkOrders.resumeConfiguredPlatform()
+	if a.superWorkOrders.platform == nil {
+		t.Fatal("configured platform was not resumed at startup")
+	}
+	snap, err := a.GetSuperPlatform()
+	if err != nil || !snap.Configured || !snap.Running {
+		t.Fatalf("resumed snapshot=%+v err=%v", snap, err)
+	}
+}
+
+func TestSuperPlatformStartupResumeIgnoresUnconfiguredUsers(t *testing.T) {
+	root, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	dir := filepath.Join(root, "super")
+	t.Setenv(super.StateDirectoryEnv, dir)
+	a := &app{}
+	t.Cleanup(a.superWorkOrders.close)
+	a.superWorkOrders.resumeConfiguredPlatform()
+	if a.superWorkOrders.store != nil || a.superWorkOrders.platform != nil {
+		t.Fatal("startup opened Super state for an unconfigured user")
+	}
+	if _, err = os.Lstat(dir); !os.IsNotExist(err) {
+		t.Fatalf("startup created Super files: %v", err)
+	}
+}
