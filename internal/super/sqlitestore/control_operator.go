@@ -99,6 +99,16 @@ func (s *Store) EventsForOperator(ctx context.Context, after int64, limit int) (
 	return out, nil
 }
 
+// LatestEventSequenceForOperator lets the trusted Desktop start its timeline
+// at the tail instead of replaying the whole retained history.
+func (s *Store) LatestEventSequenceForOperator(ctx context.Context) (int64, error) {
+	var latest int64
+	if err := s.db.QueryRowContext(ctx, "SELECT coalesce(max(sequence),0) FROM super_events").Scan(&latest); err != nil {
+		return 0, controlStorageError(ctx, err)
+	}
+	return latest, nil
+}
+
 // DeadLettersForOperator reads notification evidence even after source bindings
 // or profiles have been removed. It never acknowledges, replays or retries.
 func (s *Store) DeadLettersForOperator(ctx context.Context, subscriber string, limit int) ([]eventbus.DeadLetter, error) {

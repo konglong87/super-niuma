@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -294,8 +295,9 @@ func TestSuperPlatformDesktopCrossScopeNotificationEvidence(t *testing.T) {
 	if err != nil || len(tail) != 2 || tail[0].Scope != "alice" {
 		t.Fatal("global event cursor incorrect", err)
 	}
-	if _, err = a.GetSuperEvents(-1); !errors.Is(err, control.ErrInvalid) {
-		t.Fatal("negative event cursor accepted", err)
+	// A negative cursor reads the latest page; history fits in one page here.
+	if latest, err := a.GetSuperEvents(-1); err != nil || len(latest) != 3 || latest[2].Sequence != events[2].Sequence {
+		t.Fatal("latest event page incorrect", err)
 	}
 	scoped, err := store.ReadEvents(ctx, control.LocalScope, 0, eventbus.MaxReadLimit)
 	if err != nil || len(scoped) != 1 {
@@ -373,5 +375,25 @@ func TestSuperPlatformStartupResumeIgnoresUnconfiguredUsers(t *testing.T) {
 	}
 	if _, err = os.Lstat(dir); !os.IsNotExist(err) {
 		t.Fatalf("startup created Super files: %v", err)
+	}
+}
+
+func TestSuperPlatformEventTailSkipsRetainedHistory(t *testing.T) {
+	a, _, _, _, _ := desktopOperatorFixture(t)
+	for i := 0; i < eventbus.MaxReadLimit+25; i++ {
+		if _, err := a.CreateSuperWorkOrder(fmt.Sprintf("tail-%d", i), workorder.CreateInput{Title: "tail", Objective: "event history", AcceptanceCriteria: []string{"none"}}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	first, err := a.GetSuperEvents(0)
+	if err != nil || len(first) != eventbus.MaxReadLimit {
+		t.Fatalf("history page=%d err=%v", len(first), err)
+	}
+	latest, err := a.GetSuperEvents(-1)
+	if err != nil || len(latest) != eventbus.MaxReadLimit || latest[0].Sequence <= first[0].Sequence {
+		t.Fatalf("tail page=%d err=%v", len(latest), err)
+	}
+	if next, err := a.GetSuperEvents(latest[len(latest)-1].Sequence); err != nil || len(next) != 0 {
+		t.Fatalf("tail is not the newest page: %d %v", len(next), err)
 	}
 }

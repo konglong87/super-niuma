@@ -123,6 +123,20 @@ func (a *app) GetSuperEvents(after int64) (out []eventbus.Event, err error) {
 		if !ok {
 			return control.ErrUnavailable
 		}
+		if after < 0 {
+			// A negative cursor asks for the latest page, not the full history.
+			tail, ok := a.superWorkOrders.store.(interface {
+				LatestEventSequenceForOperator(context.Context) (int64, error)
+			})
+			if !ok {
+				return control.ErrUnavailable
+			}
+			latest, e := tail.LatestEventSequenceForOperator(ctx)
+			if e != nil {
+				return e
+			}
+			after = max(0, latest-eventbus.MaxReadLimit)
+		}
 		out, err = reader.EventsForOperator(ctx, after, eventbus.MaxReadLimit)
 		return err
 	})
