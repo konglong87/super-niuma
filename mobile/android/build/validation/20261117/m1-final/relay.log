@@ -1,0 +1,47 @@
+relay ready on 127.0.0.1:18080 for provider agnes-2.5-flash
+relay POST /v1/chat/completions -> 200 in 1758 ms
+relay POST /v1/chat/completions -> 200 in 1880 ms
+relay POST /v1/chat/completions -> 200 in 6383 ms
+relay POST /v1/chat/completions -> 200 in 4359 ms
+relay POST /v1/chat/completions -> 200 in 1441 ms
+relay POST /v1/chat/completions -> 200 in 2141 ms
+relay POST /v1/chat/completions -> 200 in 1360 ms
+relay POST /v1/chat/completions -> 200 in 1984 ms
+relay POST /v1/chat/completions -> 200 in 1932 ms
+relay POST /v1/chat/completions -> 200 in 1401 ms
+relay POST /v1/chat/completions -> 200 in 1652 ms
+relay POST /v1/chat/completions -> 200 in 2155 ms
+relay POST /v1/chat/completions -> 200 in 5474 ms
+relay POST /v1/chat/completions -> 200 in 1259 ms
+relay POST /v1/chat/completions -> 200 in 1537 ms
+relay POST /v1/chat/completions -> 200 in 1211 ms
+relay POST /v1/chat/completions -> 200 in 1333 ms
+relay POST /v1/chat/completions -> 200 in 1279 ms
+relay POST /v1/chat/completions -> 200 in 2969 ms
+relay POST /v1/chat/completions -> 200 in 1843 ms
+relay POST /v1/chat/completions -> 200 in 2176 ms
+relay POST /v1/chat/completions -> 200 in 963 ms
+relay POST /v1/chat/completions -> 200 in 3032 ms
+relay POST /v1/chat/completions -> 200 in 2035 ms
+relay POST /v1/chat/completions -> 200 in 1459 ms
+relay POST /v1/chat/completions -> 200 in 1760 ms
+relay POST /v1/chat/completions -> 200 in 1768 ms
+relay POST /v1/chat/completions -> 200 in 5872 ms
+relay ready on 127.0.0.1:18080 for provider agnes-2.5-flash injecting ['429:3:6', '500:5']
+relay POST /v1/chat/completions -> 200 in 1035 ms
+relay POST /v1/chat/completions -> 200 in 1507 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 1176 ms
+relay POST (injected) /v1/chat/completions -> 500 in 0 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 3612 ms
+relay POST /v1/chat/completions -> 200 in 1227 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST (injected) /v1/chat/completions -> 500 in 0 ms
+relay POST /v1/chat/completions -> 200 in 1238 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 12684 ms
+relay POST /v1/chat/completions -> 200 in 1333 ms
+relay POST (injected) /v1/chat/completions -> 429 in 0 ms
+relay POST /v1/chat/completions -> 200 in 14077 ms
+relay ready on 127.0.0.1:18080 for provider agnes-2.5-flash
