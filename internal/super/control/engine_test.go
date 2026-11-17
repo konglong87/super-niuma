@@ -289,3 +289,30 @@ func canonicalTemp(t *testing.T) string {
 	}
 	return p
 }
+
+func TestRetryIgnoresAttemptsOfSucceededJobs(t *testing.T) {
+	ctx := context.Background()
+	e := testEngine()
+	g := testGrant(t)
+	g.Nodes = []Node{{ID: "done", Instruction: "fixture", MaxTurns: 1, MaxOutputTokens: 10}, {ID: "broken", Instruction: "fixture", MaxTurns: 1, MaxOutputTokens: 10}}
+	p := Principal{Scope: LocalScope, Owner: LocalOwner, LocalAdmin: true}
+	r, _, err := e.Start(ctx, p, "retry-gate", "objective", "", g, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	store := e.Store.(*memoryStore)
+	saved := store.runs[testKey(r.Scope, r.ID)]
+	saved.Status = Failed
+	saved.Jobs[0].Status, saved.Jobs[0].Attempts = JobSucceeded, MaxAttempts
+	saved.Jobs[1].Status, saved.Jobs[1].Attempts = JobFailed, 1
+	store.runs[testKey(r.Scope, r.ID)] = saved
+	out, err := e.Retry(ctx, p, r.ID, saved.Version)
+	if err != nil || out.Status != Queued || out.Jobs[0].Status != JobSucceeded || out.Jobs[1].Status != JobQueued {
+		t.Fatalf("retry=%+v err=%v", out.Status, err)
+	}
+	saved.Jobs[1].Attempts = MaxAttempts
+	store.runs[testKey(r.Scope, r.ID)] = saved
+	if _, err = e.Retry(ctx, p, r.ID, saved.Version); !errors.Is(err, ErrDenied) {
+		t.Fatalf("exhausted failed job retried: %v", err)
+	}
+}

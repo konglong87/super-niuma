@@ -42,12 +42,21 @@ type Dependency struct {
 	Result string `json:"result"`
 }
 
+// VerificationFinding is one failed check from the control plane's independent
+// verifier (never model text). A revision attempt receives them as guidance.
+type VerificationFinding struct {
+	Path string `json:"path"`
+	Kind string `json:"kind"`
+	Code string `json:"code"`
+}
+
 type Request struct {
 	RunID, JobID, AttemptID                         string
 	Workspace, Objective, Instruction, SystemPrompt string
 	Provider, Model                                 string
 	ReadPaths, WritePaths                           []string
 	Dependencies                                    []Dependency
+	VerificationFailures                            []VerificationFinding
 	MaxTurns, MaxOutputTokens                       int
 	CheckAuthority                                  func(context.Context) error
 	Budget                                          Budget

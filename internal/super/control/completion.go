@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/konglong87/super-niuma/internal/super/execution"
 	"github.com/konglong87/super-niuma/internal/super/verification"
 )
 
@@ -76,14 +77,17 @@ func (e *Engine) verify(ctx context.Context, r Run, owner string) (bool, error) 
 		}
 		n.Verification = &report
 		if !report.Passed {
-			retry := true
-			for _, j := range n.Jobs {
-				if j.Attempts >= MaxAttempts {
+			// Revise only the artifact writers and whatever consumed their
+			// results; read-only analyses stay valid and are not paid for again.
+			revise := revisionJobs(*n)
+			retry := len(revise) > 0
+			for i := range revise {
+				if n.Jobs[i].Attempts >= MaxAttempts {
 					retry = false
 				}
 			}
 			if retry {
-				for i := range n.Jobs {
+				for i := range revise {
 					n.Jobs[i].Status = JobQueued
 				}
 				n.Status = Queued
@@ -217,6 +221,55 @@ func (e *Engine) deliver(ctx context.Context, r Run, n Notice, owner string) (bo
 	})
 	e.logger().Info("Super delivery settled", "action", "delivery.settled", "run_id", r.ID, "target_id", n.Target.ID, "accepted", sendErr == nil && err == nil)
 	return true, err
+}
+
+// revisionJobs returns the indexes of jobs that write artifacts plus every job
+// that transitively depends on one of them.
+func revisionJobs(r Run) map[int]bool {
+	out := map[int]bool{}
+	for i, j := range r.Jobs {
+		if len(j.Spec.WritePaths) > 0 {
+			out[i] = true
+		}
+	}
+	for changed := true; changed; {
+		changed = false
+		for i, j := range r.Jobs {
+			if out[i] {
+				continue
+			}
+			for _, d := range j.Spec.DependsOn {
+				if k := jobIndex(r, d); k >= 0 && out[k] {
+					out[i] = true
+					changed = true
+					break
+				}
+			}
+		}
+	}
+	return out
+}
+
+// verificationFindings turns a failed independent report into trusted revision
+// guidance (paths, rule kinds and codes only; never file or model content).
+func verificationFindings(report *verification.Report) []execution.VerificationFinding {
+	if report == nil || report.Passed {
+		return nil
+	}
+	var out []execution.VerificationFinding
+	for _, c := range report.Checks {
+		if !c.Passed {
+			out = append(out, execution.VerificationFinding{Path: c.Path, Kind: c.Kind, Code: c.Code})
+		}
+	}
+	if len(out) == 0 {
+		// Every rule passed but the files were not produced by the current
+		// attempt's trusted writes (stale or foreign artifacts).
+		for _, a := range report.Artifacts {
+			out = append(out, execution.VerificationFinding{Path: a.Path, Code: "artifact_not_written_this_attempt"})
+		}
+	}
+	return out
 }
 
 type FileVerifier struct{}

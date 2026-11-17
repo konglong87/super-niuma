@@ -217,7 +217,8 @@ func (e *Engine) Retry(ctx context.Context, p Principal, id string, version uint
 			return ErrDenied
 		}
 		for _, j := range r.Jobs {
-			if j.Status == JobRunning || j.Status == JobUnknown || j.Attempts >= MaxAttempts {
+			// Succeeded jobs are kept, so their spent attempts do not block a retry.
+			if j.Status == JobRunning || j.Status == JobUnknown || (j.Status != JobSucceeded && j.Attempts >= MaxAttempts) {
 				return ErrDenied
 			}
 		}

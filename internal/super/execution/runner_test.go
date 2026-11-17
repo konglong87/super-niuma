@@ -554,3 +554,16 @@ func TestDeadlineCancelsSingleRequest(t *testing.T) {
 		t.Fatal("deadline released unknown usage")
 	}
 }
+
+func TestRequestCarriesTrustedVerificationFindings(t *testing.T) {
+	req := fixtureRequest(t)
+	req.VerificationFailures = []VerificationFinding{{Path: "artifacts/result.json", Kind: "json_keys", Code: "json_keys_missing"}}
+	prompt, _, err := validateRequest(req)
+	if err != nil || !strings.Contains(prompt, `"independent_verification_failures":[{"path":"artifacts/result.json","kind":"json_keys","code":"json_keys_missing"}]`) {
+		t.Fatalf("prompt=%s err=%v", prompt, err)
+	}
+	req.VerificationFailures[0].Code = "not a code"
+	if _, _, err = validateRequest(req); err != ErrInvalid {
+		t.Fatalf("invalid finding accepted: %v", err)
+	}
+}

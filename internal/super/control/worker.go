@@ -281,6 +281,7 @@ func (e *Engine) execute(parent context.Context, r Run, id string) error {
 		k := jobIndex(r, d)
 		req.Dependencies = append(req.Dependencies, execution.Dependency{NodeID: d, Result: r.Jobs[k].Result.Text})
 	}
+	req.VerificationFailures = verificationFindings(r.Verification)
 	e.logger().InfoContext(ctx, "Super worker started", "action", "worker.started", "run_id", r.ID, "job_id", id, "epoch", claim.Epoch)
 	result, runErr := e.Executor.Execute(ctx, req)
 	ctxErr := ctx.Err()
