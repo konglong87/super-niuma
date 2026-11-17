@@ -186,7 +186,11 @@ func (m *meteredStreamer) reservedRequest(ctx context.Context, id string, input 
 				m.state.log(actionModelSettle, string(CodeBudgetSettlement))
 			}
 		}
-		m.usageKnown = m.usageKnown && known
+		// A send that is retried keeps its whole reservation charged; the
+		// attempt's usage covers the requests whose outcomes it used.
+		if _, retrying := retErr.(*retryAgain); !retrying {
+			m.usageKnown = m.usageKnown && known
+		}
 		m.usage.InputTokens += usage.InputTokens
 		m.usage.OutputTokens += usage.OutputTokens
 		m.state.log(actionModelSettle, errorCode(retErr))

@@ -10,6 +10,7 @@ import (
 	"net/http/httptest"
 	"sync"
 	"sync/atomic"
+	"syscall"
 	"testing"
 	"time"
 
@@ -206,8 +207,11 @@ func TestPossiblyProcessedFailuresResendWithANewReservation(t *testing.T) {
 			if len(b.reserved) != 2 || b.reserved[1].id != b.reserved[0].id+".retry.1" || len(b.settled) != 2 || b.settled[0].known || !b.settled[1].known {
 				t.Fatalf("the possibly processed request was refunded: reserved %+v settled %+v", b.reserved, b.settled)
 			}
-			if got.UsageKnown {
-				t.Fatal("usage of a possibly processed request reported as known")
+			// The retried send stays charged at its full reservation; the
+			// attempt's usage covers the request it used, so a recovered run
+			// is not quarantined as usage_unknown.
+			if !got.UsageKnown || got.Usage != (Usage{10, 2}) {
+				t.Fatalf("usage %+v known=%v", got.Usage, got.UsageKnown)
 			}
 			if w := s.got(); fmt.Sprint(w) != "[2s]" {
 				t.Fatalf("waits %v", w)
@@ -299,9 +303,36 @@ func TestDefaultPolicyAppliesAndNoticesAreBounded(t *testing.T) {
 }
 
 func TestInvalidRetryPolicyRejected(t *testing.T) {
-	for _, p := range []*RetryPolicy{{MaxRetries: -1}, {MaxRetries: 11}, {MaxRetries: 1, MaxWait: time.Hour}, {MaxRetries: 1, BaseDelay: -1}} {
+	for _, p := range []*RetryPolicy{{MaxRetries: -1}, {MaxRetries: 11}, {MaxRetries: 1, MaxWait: time.Hour, MaxTotal: time.Minute},
+		{MaxRetries: 1, BaseDelay: -1, MaxWait: time.Second, MaxTotal: time.Minute}, {MaxRetries: 3}, {MaxRetries: 3, MaxWait: time.Second}} {
 		if _, _, err := validateRequest(retryRequest(t, p)); !errors.Is(err, ErrInvalid) {
 			t.Fatalf("%+v accepted", p)
+		}
+	}
+}
+
+func TestRateLimitMentioningBillingIsStillRetried(t *testing.T) {
+	server, calls, _ := scripted(t, body(429, `{"error":{"message":"Rate limit reached; see your plan and billing details"}}`), ok)
+	if _, err := retryRunner(server.URL, &sleeps{}).Execute(context.Background(), retryRequest(t, policy(3))); err != nil || calls.Load() != 2 {
+		t.Fatalf("err=%v calls=%d", err, calls.Load())
+	}
+}
+
+func TestNeverSentSeparatesTransientFromMisconfigured(t *testing.T) {
+	cases := map[string]struct {
+		err  error
+		want bool
+	}{
+		"refused":       {&net.OpError{Op: "dial", Err: syscall.ECONNREFUSED}, true},
+		"dns temporary": {&net.OpError{Op: "dial", Err: &net.DNSError{IsTemporary: true}}, true},
+		"dns not found": {&net.OpError{Op: "dial", Err: &net.DNSError{IsNotFound: true}}, false},
+		"dns other":     {&net.OpError{Op: "dial", Err: &net.DNSError{}}, false},
+		"after sending": {&net.OpError{Op: "read", Err: syscall.ECONNRESET}, false},
+		"plain":         {errors.New("x"), false},
+	}
+	for name, tc := range cases {
+		if got := neverSent(tc.err); got != tc.want {
+			t.Errorf("%s: got %v", name, got)
 		}
 	}
 }

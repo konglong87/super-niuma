@@ -63,8 +63,14 @@ const (
 )
 
 func validRetryPolicy(p *RetryPolicy) bool {
-	return p == nil || (p.MaxRetries >= 0 && p.MaxRetries <= maxRetryCount && p.BaseDelay >= 0 &&
-		p.MaxWait >= 0 && p.MaxWait <= maxRetryWait && p.MaxTotal >= 0 && p.MaxTotal <= maxRetryTotal)
+	if p == nil {
+		return true
+	}
+	if p.MaxRetries > 0 && (p.MaxWait <= 0 || p.MaxTotal <= 0) {
+		return false // would accept retries and never wait for one
+	}
+	return p.MaxRetries >= 0 && p.MaxRetries <= maxRetryCount && p.BaseDelay >= 0 &&
+		p.MaxWait >= 0 && p.MaxWait <= maxRetryWait && p.MaxTotal >= 0 && p.MaxTotal <= maxRetryTotal
 }
 
 type retryClass int
@@ -162,7 +168,7 @@ func classifyResponse(status int, body []byte) retryClass {
 
 func quotaExhausted(body []byte) bool {
 	s := strings.ToLower(string(body))
-	for _, w := range []string{"insufficient_quota", "quota_exceeded", "exceeded your current quota", "billing", "credit balance"} {
+	for _, w := range []string{"insufficient_quota", "quota_exceeded", "exceeded your current quota", "credit balance is too low"} {
 		if strings.Contains(s, w) {
 			return true
 		}
@@ -170,11 +176,19 @@ func quotaExhausted(body []byte) bool {
 	return false
 }
 
-// neverSent reports a transport error from before the request was written:
-// the connection did not open.
+// neverSent reports a transient transport error from before the request was
+// written: the connection did not open. A name that does not resolve is a
+// configuration error, not a transient one.
 func neverSent(err error) bool {
 	var op *net.OpError
-	return errors.As(err, &op) && op.Op == "dial"
+	if !errors.As(err, &op) || op.Op != "dial" {
+		return false
+	}
+	var dns *net.DNSError
+	if errors.As(err, &dns) && (dns.IsNotFound || !(dns.IsTemporary || dns.IsTimeout)) {
+		return false
+	}
+	return true
 }
 
 // parseRetryAfter reads delay-seconds or an HTTP date.

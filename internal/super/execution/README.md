@@ -72,7 +72,9 @@ besides its cost, which the budget accounts for, so the classes are:
 - **Possibly processed** — HTTP 500, 502, 504, a network error or timeout after
   sending, a body cut off: the reservation is settled as unknown (kept as
   spent), a new one is made (`<attempt>.model.<n>.retry.<k>`), and the request is
-  sent again. Usage of such an attempt is reported as not fully known.
+  sent again. The retried send stays charged at its full reservation (never
+  refunded); the attempt's usage covers the requests whose outcomes it used, so
+  a recovered attempt is not reported as usage-unknown.
 - **Permanent** — everything else (401/403, other 4xx, redirects, an exhausted
   quota, and every problem with a complete response such as invalid JSON,
   missing usage, truncated, empty or refused output): no retry.

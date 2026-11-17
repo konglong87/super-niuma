@@ -296,6 +296,8 @@ func (r *Runner) retryPolicy(run *running) *execution.RetryPolicy {
 			UntilMS: time.Now().Add(n.Wait).UnixMilli(), Code: string(n.Code)}
 		run.mu.Unlock()
 		r.notify()
+		// Clear the notice from the screens once the wait is over.
+		time.AfterFunc(n.Wait+50*time.Millisecond, r.notify)
 	}
 	return &p
 }
