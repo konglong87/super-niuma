@@ -23,12 +23,13 @@ func secureFilesystemSupported() bool { return true }
 // Verify the opened root against a component-wise no-follow walk. The final
 // inode comparison closes the lstat/OpenRoot race at the workspace boundary.
 func verifyRoot(root *os.Root, name string) bool {
-	current, err := os.Open("/")
+	rootFD, err := unix.Open("/", walkDirFlags|unix.O_DIRECTORY|unix.O_CLOEXEC, 0)
 	if err != nil {
 		return false
 	}
+	current := os.NewFile(uintptr(rootFD), "/")
 	for _, component := range strings.Split(strings.TrimPrefix(name, "/"), "/") {
-		fd, err := unix.Openat(int(current.Fd()), component, unix.O_RDONLY|unix.O_DIRECTORY|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0)
+		fd, err := unix.Openat(int(current.Fd()), component, walkDirFlags|unix.O_DIRECTORY|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0)
 		current.Close()
 		if err != nil {
 			return false
