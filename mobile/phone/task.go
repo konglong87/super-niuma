@@ -58,7 +58,7 @@ const (
 	maxApps          = 10
 	maxExpect        = 5
 	approvalTimeout  = 60 * time.Second
-	outputTokens     = 1024
+	outputTokens     = 2048
 )
 
 var packageName = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)+$`)
