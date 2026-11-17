@@ -25,7 +25,8 @@ type fakePhone struct {
 	performed []Action
 	result    Result
 	onPerform func(*fakePhone, Action)
-	noWindow  int // snapshots that fail with ErrNoWindow first
+	noWindow  int        // snapshots that fail with ErrNoWindow first
+	queued    []Snapshot // screens shown, one per snapshot, before screen
 }
 
 func clockScreen(alarm string) Snapshot {
@@ -51,6 +52,11 @@ func (p *fakePhone) Snapshot() (Snapshot, error) {
 	if p.noWindow > 0 {
 		p.noWindow--
 		return Snapshot{}, ErrNoWindow
+	}
+	if len(p.queued) > 0 {
+		next := p.queued[0]
+		p.queued = p.queued[1:]
+		return next, nil
 	}
 	return p.screen, nil
 }
@@ -376,41 +382,28 @@ func TestGateDoesNothingWhenScreenChangesDuringApproval(t *testing.T) {
 func TestGateWaitsForTheAppToReturnAfterApproval(t *testing.T) {
 	shade := Snapshot{Package: "com.android.systemui", Nodes: []Node{{Parent: -1, Class: "x", Text: "允许一次", Clickable: true}}}
 	for _, tc := range []struct {
-		name    string
-		covered int // snapshots that still show the shade after the answer
-		ran     bool
-	}{{"returns", 3, true}, {"never returns", 100, false}} {
+		name     string
+		noWindow int // reads with no window right after the answer
+		covered  int // then reads that show the shade
+		ran      bool
+	}{
+		{"returns", 1, 3, true},
+		{"returns at the last try", 0, returnTries, true},
+		{"never returns", 0, returnTries + 1, false},
+	} {
 		t.Run(tc.name, func(t *testing.T) {
 			p := &fakePhone{screen: clockScreen("7:00 AM")}
 			approvals := NewApprovals(time.Second, nil)
 			g, _ := newGate(p, approvals, nil)
 			act(t, g, execution.DeviceAction{Kind: "screen"})
-			covered := tc.covered
 			answerNext(t, approvals, Allow, func() {
 				p.mu.Lock()
-				p.screen = shade
+				p.noWindow = tc.noWindow
+				for i := 0; i < tc.covered; i++ {
+					p.queued = append(p.queued, shade)
+				}
 				p.mu.Unlock()
 			})
-			p.mu.Lock()
-			p.onPerform = nil
-			p.mu.Unlock()
-			// The shade stays for `covered` snapshots, then the clock is back.
-			go func() {
-				for approvals.Pending() == nil {
-					time.Sleep(time.Millisecond)
-				}
-				for approvals.Pending() != nil {
-					time.Sleep(time.Millisecond)
-				}
-				for i := 0; i < covered; i++ {
-					time.Sleep(2 * time.Millisecond)
-				}
-				if tc.ran {
-					p.mu.Lock()
-					p.screen = clockScreen("7:00 AM")
-					p.mu.Unlock()
-				}
-			}()
 			_, err := act(t, g, execution.DeviceAction{Kind: "tap", Ref: 5})
 			if tc.ran && (err != nil || len(p.actions()) != 1) {
 				t.Fatalf("approved step lost after the shade closed: %v actions=%d", err, len(p.actions()))

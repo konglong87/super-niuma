@@ -214,7 +214,7 @@ class MainActivity : Activity() {
         log("decide", result)
         // This screen covers the app the step runs in; step aside so it is in
         // front again (the core waits a few seconds for that).
-        if (decision == "allow_once" && result.contains("\"ok\":true")) moveTaskToBack(true)
+        if (decision == "allow_once" && JSONObject(result).optBoolean("ok")) moveTaskToBack(true)
     }
 
     private fun split(s: String) = s.split(',', '，').map { it.trim() }.filter { it.isNotEmpty() }

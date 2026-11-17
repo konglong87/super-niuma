@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Icon
+import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
@@ -44,11 +45,13 @@ object Notifier {
         )
     }
 
-    /** Whether the app may post notifications at all. */
-    fun allowed(ctx: Context): Boolean {
+    /** Whether notifications on [channel] reach the person (the permission, the app switch and the channel). */
+    fun allowed(ctx: Context, channel: String = CH_APPROVALS): Boolean {
         val granted = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
             ctx.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
-        return granted && ctx.getSystemService(NotificationManager::class.java).areNotificationsEnabled()
+        val nm = ctx.getSystemService(NotificationManager::class.java)
+        return granted && nm.areNotificationsEnabled() &&
+            nm.getNotificationChannel(channel)?.importance != NotificationManager.IMPORTANCE_NONE
     }
 
     fun apply(ctx: Context, notices: List<Notice>) {
@@ -131,7 +134,7 @@ object Notifier {
     )
 
     private fun post(ctx: Context, id: Int, n: Notification) {
-        if (!allowed(ctx)) {
+        if (!allowed(ctx, n.channelId)) {
             Log.i(MainActivity.TAG, "notice skipped {\"id\":$id,\"reason\":\"notifications not allowed\"}")
             return
         }
@@ -144,11 +147,16 @@ object Notifier {
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
     )
 
-    /** An explicit, immutable broadcast to the app's own non-exported receiver. */
+    /**
+     * An explicit, immutable broadcast to the app's own non-exported receiver.
+     * The data URI names the approval, so each approval gets PendingIntents of
+     * its own: a button can only ever answer the approval it was shown with.
+     */
     private fun decision(ctx: Context, approvalId: String, decision: String) = PendingIntent.getBroadcast(
         ctx, if (decision == "allow_once") 1 else 2,
         Intent(ApprovalActionReceiver.ACTION)
             .setComponent(ComponentName(ctx, ApprovalActionReceiver::class.java))
+            .setData(Uri.Builder().scheme("superniuma").authority("approval").appendPath(approvalId).build())
             .putExtra(ApprovalActionReceiver.EXTRA_ID, approvalId)
             .putExtra(ApprovalActionReceiver.EXTRA_DECISION, decision),
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,

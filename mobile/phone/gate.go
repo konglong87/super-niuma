@@ -200,7 +200,8 @@ func (g *Gate) Act(ctx context.Context, a execution.DeviceAction) (string, error
 		// The person approved what they saw; act only if it is still there.
 		// Approving from the notification shade or from Super Niuma covers
 		// the app for a moment: give it a few seconds to come back first.
-		again, err := g.snapshot(ctx)
+		// One read per try keeps the whole wait within returnTries × retry.
+		again, err := g.bridge.Snapshot()
 		for i := 0; i < returnTries && (errors.Is(err, ErrNoWindow) || (err == nil && again.Package != cur.Package)); i++ {
 			select {
 			case <-ctx.Done():
@@ -210,7 +211,7 @@ func (g *Gate) Act(ctx context.Context, a execution.DeviceAction) (string, error
 			if g.stopped() {
 				return "", execution.ErrDeviceStopped
 			}
-			again, err = g.snapshot(ctx)
+			again, err = g.bridge.Snapshot()
 		}
 		if err != nil && !errors.Is(err, ErrNoWindow) {
 			return "", err

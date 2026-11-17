@@ -19,6 +19,9 @@ class NiumaApp : Application() {
         val open = Niumacore.openTasks(filesDir.canonicalPath, packageName)
         Log.i(MainActivity.TAG, "core ${Niumacore.version()} init $init tasks $open")
         Notifier.createChannels(this)
+        // A new process has no pending approval (an unfinished task is now
+        // interrupted): withdraw one left posted by the previous process.
+        Notifier.cancel(this, Notifier.ID_APPROVAL)
         StateHub.observeTransitions { prev, next -> Notifier.apply(this, NoticePlan.plan(prev, next)) }
         Niumacore.setListener(object : Listener {
             override fun onState(stateJSON: String) = StateHub.publish(stateJSON)
