@@ -156,6 +156,7 @@ MODEL=$(jq -r --arg n "$PROVIDER" '.fallback.providers[] | select(.name==$n) | .
 adb logcat -c
 cmd m1_route --es model "$MODEL" --es token "$(cat "$TOKEN_FILE")"
 check "route saved and read back through the Keystore" 'wait_line "^m1_route {\"ok\":true}" 30'
+logs | grep -q '^m1_route {"ok":true}' || note "app log: $(logs | head -5 | tr '\n' ' ' | cut -c1-300)"
 
 echo "== screen reader" | tee -a "$OUT/result.txt"
 adb logcat -c
@@ -232,10 +233,22 @@ check "any attempt outside the task was refused as scope_denied" '! echo "$S" | 
 note "steps: $(echo "$S" | jq -c '[.task.steps[] | {kind, app, target, outcome}]')"
 adb shell cmd statusbar collapse >/dev/null 2>&1
 
+sleep "$COOLDOWN"
 echo "== screen reader reminders" | tee -a "$OUT/result.txt"
-fresh_clock
-start_task "screen reader turned off mid-task" "设一个早上 6:30 的闹钟" "6:30"
-wait_line '^step {"task":"[^"]*","seq":2' 120
+# As in task_run, a provider problem before the reader goes off is retried
+# once after a cooldown.
+for attempt in 1 2; do
+	fresh_clock
+	start_task "screen reader turned off mid-task" "设一个早上 6:30 的闹钟" "6:30"
+	wait_line '^step {"task":"[^"]*","seq":2' 120
+	T=$(last_task)
+	if [ "$attempt" = 1 ] && echo "$T" | grep -Eq 'rate_limited|output_truncated'; then
+		note "provider problem ($(echo "$T" | jq -r .code)); retrying once after ${COOLDOWN}s"
+		sleep "$COOLDOWN"
+		continue
+	fi
+	break
+done
 adb shell settings put secure enabled_accessibility_services null
 T=$(wait_task 30); note "$T" | cut -c1-200
 check "turning the reader off interrupts the task (screen_reader_off)" 'echo "$T" | jq -e ".status==\"interrupted\" and .code==\"screen_reader_off\"" >/dev/null'

@@ -1,0 +1,65 @@
+M1 acceptance 2026-11-17 20:35 provider=agnes-2.5-flash device=sdk_gphone64_arm64 android=14
+== install
+PASS  fresh install of the debug APK
+== model route
+PASS  route saved and read back through the Keystore
+== screen reader
+PASS  a task is refused while the screen reader is off
+PASS  screen reader connects to the core
+== set an alarm (verified)
+      provider problem (execution_http_rate_limited); retrying once after 75s
+== set an alarm (verified)
+      {"id":"task-1794919065690-fe6242cb","status":"done","code":"","verified":true,"result":"已成功设置早上 7:00 的闹钟。屏幕当前显示闹钟列表，其中 7:00 AM 闹钟已启用并设置为明天响铃。\n\n\n\n\n\n已成功设置早上 7:00 的闹钟。屏幕当前显示闹钟应用，7:00 AM 闹钟已添加并处于开启状态（显示为明天响铃）。"}
+PASS  alarm task done and verified
+PASS  7:00 AM alarm exists (positive control for the checks below)
+PASS  the result was notified: 任务完成，已验收
+== delete, person denies from the notification
+      {"id":"task-1794919169516-9d464bfa","status":"needs_attention","code":"steps_refused","result":"I opened the Clock app and found the 7:00 AM alarm is displayed. I tapped the \"Delete\" button (ref 21) to delete it, but you denied this step. \n\nPlease manually tap the \"Delete\" button on the screen to confirm deletion of the 7:00 AM alarm, or let me know if you'd like me to try again with your approval."}
+PASS  approval notification: private on the lock screen, two actions
+PASS  denied from the notification
+PASS  the delete step waited for approval
+PASS  denied: task needs attention
+PASS  denied: 7:00 AM alarm still exists
+== delete, person allows
+      {"id":"task-1794919262781-52f2309b","status":"done","code":"not_verified","result":"已成功删除早上 7:00 的闹钟。操作完成后，闹钟应用页面显示剩余三个闹钟：8:30 AM（工作日）、9:00 AM（周末）和 8:41 PM（今天），7:00 AM 的闹钟已不在列表中。"}
+PASS  allowed: the approved delete step ran
+PASS  allowed: 7:00 AM alarm is gone
+== delete, person allows from the notification
+      {"id":"task-1794919366360-acf1130b","status":"done","code":"not_verified","result":"已成功删除早上 7:00 的闹钟。屏幕上现在显示剩余的闹钟为 8:30 AM、9:00 AM，以及一个正在运行的计时器 8:42 PM。"}
+PASS  allowed from the notification
+PASS  the step approved from the shade ran once the app was back
+PASS  allowed from the notification: 7:00 AM alarm is gone
+== stop from the overlay
+      {"id":"task-1794919464664-bd2dda8d","status":"stopped","code":"stopped_by_person","result":""}
+PASS  stopped by the person
+PASS  no action after stop
+== app process killed mid-task
+      {"status":"interrupted","code":"app_stopped","steps":2}
+PASS  killed task is interrupted, steps kept, not retried
+== out-of-scope app
+      {"id":"task-1794919641630-a4480a05","status":"done","code":"not_verified","result":"I've scrolled through the home screen but could not find a Settings app among the available options. The task specifies that only `com.google.android.deskclock` may be used, and Settings is not accessible through it. Unfortunately, I cannot open system settings to check Wi-Fi status with the apps currently authorized for this task."}
+PASS  no tap, type or swipe ran inside an app outside the task
+PASS  any attempt outside the task was refused as scope_denied
+      steps: [{"kind":"screen","app":"io.github.konglong87.superniuma.mobile","target":null,"outcome":"done"},{"kind":"launch","app":"io.github.konglong87.superniuma.mobile","target":"com.google.android.deskclock","outcome":"done"},{"kind":"key","app":"com.google.android.deskclock","target":"home","outcome":"done"},{"kind":"swipe","app":"com.google.android.apps.nexuslauncher","target":null,"outcome":"done"},{"kind":"key","app":"com.android.systemui","target":"back","outcome":"done"},{"kind":"swipe","app":"com.google.android.apps.nexuslauncher","target":null,"outcome":"done"},{"kind":"key","app":"com.android.systemui","target":"home","outcome":"done"},{"kind":"key","app":"com.android.systemui","target":"home","outcome":"done"},{"kind":"swipe","app":"com.google.android.apps.nexuslauncher","target":null,"outcome":"done"},{"kind":"swipe","app":"com.google.android.apps.nexuslauncher","target":null,"outcome":"done"}]
+== screen reader reminders
+== screen reader turned off mid-task
+      {"id":"task-1794919758007-39e37b42","status":"interrupted","code":"screen_reader_off","result":""}
+PASS  turning the reader off interrupts the task (screen_reader_off)
+PASS  reminder posted at once
+PASS  the interrupted task was notified
+PASS  touching the reminder opens the accessibility settings
+PASS  turning the reader back on withdraws the reminder
+PASS  a force stop is caught when the app next starts
+PASS  without the notification permission the reminder is skipped, not crashed
+== provider failures are retried
+      {"id":"task-1794919860972-7864cb78","status":"done","code":"","verified":true,"result":"I have successfully set a 7:00 AM alarm. The screen now shows \"7:00 AM\" alarm created and enabled for tomorrow (Wednesday)."}
+      retries: 3, relay: 3 injected
+PASS  task with injected 429s and 500s still done and verified
+PASS  429 waits were shown with their Retry-After
+PASS  500s were retried after a backoff
+PASS  injected failures never reached the provider
+== builds and health
+PASS  release build disables the test commands
+PASS  no crash from the app
+      model requests: 56, statuses:   49 200    6 429    1 500 
+== 35 passed, 0 failed

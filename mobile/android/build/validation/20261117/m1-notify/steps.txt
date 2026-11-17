@@ -1,0 +1,45 @@
+--- set an alarm (verified)
+--- set an alarm (verified)
+{"seq":1,"kind":"screen","target":"","outcome":"done","decision":""}
+{"seq":2,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
+{"seq":3,"kind":"tap","target":"OK","outcome":"done","decision":""}
+{"seq":4,"kind":"tap","target":"Alarm","outcome":"done","decision":""}
+{"seq":5,"kind":"swipe","target":"","outcome":"failed","decision":""}
+{"seq":6,"kind":"key","target":"home","outcome":"done","decision":""}
+{"seq":7,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
+--- delete, person denies from the notification
+{"seq":1,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
+{"seq":2,"kind":"tap","target":"Delete","outcome":"denied","decision":"denied"}
+--- delete, person allows
+{"seq":1,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
+{"seq":2,"kind":"tap","target":"Delete","outcome":"done","decision":"approved"}
+{"seq":3,"kind":"tap","target":"Timer","outcome":"done","decision":""}
+{"seq":4,"kind":"tap","target":"2","outcome":"done","decision":""}
+{"seq":5,"kind":"tap","target":"Alarm","outcome":"done","decision":""}
+--- delete, person allows from the notification
+{"seq":1,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
+{"seq":2,"kind":"screen","target":"","outcome":"done","decision":""}
+{"seq":3,"kind":"tap","target":"Delete","outcome":"done","decision":"approved"}
+{"seq":4,"kind":"screen","target":"","outcome":"done","decision":""}
+--- stop from the overlay
+--- app process killed mid-task
+--- out-of-scope app
+{"seq":1,"kind":"screen","target":"","outcome":"done","decision":""}
+{"seq":2,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
+{"seq":3,"kind":"key","target":"home","outcome":"done","decision":""}
+{"seq":4,"kind":"swipe","target":"","outcome":"done","decision":""}
+{"seq":5,"kind":"key","target":"back","outcome":"done","decision":""}
+{"seq":6,"kind":"swipe","target":"","outcome":"done","decision":""}
+{"seq":7,"kind":"key","target":"home","outcome":"done","decision":""}
+{"seq":8,"kind":"key","target":"home","outcome":"done","decision":""}
+{"seq":9,"kind":"swipe","target":"","outcome":"done","decision":""}
+{"seq":10,"kind":"swipe","target":"","outcome":"done","decision":""}
+--- screen reader turned off mid-task
+--- provider failures are retried
+{"seq":1,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
+{"seq":2,"kind":"tap","target":"Alarm","outcome":"done","decision":""}
+{"seq":3,"kind":"tap","target":"Add alarm","outcome":"done","decision":""}
+{"seq":4,"kind":"screen","target":"","outcome":"done","decision":""}
+{"seq":5,"kind":"tap","target":"7","outcome":"done","decision":""}
+{"seq":6,"kind":"tap","target":"AM","outcome":"done","decision":""}
+{"seq":7,"kind":"tap","target":"OK","outcome":"done","decision":""}
