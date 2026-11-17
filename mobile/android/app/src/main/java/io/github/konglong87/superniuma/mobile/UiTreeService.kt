@@ -1,0 +1,120 @@
+package io.github.konglong87.superniuma.mobile
+
+import android.accessibilityservice.AccessibilityService
+import android.graphics.Rect
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.SystemClock
+import android.util.Log
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
+import io.github.konglong87.superniuma.niumacore.Niumacore
+import java.util.Locale
+
+/**
+ * M0's accessibility service. It only reads: when measuring is on and another
+ * app's window comes to the front, it reads that window's elements once the
+ * screen has been quiet for [SETTLE_MS], hands the snapshot to the Go core and
+ * logs the timings under the tag [MainActivity.TAG]. It never acts on a screen.
+ */
+class UiTreeService : AccessibilityService() {
+    private lateinit var worker: HandlerThread
+    private lateinit var handler: Handler
+    private var pendingPackage: String? = null
+
+    override fun onServiceConnected() {
+        worker = HandlerThread("ui-tree").also { it.start() }
+        handler = Handler(worker.looper)
+        instance = this
+        Log.i(MainActivity.TAG, "service connected")
+    }
+
+    override fun onAccessibilityEvent(event: AccessibilityEvent) {
+        if (!measuring || event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
+        val pkg = event.packageName?.toString() ?: return
+        if (pkg == packageName) return
+        pendingPackage = pkg
+        handler.removeCallbacksAndMessages(null)
+        handler.postDelayed({ measure("window $pkg") }, SETTLE_MS)
+    }
+
+    override fun onInterrupt() {}
+
+    override fun onDestroy() {
+        instance = null
+        if (::worker.isInitialized) worker.quitSafely()
+        super.onDestroy()
+    }
+
+    /** Reads the active window now, on the service's worker thread. */
+    fun measureNow(reason: String) {
+        handler.post { measure(reason) }
+    }
+
+    private fun measure(reason: String) {
+        val start = SystemClock.elapsedRealtimeNanos()
+        val root = rootInActiveWindow
+        if (root == null) {
+            Log.w(MainActivity.TAG, "tree $reason: no active window")
+            return
+        }
+        val pkg = root.packageName?.toString() ?: pendingPackage ?: "unknown"
+        val nodes = readTree(root)
+        val read = SystemClock.elapsedRealtimeNanos()
+        val json = UiSnapshot.encode(pkg, nodes)
+        val encoded = SystemClock.elapsedRealtimeNanos()
+        val summary = Niumacore.screenSummary(json)
+        val handed = SystemClock.elapsedRealtimeNanos()
+        Log.i(
+            MainActivity.TAG,
+            "tree {\"reason\":\"$reason\",\"package\":\"$pkg\",\"nodes\":${nodes.size}," +
+                "\"read_ms\":${ms(start, read)},\"encode_ms\":${ms(read, encoded)}," +
+                "\"go_ms\":${ms(encoded, handed)},\"total_ms\":${ms(start, handed)}," +
+                "\"json_bytes\":${json.length},\"core\":$summary}",
+        )
+        UiSnapshot.describe(nodes, 12).forEach { Log.i(MainActivity.TAG, "tree-line $it") }
+    }
+
+    private fun readTree(root: AccessibilityNodeInfo): List<UiNode> {
+        val nodes = ArrayList<UiNode>(256)
+        val stack = ArrayDeque<Pair<AccessibilityNodeInfo, Int>>()
+        stack.addLast(root to -1)
+        val bounds = Rect()
+        while (stack.isNotEmpty() && nodes.size < MAX_NODES) {
+            val (info, parent) = stack.removeLast()
+            info.getBoundsInScreen(bounds)
+            val index = nodes.size
+            nodes += UiNode(
+                parent = parent,
+                cls = info.className?.toString() ?: "",
+                text = info.text?.toString(),
+                desc = info.contentDescription?.toString(),
+                viewId = info.viewIdResourceName,
+                left = bounds.left,
+                top = bounds.top,
+                right = bounds.right,
+                bottom = bounds.bottom,
+                clickable = info.isClickable,
+                editable = info.isEditable,
+                scrollable = info.isScrollable,
+            )
+            for (i in info.childCount - 1 downTo 0) {
+                info.getChild(i)?.let { stack.addLast(it to index) }
+            }
+        }
+        return nodes
+    }
+
+    private fun ms(from: Long, to: Long) = String.format(Locale.ROOT, "%.1f", (to - from) / 1_000_000.0)
+
+    companion object {
+        private const val SETTLE_MS = 800L
+        private const val MAX_NODES = 2000
+
+        @Volatile
+        var measuring = false
+
+        @Volatile
+        var instance: UiTreeService? = null
+    }
+}

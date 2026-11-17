@@ -1,0 +1,12 @@
+.gradle/
+/build/*
+!/build/validation/
+app/build/
+local.properties
+*.iml
+.idea/
+.cxx/
+captures/
+# Built from ../niumacore by ../build-core.sh; never committed.
+app/libs/*.aar
+app/libs/*-sources.jar

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Super Niuma M0</string>
+    <string name="service_label">Super Niuma screen reader (M0)</string>
+    <string name="service_description">Reads the elements on the current screen so Super Niuma can measure how fast it sees an app. M0 never taps, types or sends anything.</string>
+</resources>

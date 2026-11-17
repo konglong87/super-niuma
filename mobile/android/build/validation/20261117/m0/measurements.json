@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-17",
+  "device": {
+    "kind": "emulator",
+    "avd": "SuperNiuma_M0_API34",
+    "image": "system-images;android-34;google_apis;arm64-v8a",
+    "android": "14",
+    "abi": "arm64-v8a",
+    "model": "sdk_gphone64_arm64",
+    "host": "Apple M4, macOS"
+  },
+  "toolchain": {
+    "go": "go1.26.0",
+    "gomobile": "golang.org/x/mobile v0.0.0-20261011034528-197770444867",
+    "ndk": "30.0.16248370",
+    "agp": "8.7.3",
+    "kotlin": "2.1.20",
+    "gradle": "8.11.1",
+    "jdk": "17.0.21"
+  },
+  "size": {
+    "libgojni_so_arm64_bytes": 17038000,
+    "aar_bytes": 6110127,
+    "release_unsigned_apk_bytes": 19134615,
+    "classes_dex_bytes": 2372712
+  },
+  "cold_start_total_ms": {
+    "first_launch_after_install": 1450,
+    "after_force_stop": [697, 573, 601]
+  },
+  "core_probe": [
+    {"ok": true, "core": "m0-1", "go_version": "go1.26.0", "goos": "android", "goarch": "arm64", "cpus": 4, "sqlite_version": "3.45.1", "sqlite_ms": 149, "note": "first run after install"},
+    {"ok": true, "core": "m0-2", "sqlite_version": "3.45.1", "sqlite_ms": 13},
+    {"ok": true, "core": "m0-2", "sqlite_version": "3.45.1", "sqlite_ms": 15}
+  ],
+  "https_probe": [
+    {"url": "https://<model provider>/v1/models", "ok": true, "status": 401, "ms": 342},
+    {"url": "https://<model provider>/v1/models", "ok": true, "status": 401, "ms": 661}
+  ],
+  "model_call": {
+    "path": "Go core -> internal/super/execution -> http://127.0.0.1:18080/v1 (adb reverse) -> developer-machine relay -> OpenAI-compatible provider",
+    "model": "deepseek-v4-flash",
+    "failures_before_fixes": [
+      {"code": "execution_authority_revoked", "cause": "no HOME in the app process, so super.StateDirectory() failed"},
+      {"code": "execution_authority_revoked", "cause": "SELinux denies untrusted_app read on rootfs '/', so verifyRoot's O_RDONLY walk failed"}
+    ],
+    "results": [
+      {"ok": true, "text": "Confirmed: I received your message from a phone.", "input_tokens": 190, "output_tokens": 31, "usage_known": true, "ms": 2014, "code": "execution_ok", "http_status": 200, "relay_requests": 1},
+      {"ok": true, "text": "我已收到来自手机端的消息。", "input_tokens": 187, "output_tokens": 154, "usage_known": true, "ms": 2784, "code": "execution_ok", "http_status": 200, "relay_requests": 1}
+    ]
+  },
+  "accessibility_tree": {
+    "service_flags": "flagReportViewIds|flagRetrieveInteractiveWindows, important views only, active window only",
+    "trigger": "800 ms after the last TYPE_WINDOW_STATE_CHANGED of another app",
+    "note": "Most Google apps showed first-run screens on the fresh emulator; Settings is the representative everyday screen.",
+    "round_1": [
+      {"package": "com.android.settings", "nodes": 66, "read_ms": 21.1, "total_ms": 25.0, "json_bytes": 7711, "interactive": 23, "labeled": 41},
+      {"package": "com.google.android.contacts", "nodes": 8, "read_ms": 6.3, "total_ms": 7.3},
+      {"package": "com.google.android.deskclock", "nodes": 15, "read_ms": 36.8, "total_ms": 40.5},
+      {"package": "com.google.android.dialer", "nodes": 15, "read_ms": 39.0, "total_ms": 46.7},
+      {"package": "com.google.android.apps.messaging", "nodes": 8, "read_ms": 736.6, "total_ms": 737.8, "note": "first launch, app still initialising"},
+      {"package": "com.google.android.documentsui", "nodes": 26, "read_ms": 54.4, "total_ms": 61.7},
+      {"package": "com.google.android.calendar", "nodes": 11, "read_ms": 192.0, "total_ms": 193.6},
+      {"package": "com.android.chrome", "nodes": 6, "read_ms": 8.4, "total_ms": 12.1},
+      {"package": "com.google.android.apps.maps", "nodes": 9, "read_ms": 655.3, "go_ms": 85.6, "total_ms": 742.4, "note": "first launch, app still initialising"}
+    ],
+    "round_2": [
+      {"package": "com.android.settings", "nodes": 66, "read_ms": 44.5, "total_ms": 48.3},
+      {"package": "com.google.android.contacts", "nodes": 8, "read_ms": 3.0, "total_ms": 3.4},
+      {"package": "com.google.android.deskclock", "nodes": 15, "read_ms": 5.7, "total_ms": 6.8},
+      {"package": "com.google.android.dialer", "nodes": 15, "read_ms": 6.2, "total_ms": 6.7},
+      {"package": "com.google.android.apps.messaging", "nodes": 8, "read_ms": 62.7, "total_ms": 64.4},
+      {"package": "com.google.android.documentsui", "nodes": 26, "read_ms": 17.0, "total_ms": 21.4},
+      {"package": "com.google.android.calendar", "nodes": 11, "read_ms": 119.2, "total_ms": 123.3},
+      {"package": "com.android.chrome", "nodes": 19, "read_ms": 21.1, "total_ms": 22.0},
+      {"package": "com.google.android.apps.maps", "nodes": 9, "read_ms": 3.1, "total_ms": 3.5}
+    ],
+    "settings_pages": [
+      {"intent": "MANAGE_ALL_APPLICATIONS_SETTINGS", "nodes": 43, "read_ms": 20.1, "total_ms": 22.4},
+      {"intent": "ACCESSIBILITY_SETTINGS", "nodes": 36, "read_ms": 18.7, "total_ms": 20.0},
+      {"intent": "DISPLAY_SETTINGS", "nodes": 37, "read_ms": 19.0, "total_ms": 21.8},
+      {"intent": "LOCALE_SETTINGS", "nodes": 19, "read_ms": 5.0, "total_ms": 5.6},
+      {"intent": "DATE_SETTINGS", "nodes": 30, "read_ms": 14.6, "total_ms": 15.3}
+    ],
+    "within_200_ms": "21 of 23 reads; the two slower reads were first launches"
+  },
+  "execution_tests_on_android_kernel": {
+    "binary": "go test -c ./internal/super/execution for android/arm64, run as adb shell (uid 2000)",
+    "passed": 44,
+    "failed": 1,
+    "failed_test": "TestRejectHardlinksAndSpecialFilesWithoutBlocking",
+    "failure_cause": "fixture setup: SELinux denies link() and mkfifo() to the shell domain under /data/local/tmp"
+  },
+  "force_stop": "am force-stop removed the service from enabled_accessibility_services (setting became null); the person has to turn it on again"
+}
