@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"net"
 	"net/url"
 	"regexp"
 	"strings"
@@ -140,8 +141,11 @@ func validSpec(s TaskSpec) error {
 		}
 	}
 	u, err := url.Parse(s.Route.BaseURL)
-	if err != nil || u.Host == "" || (u.Scheme != "https" && u.Scheme != "http") || strings.TrimSpace(s.Route.Model) == "" || s.Route.Token == "" {
+	if err != nil || u.Host == "" || strings.TrimSpace(s.Route.Model) == "" || s.Route.Token == "" {
 		return fmt.Errorf("%w: the model route needs base_url, model and key", ErrInvalidSpec)
+	}
+	if ip := net.ParseIP(u.Hostname()); u.Scheme != "https" && !(u.Scheme == "http" && ip != nil && ip.IsLoopback()) {
+		return fmt.Errorf("%w: the model route must use https (plain http only to this phone's loopback)", ErrInvalidSpec)
 	}
 	if s.MaxMinutes < 0 || s.MaxMinutes > maxMinutes || s.MaxTokens < 0 {
 		return fmt.Errorf("%w: limits out of range", ErrInvalidSpec)

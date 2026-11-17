@@ -227,10 +227,10 @@ class UiTreeService : AccessibilityService(), DeviceBridge {
         if (BuildConfig.DEBUG) Log.i(MainActivity.TAG, "perform $line")
     }
 
+    /** Class, view id and bounds only: screen text can be private. */
     private fun describe(n: AccessibilityNodeInfo): String {
         val r = Rect().also { n.getBoundsInScreen(it) }
-        val label = (n.text ?: n.contentDescription)?.toString()?.take(24) ?: ""
-        return "${n.className?.toString()?.substringAfterLast('.')}/${n.viewIdResourceName?.substringAfterLast('/') ?: ""}\"$label\"$r"
+        return "${n.className?.toString()?.substringAfterLast('.')}/${n.viewIdResourceName?.substringAfterLast('/') ?: ""}$r"
     }
 
     private fun done() = "{\"status\":\"done\"}"

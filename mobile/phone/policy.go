@@ -80,6 +80,24 @@ func hasHan(s string) bool {
 	return false
 }
 
+// IDRisk classifies a control by its resource id, for icon-only buttons
+// that have no label (`com.app:id/send_button`, `sendButton`).
+func IDRisk(viewID string) Risk {
+	name := viewID[strings.LastIndex(viewID, "/")+1:]
+	var words []rune
+	for i, r := range name {
+		switch {
+		case r == '_' || r == '-' || r == '.':
+			words = append(words, ' ')
+		case unicode.IsUpper(r) && i > 0:
+			words = append(words, ' ', unicode.ToLower(r))
+		default:
+			words = append(words, unicode.ToLower(r))
+		}
+	}
+	return LabelRisk(string(words))
+}
+
 // SubmitRisk is the risk of pressing the keyboard's action key in pkg.
 func SubmitRisk(pkg string) Risk {
 	if messagingApps[pkg] {

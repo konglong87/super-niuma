@@ -56,6 +56,7 @@ class Overlay(private val service: AccessibilityService) {
         main.post {
             passThrough = on
             bar?.let { wm.updateViewLayout(it, barParams()) }
+            card?.let { wm.updateViewLayout(it, cardParams()) }
             done.countDown()
         }
         done.await(500, TimeUnit.MILLISECONDS)
@@ -63,7 +64,7 @@ class Overlay(private val service: AccessibilityService) {
 
     private fun showBar(s: TaskSnapshot) {
         val last = s.steps.lastOrNull()
-        val text = "超级牛马 · 第 ${s.steps.size} 步" + (last?.let { " · ${it.kind} ${it.target.take(24)}" } ?: "")
+        val text = "牛马 · 第 ${s.steps.size} 步" + (last?.let { " · ${it.kind}" } ?: "")
         if (bar == null) {
             barText = TextView(service).apply { setTextColor(Color.WHITE); textSize = 13f }
             val stop = Button(service).apply {
@@ -75,7 +76,7 @@ class Overlay(private val service: AccessibilityService) {
                 gravity = Gravity.CENTER_VERTICAL
                 setPadding(32, 8, 16, 8)
                 background = rounded(Color.argb(220, 30, 30, 30))
-                addView(barText, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+                addView(barText)
                 addView(stop)
             }
             wm.addView(bar, barParams())
@@ -94,8 +95,10 @@ class Overlay(private val service: AccessibilityService) {
             setTextColor(Color.DKGRAY)
             setPadding(0, 16, 0, 16)
         }
-        val allow = Button(service).apply { text = "允许一次"; setOnClickListener { Niumacore.decide(p.id, "allow_once") } }
-        val deny = Button(service).apply { text = "拒绝"; setOnClickListener { Niumacore.decide(p.id, "deny") } }
+        // Remove the card before the core proceeds, so a gesture of the
+        // approved step can never land on it.
+        val allow = Button(service).apply { text = "允许一次"; setOnClickListener { removeCard(); Niumacore.decide(p.id, "allow_once") } }
+        val deny = Button(service).apply { text = "拒绝"; setOnClickListener { removeCard(); Niumacore.decide(p.id, "deny") } }
         val buttons = LinearLayout(service).apply {
             orientation = LinearLayout.HORIZONTAL
             addView(deny, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
@@ -111,7 +114,7 @@ class Overlay(private val service: AccessibilityService) {
             addView(buttons)
         }
         cardId = p.id
-        wm.addView(card, params(Gravity.BOTTOM, WindowManager.LayoutParams.MATCH_PARENT, touchable = true))
+        wm.addView(card, cardParams())
         reportPositions("allow" to allow, "deny" to deny)
     }
 
@@ -143,7 +146,10 @@ class Overlay(private val service: AccessibilityService) {
         cardId = null
     }
 
-    private fun barParams() = params(Gravity.TOP, WindowManager.LayoutParams.MATCH_PARENT, touchable = !passThrough)
+    // A small pill in the top-right corner, so most of the app stays reachable.
+    private fun barParams() = params(Gravity.TOP or Gravity.END, WindowManager.LayoutParams.WRAP_CONTENT, touchable = !passThrough)
+
+    private fun cardParams() = params(Gravity.BOTTOM, WindowManager.LayoutParams.MATCH_PARENT, touchable = !passThrough)
 
     private fun params(gravity: Int, width: Int, touchable: Boolean) = WindowManager.LayoutParams(
         width,
@@ -154,7 +160,8 @@ class Overlay(private val service: AccessibilityService) {
         PixelFormat.TRANSLUCENT,
     ).apply {
         this.gravity = gravity
-        y = if (gravity == Gravity.TOP) 120 else 48
+        y = if (gravity and Gravity.VERTICAL_GRAVITY_MASK == Gravity.TOP) 120 else 48
+        x = 24
     }
 
     private fun rounded(color: Int) = GradientDrawable().apply {

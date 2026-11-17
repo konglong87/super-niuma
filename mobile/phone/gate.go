@@ -168,6 +168,9 @@ func (g *Gate) Act(ctx context.Context, a execution.DeviceAction) (string, error
 				return refuse("refused", fmt.Sprintf("element [%d] does not scroll", a.Ref))
 			case a.Kind == "tap":
 				risk = LabelRisk(step.Target)
+				if risk == RiskNone {
+					risk = IDRisk(n.ViewID)
+				}
 			case a.Kind == "type" && a.Submit:
 				risk = SubmitRisk(cur.Package)
 			}

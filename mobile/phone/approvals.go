@@ -74,14 +74,29 @@ func (a *Approvals) Ask(ctx context.Context, approval Approval) (Decision, error
 	}()
 	timer := time.NewTimer(a.timeout)
 	defer timer.Stop()
+	var err error
 	select {
 	case d := <-answer:
 		return d, nil
 	case <-timer.C:
-		return Deny, nil
 	case <-ctx.Done():
-		return Deny, ctx.Err()
+		err = ctx.Err()
 	}
+	// Close the approval before deciding the outcome, so a late Decide is
+	// refused instead of reported as accepted; one that won the race counts.
+	a.mu.Lock()
+	if a.answer == answer {
+		a.pending, a.answer = nil, nil
+	}
+	a.mu.Unlock()
+	select {
+	case d := <-answer:
+		if err == nil {
+			return d, nil
+		}
+	default:
+	}
+	return Deny, err
 }
 
 // Decide answers the pending approval with id. The first answer wins.

@@ -147,6 +147,45 @@ func TestLabelRisk(t *testing.T) {
 	if SubmitRisk("com.google.android.apps.messaging") != RiskSend || SubmitRisk(clock) != RiskNone {
 		t.Fatal("submit risk wrong")
 	}
+	ids := map[string]Risk{
+		"com.chat:id/send_button": RiskSend, "sendButton": RiskSend, "com.x:id/delete": RiskDelete,
+		"btnPayNow": RiskPay, "com.x:id/sending_status": RiskNone, "com.x:id/fab": RiskNone, "": RiskNone,
+	}
+	for id, want := range ids {
+		if got := IDRisk(id); got != want {
+			t.Errorf("id %q: got %q want %q", id, got, want)
+		}
+	}
+}
+
+func TestGateAsksForIconOnlyRiskyButton(t *testing.T) {
+	chat := "com.example.chat"
+	p := &fakePhone{screen: Snapshot{Package: chat, Nodes: []Node{
+		{Parent: -1, Class: "x"}, {Parent: 0, Class: "android.widget.ImageButton", ViewID: chat + ":id/send_button", Bounds: [4]int{900, 2000, 1000, 2100}, Clickable: true},
+	}}}
+	g := NewGate(p, []string{chat}, own, NewApprovals(5*time.Millisecond, nil), func() bool { return false }, nil)
+	g.retry = time.Millisecond
+	act(t, g, execution.DeviceAction{Kind: "screen"})
+	if _, err := act(t, g, execution.DeviceAction{Kind: "tap", Ref: 1}); !refused(err, "approval_denied") || len(p.actions()) != 0 {
+		t.Fatalf("icon-only send ran without approval: %v", err)
+	}
+}
+
+func TestApprovalLateDecisionIsRefused(t *testing.T) {
+	a := NewApprovals(20*time.Millisecond, nil)
+	ids := make(chan string, 1)
+	go func() {
+		for a.Pending() == nil {
+			time.Sleep(time.Millisecond)
+		}
+		ids <- a.Pending().ID
+	}()
+	if d, _ := a.Ask(context.Background(), Approval{}); d != Deny {
+		t.Fatal("timeout did not deny")
+	}
+	if err := a.Decide(<-ids, Allow); !errors.Is(err, ErrNoApproval) {
+		t.Fatalf("late allow accepted: %v", err)
+	}
 }
 
 // --- approvals ---
@@ -568,6 +607,7 @@ func TestRunnerRejectsInvalidSpecs(t *testing.T) {
 		{Goal: "x", Apps: []string{clock}},
 		{Goal: "x", Apps: []string{clock}, Route: Route{BaseURL: "ftp://x", Model: "m", Token: "t"}},
 		{Goal: "x", Apps: []string{clock}, Route: spec().Route, MaxMinutes: 99},
+		{Goal: "x", Apps: []string{clock}, Route: Route{BaseURL: "http://gateway.example/v1", Model: "m", Token: "t"}},
 	}
 	for _, s := range bad {
 		if _, err := r.Start(s); !errors.Is(err, ErrInvalidSpec) {
