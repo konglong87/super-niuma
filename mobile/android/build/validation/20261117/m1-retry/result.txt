@@ -1,4 +1,4 @@
-M1 acceptance 2026-11-17 16:39 provider=agnes-2.5-flash device=sdk_gphone64_arm64 android=14
+M1 acceptance 2026-11-17 16:57 provider=agnes-2.5-flash device=sdk_gphone64_arm64 android=14
 == install
 PASS  fresh install of the debug APK
 == model route
@@ -7,35 +7,33 @@ PASS  route saved and read back through the Keystore
 PASS  a task is refused while the screen reader is off
 PASS  screen reader connects to the core
 == set an alarm (verified)
-      provider problem (execution_http_rate_limited); retrying once after 75s
-== set an alarm (verified)
-      {"id":"task-1794904935333-f335de07","status":"done","code":"","verified":true,"result":"闹钟应用已打开，屏幕上已经显示了一个设置在早上 7:00 的闹钟，并且该闹钟处于启用状态（开关已打开）。任务已完成，手机停留在显示 7:00 闹钟的界面上。"}
+      {"id":"task-1794905866940-a806b4a0","status":"done","code":"","verified":true,"result":"I have successfully set an alarm for 7:00 AM. The phone now displays the alarm list with the newly created 7:00 AM alarm visible, along with the confirmation message \"Alarm set for 14 hours and 2 minutes from now.\""}
 PASS  alarm task done and verified
 PASS  7:00 AM alarm exists (positive control for the checks below)
 == delete, person denies
-      {"id":"task-1794905021140-6a4356d3","status":"needs_attention","code":"steps_refused","result":"I opened the clock app and located the 7:00 AM alarm. When I attempted to tap the \"Delete\" button (ref 21), you denied the action, so the alarm was not deleted. The 7:00 AM alarm remains active."}
+      {"id":"task-1794905969622-85a82b83","status":"needs_attention","code":"steps_refused","result":"删除早上 7:00 闹钟的操作已被您拒绝，因此我没有继续执行。当前屏幕显示的是 Google 时钟应用，可以看到 7:00 AM 的闹钟仍然存在（已展开状态）。请问您需要我做其他操作吗？"}
 PASS  the delete step waited for approval
 PASS  denied: task needs attention
 PASS  denied: 7:00 AM alarm still exists
 == delete, person allows
-      {"id":"task-1794905110703-6ce7f814","status":"needs_attention","code":"steps_refused","result":"闹钟\"7:00 AM\"当前在屏幕上可见，我已找到删除按钮（ref 21），但您拒绝了这个操作步骤。如需继续删除该闹钟，请重新授权；否则操作已终止，屏幕仍显示闹钟列表页面，包含 7:00 AM、8:30 AM、9:00 AM 等闹钟设置。"}
-FAIL  allowed: the approved delete step ran
-FAIL  allowed: 7:00 AM alarm is gone
+      {"id":"task-1794906058489-2fce2980","status":"done","code":"not_verified","result":"已成功删除早上7:00的闹钟。现在屏幕上的闹钟列表显示剩余的闹钟为：\n- 8:30 AM（工作日 Mon-Fri）\n- 9:00 AM（周末 Sun-Sat）\n- 5:01 PM（周二，11月17日）"}
+PASS  allowed: the approved delete step ran
+PASS  allowed: 7:00 AM alarm is gone
 == stop from the overlay
-      {"id":"task-1794905261878-a9054711","status":"stopped","code":"stopped_by_person","result":""}
+      {"id":"task-1794906153591-ce20670b","status":"stopped","code":"stopped_by_person","result":""}
 PASS  stopped by the person
 PASS  no action after stop
 == app process killed mid-task
       {"status":"interrupted","code":"app_stopped","steps":2}
 PASS  killed task is interrupted, steps kept, not retried
 == out-of-scope app
-      {"id":"task-1794905438741-1845ec8e","status":"needs_attention","code":"steps_refused","result":"I attempted to open system settings to check Wi-Fi status, but the only app allowed for this task is `com.google.android.deskclock` (Clock app), while system settings (`com.android.settings`) is not permitted.\n\nHere's what I tried:\n- Attempted to launch Settings app → **denied** (not an allowed app)\n- Swiped down for quick settings panel → returned to home screen (system UI not accessible)\n- Opened Clock app and explored its options menu → no Wi-Fi or network settings available\n\n**Result:** The Clock app does not provide Wi-Fi status information, and I cannot access system settings as it's outside the allowed apps list for this task."}
+      {"id":"task-1794906333177-9127dd61","status":"done","code":"not_verified","result":"根据任务要求，只能使用 `com.google.android.deskclock`（时钟应用）。当前页面未显示系统设置应用的快捷方式，无法直接打开设置查看 Wi-Fi 状态。\n\n如需检查 Wi-Fi 是否开启，请手动打开系统设置应用，或在时钟应用中告知我是否有其他可用的功能路径。"}
 PASS  no tap, type or swipe ran inside an app outside the task
 PASS  any attempt outside the task was refused as scope_denied
-      steps: [{"kind":"screen","app":"io.github.konglong87.superniuma.mobile","target":null,"outcome":"done"},{"kind":"key","app":"io.github.konglong87.superniuma.mobile","target":"home","outcome":"done"},{"kind":"launch","app":"com.google.android.apps.nexuslauncher","target":"com.android.settings","outcome":"refused"},{"kind":"swipe","app":"com.google.android.apps.nexuslauncher","target":null,"outcome":"done"},{"kind":"key","app":"com.android.systemui","target":"back","outcome":"done"},{"kind":"launch","app":"com.google.android.apps.nexuslauncher","target":"com.google.android.deskclock","outcome":"done"},{"kind":"tap","app":"com.google.android.deskclock","target":"More options","outcome":"done"},{"kind":"key","app":"com.google.android.deskclock","target":"home","outcome":"done"}]
+      steps: [{"kind":"screen","app":"io.github.konglong87.superniuma.mobile","target":null,"outcome":"done"},{"kind":"launch","app":"io.github.konglong87.superniuma.mobile","target":"com.google.android.deskclock","outcome":"done"},{"kind":"key","app":"com.google.android.deskclock","target":"home","outcome":"done"},{"kind":"swipe","app":"com.google.android.apps.nexuslauncher","target":null,"outcome":"done"},{"kind":"key","app":"com.android.systemui","target":"home","outcome":"done"},{"kind":"key","app":"com.android.systemui","target":"home","outcome":"done"},{"kind":"swipe","app":"com.google.android.apps.nexuslauncher","target":null,"outcome":"done"},{"kind":"swipe","app":"com.google.android.apps.nexuslauncher","target":null,"outcome":"done"}]
 == provider failures are retried
-      {"id":"task-1794905541052-3f9904b5","status":"done","code":"","verified":true,"result":"已成功设置早上 7:00 的闹钟。现在闹钟应用的主界面显示有三个闹钟：\n- **7:00 AM** - 已开启（显示 \"Tomorrow\"），位于列表顶部\n- 8:30 AM\n- 9:00 AM\n\n手机当前停留在闹钟列表页面，清晰展示了 7:00 的闹钟已设置完成。"}
-      retries: 13, relay: 13 injected
+      {"id":"task-1794906445841-3a70f310","status":"done","code":"","verified":true,"result":"已成功设置早上 7:00 的闹钟。手机当前停留在闹钟设置界面，屏幕显示 \"7:00 AM\"，闹钟已开启。"}
+      retries: 5, relay: 5 injected
 PASS  task with injected 429s and 500s still done and verified
 PASS  429 waits were shown with their Retry-After
 PASS  500s were retried after a backoff
@@ -43,5 +41,5 @@ PASS  injected failures never reached the provider
 == builds and health
 PASS  release build disables the test commands
 PASS  no crash from the app
-      model requests: 65, statuses:   48 200   13 429    4 500 
-== 20 passed, 2 failed
+      model requests: 39, statuses:   34 200    3 429    2 500 
+== 22 passed, 0 failed

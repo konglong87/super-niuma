@@ -1,41 +1,38 @@
 --- set an alarm (verified)
---- set an alarm (verified)
-{"seq":1,"kind":"screen","target":"","outcome":"done","decision":""}
+{"seq":1,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
 {"seq":2,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
+{"seq":3,"kind":"screen","target":"","outcome":"done","decision":""}
+{"seq":4,"kind":"tap","target":"Alarm","outcome":"done","decision":""}
+{"seq":5,"kind":"tap","target":"Add alarm","outcome":"done","decision":""}
+{"seq":6,"kind":"tap","target":"7","outcome":"done","decision":""}
+{"seq":7,"kind":"tap","target":"AM","outcome":"done","decision":""}
+{"seq":8,"kind":"tap","target":"OK","outcome":"done","decision":""}
+{"seq":9,"kind":"screen","target":"","outcome":"done","decision":""}
 --- delete, person denies
 {"seq":1,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
-{"seq":2,"kind":"screen","target":"","outcome":"done","decision":""}
-{"seq":3,"kind":"tap","target":"Delete","outcome":"denied","decision":"denied"}
+{"seq":2,"kind":"tap","target":"Delete","outcome":"denied","decision":"denied"}
+{"seq":3,"kind":"screen","target":"","outcome":"done","decision":""}
 --- delete, person allows
-{"seq":1,"kind":"screen","target":"","outcome":"done","decision":""}
-{"seq":2,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
-{"seq":3,"kind":"tap","target":"Delete","outcome":"denied","decision":"denied"}
+{"seq":1,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
+{"seq":2,"kind":"screen","target":"","outcome":"done","decision":""}
+{"seq":3,"kind":"tap","target":"Delete","outcome":"done","decision":"approved"}
+{"seq":4,"kind":"screen","target":"","outcome":"done","decision":""}
 --- stop from the overlay
 --- app process killed mid-task
 --- out-of-scope app
 {"seq":1,"kind":"screen","target":"","outcome":"done","decision":""}
-{"seq":2,"kind":"key","target":"home","outcome":"done","decision":""}
-{"seq":3,"kind":"launch","target":"com.android.settings","outcome":"refused","decision":""}
+{"seq":2,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
+{"seq":3,"kind":"key","target":"home","outcome":"done","decision":""}
 {"seq":4,"kind":"swipe","target":"","outcome":"done","decision":""}
-{"seq":5,"kind":"key","target":"back","outcome":"done","decision":""}
-{"seq":6,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
-{"seq":7,"kind":"tap","target":"More options","outcome":"done","decision":""}
-{"seq":8,"kind":"key","target":"home","outcome":"done","decision":""}
+{"seq":5,"kind":"key","target":"home","outcome":"done","decision":""}
+{"seq":6,"kind":"key","target":"home","outcome":"done","decision":""}
+{"seq":7,"kind":"swipe","target":"","outcome":"done","decision":""}
+{"seq":8,"kind":"swipe","target":"","outcome":"done","decision":""}
 --- provider failures are retried
-{"seq":1,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
-{"seq":2,"kind":"screen","target":"","outcome":"done","decision":""}
+{"seq":1,"kind":"screen","target":"","outcome":"done","decision":""}
+{"seq":2,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
 {"seq":3,"kind":"tap","target":"Alarm","outcome":"done","decision":""}
 {"seq":4,"kind":"tap","target":"Add alarm","outcome":"done","decision":""}
 {"seq":5,"kind":"tap","target":"7","outcome":"done","decision":""}
 {"seq":6,"kind":"tap","target":"AM","outcome":"done","decision":""}
-{"seq":7,"kind":"tap","target":"AM","outcome":"done","decision":""}
-{"seq":8,"kind":"tap","target":"OK","outcome":"done","decision":""}
-{"seq":9,"kind":"key","target":"back","outcome":"done","decision":""}
-{"seq":10,"kind":"screen","target":"","outcome":"done","decision":""}
-{"seq":11,"kind":"tap","target":"","outcome":"refused","decision":""}
-{"seq":12,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
-{"seq":13,"kind":"key","target":"back","outcome":"done","decision":""}
-{"seq":14,"kind":"launch","target":"com.google.android.deskclock","outcome":"done","decision":""}
-{"seq":15,"kind":"tap","target":"7:00 AM","outcome":"done","decision":""}
-{"seq":16,"kind":"tap","target":"Cancel","outcome":"done","decision":""}
-{"seq":17,"kind":"tap","target":"Collapse alarm","outcome":"done","decision":""}
+{"seq":7,"kind":"tap","target":"OK","outcome":"done","decision":""}
