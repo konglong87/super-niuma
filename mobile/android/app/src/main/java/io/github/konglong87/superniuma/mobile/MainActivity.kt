@@ -43,7 +43,9 @@ class MainActivity : Activity() {
         // model workspace is a sibling, never inside it.
         val init = Niumacore.init(File(filesDir, "super-state").apply { mkdirs() }.canonicalPath)
         show("core ${Niumacore.version()} · init $init · screen reader ${if (UiTreeService.instance != null) "on" else "off"}")
-        handle(intent)
+        // A recreated activity (rotation, theme change) keeps its intent; run
+        // the command only on the first creation, never again.
+        if (savedInstanceState == null) handle(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -59,7 +61,7 @@ class MainActivity : Activity() {
     private fun handle(intent: Intent?) {
         // Only the DUMP-protected alias carries test commands; the launcher
         // entry ignores extras, so other apps cannot trigger these actions.
-        if (!BuildConfig.DEBUG || intent?.component?.className != "$packageName$COMMANDS_ALIAS") return
+        if (!BuildConfig.DEBUG || intent?.component?.className != COMMANDS_ALIAS) return
         val action = intent.getStringExtra(EXTRA_ACTION) ?: return
         run(action, intent)
     }
@@ -77,7 +79,8 @@ class MainActivity : Activity() {
                     report(action, "{\"ok\":false,\"error\":\"screen reader is off\"}")
                 } else {
                     service.measureNow("on request")
-                    report(action, "{\"ok\":true,\"requested\":true,\"result\":\"logcat tag $TAG\"}")
+                    // Queued only; the read logs its own `tree {"ok":...}` line.
+                    report(action, "{\"queued\":true}")
                 }
                 return
             }
@@ -121,7 +124,9 @@ class MainActivity : Activity() {
     companion object {
         const val TAG = "NiumaM0"
         private const val EXTRA_ACTION = "m0"
-        private const val COMMANDS_ALIAS = ".M0Commands"
+        // The alias's class name comes from the manifest namespace, which is
+        // this class's package; applicationId (packageName) may differ.
+        private val COMMANDS_ALIAS = MainActivity::class.java.name.substringBeforeLast('.') + ".M0Commands"
         private const val DEFAULT_RELAY_URL = "http://127.0.0.1:18080/v1"
         private const val DEFAULT_HTTPS_URL = "https://connectivitycheck.gstatic.com/generate_204"
     }

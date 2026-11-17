@@ -1,0 +1,46 @@
+M0 end-to-end acceptance, 2026-11-17, SuperNiuma_M0_API34 (Android 14, arm64 emulator)
+Fresh uninstall + install of the debug APK; model calls through mobile/scripts/dev-model-relay.py
+over adb reverse; execution tests cross-compiled for android/arm64 and run as adb shell.
+
+== fresh install
+PASS  install debug APK
+== command entry
+PASS  launcher entry ignores m0 extras
+PASS  probe ok on android/arm64 with SQLite
+PASS  HTTPS reaches the provider (any status)
+== real model call
+      {"ok":true,"text":"Reply.","input_tokens":178,"output_tokens":35,"usage_known":true,"ms":1238,"code":"execution_ok","http_status":200}
+PASS  model call succeeds with usage recorded
+PASS  exactly one upstream request
+PASS  wrong relay token is rejected (401, no retry)
+== recreation does not replay commands
+PASS  rotation does not re-run the model command
+PASS  one MainActivity instance after several commands
+PASS  every alias command was delivered (probe, https, 2x model)
+== screen reading
+      {"package":"com.android.settings","nodes":66,"total_ms":36.3}
+      {"package":"com.google.android.contacts","nodes":8,"total_ms":2.3}
+      {"package":"com.google.android.deskclock","nodes":15,"total_ms":15.8}
+      {"package":"com.google.android.documentsui","nodes":26,"total_ms":8.8}
+PASS  four apps read
+PASS  every read within 200 ms
+PASS  settings elements are readable
+PASS  on-request read is not cancelled by window events
+== process health
+PASS  no crashes from the app
+== force stop
+      enabled_accessibility_services after force-stop: null
+== release build
+PASS  release disables the command alias
+== execution tests on the Android kernel
+      44 pass, failing: TestRejectHardlinksAndSpecialFilesWithoutBlocking
+PASS  only the SELinux fixture test fails on Android
+PASS  new O_PATH tests pass on Android
+== 18 passed, 0 failed
+
+Notes
+- The model call checks the core path (execution adapter, usage, single request), not the
+  model's wording: deepseek-v4-flash answered "Reply." to "Reply with exactly: phone core ok".
+- force-stop removing the accessibility service is expected Android behaviour; M1 must detect it.
+- The failing execution test cannot create its hardlink/FIFO fixture under SELinux; it is not a
+  product failure.

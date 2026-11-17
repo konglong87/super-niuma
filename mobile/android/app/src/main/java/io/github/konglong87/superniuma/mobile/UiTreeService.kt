@@ -36,8 +36,9 @@ class UiTreeService : AccessibilityService() {
         val pkg = event.packageName?.toString() ?: return
         if (pkg == packageName) return
         pendingPackage = pkg
-        handler.removeCallbacksAndMessages(null)
-        handler.postDelayed({ measure("window $pkg") }, SETTLE_MS)
+        // Debounce window reads only; an on-request read stays queued.
+        handler.removeCallbacksAndMessages(SETTLE_TOKEN)
+        handler.postDelayed({ measure("window $pkg", pkg) }, SETTLE_TOKEN, SETTLE_MS)
     }
 
     override fun onInterrupt() {}
@@ -50,18 +51,22 @@ class UiTreeService : AccessibilityService() {
 
     /** Reads the active window now, on the service's worker thread. */
     fun measureNow(reason: String) {
-        handler.post { measure(reason) }
+        handler.post { measure(reason, null) }
     }
 
-    private fun measure(reason: String, retried: Boolean = false) {
+    /**
+     * Reads one window. [expected] is the package whose window event asked for
+     * the read; the fallback never reads another app's window in its place.
+     */
+    private fun measure(reason: String, expected: String?, retried: Boolean = false) {
         val start = SystemClock.elapsedRealtimeNanos()
-        val root = activeRoot()
+        val root = activeRoot(expected)
         if (root == null) {
             // A window in transition (e.g. a deep-link trampoline) has no root yet.
             if (!retried) {
-                handler.postDelayed({ measure(reason, retried = true) }, RETRY_MS)
+                handler.postDelayed({ measure(reason, expected, retried = true) }, SETTLE_TOKEN, RETRY_MS)
             } else {
-                Log.w(MainActivity.TAG, "tree $reason: no active window")
+                Log.w(MainActivity.TAG, "tree {\"ok\":false,\"reason\":\"$reason\",\"error\":\"no readable window\"}")
             }
             return
         }
@@ -74,7 +79,7 @@ class UiTreeService : AccessibilityService() {
         val handed = SystemClock.elapsedRealtimeNanos()
         Log.i(
             MainActivity.TAG,
-            "tree {\"reason\":\"$reason\",\"package\":\"$pkg\",\"nodes\":${nodes.size}," +
+            "tree {\"ok\":true,\"reason\":\"$reason\",\"package\":\"$pkg\",\"nodes\":${nodes.size}," +
                 "\"read_ms\":${ms(start, read)},\"encode_ms\":${ms(read, encoded)}," +
                 "\"go_ms\":${ms(encoded, handed)},\"total_ms\":${ms(start, handed)}," +
                 "\"json_bytes\":${json.length},\"core\":$summary}",
@@ -83,14 +88,15 @@ class UiTreeService : AccessibilityService() {
     }
 
     /**
-     * The active window's root, or else the root of the app window the system
-     * lists as active (or the first app window): some screens, such as the
-     * Wi-Fi page reached through a deep link, report no active-window root.
+     * The active window's root, or else the root of the active app window:
+     * some screens, such as the Wi-Fi page reached through a deep link, report
+     * no active-window root. Either must belong to [expected] when it is set.
      */
-    private fun activeRoot(): AccessibilityNodeInfo? {
-        rootInActiveWindow?.let { return it }
-        val apps = windows.filter { it.type == AccessibilityWindowInfo.TYPE_APPLICATION }
-        return (apps.firstOrNull { it.isActive } ?: apps.firstOrNull())?.root
+    private fun activeRoot(expected: String?): AccessibilityNodeInfo? {
+        val root = rootInActiveWindow
+            ?: windows.firstOrNull { it.type == AccessibilityWindowInfo.TYPE_APPLICATION && it.isActive }?.root
+            ?: return null
+        return root.takeIf { expected == null || root.packageName?.toString() == expected }
     }
 
     private fun readTree(root: AccessibilityNodeInfo): List<UiNode> {
@@ -128,6 +134,7 @@ class UiTreeService : AccessibilityService() {
     companion object {
         private const val SETTLE_MS = 800L
         private const val RETRY_MS = 500L
+        private val SETTLE_TOKEN = Any()
         private const val MAX_NODES = 2000
 
         @Volatile
