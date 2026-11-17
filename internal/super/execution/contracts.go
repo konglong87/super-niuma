@@ -62,6 +62,9 @@ type Request struct {
 	Budget                                          Budget
 	// Device, when set, adds the phone tools and allows up to MaxDeviceTurns.
 	Device Device
+	// Retry bounds re-sending model requests after transient failures; nil
+	// means DefaultRetryPolicy and NoRetry disables it (retry.go).
+	Retry *RetryPolicy
 }
 
 // WriteReceipt is produced by the trusted file tool after writing; never parsed from model text.
@@ -91,9 +94,13 @@ type Result struct {
 	Diagnostic *Diagnostic    `json:"diagnostic,omitempty"`
 	Writes     []WriteReceipt `json:"writes,omitempty"`
 	Text       string         `json:"text"`
-	Usage      Usage          `json:"usage"`
-	UsageKnown bool           `json:"usage_known"`
-	ToolCalls  int            `json:"tool_calls"`
+	// Retries counts model requests re-sent after transient failures, and
+	// RetryWaitMS the time spent waiting for them.
+	Retries     int   `json:"retries,omitempty"`
+	RetryWaitMS int64 `json:"retry_wait_ms,omitempty"`
+	Usage       Usage `json:"usage"`
+	UsageKnown  bool  `json:"usage_known"`
+	ToolCalls   int   `json:"tool_calls"`
 }
 
 type Executor interface {

@@ -5,6 +5,7 @@ import (
 	"io"
 	"log/slog"
 	"strings"
+	"time"
 	"unicode/utf8"
 
 	"github.com/konglong87/super-niuma/internal/config"
@@ -21,6 +22,7 @@ type Runner struct {
 	resolve   func(context.Context) (config.Config, error)
 	logger    *slog.Logger
 	newClient func(config.Config) (query.MessageStreamer, error)
+	sleep     func(context.Context, time.Duration) error // retry waits; tests replace it
 }
 
 func New(resolve func(context.Context) (config.Config, error), logger *slog.Logger) *Runner {
@@ -91,7 +93,7 @@ func (r *Runner) Execute(ctx context.Context, request Request) (result Result, r
 	request.WritePaths = append([]string(nil), request.WritePaths...)
 	runCtx, cancel := context.WithCancel(telemetry.WithEmitter(observability.WithoutLogging(ctx), telemetry.NewEmitter()))
 	defer cancel()
-	state := &attemptState{request: request, cancel: cancel, logger: rLogger(r)}
+	state := &attemptState{request: request, cancel: cancel, logger: rLogger(r), retry: newRetryState(request.Retry, r.sleep)}
 	state.log(actionAttemptStart, codeOK)
 	defer func() {
 		if state.diagnostic != nil {
@@ -124,6 +126,7 @@ func (r *Runner) Execute(ctx context.Context, request Request) (result Result, r
 	}
 	if transport, ok := client.(*httpStreamer); ok {
 		transport.authorize = state.authorize
+		transport.retry = state.retry
 	}
 	metered := &meteredStreamer{inner: client, state: state, usageKnown: true}
 	registry := newRegistry(fs, state)
@@ -152,6 +155,7 @@ func (r *Runner) Execute(ctx context.Context, request Request) (result Result, r
 		},
 	})
 	result.Usage, result.UsageKnown, result.ToolCalls = metered.usage, metered.usageKnown, state.toolCalls
+	result.Retries, result.RetryWaitMS = state.retry.total, state.retry.waited.Milliseconds()
 	result.Writes = append([]WriteReceipt(nil), state.writes...)
 	if state.err != nil {
 		return result, state.err

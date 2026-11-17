@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"time"
@@ -21,6 +22,7 @@ type attemptState struct {
 	toolCalls  int
 	writes     []WriteReceipt
 	diagnostic *Diagnostic
+	retry      *retryState
 }
 
 func (s *attemptState) fail(err error) error {
@@ -128,15 +130,44 @@ func (m *meteredStreamer) StreamMessages(ctx context.Context, req anthropic.Mess
 	}
 	input := size + framingReserve + len(req.Messages)*perMessageReserve + len(req.Tools)*perToolReserve
 	m.calls++
-	id := fmt.Sprintf("%s.model.%d", m.state.request.AttemptID, m.calls)
-	m.state.diagnostic.FailureStage = StageBudget
-	m.state.log(actionModelReserve, codeStart)
-	if err := m.state.request.Budget.Reserve(ctx, id, input, req.MaxTokens); err != nil {
-		m.usageKnown = false
-		return nil, m.state.fail(safeError(ctx, ErrBudget))
+	m.state.retry.begin()
+	for resend := 0; ; resend++ {
+		id := fmt.Sprintf("%s.model.%d", m.state.request.AttemptID, m.calls)
+		if resend > 0 {
+			id += fmt.Sprintf(".retry.%d", resend)
+		}
+		m.state.diagnostic.FailureStage = StageBudget
+		m.state.log(actionModelReserve, codeStart)
+		if err := m.state.request.Budget.Reserve(ctx, id, input, req.MaxTokens); err != nil {
+			m.usageKnown = false
+			return nil, m.state.fail(safeError(ctx, ErrBudget))
+		}
+		stream, err := m.reservedRequest(ctx, id, input, req, cb)
+		var again *retryAgain
+		if !errors.As(err, &again) {
+			return stream, err
+		}
+		// The failed send may have been processed: its reservation stays
+		// spent, and the re-send gets a reservation of its own.
+		if !m.state.retry.wait(ctx, again.code, 0, false) {
+			return nil, m.state.fail(again.err)
+		}
+		m.state.log(actionModelRetry, string(again.code))
+		m.state.diagnose(Diagnostic{Code: CodeOK, RequestIndex: m.calls, FailureStage: StageAuthority})
+		if err := m.state.authorize(ctx); err != nil {
+			return nil, err
+		}
 	}
-	return m.reservedRequest(ctx, id, input, req, cb)
 }
+
+// retryAgain asks the meter to re-send a request that may have been
+// processed; it never reaches query.
+type retryAgain struct {
+	err  error
+	code ErrorCode
+}
+
+func (r *retryAgain) Error() string { return r.err.Error() }
 
 func (m *meteredStreamer) reservedRequest(ctx context.Context, id string, input int, req anthropic.MessagesRequest, cb anthropic.StreamCallbacks) (stream *anthropic.StreamResult, retErr error) {
 	usage, known := Usage{}, false
@@ -179,6 +210,9 @@ func (m *meteredStreamer) reservedRequest(ctx context.Context, id string, input 
 		usage, known = rejectedUsage(requestErr)
 		if known && (usage.InputTokens > input || usage.OutputTokens > req.MaxTokens) {
 			return nil, m.budgetExceeded()
+		}
+		if !known && possiblyProcessed(ctx, requestErr) && m.state.retry.canRetry() {
+			return nil, &retryAgain{err: requestErr, code: d.Code}
 		}
 		if _, typed := failureDiagnostic(requestErr); typed {
 			return nil, m.state.fail(requestErr)

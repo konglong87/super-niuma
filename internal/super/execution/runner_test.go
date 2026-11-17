@@ -85,7 +85,7 @@ func fixtureDir(t *testing.T) string {
 }
 func fixtureRequest(t *testing.T) Request {
 	t.Helper()
-	return Request{RunID: "run-1", JobID: "job-1", AttemptID: "attempt-1", Workspace: fixtureDir(t), Objective: "Produce the requested artifact.", Instruction: "Use the explicit capabilities.", SystemPrompt: "Fixture immutable profile.", Model: "fixture-model", Provider: "fixture", ReadPaths: []string{"inputs"}, WritePaths: []string{"artifacts"}, MaxTurns: 4, MaxOutputTokens: 200, CheckAuthority: func(context.Context) error { return nil }, Budget: &fakeBudget{}}
+	return Request{RunID: "run-1", JobID: "job-1", AttemptID: "attempt-1", Workspace: fixtureDir(t), Objective: "Produce the requested artifact.", Instruction: "Use the explicit capabilities.", SystemPrompt: "Fixture immutable profile.", Model: "fixture-model", Provider: "fixture", ReadPaths: []string{"inputs"}, WritePaths: []string{"artifacts"}, MaxTurns: 4, MaxOutputTokens: 200, CheckAuthority: func(context.Context) error { return nil }, Budget: &fakeBudget{}, Retry: NoRetry}
 }
 func fixtureConfig() config.Config {
 	return config.Config{Provider: "anthropic", SelectedProvider: "fixture", BaseURL: "https://model.invalid", APIKey: "secret-api-key", Settings: config.Settings{Model: "fixture-model"}}

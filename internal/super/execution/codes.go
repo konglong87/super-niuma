@@ -6,6 +6,7 @@ const (
 	actionModelReserve = "model_reserve"
 	actionModelRequest = "model_request"
 	actionModelSettle  = "model_settle"
+	actionModelRetry   = "model_retry"
 	actionToolStart    = "tool_start"
 	actionToolEnd      = "tool_end"
 	codeOK             = "ok"

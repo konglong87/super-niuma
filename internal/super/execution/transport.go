@@ -19,13 +19,15 @@ import (
 
 // Do NOT use anthropic.NewClient: its SDK retries, OpenAI compatibility
 // retries and provider fallback perform unmetered requests. This deliberately
-// small, buffered protocol adapter makes one HTTP POST per StreamMessages.
+// small, buffered protocol adapter makes one HTTP POST per StreamMessages,
+// re-sent only when the provider certainly did not process it (retry.go).
 // Buffering also bounds hostile output and keeps raw provider errors private.
 type httpStreamer struct {
 	cfg       config.Config
 	protocol  config.ProviderProtocol
 	client    *http.Client
 	authorize func(context.Context) error
+	retry     *retryState
 	last      Diagnostic
 }
 
@@ -74,48 +76,69 @@ func (s *httpStreamer) StreamMessages(ctx context.Context, req anthropic.Message
 		endpoint += "/v1"
 	}
 	// One non-replayable body on a fresh HTTP/1 connection: no SDK compatibility
-	// calls, redirects, connection retries, proxies or fallback routes.
-	httpReq, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint+suffix, io.NopCloser(bytes.NewReader(data)))
-	if err != nil {
-		return nil, diagnosticFailure(d, CodeUnavailable, ErrUnavailable)
-	}
-	httpReq.ContentLength = int64(len(data))
-	httpReq.Header.Set("Content-Type", "application/json")
-	httpReq.Header.Set("Accept", "application/json")
-	if s.protocol == config.ProviderProtocolAnthropicMessages {
-		httpReq.Header.Set("anthropic-version", "2023-06-01")
-		if s.cfg.APIKey != "" {
-			httpReq.Header.Set("x-api-key", s.cfg.APIKey)
+	// calls, redirects, connection retries, proxies or fallback routes. A new
+	// request with the same bytes is built only for a send the provider
+	// certainly did not process.
+	build := func() (*http.Request, error) {
+		httpReq, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint+suffix, io.NopCloser(bytes.NewReader(data)))
+		if err != nil {
+			return nil, err
 		}
-		if s.cfg.AuthToken != "" {
-			httpReq.Header.Set("Authorization", "Bearer "+s.cfg.AuthToken)
+		httpReq.ContentLength = int64(len(data))
+		httpReq.Header.Set("Content-Type", "application/json")
+		httpReq.Header.Set("Accept", "application/json")
+		if s.protocol == config.ProviderProtocolAnthropicMessages {
+			httpReq.Header.Set("anthropic-version", "2023-06-01")
+			if s.cfg.APIKey != "" {
+				httpReq.Header.Set("x-api-key", s.cfg.APIKey)
+			}
+			if s.cfg.AuthToken != "" {
+				httpReq.Header.Set("Authorization", "Bearer "+s.cfg.AuthToken)
+			}
+		} else {
+			key := s.cfg.APIKey
+			if key == "" {
+				key = s.cfg.AuthToken
+			}
+			httpReq.Header.Set("Authorization", "Bearer "+key)
 		}
-	} else {
-		key := s.cfg.APIKey
-		if key == "" {
-			key = s.cfg.AuthToken
+		return httpReq, nil
+	}
+	var response *http.Response
+	for {
+		httpReq, err := build()
+		if err != nil {
+			return nil, diagnosticFailure(d, CodeUnavailable, ErrUnavailable)
 		}
-		httpReq.Header.Set("Authorization", "Bearer "+key)
-	}
-	d.FailureStage = StageAuthority
-	if err := ctx.Err(); err != nil {
-		return nil, transportFailure(ctx, d, err, CodeUnknown)
-	}
-	if s.authorize != nil {
-		if err := s.authorize(ctx); err != nil {
-			return nil, diagnosticFailure(d, ErrorCode(FailureCode(err)), err)
+		d.FailureStage = StageAuthority
+		if err := ctx.Err(); err != nil {
+			return nil, transportFailure(ctx, d, err, CodeUnknown)
 		}
-	}
-	d.FailureStage = StageNetwork
-	response, err := s.client.Do(httpReq)
-	if err != nil {
-		return nil, transportFailure(ctx, d, err, CodeNetwork)
-	}
-	defer response.Body.Close()
-	d.HTTPStatus = response.StatusCode
-	d.MediaType = classifyMedia(response.Header.Get("Content-Type"))
-	d.FailureStage = StageHTTP
-	if response.StatusCode < 200 || response.StatusCode >= 300 {
+		if s.authorize != nil {
+			if err := s.authorize(ctx); err != nil {
+				return nil, diagnosticFailure(d, ErrorCode(FailureCode(err)), err)
+			}
+		}
+		d.FailureStage = StageNetwork
+		response, err = s.client.Do(httpReq)
+		if err != nil {
+			if neverSent(err) && ctx.Err() == nil && s.retry.wait(ctx, CodeNetwork, 0, false) {
+				continue
+			}
+			return nil, transportFailure(ctx, d, err, CodeNetwork)
+		}
+		if response.StatusCode >= 200 && response.StatusCode < 300 {
+			break
+		}
+		var peek []byte
+		if classifyResponse(response.StatusCode, nil) == retryUnprocessed {
+			peek, _ = io.ReadAll(io.LimitReader(response.Body, quotaPeekBytes))
+		}
+		retryAfter, hasRetryAfter := parseRetryAfter(response.Header.Get("Retry-After"), time.Now())
+		d.HTTPStatus = response.StatusCode
+		d.MediaType = classifyMedia(response.Header.Get("Content-Type"))
+		d.FailureStage = StageHTTP
+		response.Body.Close()
 		code := CodeHTTPFailure
 		switch response.StatusCode {
 		case http.StatusUnauthorized:
@@ -125,8 +148,15 @@ func (s *httpStreamer) StreamMessages(ctx context.Context, req anthropic.Message
 		case http.StatusTooManyRequests:
 			code = CodeHTTPRateLimited
 		}
+		if classifyResponse(response.StatusCode, peek) == retryUnprocessed && s.retry.wait(ctx, code, retryAfter, hasRetryAfter) {
+			continue
+		}
 		return nil, diagnosticFailure(d, code, ErrFailed)
 	}
+	defer response.Body.Close()
+	d.HTTPStatus = response.StatusCode
+	d.MediaType = classifyMedia(response.Header.Get("Content-Type"))
+	d.FailureStage = StageHTTP
 	d.FailureStage = StageMedia
 	if d.MediaType != MediaJSON {
 		return nil, diagnosticFailure(d, CodeMediaType, ErrFailed)

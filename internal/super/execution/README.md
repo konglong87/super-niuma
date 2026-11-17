@@ -47,13 +47,41 @@ never load configuration from the worker workspace.
 - The legacy `anthropic.NewClient` has automatic retries/fallbacks and is **not**
   used. The private buffered HTTP adapter supports Anthropic Messages, OpenAI
   Chat Completions, and stateless Responses **text/function-call** exchanges. It
-  makes one non-replayable POST over a fresh HTTP/1 connection, with no redirect,
-  proxy discovery, retry, fallback, server tools or remote content fetching.
-  HTTPS is required except explicitly configured literal loopback HTTP.
+  makes one POST over a fresh HTTP/1 connection, with no redirect, proxy
+  discovery, fallback, server tools or remote content fetching, and re-sends a
+  model request only under the retry policy below. HTTPS is required except
+  explicitly configured literal loopback HTTP.
 - Responses reasoning/encrypted continuation/server-tool items, streaming-only
   providers and unsupported payloads fail closed; there is no compatibility retry.
   Provider errors are replaced by safe sentinel codes. Oversized, malformed or
   truncated results fail instead of being truncated into apparent success.
+
+## Model request retries (2026-11-17)
+
+`Request.Retry` bounds re-sending a **model request** after a transient
+failure; `nil` means `DefaultRetryPolicy` (3 re-sends per request, 2 s backoff
+doubling, at most 60 s per wait and 3 min per attempt, never past the attempt
+deadline) and `NoRetry` disables it. A model request has no external effect
+besides its cost, which the budget accounts for, so the classes are:
+
+- **Not processed** — HTTP 429, 408, 503 or 529 (unless the body says the quota
+  is exhausted), or a connection that never opened: the transport sends the
+  same bytes again inside the same reservation; at most one send is processed.
+  `Retry-After` (seconds or HTTP date) is honoured; a longer wait than `MaxWait`
+  ends the attempt instead.
+- **Possibly processed** — HTTP 500, 502, 504, a network error or timeout after
+  sending, a body cut off: the reservation is settled as unknown (kept as
+  spent), a new one is made (`<attempt>.model.<n>.retry.<k>`), and the request is
+  sent again. Usage of such an attempt is reported as not fully known.
+- **Permanent** — everything else (401/403, other 4xx, redirects, an exhausted
+  quota, and every problem with a complete response such as invalid JSON,
+  missing usage, truncated, empty or refused output): no retry.
+
+Every wait is cancellable and authority is re-checked before each re-send, so
+cancellation, revocation or a lost lease stops it. Tools, device actions and
+deliveries are never repeated: an action whose result is unknown is reported,
+not retried. `Result.Retries` and `Result.RetryWaitMS` count what happened;
+`OnRetry` receives only bounded numbers and a safe code.
 
 This is a narrow file capability boundary, **not an OS sandbox**. It cannot revoke
 an operation already in progress, undo prior writes, defeat a malicious same-user
@@ -65,7 +93,9 @@ required.
 
 Fake-streamer tests execute the real query tool loop, not a substitute loop.
 Local HTTP fixture tests exercise all three request mappings and prove that
-429/500/307/401 responses do not retry, redirect or fall back. These are synthetic
+with `NoRetry` 429/500/307/401 responses do not retry, redirect or fall back;
+`retry_test.go` covers each retry class, waits, limits, cancellation and
+revocation with a fake clock. These are synthetic
 transport tests, **not real-model/provider acceptance**. Tests also cover budget
 refusal/unknown usage, cancellation/revocation, output limits, filesystem escapes,
 receipts, route drift and discovery/logging suppression.
@@ -102,7 +132,8 @@ The private typed rejected outcome carries **only validated numeric usage**, no
 partial stream/text/tool messages. The meter settles it on the error path; query
 cannot recover it via `PartialStreamError`. Unknown/malformed usage cannot refund
 reservations or authorize tools. No reasoning continuation, unknown server tool,
-retry, fallback, or provider compatibility path has been enabled. JSON media type
+fallback, or provider compatibility path has been enabled; model request
+retries follow the policy above. JSON media type
 is required for accepted bodies. Both diagnostics serialization and logs enforce
 the enum/numeric whitelist; there are no URLs, headers, body/reasoning values,
 credentials, or raw errors.

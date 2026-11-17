@@ -56,6 +56,9 @@ func validateRequest(r Request) (string, string, error) {
 		}
 		total += len(s)
 	}
+	if !validRetryPolicy(r.Retry) {
+		return "", "", ErrInvalid
+	}
 	if strings.TrimSpace(r.Objective) == "" {
 		return "", "", ErrInvalid
 	}

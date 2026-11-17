@@ -90,6 +90,7 @@ func TestNamedRouteSelectionDoesNotFallback(t *testing.T) {
 	}
 }
 
+// With retries disabled every failure is final: one POST, no redirect or fallback.
 func TestSingleHTTPPostNoRedirectRetryOrFallback(t *testing.T) {
 	for _, status := range []int{http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusTemporaryRedirect, http.StatusUnauthorized} {
 		t.Run(fmt.Sprint(status), func(t *testing.T) {
