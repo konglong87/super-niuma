@@ -16,7 +16,9 @@
 
 - 首版工具是受限文件读取/列目录/原子写入。没有默认 shell、MCP、hooks、后台 Agent/worktree 或 Computer Use 能力；这不是 OS 沙箱。
 - 每一次实际模型请求先原子预留根预算。子任务、返工共享额度；未知 usage 不按零消耗退款。没有隐式 provider 重试/fallback。
-- profile、账户绑定、授权或公开路由发生变化，旧任务不能静默获得新权限。每次领取、续租、模型/工具调用与发送前检查实时权限。
+- 保存启用的 profile 时若未填写 `provider`，会固定为当时选中的模型路由；之后在普通会话里切换模型不会改写或撤销已保存的 Super 授权。
+- profile、它所用的账户与绑定、授权或公开路由发生变化，旧任务不能静默获得新权限，会以 `authority_revoked` 停止；只改动其他 profile 的账户/绑定不影响它。取消工单会同时停止其运行（`intake_cancelled`）。每次领取、续租、模型/工具调用与发送前检查实时权限。
+- 独立验收未通过时，只重做写产物的节点及其下游，并把未通过的检查项（路径、规则类型、代码）作为可信提示交给返工节点；没有任何写节点能修复时直接 `failed`。
 - 同一或嵌套工作根的读写互斥；只读可并行。失租且不能证明停止的 writer 保持隔离，进入 `needs_attention`，不会自动重做未知副作用。
 - 普通流量满容量不能阻止已有工单的取消和结算。原始记录、CAS revision、事件、预算、候选证据及回执均持久保存。
 - 所有列表有界；Desktop 最近运行窗口明确提示是否还有历史。事件按 sequence 补读，唤醒/界面刷新不是消息权威。
@@ -27,8 +29,8 @@ Intake 的 `recorded/cancelled` 表示登记事实，不是执行结果。独立
 
 - `awaiting_approval`：等待本地批准；`queued/running/verifying`：排队、执行、独立验收。
 - `delivery_pending/delivered`：存在通知义务／所有配置目标均有接收回执。
-- `failed`：已知失败；仅在条件满足且次数/预算仍允许时显式重试。
-- `needs_attention`：用量、租约、证据或外部结果无法确认；**不盲重试**。
+- `failed`：执行器已返回的失败（含用量未知的失败，其预留额度全额保留、不退款；应用退出中断的执行标为 `interrupted`）；不自动重试，仅在条件满足且次数/预算仍允许时由本地管理员确认后重试。
+- `needs_attention`：租约丢失、证据或外部结果无法确认；**不盲重试**。
 - `cancelling/cancelled`：撤销后阻止新动作、等待已知执行器收尾；不能撤回已发生的外部动作。
 
 本地管理员可在明确核实旧 Worker/发送进程均停止后，放弃待人工核实的运行并释放占用。该操作有单次 revision 审计，**不宣称未知发送成功、不退款、不重新发送**；不得把确认框当作替代实际停机核实。
@@ -39,7 +41,7 @@ Intake 的 `recorded/cancelled` 表示登记事实，不是执行结果。独立
 
 - **Desktop**：本地管理与本地接收。
 - **签名 Webhook**：`webhook_address` 只接受显式 loopback 地址。控制台显示的是签名机器接口 `/super/webhook/{account}`，**不是另一个产品页面**。验证固定签名串、时间窗、原始 body 摘要和持久 nonce/event/message 去重。出站仅发送到显式授权 HTTPS 目标，拒绝重定向和不安全地址。
-- **飞书**：复用现有 SDK adapter，独立 Super 入站处理；不进入旧 channel/runtime 的 Session fallback。身份、白名单或线程无法确定时拒绝/待重试，不调用模型猜测授权。凭据只用环境变量引用，配置与 Git 不存真实密钥。
+- **飞书**：复用现有 SDK adapter，独立 Super 入站处理；不进入旧 channel/runtime 的 Session fallback。身份、白名单或线程无法确定时拒绝/待重试，不调用模型猜测授权。凭据只用环境变量引用，配置与 Git 不存真实密钥。从 Finder/Dock 启动的 macOS 应用不继承 shell 环境变量，可把 `NAME=value` 写入与 `platform.json` 同目录的私有文件 `channel-secrets.env`（必须 0600）；进程环境变量优先。
 
 transport 已启动不等于实际账号连通，更不等于真实消息验收通过。需要授权测试账户、已安装权限、明确发送者/收件人和真实回执才能关闭飞书验收门禁。
 
