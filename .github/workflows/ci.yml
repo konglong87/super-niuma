@@ -92,8 +92,40 @@ jobs:
       - name: Phone core (mobile module)
         working-directory: mobile
         run: |
-          go vet ./niumacore
-          go test -race -count=1 ./niumacore
+          go vet ./...
+          go test -race -count=1 ./...
+
+  mobile-android:
+    name: mobile android (core AAR, Kotlin unit tests, APKs)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      NDK_VERSION: '30.0.16248370'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+          cache-dependency-path: |
+            go.sum
+            mobile/go.sum
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Android SDK packages
+        run: |
+          sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$sdkmanager" --licenses >/dev/null
+          "$sdkmanager" --install "ndk;$NDK_VERSION" "platforms;android-36" "build-tools;34.0.0" >/dev/null
+      - name: Go core AAR
+        run: |
+          export ANDROID_NDK_HOME="$ANDROID_HOME/ndk/$NDK_VERSION"
+          mobile/build-core.sh
+      - name: Kotlin unit tests and APKs
+        working-directory: mobile/android
+        run: ./gradlew --no-daemon :app:testDebugUnitTest :app:assembleDebug :app:assembleRelease
 
   web:
     name: web typecheck / build / test
