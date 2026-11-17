@@ -50,7 +50,7 @@ transport 已启动不等于实际账号连通，更不等于真实消息验收�
 - 独立私有目录：`~/.super-niuma`（0700），数据库 `work-orders.db` 和平台配置 `platform.json`（0600）。`SUPER_NIUMA_STATE_DIR` 可选择另一个绝对私有目录，不得指向旧 Session 数据库。
 - 授权执行读取可信用户模型路由配置 `~/.niuma/settings.json`；Worker workspace 内的配置不能注入 hooks、模型端点或任意能力。
 - SQLite v1→v2→v3 事务迁移保留原 intake、幂等键和事件；未来/异应用/损坏 schema 拒绝，不静默重建。
-- Desktop 第一次进入 Super 时惰性打开；关闭会停止自己的 Worker/渠道。重启只恢复有权继续的队列，未知在途动作保持待核实。
+- 已存在 `platform.json` 时，Desktop 启动后会在后台恢复 Worker/渠道，无需先进入 Super 页面；从未配置过的用户启动时不会创建任何 Super 文件，第一次进入 Super 才打开。关闭会停止自己的 Worker/渠道。重启只恢复有权继续的队列，未知在途动作保持待核实。Super 页面隐藏时暂停轮询，回到页面立即刷新。
 
 ## 可选开发调试入口
 

@@ -435,7 +435,7 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
     {sidebarOpen ? <button aria-label={t("webui2.closeSessions")} className="webui2-mobile-sidebar-backdrop" onClick={() => setSidebarOpen(false)} tabIndex={-1} type="button" /> : null}
     <button aria-controls="webui2-session-sidebar" aria-expanded={sidebarOpen} aria-label={t("webui2.openSessions")} className="webui2-mobile-sidebar-open" onClick={() => setSidebarOpen(true)} title={t("webui2.openSessions")} type="button"><PanelLeftOpen aria-hidden="true" size={18} /></button>
     <div className="webui2-content">
-      {superVisited ? <div className="webui2-super-surface" hidden={!superOpen} inert={!superOpen}><SuperWorkspace client={superClient} onBack={() => setSuperOpen(false)} /></div> : null}
+      {superVisited ? <div className="webui2-super-surface" hidden={!superOpen} inert={!superOpen}><SuperWorkspace client={superClient} onBack={() => setSuperOpen(false)} active={superOpen} /></div> : null}
       <div className="webui2-conversation-surfaces" hidden={superOpen} inert={superOpen}>
       {isDesktop && !workflowsOpen ? <ComputerWorkspace client={computerClient} selectedConversationRef={state.selectedRef} nativeOverlay={false} /> : null}
       {workflowsOpen && desktopReady && state.route.kind === "workflows" ? <WorkflowWorkbench identity={identity} route={state.route} client={workflowClient} agentClient={workflowAgentClient} onNavigate={navigateWorkflow} onDirtyChange={workflowLeave.setDirty} onRequestNavigation={workflowLeave.request} /> : null}

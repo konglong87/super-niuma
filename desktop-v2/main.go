@@ -116,6 +116,7 @@ func desktopWailsOptions(application *app, config desktopConfig, target *url.URL
 func (a *app) startup(ctx context.Context) {
 	a.setWindowContext(ctx)
 	startupLog("startup begin")
+	go a.superWorkOrders.resumeConfiguredPlatform()
 	config, err := loadDesktopConfig()
 	if err != nil {
 		startupLog("load config: " + err.Error())

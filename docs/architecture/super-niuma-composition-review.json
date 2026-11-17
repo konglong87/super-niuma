@@ -1,15 +1,15 @@
 {
   "desktop-v2/main.go": {
     "baseline_sha256": "7fde925e0691c8443b9242624c97d83e2ae220c000985ff7e91adf93ee117530",
-    "reviewed_sha256": "1e030c0ef092b07fe441ade01109c215c05672950797c5ac47e51257035de152",
-    "reason": "One Super bridge field and shutdown closure only; Session startup/runtime unchanged.",
-    "verification": "Go bridge lifecycle/race tests + native restart acceptance"
+    "reviewed_sha256": "0339c71b63ef0c8901f9e0b3272f5ec8894a2e6b259698f2a1482713f2b05014",
+    "reason": "One Super bridge field, shutdown closure and a background resume of an already-configured Super platform; Session startup/runtime unchanged.",
+    "verification": "Go bridge lifecycle/race tests + startup resume tests + native restart acceptance"
   },
   "web/src/v2/WebUIV2App.tsx": {
     "baseline_sha256": "b8cb327f534c309b89cd91451876ac08a4d8d5ad7e11f9ac6b4ca93d74e39e4b",
-    "reviewed_sha256": "61985cb3ddd07f91188bd20ddd2520821f48dbe3991b3f0a6d756591810aa3d1",
-    "reason": "Desktop-only pane visibility and navigation composition; existing Session components stay mounted.",
-    "verification": "DesktopSuperNavigation + existing WebUIV2App/WorkflowShell regression + native clicks"
+    "reviewed_sha256": "31c9d23ad1c11406ceda5d4ab7012e975bbba856607e9a305c7a49fe58f8d663",
+    "reason": "Desktop-only pane visibility and navigation composition, plus pausing the hidden Super panel's polling; existing Session components stay mounted.",
+    "verification": "DesktopSuperNavigation (incl. hidden-pause test) + existing WebUIV2App/WorkflowShell regression + native clicks"
   },
   "web/src/v2/components/SessionSidebar.tsx": {
     "baseline_sha256": "1e0fe5ec0d8f16ced245839e9de13ada0834082800fde6ba35d2f597693c9669",

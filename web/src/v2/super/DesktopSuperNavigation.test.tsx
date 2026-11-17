@@ -6,6 +6,7 @@ import { I18nProvider } from "../../lib/i18n";
 import type { IdentityConfig } from "../../lib/types";
 import { createMockSessionControlClient } from "../api/mockSessionControlClient";
 import { WebUIV2App } from "../WebUIV2App";
+import { mockBridge } from "./platformFixtures.test-support";
 
 const identity: IdentityConfig = { apiBase: "", apiToken: "desktop-test", mobileJwt: "", tenantKey: "test", userId: "test", deviceId: "test", model: "test" };
 describe("Desktop single-entry navigation", () => {
@@ -58,6 +59,16 @@ describe("Desktop single-entry navigation", () => {
     await act(async () => host.querySelector<HTMLButtonElement>(".webui2-super-entry")!.click());
     expect(host.querySelector<HTMLInputElement>("#super-title")?.value).toBe("保留草稿");
     expect(list).toHaveBeenCalledTimes(1);
+  });
+  it("pauses the kept-mounted control panel while Super is hidden and refreshes on return", async () => {
+    const platform = mockBridge(); Object.assign(window.go!.main!.app!, platform);
+    await render(); expect(platform.GetSuperPlatform).not.toHaveBeenCalled();
+    await act(async () => host.querySelector<HTMLButtonElement>(".webui2-super-entry")!.click());
+    expect(platform.GetSuperPlatform).toHaveBeenCalledTimes(1);
+    act(() => [...host.querySelectorAll<HTMLButtonElement>(".super-actions button")].find((button) => button.textContent === "返回会话")!.click());
+    expect(host.querySelector(".webui2-super-surface")?.hasAttribute("hidden")).toBe(true);
+    await act(async () => host.querySelector<HTMLButtonElement>(".webui2-super-entry")!.click());
+    expect(platform.GetSuperPlatform).toHaveBeenCalledTimes(2);
   });
   it("existing conversation selection leaves Super without creating a session", async () => {
     const { create } = await render();
