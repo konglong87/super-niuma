@@ -221,6 +221,7 @@ func (e *Engine) Approve(ctx context.Context, p Principal, id string, version ui
 func (e *Engine) Cancel(ctx context.Context, p Principal, id string, version uint64) (Run, error) {
 	return e.cancelWith(ctx, p, id, version, "cancel_requested")
 }
+
 // CancelForIntake stops a root because its originating work order is being
 // cancelled; the reason stays visible instead of a generic operator stop.
 func (e *Engine) CancelForIntake(ctx context.Context, p Principal, id string) (Run, error) {

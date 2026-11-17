@@ -131,6 +131,7 @@ func (s *Service) reloadChannels() {
 	s.channelCode = "transports_started_not_live_acceptance"
 	s.channelMu.Unlock()
 }
+
 // ChannelSecretsFileName holds channel credentials for Desktop launches from
 // Finder/Dock, which do not inherit shell environment variables. It is a
 // private (0600) KEY=VALUE file next to platform.json, never in config or Git.

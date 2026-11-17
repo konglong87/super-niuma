@@ -134,6 +134,7 @@ func decodeConfig(data []byte) (Config, error) {
 	}
 	return c, nil
 }
+
 // profileChannelPolicy is the channel configuration one profile's grant
 // depends on: bindings routing to it and the accounts those bindings or its
 // targets use. Editing an unrelated account or binding no longer revokes it.

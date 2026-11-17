@@ -94,6 +94,7 @@ func (s *Service) CancelRun(ctx context.Context, id string, version uint64) (con
 		return out, err
 	})
 }
+
 // StopIntakeRuns stops every live run admitted from intakeID. The Desktop calls
 // it before cancelling the work order so workers settle those runs as
 // cancelled; workers also stop any run whose intake is already cancelled.

@@ -32,6 +32,7 @@ func (b *superWorkOrderBridge) platformService() (*platform.Service, error) {
 	b.platform = platform.New(store, directory, b.logger)
 	return b.platform, nil
 }
+
 // resumeConfiguredPlatform restarts durable Super workers and channel
 // transports after a Desktop restart instead of waiting for the Super page to
 // be opened. It only inspects the platform configuration path: users who never
@@ -58,6 +59,7 @@ func (a *app) callSuperPlatform(action string, fn func(context.Context, *platfor
 		return fn(ctx, s, intake)
 	})
 }
+
 // desktopRunView drops worker result text before crossing into the webview:
 // the panel never renders model output, and it is up to 16KB per job on a
 // snapshot that is polled every few seconds. All evidence fields remain.
@@ -112,6 +114,7 @@ func (a *app) StartSuperRun(intakeID, profileID, key string) (out control.Run, e
 	})
 	return
 }
+
 // superIntakeBusy allows one unfinished run per work order. A replay of the
 // same request key still reaches CreateRun and returns the existing run.
 func superIntakeBusy(ctx context.Context, store control.Repository, intakeID, key string) error {
