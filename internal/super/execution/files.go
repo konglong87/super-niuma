@@ -214,5 +214,6 @@ func newRegistry(fs *workspaceFS, state *attemptState) *tools.Registry {
 		tool := &fileTool{fs: fs, state: state, write: write}
 		registry.Register(tools.Guard(tool, permissions.Policy{Allow: []string{tool.Name()}, DefaultMode: permissions.ModeDeny}))
 	}
+	registerDeviceTools(registry, state.request.Device, state)
 	return registry
 }

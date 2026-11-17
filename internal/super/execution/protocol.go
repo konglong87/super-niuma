@@ -25,7 +25,7 @@ func encodeRequest(protocol config.ProviderProtocol, req anthropic.MessagesReque
 		return nil, "", ErrUnavailable
 	}
 	for _, t := range req.Tools {
-		if t.Name != ToolRead && t.Name != ToolWrite {
+		if !attemptTool(t.Name) {
 			return nil, "", ErrAuthority
 		}
 	}

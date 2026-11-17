@@ -45,7 +45,7 @@ func validID(s string) bool {
 func validateRequest(r Request) (string, string, error) {
 	if !validID(r.RunID) || !validID(r.JobID) || !validID(r.AttemptID) || !validID(r.Model) ||
 		(r.Provider != "" && !validID(r.Provider)) || r.Budget == nil || r.CheckAuthority == nil ||
-		r.MaxTurns < 1 || r.MaxTurns > MaxTurns || r.MaxOutputTokens < 1 || r.MaxOutputTokens > MaxOutputTokens ||
+		r.MaxTurns < 1 || r.MaxTurns > maxTurns(r) || r.MaxOutputTokens < 1 || r.MaxOutputTokens > MaxOutputTokens ||
 		len(r.ReadPaths) > maxPaths || len(r.WritePaths) > maxPaths || len(r.Dependencies) > maxDependencies || len(r.VerificationFailures) > maxVerificationFailures {
 		return "", "", ErrInvalid
 	}
@@ -138,4 +138,12 @@ func validateConfig(cfg config.Config) error {
 		return ErrUnavailable
 	}
 	return nil
+}
+
+// maxTurns is MaxTurns, or MaxDeviceTurns for an attempt that operates a phone.
+func maxTurns(r Request) int {
+	if r.Device != nil {
+		return MaxDeviceTurns
+	}
+	return MaxTurns
 }

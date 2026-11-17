@@ -201,7 +201,7 @@ func (d Diagnostic) safe() Diagnostic {
 	if d.ResponseBytes > maxResponseBytes+1 {
 		d.ResponseBytes = maxResponseBytes + 1
 	}
-	if d.RequestIndex < 0 || d.RequestIndex > MaxTurns {
+	if d.RequestIndex < 0 || d.RequestIndex > MaxDeviceTurns {
 		d.RequestIndex = 0
 	}
 	return d

@@ -60,6 +60,8 @@ type Request struct {
 	MaxTurns, MaxOutputTokens                       int
 	CheckAuthority                                  func(context.Context) error
 	Budget                                          Budget
+	// Device, when set, adds the phone tools and allows up to MaxDeviceTurns.
+	Device Device
 }
 
 // WriteReceipt is produced by the trusted file tool after writing; never parsed from model text.

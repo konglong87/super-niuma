@@ -217,7 +217,7 @@ func validateResponse(r *anthropic.StreamResult) error {
 			}
 		case contentToolUse:
 			calls++
-			if b.Name != ToolRead && b.Name != ToolWrite {
+			if !attemptTool(b.Name) {
 				return codedFailure(CodeOutputUnsupported)
 			}
 			if calls > maxCallsPerResponse || !validID(b.ID) || seen[b.ID] || !json.Valid(b.Input) || len(b.Input) > maxResponseBytes {
