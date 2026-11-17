@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { ControlRun } from "../desktopServiceBridge";
 import { MOCK_HASH, mockClaim, mockRun } from "./platformFixtures.test-support";
-import { workOrderStages } from "./workOrderStages";
+import { sameRunsForStages, workOrderStages } from "./workOrderStages";
 
 const passed = { passed: true, policy_hash: MOCK_HASH, verified_at_ms: 1793664000000, artifacts: [], checks: [] };
 const notice = { id: "mock-notice", target: { id: "mock-target", provider: "mock" }, status: "unknown", attempts: 1, claim: mockClaim };
@@ -30,6 +30,11 @@ describe("work-order stages", () => {
     expect(stages(run("delivery_pending", { verification: passed }, "succeeded"))).toEqual({ execution: "done", verification: "done", delivery: "inProgress" });
     expect(stages(run("delivered", { verification: passed }, "succeeded"))).toEqual({ execution: "done", verification: "done", delivery: "done" });
   });
+  it("treats a revision round as pending re-verification, not a failure", () => {
+    const failedReport = { verification: { ...passed, passed: false }, safe_code: "verification_revision_required" };
+    expect(stages(run("queued", failedReport)).verification).toBe("inProgress");
+    expect(stages(run("running", failedReport)).verification).toBe("inProgress");
+  });
   it("reports failures, cancellation and attention without claiming progress", () => {
     expect(stages(run("failed", {}, "failed"))).toEqual({ execution: "failed", verification: "notStarted", delivery: "notStarted" });
     expect(stages(run("failed", { verification: { ...passed, passed: false } }, "succeeded"))).toEqual({ execution: "done", verification: "failed", delivery: "notStarted" });
@@ -37,5 +42,15 @@ describe("work-order stages", () => {
     expect(stages(run("cancelled", { verification: passed }, "succeeded"))).toEqual({ execution: "done", verification: "done", delivery: "cancelled" });
     expect(stages(run("needs_attention", {}, "unknown"))).toEqual({ execution: "needsAttention", verification: "notStarted", delivery: "notStarted" });
     expect(stages(run("needs_attention", { verification: passed, notices: [notice] }, "succeeded"))).toEqual({ execution: "done", verification: "done", delivery: "needsAttention" });
+  });
+});
+
+describe("stage run updates", () => {
+  it("ignores polls that change nothing the stages depend on", () => {
+    const a = [run("running", { id: "a", version: 3 })];
+    expect(sameRunsForStages(a, [run("running", { id: "a", version: 3 })])).toBe(true);
+    expect(sameRunsForStages(a, [run("running", { id: "a", version: 4 })])).toBe(false);
+    expect(sameRunsForStages(a, [run("verifying", { id: "a", version: 3 })])).toBe(false);
+    expect(sameRunsForStages(a, [])).toBe(false);
   });
 });

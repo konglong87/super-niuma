@@ -66,6 +66,13 @@ func (e *Engine) verify(ctx context.Context, r Run, owner string) (bool, error) 
 			n.SafeCode = "authority_revoked"
 			return nil
 		}
+		if e.intakeCancelled(finishCtx, *n) {
+			// The work order was cancelled while verifying; that is a stop, not
+			// an unknown verifier outcome.
+			n.Status = Cancelled
+			n.SafeCode = SafeIntakeCancelled
+			return nil
+		}
 		if verifyErr != nil || report.PolicyHash != verification.PolicyHash(n.Grant.Verification) {
 			n.Status = NeedsAttention
 			n.SafeCode = "verification_unavailable"

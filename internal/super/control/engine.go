@@ -324,9 +324,12 @@ func (e *Engine) Serve(ctx context.Context) error {
 			idle := idleMin
 			for ctx.Err() == nil {
 				if e.WorkerLimit != nil && index >= e.WorkerLimit() {
-					// Over the configured limit: re-read the limit rarely.
-					if alive, _ := e.Idle(ctx, idleMax); !alive {
+					// Over the configured limit: re-read the limit rarely and do
+					// not react to wakes meant for active workers.
+					select {
+					case <-ctx.Done():
 						return
+					case <-time.After(idleMax):
 					}
 					continue
 				}

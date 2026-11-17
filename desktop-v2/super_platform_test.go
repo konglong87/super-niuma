@@ -409,3 +409,28 @@ func TestDesktopRunViewDropsResultTextOnly(t *testing.T) {
 		t.Fatal("view mutated the persisted run")
 	}
 }
+
+func TestSuperIntakeBusyAllowsOneUnfinishedRunPerOrder(t *testing.T) {
+	a, s, store, _, g := desktopOperatorFixture(t)
+	ctx := context.Background()
+	order, err := a.CreateSuperWorkOrder("busy-intake", workorder.CreateInput{Title: "busy", Objective: "offline fixture", AcceptanceCriteria: []string{"no model"}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	r, _, err := s.Engine.Start(ctx, localSuperPrincipal(), "first-key", "offline task", order.ID, g, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = superIntakeBusy(ctx, store, order.ID, "second-key"); !errors.Is(err, control.ErrResourceBusy) {
+		t.Fatalf("second unfinished run allowed: %v", err)
+	}
+	if err = superIntakeBusy(ctx, store, order.ID, "first-key"); err != nil {
+		t.Fatalf("replay of the same key refused: %v", err)
+	}
+	if _, err = a.CancelSuperRun(r.ID, r.Version); err != nil {
+		t.Fatal(err)
+	}
+	if err = superIntakeBusy(ctx, store, order.ID, "second-key"); err != nil {
+		t.Fatalf("finished run still blocks a new one: %v", err)
+	}
+}

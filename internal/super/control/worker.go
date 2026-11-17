@@ -316,6 +316,17 @@ func (e *Engine) execute(parent context.Context, r Run, id string) error {
 			return e.markExpired(n)
 		}
 		job.FinishedAtMS = e.now()
+		if n.Status != Cancelling && !IsTerminal(n.Status) && (runErr != nil || ctxErr != nil) && e.intakeCancelled(finishCtx, *n) {
+			// The executor stopped because its work order was cancelled: settle
+			// it as a cancellation, exactly as an explicit stop would.
+			n.Status = Cancelling
+			n.SafeCode = SafeIntakeCancelled
+			for i := range n.Jobs {
+				if n.Jobs[i].Status == JobQueued {
+					n.Jobs[i].Status = JobCancelled
+				}
+			}
+		}
 		if n.Status == Cancelling {
 			job.Status = JobCancelled
 			job.SafeCode = "cancelled"

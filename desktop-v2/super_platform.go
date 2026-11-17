@@ -102,12 +102,29 @@ func (a *app) StartSuperRun(intakeID, profileID, key string) (out control.Run, e
 		if order.Workspace != "" && order.Workspace != grant.Workspace {
 			return control.ErrDenied
 		}
+		if e := superIntakeBusy(ctx, s.Engine.Store, order.ID, key); e != nil {
+			return e
+		}
 		objective := order.Objective + "\n\n用户验收要求（仅已配置结构化规则可自动判定；其余不得自报通过）：\n- " + strings.Join(order.AcceptanceCriteria, "\n- ")
 		out, _, e = s.Engine.Start(ctx, p, key, objective, order.ID, grant, nil)
 		out = desktopRunView(out)
 		return e
 	})
 	return
+}
+// superIntakeBusy allows one unfinished run per work order. A replay of the
+// same request key still reaches CreateRun and returns the existing run.
+func superIntakeBusy(ctx context.Context, store control.Repository, intakeID, key string) error {
+	active, err := store.ActiveRuns(ctx)
+	if err != nil {
+		return err
+	}
+	for _, r := range active {
+		if r.IntakeID == intakeID && r.RequestKey != key && !control.IsTerminal(r.Status) {
+			return control.ErrResourceBusy
+		}
+	}
+	return nil
 }
 func (a *app) ApproveSuperRun(id string, version uint64, grantHash string) (out control.Run, err error) {
 	err = a.callSuperPlatform("platform.approve", func(ctx context.Context, s *platform.Service, _ *workorder.Service) error {
