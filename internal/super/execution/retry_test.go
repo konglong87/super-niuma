@@ -220,6 +220,20 @@ func TestPossiblyProcessedFailuresResendWithANewReservation(t *testing.T) {
 	}
 }
 
+func TestRefusedWaitAfterPossiblyProcessedFailureKeepsUsageUnknown(t *testing.T) {
+	server, calls, _ := scripted(t, status(504), ok)
+	p := policy(3)
+	p.MaxWait = time.Second // the 2 s backoff is longer: no re-send
+	req := retryRequest(t, p)
+	got, err := retryRunner(server.URL, &sleeps{}).Execute(context.Background(), req)
+	if err == nil || calls.Load() != 1 || got.UsageKnown {
+		t.Fatalf("err=%v calls=%d usage known=%v", err, calls.Load(), got.UsageKnown)
+	}
+	if b := req.Budget.(*fakeBudget); len(b.settled) != 1 || b.settled[0].known {
+		t.Fatal("the possibly processed request was refunded")
+	}
+}
+
 func TestPermanentFailuresAreNeverRetried(t *testing.T) {
 	for _, code := range []int{400, 401, 403, 404, 413, 422, http.StatusTemporaryRedirect, 501} {
 		t.Run(fmt.Sprint(code), func(t *testing.T) {

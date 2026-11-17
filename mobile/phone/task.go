@@ -128,6 +128,9 @@ func (r *Runner) SetBridge(b Bridge) {
 	r.notify()
 }
 
+// SetListener registers the state listener. It is called with deliveries
+// serialized (see notify), so it must not call back into a Runner method
+// that notifies (Start, Stop, SetBridge); doing so would deadlock.
 func (r *Runner) SetListener(l func(State)) {
 	r.mu.Lock()
 	r.listener = l

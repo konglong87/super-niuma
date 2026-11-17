@@ -150,6 +150,9 @@ func (m *meteredStreamer) StreamMessages(ctx context.Context, req anthropic.Mess
 		// The failed send may have been processed: its reservation stays
 		// spent, and the re-send gets a reservation of its own.
 		if !m.state.retry.wait(ctx, again.code, 0, false) {
+			// No re-send after all: that possibly processed request is the
+			// attempt's last, so its usage stays unknown.
+			m.usageKnown = false
 			return nil, m.state.fail(again.err)
 		}
 		m.state.log(actionModelRetry, string(again.code))
