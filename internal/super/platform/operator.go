@@ -94,6 +94,30 @@ func (s *Service) CancelRun(ctx context.Context, id string, version uint64) (con
 		return out, err
 	})
 }
+// StopIntakeRuns stops every live run admitted from intakeID. The Desktop calls
+// it before cancelling the work order so workers settle those runs as
+// cancelled; workers also stop any run whose intake is already cancelled.
+func (s *Service) StopIntakeRuns(ctx context.Context, intakeID string) error {
+	if s == nil || s.Engine == nil || s.Engine.Store == nil {
+		return control.ErrUnavailable
+	}
+	active, err := s.Engine.Store.ActiveRuns(ctx)
+	if err != nil {
+		return err
+	}
+	for _, r := range active {
+		if r.IntakeID != intakeID || r.Status == control.Cancelling || control.IsTerminal(r.Status) {
+			continue
+		}
+		_, err := s.operate(ctx, operatorCancel, r.ID, func(p control.Principal) (control.Run, error) {
+			return s.Engine.CancelForIntake(ctx, p, r.ID)
+		})
+		if err != nil && !errors.Is(err, control.ErrConflict) {
+			return err
+		}
+	}
+	return nil
+}
 func (s *Service) RetryRun(ctx context.Context, id string, version uint64) (control.Run, error) {
 	return s.operate(ctx, operatorRetry, id, func(p control.Principal) (control.Run, error) { return s.Engine.Retry(ctx, p, id, version) })
 }

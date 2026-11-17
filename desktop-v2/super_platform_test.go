@@ -311,3 +311,24 @@ func TestSuperPlatformDesktopCrossScopeNotificationEvidence(t *testing.T) {
 		}
 	}
 }
+
+func TestSuperPlatformDesktopWorkOrderCancelStopsItsRuns(t *testing.T) {
+	a, s, store, _, g := desktopOperatorFixture(t)
+	ctx := context.Background()
+	order, err := a.CreateSuperWorkOrder("cascade-intake", workorder.CreateInput{Title: "cascade", Objective: "offline fixture", AcceptanceCriteria: []string{"no model"}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	r, _, err := s.Engine.Start(ctx, localSuperPrincipal(), "cascade-run", "offline task", order.ID, g, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cancelled, err := a.CancelSuperWorkOrder(order.ID)
+	if err != nil || cancelled.Status != workorder.StatusCancelled {
+		t.Fatalf("order=%+v err=%v", cancelled, err)
+	}
+	saved, err := store.GetRun(ctx, control.LocalScope, r.ID)
+	if err != nil || saved.Status != control.Cancelled || saved.SafeCode != control.SafeIntakeCancelled {
+		t.Fatalf("run not stopped with intake reason: %+v err=%v", saved.Status, err)
+	}
+}

@@ -57,6 +57,10 @@ const (
 	MaxBudgetTokens                   = 2000000
 	EventRunChanged                   = "super.run.changed"
 	EventDeliveryReady                = "super.delivery.ready"
+	// Safe codes explaining why a root stopped without an operator command.
+	SafeAuthorityRevoked = "authority_revoked"
+	SafeIntakeCancelled  = "intake_cancelled"
+	SafeInterrupted      = "interrupted"
 )
 
 var (
@@ -206,6 +210,12 @@ type Repository interface {
 	ActiveRuns(context.Context) ([]Run, error)
 	SaveRun(context.Context, uint64, Run) (Run, error)
 	CheckClaim(context.Context, Claim) error
+}
+
+// IntakeRepository is optionally implemented by stores that also own the
+// originating work orders. A cancelled intake permanently stops its runs.
+type IntakeRepository interface {
+	IntakeActive(context.Context, string) (bool, error)
 }
 
 type Authority interface {

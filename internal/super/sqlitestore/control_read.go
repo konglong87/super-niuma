@@ -10,9 +10,25 @@ import (
 
 	"github.com/konglong87/super-niuma/internal/super/control"
 	"github.com/konglong87/super-niuma/internal/super/eventbus"
+	"github.com/konglong87/super-niuma/internal/super/workorder"
 )
 
 var _ control.Repository = (*Store)(nil)
+var _ control.IntakeRepository = (*Store)(nil)
+
+// IntakeActive is the same liveness rule claims enforce: only a recorded work
+// order may authorize work. A missing order is reported as inactive.
+func (s *Store) IntakeActive(ctx context.Context, id string) (bool, error) {
+	var status string
+	err := s.db.QueryRowContext(ctx, "SELECT status FROM work_orders WHERE id=?", id).Scan(&status)
+	if errors.Is(err, sql.ErrNoRows) {
+		return false, nil
+	}
+	if err != nil {
+		return false, controlStorageError(ctx, err)
+	}
+	return status == string(workorder.StatusRecorded), nil
+}
 
 const controlColumns = `scope,id,owner,request_key,revision,status,data`
 const controlActivePredicate = `(status NOT IN (?,?,?,?) OR EXISTS (SELECT 1 FROM super_resources sr WHERE sr.scope=super_runs.scope AND sr.run_id=super_runs.id) OR EXISTS (SELECT 1 FROM json_each(data,'$.notices') AS notice WHERE json_extract(notice.value,'$.status')='sending'))`

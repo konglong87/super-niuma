@@ -52,25 +52,35 @@ func (e *Engine) Step(ctx context.Context, owner string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	// A refusal is scoped to its own root: one run that can no longer be claimed
+	// must never starve the runs ordered after it.
+runs:
 	for _, r := range runs {
 		if ctx.Err() != nil {
 			return false, ctx.Err()
 		}
-		if r.Status == AwaitingApproval {
-			continue
-		}
 		if e.expired(r) {
 			_, err = e.mutate(ctx, r.Scope, r.ID, func(n *Run) error { return e.markExpired(n) })
 			if err != nil && !errors.Is(err, ErrConflict) {
-				return false, err
+				e.refused(ctx, r, err)
 			}
 			continue
 		}
 		if r.Status == Cancelling || IsTerminal(r.Status) {
 			continue
 		}
+		if e.intakeCancelled(ctx, r) {
+			e.revoke(ctx, r, SafeIntakeCancelled)
+			continue
+		}
+		if r.Status == AwaitingApproval {
+			continue
+		}
 		if err = e.authorized(ctx, r); err != nil {
-			_, _ = e.Cancel(ctx, Principal{Scope: r.Scope, Owner: r.Owner}, r.ID, 0)
+			if ctx.Err() != nil {
+				return false, ctx.Err()
+			}
+			e.revoke(ctx, r, SafeAuthorityRevoked)
 			continue
 		}
 		if r.Status == DeliveryPending {
@@ -79,13 +89,23 @@ func (e *Engine) Step(ctx context.Context, owner string) (bool, error) {
 			}
 			for _, notice := range r.Notices {
 				if (notice.Status == DeliveryQueued || notice.Status == DeliveryRetry) && notice.RetryAtMS <= e.now() {
-					return e.deliver(ctx, r, notice, owner)
+					worked, err := e.deliver(ctx, r, notice, owner)
+					if worked || err == nil || ctx.Err() != nil {
+						return worked, err
+					}
+					e.refused(ctx, r, err)
+					continue runs
 				}
 			}
 			continue
 		}
 		if allSucceeded(r) {
-			return e.verify(ctx, r, owner)
+			worked, err := e.verify(ctx, r, owner)
+			if worked || err == nil || ctx.Err() != nil {
+				return worked, err
+			}
+			e.refused(ctx, r, err)
+			continue
 		}
 		for _, j := range r.Jobs {
 			if ready(r, j) {
@@ -94,13 +114,40 @@ func (e *Engine) Step(ctx context.Context, owner string) (bool, error) {
 					continue
 				}
 				if err != nil {
-					return false, err
+					if ctx.Err() != nil {
+						return false, ctx.Err()
+					}
+					e.refused(ctx, r, err)
+					continue runs
 				}
 				return true, e.execute(ctx, claimed, j.Spec.ID)
 			}
 		}
 	}
 	return false, nil
+}
+func (e *Engine) refused(ctx context.Context, r Run, err error) {
+	e.logger().WarnContext(ctx, "Super run step refused", "action", "worker.step", "code", "run_refused", "run_id", r.ID, "status", string(r.Status), "denied", errors.Is(err, ErrDenied))
+}
+
+// intakeCancelled reports a durably cancelled originating work order. Such a
+// root can never claim again, so it is stopped instead of retried every tick.
+func (e *Engine) intakeCancelled(ctx context.Context, r Run) bool {
+	repo, ok := e.Store.(IntakeRepository)
+	if !ok || r.IntakeID == "" {
+		return false
+	}
+	active, err := repo.IntakeActive(ctx, r.IntakeID)
+	return err == nil && !active
+}
+
+// revoke stops a root whose authority ended outside the run itself and keeps
+// the reason visible to the operator instead of a generic cancellation.
+func (e *Engine) revoke(ctx context.Context, r Run, code string) {
+	_, err := e.cancelWith(ctx, Principal{Scope: r.Scope, Owner: r.Owner}, r.ID, 0, code)
+	if err != nil && !errors.Is(err, ErrConflict) && ctx.Err() == nil {
+		e.refused(ctx, r, err)
+	}
 }
 func (e *Engine) expired(r Run) bool {
 	for _, j := range r.Jobs {

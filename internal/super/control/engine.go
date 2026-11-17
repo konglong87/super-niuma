@@ -156,6 +156,14 @@ func (e *Engine) Approve(ctx context.Context, p Principal, id string, version ui
 	})
 }
 func (e *Engine) Cancel(ctx context.Context, p Principal, id string, version uint64) (Run, error) {
+	return e.cancelWith(ctx, p, id, version, "cancel_requested")
+}
+// CancelForIntake stops a root because its originating work order is being
+// cancelled; the reason stays visible instead of a generic operator stop.
+func (e *Engine) CancelForIntake(ctx context.Context, p Principal, id string) (Run, error) {
+	return e.cancelWith(ctx, p, id, 0, SafeIntakeCancelled)
+}
+func (e *Engine) cancelWith(ctx context.Context, p Principal, id string, version uint64, code string) (Run, error) {
 	return e.mutate(ctx, p.Scope, id, func(r *Run) error {
 		if !CanRead(p, *r) {
 			return ErrDenied
@@ -167,7 +175,7 @@ func (e *Engine) Cancel(ctx context.Context, p Principal, id string, version uin
 			return ErrConflict
 		}
 		r.Status = Cancelling
-		r.SafeCode = "cancel_requested"
+		r.SafeCode = code
 		running := false
 		for i := range r.Jobs {
 			switch r.Jobs[i].Status {

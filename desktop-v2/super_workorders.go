@@ -193,6 +193,14 @@ func (a *app) GetSuperWorkOrder(id string) (order workorder.WorkOrder, err error
 
 func (a *app) CancelSuperWorkOrder(id string) (order workorder.WorkOrder, err error) {
 	err = a.superWorkOrders.call(superActionCancel, func(ctx context.Context, service *workorder.Service) error {
+		// Stop live runs first so they settle as cancelled. Best effort: workers
+		// also stop any run whose work order is already cancelled.
+		if platform, err := a.superWorkOrders.platformService(); err == nil {
+			if err := platform.StopIntakeRuns(ctx, id); err != nil {
+				_, code := safeSuperWorkOrderError(err)
+				a.superWorkOrders.logger.Warn("desktop work-order run stop incomplete", "action", superActionCancel, "code", code)
+			}
+		}
 		var callErr error
 		order, callErr = service.Cancel(ctx, id)
 		return callErr
