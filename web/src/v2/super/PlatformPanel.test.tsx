@@ -122,6 +122,8 @@ describe("Super control panel (mock UI)", () => {
     check(".super-platform-submit input[type=checkbox]");
     await click("提交所选工单");
     expect(bridge.StartSuperRun).toHaveBeenCalledWith("mock-order", "mock-profile", expect.any(String));
+    // Consent covers one submission; a later resubmission must be confirmed again.
+    expect(host.querySelector<HTMLInputElement>(".super-platform-submit input[type=checkbox]")?.checked).toBe(false);
     change("super-platform-profile", ""); expect(button("提交所选工单").disabled).toBe(true);
   });
   it("fails closed on absent grant budgets, disabled profiles and stopped runtime", async () => {
@@ -210,6 +212,53 @@ describe("Super control panel (mock UI)", () => {
     check(".super-platform-run input[type=checkbox]"); await click("重试失败任务");
     expect(bridge.RetrySuperRun).toHaveBeenCalledWith("mock-run", 5);
   });
+  it("blocks resubmitting an order while it has an unfinished run, then allows a fresh start", async () => {
+    vi.mocked(bridge.GetSuperPlatform).mockResolvedValue(mockSnapshot({ runs: [mockRun({ status: "running", version: 3 })] }));
+    await render(); selectExecution(); check(".super-platform-submit input[type=checkbox]");
+    expect(button("提交所选工单").disabled).toBe(true); expect(host.querySelector(".super-platform-submit")?.textContent).toContain("该工单已有未结束的执行任务");
+    vi.mocked(bridge.GetSuperPlatform).mockResolvedValue(mockSnapshot({ runs: [mockRun({ status: "cancelled", version: 4 }), mockRun({ id: "other-run", intake_id: "other-order", status: "running" })] }));
+    await click("刷新控制台"); expect(button("提交所选工单").disabled).toBe(false);
+    expect(host.querySelector(".super-platform-submit")?.textContent).not.toContain("该工单已有未结束的执行任务");
+    const created = mockRun({ id: "mock-run-2", status: "queued", version: 1 });
+    vi.mocked(bridge.StartSuperRun).mockResolvedValue(created); vi.mocked(bridge.GetSuperPlatform).mockResolvedValue(mockSnapshot({ runs: [created] }));
+    await click("提交所选工单"); expect(bridge.StartSuperRun).toHaveBeenCalledTimes(1);
+    expect(button("提交所选工单").disabled).toBe(true); // the returned run is unfinished
+  });
+  it("allows retry when only already-succeeded jobs used every attempt", async () => {
+    const run = mockRun({ status: "failed", version: 5 }); const spec = { ...run.jobs[0].spec, id: "mock-node-2" };
+    run.jobs = [{ ...run.jobs[0], status: "succeeded", attempts: 3 }, { ...run.jobs[0], spec, status: "failed", attempts: 1 }];
+    vi.mocked(bridge.GetSuperPlatform).mockResolvedValue(mockSnapshot({ runs: [run] })); await render();
+    check(".super-platform-run input[type=checkbox]"); await click("重试失败任务");
+    expect(bridge.RetrySuperRun).toHaveBeenCalledWith("mock-run", 5);
+  });
+  it("keeps a run card mounted across version polls while consent stays bound to the exact version", async () => {
+    const failed = mockRun({ status: "failed", version: 5 });
+    vi.mocked(bridge.GetSuperPlatform).mockResolvedValue(mockSnapshot({ runs: [failed] })); await render();
+    const card = host.querySelector(".super-platform-run")!; const grant = card.querySelector<HTMLDetailsElement>("details")!;
+    act(() => grant.querySelector<HTMLElement>("summary")!.click()); expect(grant.open).toBe(true);
+    check(".super-platform-run input[type=checkbox]"); expect(button("重试失败任务").disabled).toBe(false);
+    vi.mocked(bridge.GetSuperPlatform).mockResolvedValue(mockSnapshot({ runs: [{ ...failed, version: 6 }] })); await click("刷新控制台");
+    expect(host.querySelector(".super-platform-run")).toBe(card); expect(grant.open).toBe(true);
+    expect(card.querySelector<HTMLInputElement>("input[type=checkbox]")?.checked).toBe(false); expect(button("重试失败任务").disabled).toBe(true);
+    vi.mocked(bridge.GetSuperPlatform).mockResolvedValue(mockSnapshot({ runs: [{ ...failed, version: 6, grant_hash: "c".repeat(64) }] }));
+    check(".super-platform-run input[type=checkbox]"); await click("刷新控制台"); expect(button("重试失败任务").disabled).toBe(true);
+    check(".super-platform-run input[type=checkbox]"); await click("重试失败任务");
+    expect(bridge.RetrySuperRun).toHaveBeenCalledTimes(1); expect(bridge.RetrySuperRun).toHaveBeenCalledWith("mock-run", 6);
+  });
+  it.each(["zh", "en"] as const)("requires explicit confirmation to save configuration while runs are in flight in %s", async (language) => {
+    Object.defineProperty(window, "localStorage", { configurable: true, value: { getItem: () => language, setItem: vi.fn() } });
+    const copy = PLATFORM_COPY[language];
+    vi.mocked(bridge.GetSuperPlatform).mockResolvedValue(mockSnapshot({ runs: [mockRun({ status: "running" }), mockRun({ id: "mock-run-2", status: "delivery_pending" }), mockRun({ id: "mock-run-3", status: "delivered" })] }));
+    await render(); const editor = host.querySelector(".super-platform-config")!;
+    expect(editor.textContent).not.toContain(copy.configActiveRunsConfirm);
+    change("super-platform-config", '{ "version": 1, "profiles": [] }');
+    expect(editor.querySelector("[role=alert]")?.textContent).toBe(copy.configActiveRuns.replace("{count}", "2"));
+    expect(button(copy.save).disabled).toBe(true);
+    check(".super-platform-config input[type=checkbox]"); expect(button(copy.save).disabled).toBe(false);
+    change("super-platform-config", '{ "version": 2, "profiles": [] }'); expect(button(copy.save).disabled).toBe(true);
+    check(".super-platform-config input[type=checkbox]"); await click(copy.save);
+    expect(bridge.SaveSuperPlatformConfig).toHaveBeenCalledWith('{ "version": 2, "profiles": [] }');
+  });
   it("reports settled and unsettled budgets without releasing unknown usage", async () => {
     const run = mockRun({ reservations: [
       { id: "mock-reservation-1", job_id: "mock-node", attempt_id: "mock-attempt-1", input: 100, output: 50, actual: { input_tokens: 70, output_tokens: 30 }, settled: true },
@@ -265,7 +314,7 @@ describe("Super control panel (mock UI)", () => {
   it("retains event cursor, deduplicates pages, and never renders raw payloads", async () => {
     vi.mocked(bridge.GetSuperEvents).mockResolvedValueOnce([mockEvent(2), mockEvent(1)]).mockResolvedValueOnce([mockEvent(2), mockEvent(3)]).mockRejectedValueOnce("api_key=do-not-render-secret");
     await render();
-    expect(vi.mocked(bridge.GetSuperEvents).mock.calls.map(([after]) => after)).toEqual([0, 2, 3]);
+    expect(vi.mocked(bridge.GetSuperEvents).mock.calls.map(([after]) => after)).toEqual([-1, 2, 3]);
     expect(host.querySelectorAll(".super-platform-events li")).toHaveLength(3);
     expect(host.textContent).toContain("从上次游标补读"); expect(host.innerHTML).not.toContain("do-not-render-event-payload");
     expect(host.innerHTML).not.toContain("do-not-render-secret");

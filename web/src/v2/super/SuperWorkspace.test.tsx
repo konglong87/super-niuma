@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { I18nProvider } from "../../lib/i18n";
 import { SuperWorkspace } from "./SuperWorkspace";
 import { getSuperClient, superError, type SuperClient, type WorkOrder, type WorkOrderInput } from "./client";
+import { MOCK_HASH, mockBridge, mockRun, mockSnapshot } from "./platformFixtures.test-support";
 
 const input: WorkOrderInput = { title: "桌面验收", objective: "在桌面登记任务", acceptance_criteria: ["不创建会话", "不调用模型"], workspace: "" };
 const order: WorkOrder = { ...input, id: "wo-test", status: "recorded", execution_status: "not_started", verification_status: "not_started", delivery_status: "not_started", created_at: "2026-11-03T00:00:00Z", updated_at: "2026-11-03T00:00:00Z" };
@@ -18,9 +19,10 @@ describe("Super Desktop workspace", () => {
     client = { list: vi.fn().mockResolvedValue([]), create: vi.fn().mockResolvedValue(order), get: vi.fn().mockResolvedValue(order), cancel: vi.fn().mockResolvedValue({ ...order, status: "cancelled" }) };
   });
   afterEach(() => { act(() => root.unmount()); delete window.go; vi.restoreAllMocks(); delete (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT; });
-  async function render(value: SuperClient | null = client) {
-    await act(async () => root.render(<I18nProvider><SuperWorkspace client={value} onBack={vi.fn()} /></I18nProvider>));
+  async function render(value: SuperClient | null = client, active?: boolean) {
+    await act(async () => root.render(<I18nProvider><SuperWorkspace client={value} onBack={vi.fn()} active={active} /></I18nProvider>));
   }
+  const stages = () => [...host.querySelectorAll(".super-stages strong")].map((item) => item.textContent);
   function fill(id: string, value: string) {
     const field = host.querySelector<HTMLInputElement | HTMLTextAreaElement>(`#${id}`)!;
     act(() => { Object.getOwnPropertyDescriptor(field instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype, "value")!.set!.call(field, value); field.dispatchEvent(new Event("input", { bubbles: true })); });
@@ -77,6 +79,21 @@ describe("Super Desktop workspace", () => {
     expect(getSuperClient()).toBeNull();
     window.go = { main: { app: { RestartLocalService: vi.fn(), ListSuperWorkOrders: vi.fn() } } };
     expect(getSuperClient()).toBeNull();
+  });
+  it("derives order stages from the selected order's most recent run", async () => {
+    const delivered = mockRun({ id: "run-new", intake_id: order.id, status: "delivered", created_at_ms: 2, verification: { passed: true, policy_hash: MOCK_HASH, verified_at_ms: 2, artifacts: [], checks: [] } });
+    delivered.jobs[0].status = "succeeded";
+    const platform = mockBridge(mockSnapshot({ runs: [mockRun({ id: "run-old", intake_id: order.id, status: "failed", created_at_ms: 1 }), delivered] }));
+    window.go = { main: { app: { RestartLocalService: vi.fn(), ...platform } } };
+    vi.mocked(client.list).mockResolvedValue([order, { ...order, id: "wo-other", title: "其他工单" }]); await render();
+    expect(stages()).toEqual(["已完成", "已完成", "已完成"]); expect(host.textContent).toContain("详细进度与证据以下方独立控制台为准");
+    await act(async () => [...host.querySelectorAll<HTMLButtonElement>(".super-order-list button")].find((item) => item.textContent?.includes("其他工单"))!.click());
+    expect(stages()).toEqual(["未开始", "未开始", "未开始"]);
+  });
+  it("passes visibility to the control panel so hidden workspaces do not poll", async () => {
+    const platform = mockBridge(); window.go = { main: { app: { RestartLocalService: vi.fn(), ...platform } } };
+    await render(client, false); expect(platform.GetSuperPlatform).not.toHaveBeenCalled();
+    await render(client, true); expect(platform.GetSuperPlatform).toHaveBeenCalledTimes(1);
   });
   it("classifies only known safe failures", () => {
     expect(superError("invalid work-order input")).toBe("invalid");

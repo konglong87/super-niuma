@@ -1,12 +1,15 @@
-import { getDesktopServiceBridge, type SuperPlatformBridge } from "../desktopServiceBridge";
+import { getDesktopServiceBridge, type ControlRun, type SuperPlatformBridge } from "../desktopServiceBridge";
 
 export const STOPPED_CONFIRMATION = "ALL_WORKERS_AND_SENDERS_CONFIRMED_STOPPED";
 
 export const CONTROL_STATUS = {
   queued: "queued", running: "running", verifying: "verifying", awaitingApproval: "awaiting_approval",
   deliveryPending: "delivery_pending", delivered: "delivered", cancelling: "cancelling", cancelled: "cancelled",
-  failed: "failed", needsAttention: "needs_attention", unknown: "unknown",
+  failed: "failed", needsAttention: "needs_attention", unknown: "unknown", succeeded: "succeeded",
 } as const;
+const TERMINAL_STATUSES = new Set<string>([CONTROL_STATUS.delivered, CONTROL_STATUS.cancelled, CONTROL_STATUS.failed, CONTROL_STATUS.needsAttention]);
+// Unrecognized statuses count as active so duplicate submission fails closed.
+export const isActiveRun = (run: Pick<ControlRun, "status">): boolean => !TERMINAL_STATUSES.has(run.status);
 export const PLATFORM_EVENT_TOPICS = new Set(["super.run.changed", "super.delivery.ready", "work_order.recorded", "work_order.cancelled"]);
 export const DELIVERY_STATUS = { unknown: "unknown" } as const;
 

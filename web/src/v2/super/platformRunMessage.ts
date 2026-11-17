@@ -23,6 +23,12 @@ export function platformRunMessage(run: Pick<ControlRun, "status" | "safe_code">
   if (run.status === CONTROL_STATUS.cancelling && code === "authority_revoked") {
     return { tone: "info", text: copy.runRevocationPending };
   }
+  if ((run.status === CONTROL_STATUS.cancelled || run.status === CONTROL_STATUS.cancelling) && code === "intake_cancelled") {
+    return { tone: "info", text: copy.runIntakeCancelled };
+  }
+  if (run.status === CONTROL_STATUS.failed && code === "interrupted") {
+    return { tone: "info", text: copy.runInterrupted };
+  }
   if ((run.status === CONTROL_STATUS.queued || run.status === CONTROL_STATUS.running) && code === "verification_revision_required") {
     return { tone: "info", text: copy.runRevisionRequired };
   }

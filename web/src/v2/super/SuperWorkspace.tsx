@@ -1,15 +1,17 @@
 import { ClipboardList, RefreshCw } from "lucide-react";
 import { useState, type FormEvent, type JSX } from "react";
 import { useI18n } from "../../lib/i18n";
+import type { ControlRun } from "../desktopServiceBridge";
 import { WORK_ORDER_STATUS, WORK_ORDER_LIMITS, type SuperClient } from "./client";
 import { SUPER_COPY } from "./copy";
 import { useSuperWorkOrders } from "./useSuperWorkOrders";
 import { PlatformPanel } from "./PlatformPanel";
 import { getSuperPlatformBridge } from "./platformClient";
+import { workOrderStages } from "./workOrderStages";
 import "./superWorkspace.css";
 
-type Props = { client: SuperClient | null; onBack: () => void };
-export function SuperWorkspace({ client, onBack }: Props): JSX.Element {
+type Props = { client: SuperClient | null; onBack: () => void; active?: boolean };
+export function SuperWorkspace({ client, onBack, active = true }: Props): JSX.Element {
   const { language } = useI18n();
   const copy = SUPER_COPY[language === "zh" ? "zh" : "en"];
   const model = useSuperWorkOrders(client);
@@ -18,7 +20,9 @@ export function SuperWorkspace({ client, onBack }: Props): JSX.Element {
   const [objective, setObjective] = useState("");
   const [criteria, setCriteria] = useState("");
   const [workspace, setWorkspace] = useState("");
+  const [runs, setRuns] = useState<ControlRun[]>([]);
   const selected = model.selected;
+  const stages = workOrderStages(runs, selected?.id);
   function submit(event: FormEvent): void {
     event.preventDefault();
     if (!title.trim() || !objective.trim() || !criteria.trim()) return;
@@ -53,15 +57,17 @@ export function SuperWorkspace({ client, onBack }: Props): JSX.Element {
         </section>
         <section className="super-card super-detail" aria-label={copy.criteriaTitle}>
           {selected ? <><h2>{selected.title}</h2><span className="super-badge">{copy[selected.status]}</span><p className="super-objective">{selected.objective}</p>
-            <h3>{copy.criteriaTitle}</h3><ul>{selected.acceptance_criteria.map((criterion, index) => <li key={index}>{criterion}</li>)}</ul>
+            <h3>{copy.criteriaTitle}</h3><ul>{selected.acceptance_criteria.map((criterion, index) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: criteria are static, possibly duplicate text that is never reordered.
+              <li key={index}>{criterion}</li>))}</ul>
             <dl><dt>{copy.workspace}</dt><dd>{selected.workspace || copy.noWorkspace}</dd><dt>{copy.id}</dt><dd>{selected.id}</dd></dl>
-            <div className="super-stages">{(["execution", "verification", "delivery"] as const).map((stage) => <div key={stage}><span>{copy[stage]}</span><strong>{copy.notStarted}</strong></div>)}</div>
+            <div className="super-stages">{(["execution", "verification", "delivery"] as const).map((stage) => <div key={stage}><span>{copy[stage]}</span><strong>{copy[stages[stage]]}</strong></div>)}</div>
             {platformBridge ? <small>{copy.progressInConsole}</small> : null}
             <button className="super-cancel" disabled={model.busy || selected.status === WORK_ORDER_STATUS.cancelled} type="button" onClick={() => void model.cancel(selected.id)}>{copy.cancel}</button>
           </> : <p className="super-empty">{copy.select}</p>}
         </section>
       </div>
     </div>
-    <PlatformPanel key={platformBridge ? "platform" : "intake"} bridge={platformBridge} orders={model.orders} />
+    <PlatformPanel key={platformBridge ? "platform" : "intake"} bridge={platformBridge} orders={model.orders} active={active} onRunsChange={setRuns} />
   </section>;
 }

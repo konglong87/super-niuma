@@ -8,23 +8,28 @@ import { PlatformGrant } from "./PlatformGrant";
 import { PLATFORM_LIMITS, count, displayHash, displayText, displayTime } from "./platformSafety";
 
 const CANCELLABLE = new Set<string>([CONTROL_STATUS.queued, CONTROL_STATUS.running, CONTROL_STATUS.verifying, CONTROL_STATUS.awaitingApproval, CONTROL_STATUS.deliveryPending]);
+type Consent = { bridge: PlatformBridge; version: number; grantHash: string } | null;
 type Props = {
   run: ControlRun; copy: PlatformCopy; language: "zh" | "en"; bridge: PlatformBridge; disabled: boolean;
   onApprove: (run: ControlRun) => Promise<boolean>; onCancel: (run: ControlRun) => Promise<boolean>; onRetry: (run: ControlRun) => Promise<boolean>; onAbandon?: (run: ControlRun) => Promise<boolean>;
 };
 export function PlatformRunCard({ run, copy, language, bridge, disabled, onApprove, onCancel, onRetry, onAbandon }: Props): JSX.Element {
-  const [approvalConsent, setApprovalConsent] = useState<PlatformBridge | null>(null);
-  const confirmed = approvalConsent === bridge;
-  const [retryConsent, setRetryConsent] = useState<PlatformBridge | null>(null);
-  const retryConfirmed = retryConsent === bridge;
-  const [abandonConsent, setAbandonConsent] = useState<PlatformBridge | null>(null);
-  const abandonConfirmed = abandonConsent === bridge;
+  // The card survives polls; consent stays bound to the exact version and grant it was given for.
+  const consentFor = (checked: boolean): Consent => checked ? { bridge, version: run.version, grantHash: run.grant_hash } : null;
+  const matches = (consent: Consent) => consent?.bridge === bridge && consent.version === run.version && consent.grantHash === run.grant_hash;
+  const [approvalConsent, setApprovalConsent] = useState<Consent>(null);
+  const confirmed = matches(approvalConsent);
+  const [retryConsent, setRetryConsent] = useState<Consent>(null);
+  const retryConfirmed = matches(retryConsent);
+  const [abandonConsent, setAbandonConsent] = useState<Consent>(null);
+  const abandonConfirmed = matches(abandonConsent);
   const jobs = run.jobs ?? [];
   const notices = run.notices ?? [];
   const reservations = run.reservations ?? [];
   const unknown = run.status === CONTROL_STATUS.needsAttention || jobs.some((job) => job.status === CONTROL_STATUS.unknown) || notices.some((notice) => notice.status === DELIVERY_STATUS.unknown);
   const expired = run.grant.expires_at_ms <= Date.now();
-  const canRetry = run.status === CONTROL_STATUS.failed && !unknown && !expired && jobs.every((job) => job.status !== CONTROL_STATUS.running && job.attempts < PLATFORM_LIMITS.maxAttempts);
+  const canRetry = run.status === CONTROL_STATUS.failed && !unknown && !expired && jobs.every((job) => job.status !== CONTROL_STATUS.running
+    && (job.status === CONTROL_STATUS.succeeded || job.attempts < PLATFORM_LIMITS.maxAttempts));
   const consumed = reservations.filter((item) => item.settled).reduce((total, item) => total + count(item.actual?.input_tokens) + count(item.actual?.output_tokens), 0);
   const reserved = reservations.filter((item) => !item.settled).reduce((total, item) => total + count(item.input) + count(item.output), 0);
   const report = run.verification;
@@ -78,17 +83,17 @@ export function PlatformRunCard({ run, copy, language, bridge, disabled, onAppro
     </section>
     {expired ? <p className="super-platform-muted">{copy.stale}</p> : null}
     {run.status === CONTROL_STATUS.awaitingApproval && typeof bridge.ApproveSuperRun === "function" ? <div className="super-platform-confirm">
-      <SuperConsent checked={confirmed} disabled={disabled || expired} label={copy.approveConfirm} onChange={(checked) => setApprovalConsent(checked ? bridge : null)} />
+      <SuperConsent checked={confirmed} disabled={disabled || expired} label={copy.approveConfirm} onChange={(checked) => setApprovalConsent(consentFor(checked))} />
       <button type="button" disabled={disabled || expired || !confirmed || displayHash(run.grant_hash) === "—"} onClick={() => void onApprove(run)}>{copy.approve}</button>
     </div> : null}
     {canRetry && typeof bridge.RetrySuperRun === "function" ? <div className="super-platform-confirm">
-      <SuperConsent checked={retryConfirmed} disabled={disabled} label={copy.retryConfirm} onChange={(checked) => setRetryConsent(checked ? bridge : null)} />
+      <SuperConsent checked={retryConfirmed} disabled={disabled} label={copy.retryConfirm} onChange={(checked) => setRetryConsent(consentFor(checked))} />
       <button type="button" disabled={disabled || !retryConfirmed} onClick={() => void onRetry(run)}>{copy.retry}</button>
     </div> : null}
     {run.status === CONTROL_STATUS.needsAttention && typeof bridge.AbandonSuperRun === "function" && onAbandon ? <details className="super-platform-manual">
       <summary>{copy.manualIntervention}</summary>
       <p className="super-platform-muted">{copy.abandonRisk}</p>
-      <div className="super-platform-confirm"><SuperConsent checked={abandonConfirmed} disabled={disabled} label={copy.abandonConfirm} onChange={(checked) => setAbandonConsent(checked ? bridge : null)} />
+      <div className="super-platform-confirm"><SuperConsent checked={abandonConfirmed} disabled={disabled} label={copy.abandonConfirm} onChange={(checked) => setAbandonConsent(consentFor(checked))} />
         <button type="button" className="super-platform-abandon" disabled={disabled || !abandonConfirmed} onClick={() => { if (abandonConfirmed) void onAbandon(run); }}>{copy.abandon}</button>
       </div>
     </details> : null}

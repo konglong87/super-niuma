@@ -3,7 +3,7 @@ import type { ControlRun, SuperEvent, SuperPlatformSnapshot } from "../desktopSe
 import { STOPPED_CONFIRMATION, platformError, type PlatformBridge, type PlatformError } from "./platformClient";
 import { PLATFORM_LIMITS } from "./platformSafety";
 
-type Session = { active: boolean; mutating: boolean; revision: number; refresh: () => void };
+type Session = { active: boolean; mutating: boolean; revision: number; refresh: () => void; pause: () => void };
 function mergeSnapshot(next: SuperPlatformSnapshot, previous: SuperPlatformSnapshot | null): SuperPlatformSnapshot {
   const versions = new Map(previous?.runs?.map((run) => [run.id, run]) ?? []);
   return { ...next, profiles: next.profiles ?? [], runs: (next.runs ?? []).map((run) => {
@@ -18,7 +18,7 @@ function validateSnapshot(value: SuperPlatformSnapshot): SuperPlatformSnapshot {
   return value;
 }
 
-export function useSuperPlatform(bridge: PlatformBridge | null) {
+export function useSuperPlatform(bridge: PlatformBridge | null, active = true) {
   const [snapshot, setSnapshot] = useState<SuperPlatformSnapshot | null>(null);
   const [events, setEvents] = useState<SuperEvent[]>([]);
   const [error, setError] = useState<PlatformError | null>(null);
@@ -28,9 +28,17 @@ export function useSuperPlatform(bridge: PlatformBridge | null) {
   const [loading, setLoading] = useState(false);
   const session = useRef<Session | null>(null);
   const startKeys = useRef(new Map<string, string>());
+  const visible = useRef(active);
+
+  // Hidden panels keep their state but run no timers; showing polls at once.
+  useEffect(() => {
+    if (visible.current === active) return;
+    visible.current = active;
+    if (active) session.current?.refresh(); else session.current?.pause();
+  }, [active]);
 
   useEffect(() => {
-    const current: Session = { active: true, mutating: false, revision: 0, refresh: () => {} };
+    const current: Session = { active: true, mutating: false, revision: 0, refresh: () => {}, pause: () => {} };
     session.current = current;
     startKeys.current.clear();
     setSnapshot(null); setEvents([]); setError(null); setPollError(false); setEventError(false); setBusy(false);
@@ -38,8 +46,10 @@ export function useSuperPlatform(bridge: PlatformBridge | null) {
     let timer: ReturnType<typeof setTimeout> | undefined;
     let reading = false;
     let queued = false;
-    let cursor = 0;
+    // -1 asks for the latest page; afterwards resume after the last sequence.
+    let cursor = -1;
     const live = () => current.active && session.current === current;
+    const polling = () => live() && visible.current;
     async function readEvents() {
       if (typeof bridge?.GetSuperEvents !== "function") return;
       try {
@@ -51,7 +61,7 @@ export function useSuperPlatform(bridge: PlatformBridge | null) {
           if (!Array.isArray(result) || result.some((event) => !event || !Number.isSafeInteger(event.sequence) || event.sequence < 1)) throw new Error("invalid events");
           const fresh = result.filter((event) => event.sequence > cursor).sort((a, b) => a.sequence - b.sequence);
           setEventError(false);
-          if (!fresh.length) break;
+          if (!fresh.length) { if (cursor < 0) cursor = 0; break; }
           cursor = fresh[fresh.length - 1].sequence;
           setEvents((previous) => [...new Map([...previous, ...fresh].map((event) => [event.sequence, event])).values()]
             .sort((a, b) => a.sequence - b.sequence).slice(-PLATFORM_LIMITS.events));
@@ -70,19 +80,20 @@ export function useSuperPlatform(bridge: PlatformBridge | null) {
       finally { if (live()) setLoading(false); }
     }
     async function poll() {
-      if (!live() || typeof bridge?.GetSuperPlatform !== "function") return;
+      if (!polling() || typeof bridge?.GetSuperPlatform !== "function") return;
       if (reading || current.mutating) { queued = true; return; }
       if (timer) clearTimeout(timer);
       reading = true; queued = false;
       await Promise.all([readSnapshot(), readEvents()]);
       reading = false;
-      if (live()) {
+      if (polling()) {
         // Wails promises cannot be aborted; generation/revision checks fence
         // responses from a previous bridge, unmount or pre-mutation read.
         timer = setTimeout(() => void poll(), queued && !current.mutating ? 0 : PLATFORM_LIMITS.pollMS);
       }
     }
     current.refresh = () => { void poll(); };
+    current.pause = () => { if (timer) clearTimeout(timer); timer = undefined; };
     void poll();
     return () => { current.active = false; if (timer) clearTimeout(timer); };
   }, [bridge]);
@@ -114,12 +125,21 @@ export function useSuperPlatform(bridge: PlatformBridge | null) {
     }
   }, []);
 
-  const start = useCallback((intakeID: string, profileID: string) => {
-    if (typeof bridge?.StartSuperRun !== "function") return Promise.resolve(false);
+  const start = useCallback(async (intakeID: string, profileID: string) => {
+    if (typeof bridge?.StartSuperRun !== "function") return false;
+    const keys = startKeys.current;
     const identity = JSON.stringify([intakeID, profileID]);
-    let key = startKeys.current.get(identity);
-    if (!key) { key = crypto.randomUUID(); startKeys.current.set(identity, key); }
-    return mutate(() => bridge.StartSuperRun!(intakeID, profileID, key!));
+    const key = keys.get(identity) ?? crypto.randomUUID();
+    keys.set(identity, key);
+    // Reuse a key only while its attempt is unresolved, so retries after a
+    // timeout stay idempotent. A returned run or a CAS conflict ends the attempt.
+    const settle = () => { if (keys.get(identity) === key) keys.delete(identity); };
+    const started = await mutate(() => bridge.StartSuperRun!(intakeID, profileID, key).catch((failure: unknown) => {
+      if (platformError(failure) === "conflict") settle();
+      throw failure;
+    }));
+    if (started) settle();
+    return started;
   }, [bridge, mutate]);
   const save = useCallback((json: string) => typeof bridge?.SaveSuperPlatformConfig === "function"
     ? mutate(() => bridge.SaveSuperPlatformConfig!(json), true) : Promise.resolve(false), [bridge, mutate]);

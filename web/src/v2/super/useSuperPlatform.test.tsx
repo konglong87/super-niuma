@@ -12,7 +12,7 @@ describe("useSuperPlatform (mock bridge)", () => {
   let root: Root;
   let model: ReturnType<typeof useSuperPlatform>;
   let mounted: boolean;
-  function Harness({ bridge }: { bridge: PlatformBridge | null }) { model = useSuperPlatform(bridge); return null; }
+  function Harness({ bridge, active }: { bridge: PlatformBridge | null; active?: boolean }) { model = useSuperPlatform(bridge, active); return null; }
   beforeEach(() => {
     vi.useFakeTimers(); mounted = true;
     (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -22,7 +22,7 @@ describe("useSuperPlatform (mock bridge)", () => {
     if (mounted) act(() => root.unmount());
     vi.useRealTimers(); vi.restoreAllMocks(); delete (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT;
   });
-  async function render(bridge: PlatformBridge | null) { await act(async () => root.render(<Harness bridge={bridge} />)); }
+  async function render(bridge: PlatformBridge | null, active?: boolean) { await act(async () => root.render(<Harness bridge={bridge} active={active} />)); }
   async function tick(ms: number = PLATFORM_LIMITS.pollMS) { await act(async () => vi.advanceTimersByTimeAsync(ms)); }
 
   it("does not start overlapping polls and removes timers on unmount", async () => {
@@ -47,7 +47,7 @@ describe("useSuperPlatform (mock bridge)", () => {
     await act(async () => { oldSnapshot.resolve(mockSnapshot({ workers: 1 })); oldEvents.resolve([mockEvent(900)]); oldSave.resolve(mockSnapshot({ workers: 3 })); });
     expect(model.snapshot?.workers).toBe(7); expect(model.events).toEqual([]); expect(model.busy).toBe(false);
     expect(previous.GetSuperEvents).toHaveBeenCalledTimes(1);
-    expect(current.GetSuperEvents).toHaveBeenCalledWith(0);
+    expect(current.GetSuperEvents).toHaveBeenCalledWith(-1);
   });
   it("rejects a pre-cancellation read and preserves the newer run version", async () => {
     const run = mockRun({ status: "running", version: 4 }); const bridge = mockBridge(mockSnapshot({ runs: [run] }));
@@ -69,21 +69,59 @@ describe("useSuperPlatform (mock bridge)", () => {
     await tick(); expect(model.pollError).toBe(true); expect(model.snapshot?.workers).toBe(2);
     expect(model.error).toBeNull(); await tick(); expect(model.pollError).toBe(false);
   });
-  it("replays backlog in bounded pages then resumes and caps the visible timeline", async () => {
+  it("reads the latest page first, then catches up in bounded pages and caps the visible timeline", async () => {
     const bridge = mockBridge();
-    vi.mocked(bridge.GetSuperEvents).mockImplementation(async (after) => after >= 350 ? [] : Array.from({ length: 50 }, (_, i) => mockEvent(after + i + 1)));
+    vi.mocked(bridge.GetSuperEvents).mockImplementation(async (after) => after < 0 ? Array.from({ length: 100 }, (_, i) => mockEvent(i + 101))
+      : after >= 350 ? [] : Array.from({ length: 50 }, (_, i) => mockEvent(after + i + 1)));
     await render(bridge);
+    expect(bridge.GetSuperEvents).toHaveBeenNthCalledWith(1, -1); expect(bridge.GetSuperEvents).toHaveBeenNthCalledWith(2, 200);
     expect(bridge.GetSuperEvents).toHaveBeenCalledTimes(PLATFORM_LIMITS.eventPages);
     expect(model.events).toHaveLength(200);
     await tick(); expect(bridge.GetSuperEvents).toHaveBeenLastCalledWith(350);
     expect(model.events).toHaveLength(PLATFORM_LIMITS.events); expect(model.events[0].sequence).toBe(151);
     expect(model.events.at(-1)?.sequence).toBe(350);
   });
+  it("falls back to the start cursor when the tail is empty and retries the tail after a failure", async () => {
+    const bridge = mockBridge();
+    vi.mocked(bridge.GetSuperEvents).mockRejectedValueOnce(new Error("unavailable")).mockResolvedValueOnce([]).mockResolvedValueOnce([mockEvent(1)]);
+    await render(bridge); expect(model.eventError).toBe(true); expect(bridge.GetSuperEvents).toHaveBeenLastCalledWith(-1);
+    await tick(); expect(bridge.GetSuperEvents).toHaveBeenLastCalledWith(-1); expect(model.eventError).toBe(false);
+    await tick(); expect(bridge.GetSuperEvents).toHaveBeenNthCalledWith(3, 0); expect(model.events.map((event) => event.sequence)).toEqual([1]);
+    await tick(); expect(bridge.GetSuperEvents).toHaveBeenLastCalledWith(1);
+  });
   it("does not advance the event cursor when a page fails validation", async () => {
     const bridge = mockBridge();
     vi.mocked(bridge.GetSuperEvents).mockResolvedValueOnce([mockEvent(1)]).mockResolvedValueOnce([mockEvent(Number.MAX_SAFE_INTEGER + 1)]);
     await render(bridge); expect(model.eventError).toBe(true); expect(model.events).toHaveLength(1);
     await tick(); expect(bridge.GetSuperEvents).toHaveBeenLastCalledWith(1); expect(model.eventError).toBe(false);
+  });
+  it("runs no poll timers while hidden and polls immediately when shown again", async () => {
+    const bridge = mockBridge(); await render(bridge, false);
+    expect(bridge.GetSuperPlatform).not.toHaveBeenCalled(); expect(bridge.GetSuperEvents).not.toHaveBeenCalled(); expect(vi.getTimerCount()).toBe(0);
+    await render(bridge, true); expect(bridge.GetSuperPlatform).toHaveBeenCalledTimes(1); expect(model.snapshot?.workers).toBe(2);
+    await tick(); expect(bridge.GetSuperPlatform).toHaveBeenCalledTimes(2);
+    await render(bridge, false); expect(vi.getTimerCount()).toBe(0);
+    await tick(PLATFORM_LIMITS.pollMS * 10); expect(bridge.GetSuperPlatform).toHaveBeenCalledTimes(2); expect(model.snapshot?.workers).toBe(2);
+    await render(bridge, true); expect(bridge.GetSuperPlatform).toHaveBeenCalledTimes(3);
+  });
+  it("does not schedule a timer when hidden during an in-flight read", async () => {
+    const pending = deferred<SuperPlatformSnapshot>(); const bridge = mockBridge();
+    vi.mocked(bridge.GetSuperPlatform).mockReturnValueOnce(pending.promise);
+    await render(bridge); await render(bridge, false);
+    await act(async () => pending.resolve(mockSnapshot())); expect(vi.getTimerCount()).toBe(0);
+    await tick(PLATFORM_LIMITS.pollMS * 3); expect(bridge.GetSuperPlatform).toHaveBeenCalledTimes(1);
+  });
+  it("keeps a start key only until the attempt resolves", async () => {
+    const bridge = mockBridge(); await render(bridge);
+    const keys = () => vi.mocked(bridge.StartSuperRun).mock.calls.map((call) => call[2]);
+    vi.mocked(bridge.StartSuperRun).mockRejectedValueOnce("Super capacity exhausted").mockRejectedValueOnce(new Error("timeout"))
+      .mockResolvedValueOnce(mockRun()).mockRejectedValueOnce("Super state revision conflict").mockResolvedValueOnce(mockRun({ id: "mock-run-2" }));
+    for (let attempt = 0; attempt < 5; attempt++) await act(async () => { await model.start("mock-order", "mock-profile"); });
+    const [unresolved, retried, started, conflicted, fresh] = keys();
+    // Unresolved failures retry with the same key; a returned run or conflict retires it.
+    expect(retried).toBe(unresolved); expect(started).toBe(unresolved);
+    expect(conflicted).not.toBe(started); expect(fresh).not.toBe(conflicted); expect(new Set([started, conflicted, fresh]).size).toBe(3);
+    await act(async () => { await model.start("other-order", "mock-profile"); }); expect(keys()[5]).not.toBe(fresh);
   });
   it("stops safely after unmount with an outstanding mutation and read", async () => {
     const bridge = mockBridge(); await render(bridge);
