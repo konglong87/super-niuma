@@ -13,6 +13,7 @@ import (
 	"github.com/konglong87/super-niuma/internal/super"
 	"github.com/konglong87/super-niuma/internal/super/control"
 	"github.com/konglong87/super-niuma/internal/super/eventbus"
+	"github.com/konglong87/super-niuma/internal/super/execution"
 	"github.com/konglong87/super-niuma/internal/super/platform"
 	"github.com/konglong87/super-niuma/internal/super/sqlitestore"
 	"github.com/konglong87/super-niuma/internal/super/verification"
@@ -395,5 +396,16 @@ func TestSuperPlatformEventTailSkipsRetainedHistory(t *testing.T) {
 	}
 	if next, err := a.GetSuperEvents(latest[len(latest)-1].Sequence); err != nil || len(next) != 0 {
 		t.Fatalf("tail is not the newest page: %d %v", len(next), err)
+	}
+}
+
+func TestDesktopRunViewDropsResultTextOnly(t *testing.T) {
+	r := control.Run{ID: "run", Jobs: []control.Job{{Status: control.JobSucceeded, Result: execution.Result{Text: "model output", UsageKnown: true, Writes: []execution.WriteReceipt{{Path: "a.txt"}}}}}}
+	view := desktopRunView(r)
+	if view.Jobs[0].Result.Text != "" || !view.Jobs[0].Result.UsageKnown || len(view.Jobs[0].Result.Writes) != 1 {
+		t.Fatalf("view=%+v", view.Jobs[0].Result)
+	}
+	if r.Jobs[0].Result.Text != "model output" {
+		t.Fatal("view mutated the persisted run")
 	}
 }

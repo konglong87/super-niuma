@@ -14,12 +14,13 @@ const noticeSubscriber = "super.notices.v1"
 
 func (s *Service) consumeNotices(ctx context.Context) {
 	owner := uuid.NewString()
+	idle := control.NextIdle(0)
 	for ctx.Err() == nil {
 		// Scopes are obtained from authorized, server-owned profiles, not a caller's
 		// event payload. Each gets an independent durable subscriber cursor.
 		cfg, err := s.config.load()
 		if err != nil {
-			if !pause(ctx) {
+			if alive, _ := s.Engine.Idle(ctx, control.NextIdle(time.Second)); !alive {
 				return
 			}
 			continue
@@ -52,16 +53,19 @@ func (s *Service) consumeNotices(ctx context.Context) {
 				s.logger.Warn("Super notice cursor settlement failed", "action", "bus.settle", "code", "settlement_failed")
 			}
 		}
-		if !worked && !pause(ctx) {
+		if worked {
+			idle = control.NextIdle(0)
+			continue
+		}
+		// Idle: back off, but a newly verified run wakes this consumer at once.
+		alive, woken := s.Engine.Idle(ctx, idle)
+		if !alive {
 			return
 		}
-	}
-}
-func pause(ctx context.Context) bool {
-	select {
-	case <-ctx.Done():
-		return false
-	case <-time.After(250 * time.Millisecond):
-		return true
+		if woken {
+			idle = control.NextIdle(0)
+		} else {
+			idle = control.NextIdle(idle)
+		}
 	}
 }

@@ -31,7 +31,11 @@ func (s *Store) IntakeActive(ctx context.Context, id string) (bool, error) {
 }
 
 const controlColumns = `scope,id,owner,request_key,revision,status,data`
-const controlActivePredicate = `(status NOT IN (?,?,?,?) OR EXISTS (SELECT 1 FROM super_resources sr WHERE sr.scope=super_runs.scope AND sr.run_id=super_runs.id) OR EXISTS (SELECT 1 FROM json_each(data,'$.notices') AS notice WHERE json_extract(notice.value,'$.status')='sending'))`
+
+// Delivered and cancelled roots can never hold an in-flight notice (enforced
+// by validateControlNotices), so the per-row JSON scan only runs for the other
+// statuses and terminal history is not read from disk on every worker poll.
+const controlActivePredicate = `(status NOT IN (?,?,?,?) OR EXISTS (SELECT 1 FROM super_resources sr WHERE sr.scope=super_runs.scope AND sr.run_id=super_runs.id) OR (status NOT IN ('delivered','cancelled') AND EXISTS (SELECT 1 FROM json_each(data,'$.notices') AS notice WHERE json_extract(notice.value,'$.status')='sending')))`
 
 func controlStorageError(ctx context.Context, err error) error {
 	if ctx.Err() != nil {

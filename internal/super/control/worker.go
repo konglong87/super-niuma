@@ -258,21 +258,31 @@ func (e *Engine) execute(parent context.Context, r Run, id string) error {
 	done := make(chan struct{})
 	go func() {
 		defer close(done)
-		interval := time.Duration(e.leaseMS()/3) * time.Millisecond
-		if interval > 500*time.Millisecond {
-			interval = 500 * time.Millisecond
-		}
+		// Check authority often so cancellation stops the executor quickly, but
+		// rewrite the durable lease only every third of it: each renewal is a
+		// full-run write that also bumps the version operators see.
+		renewEvery := time.Duration(e.leaseMS()/3) * time.Millisecond
+		interval := min(renewEvery, 500*time.Millisecond)
 		tick := time.NewTicker(interval)
 		defer tick.Stop()
+		renewed := time.Now()
 		for {
 			select {
 			case <-ctx.Done():
 				return
-			case <-tick.C:
-				if e.check(ctx, claim) != nil || e.renew(ctx, claim) != nil {
+			case now := <-tick.C:
+				if e.check(ctx, claim) != nil {
 					cancel()
 					return
 				}
+				if now.Sub(renewed) < renewEvery-interval/2 {
+					continue
+				}
+				if e.renew(ctx, claim) != nil {
+					cancel()
+					return
+				}
+				renewed = now
 			}
 		}
 	}()

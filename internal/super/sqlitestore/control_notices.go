@@ -60,6 +60,11 @@ func validateControlNotices(a, b control.Run, now int64) error {
 		if b.Status == control.Delivered && n.Status != control.DeliverySent {
 			return control.ErrDenied
 		}
+		// A cancelled root must have settled every send; the active-run query
+		// relies on this to skip cancelled history.
+		if b.Status == control.Cancelled && n.Status == control.DeliverySending {
+			return control.ErrDenied
+		}
 	}
 	for id := range old {
 		if !seen[id] {

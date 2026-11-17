@@ -316,3 +316,60 @@ func TestRetryIgnoresAttemptsOfSucceededJobs(t *testing.T) {
 		t.Fatalf("exhausted failed job retried: %v", err)
 	}
 }
+
+// Idle workers back off, but an admission wakes them at once.
+func TestStartWakesBackedOffWorkers(t *testing.T) {
+	e := testEngine()
+	started := make(chan time.Time, 1)
+	e.Executor = fakeExecutor{fn: func(context.Context, execution.Request) (execution.Result, error) {
+		select {
+		case started <- time.Now():
+		default:
+		}
+		return execution.Result{Text: "fixture", UsageKnown: true}, nil
+	}}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	done := make(chan error, 1)
+	go func() { done <- e.Serve(ctx) }()
+	time.Sleep(3500 * time.Millisecond) // long enough to reach the maximum back-off
+	admitted := time.Now()
+	if _, _, err := e.Start(ctx, Principal{Scope: LocalScope, Owner: LocalOwner}, "wake", "objective", "", testGrant(t), nil); err != nil {
+		t.Fatal(err)
+	}
+	select {
+	case at := <-started:
+		if at.Sub(admitted) > idleMax/2 {
+			t.Fatalf("admission waited for the back-off: %v", at.Sub(admitted))
+		}
+	case <-time.After(5 * time.Second):
+		t.Fatal("work never started")
+	}
+	cancel()
+	<-done
+}
+
+// Authority is checked often, but the durable lease is rewritten only every
+// third of the lease, which keeps run versions stable for operators.
+func TestHeartbeatRenewsOncePerThirdOfLease(t *testing.T) {
+	e := testEngine()
+	e.Lease = 3 * time.Second
+	var claimed, finished uint64
+	e.Executor = fakeExecutor{fn: func(ctx context.Context, r execution.Request) (execution.Result, error) {
+		run, _ := e.Store.GetRun(ctx, LocalScope, r.RunID)
+		claimed = run.Version
+		time.Sleep(2300 * time.Millisecond)
+		run, _ = e.Store.GetRun(ctx, LocalScope, r.RunID)
+		finished = run.Version
+		return execution.Result{Text: "fixture", UsageKnown: true}, nil
+	}}
+	if _, _, err := e.Start(context.Background(), Principal{Scope: LocalScope, Owner: LocalOwner}, "renew", "objective", "", testGrant(t), nil); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := e.Step(context.Background(), "worker"); err != nil {
+		t.Fatal(err)
+	}
+	if renewals := finished - claimed; renewals < 1 || renewals > 2 {
+		t.Fatalf("renewals in 2.3s with a 3s lease = %d, want 1-2", renewals)
+	}
+}

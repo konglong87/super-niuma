@@ -27,6 +27,67 @@ type Engine struct {
 	Workers        int
 	Lease          time.Duration
 	Now            func() time.Time
+
+	wake *wakeSignal // lazily created; a pointer keeps Engine copyable
+}
+
+type wakeSignal struct {
+	mu sync.Mutex
+	ch chan struct{}
+}
+
+var wakeInit sync.Mutex
+
+func (e *Engine) signal() *wakeSignal {
+	wakeInit.Lock()
+	defer wakeInit.Unlock()
+	if e.wake == nil {
+		e.wake = &wakeSignal{ch: make(chan struct{})}
+	}
+	return e.wake
+}
+
+const (
+	idleMin = 100 * time.Millisecond
+	idleMax = 2 * time.Second
+)
+
+// Wake makes idle workers and subscribers re-check immediately. New admissions,
+// approvals, retries and completed units call it, so idle polling can back off
+// without delaying in-process work. Pollers still bound latency by idleMax.
+func (e *Engine) Wake() {
+	w := e.signal()
+	w.mu.Lock()
+	close(w.ch)
+	w.ch = make(chan struct{})
+	w.mu.Unlock()
+}
+
+// Idle waits for d, a Wake, or cancellation. It reports whether ctx is alive
+// and whether a Wake ended the wait early.
+func (e *Engine) Idle(ctx context.Context, d time.Duration) (alive, woken bool) {
+	w := e.signal()
+	w.mu.Lock()
+	wake := w.ch
+	w.mu.Unlock()
+	timer := time.NewTimer(d)
+	defer timer.Stop()
+	select {
+	case <-ctx.Done():
+		return false, false
+	case <-wake:
+		return true, true
+	case <-timer.C:
+		return true, false
+	}
+}
+
+// NextIdle doubles an idle back-off up to idleMax.
+func NextIdle(d time.Duration) time.Duration {
+	if d < idleMin {
+		return idleMin
+	}
+	return min(2*d, idleMax)
 }
 
 func (e *Engine) now() int64 {
@@ -90,6 +151,7 @@ func (e *Engine) Start(ctx context.Context, p Principal, key, objective, intakeI
 	saved, created, err := e.Store.CreateRun(ctx, r, in)
 	if err == nil {
 		e.logger().InfoContext(ctx, "Super admission committed", "action", "super.admit", "run_id", saved.ID, "created", created, "scope", p.Scope)
+		e.Wake()
 	}
 	return saved, created, err
 }
@@ -140,6 +202,7 @@ func (e *Engine) Approve(ctx context.Context, p Principal, id string, version ui
 	if !p.LocalAdmin {
 		return Run{}, ErrDenied
 	}
+	defer e.Wake()
 	return e.mutate(ctx, p.Scope, id, func(r *Run) error {
 		if !CanRead(p, *r) {
 			return ErrDenied
@@ -206,6 +269,7 @@ func (e *Engine) Retry(ctx context.Context, p Principal, id string, version uint
 	if !p.LocalAdmin {
 		return Run{}, ErrDenied
 	}
+	defer e.Wake()
 	return e.mutate(ctx, p.Scope, id, func(r *Run) error {
 		if !CanRead(p, *r) {
 			return ErrDenied
@@ -257,25 +321,33 @@ func (e *Engine) Serve(ctx context.Context) error {
 		go func() {
 			defer wg.Done()
 			owner := uuid.NewString()
+			idle := idleMin
 			for ctx.Err() == nil {
 				if e.WorkerLimit != nil && index >= e.WorkerLimit() {
-					select {
-					case <-ctx.Done():
+					// Over the configured limit: re-read the limit rarely.
+					if alive, _ := e.Idle(ctx, idleMax); !alive {
 						return
-					case <-time.After(100 * time.Millisecond):
-						continue
 					}
+					continue
 				}
 				worked, err := e.Step(ctx, owner)
 				if err != nil && !errors.Is(err, context.Canceled) {
 					e.logger().Warn("Super worker step refused", "action", "worker.step", "code", "step_failed")
 				}
-				if !worked {
-					select {
-					case <-ctx.Done():
-						return
-					case <-time.After(100 * time.Millisecond):
-					}
+				if worked {
+					// A settled unit may have unblocked dependents or delivery.
+					idle = idleMin
+					e.Wake()
+					continue
+				}
+				alive, woken := e.Idle(ctx, idle)
+				if !alive {
+					return
+				}
+				if woken {
+					idle = idleMin
+				} else {
+					idle = NextIdle(idle)
 				}
 			}
 		}()
