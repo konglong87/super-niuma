@@ -573,11 +573,9 @@ func TestSQLiteIntegrationTimeoutAndUnknownDoNotAutoRetry(t *testing.T) {
 			r := h.start(t, "stopped", g)
 			h.step(t, "worker")
 			r = h.get(t, r.ID)
-			want := control.Failed
-			if unknown {
-				want = control.NeedsAttention
-			}
-			if r.Status != want || control.ReservedTokens(r) != 100 || len(r.Reservations) != 1 || r.Reservations[0].Settled {
+			// The executor returned, so the attempt is stopped: the root fails
+			// (never auto-retried) and unknown usage stays charged in full.
+			if r.Status != control.Failed || control.ReservedTokens(r) != 100 || len(r.Reservations) != 1 || r.Reservations[0].Settled {
 				t.Fatalf("unsafe timeout/unknown settlement: status=%s budget=%d", r.Status, control.ReservedTokens(r))
 			}
 			h.reopen(t)
@@ -586,6 +584,11 @@ func TestSQLiteIntegrationTimeoutAndUnknownDoNotAutoRetry(t *testing.T) {
 			}
 			if calls.Load() != 1 || h.sender.count() != 0 {
 				t.Fatal("uncertain outcome was blindly redone")
+			}
+			r = h.get(t, r.ID)
+			retried, err := h.engine.Retry(context.Background(), h.principal, r.ID, r.Version)
+			if err != nil || retried.Status != control.Queued || control.ReservedTokens(retried) != 100 {
+				t.Fatalf("operator retry status=%s budget=%d err=%v", retried.Status, control.ReservedTokens(retried), err)
 			}
 		})
 	}

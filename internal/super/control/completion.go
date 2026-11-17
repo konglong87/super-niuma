@@ -32,10 +32,11 @@ func (e *Engine) verify(ctx context.Context, r Run, owner string) (bool, error) 
 	c := claimed.VerificationClaim
 	vc, cancel := context.WithTimeout(ctx, time.Duration(claimed.Grant.TimeoutMS)*time.Millisecond)
 	defer cancel()
-	if err = e.check(vc, c); err != nil {
-		return true, err
+	var report verification.Report
+	verifyErr := e.check(vc, c)
+	if verifyErr == nil {
+		report, verifyErr = e.Verifier.Verify(vc, claimed.Grant.Workspace, claimed.Grant.Verification)
 	}
-	report, verifyErr := e.Verifier.Verify(vc, claimed.Grant.Workspace, claimed.Grant.Verification)
 	finishCtx, stop := context.WithTimeout(context.Background(), 5*time.Second)
 	defer stop()
 	_, err = e.mutate(finishCtx, r.Scope, r.ID, func(n *Run) error {
@@ -49,9 +50,14 @@ func (e *Engine) verify(ctx context.Context, r Run, owner string) (bool, error) 
 		}
 		n.VerificationClaim = Claim{Epoch: c.Epoch}
 		n.VerificationAttemptID = c.Token
-		if n.Status == Cancelling || ctx.Err() != nil {
+		if n.Status == Cancelling {
 			n.Status = Cancelled
 			n.SafeCode = "cancelled"
+			return nil
+		}
+		if ctx.Err() != nil {
+			// Shutdown interrupted a read-only verifier. Release its claim and
+			// stay Verifying so it independently re-verifies after restart.
 			return nil
 		}
 		if e.authorized(finishCtx, *n) != nil {
@@ -138,6 +144,9 @@ func (e *Engine) deliver(ctx context.Context, r Run, n Notice, owner string) (bo
 	var sendErr error
 	if sendErr = e.check(sendCtx, claim); sendErr == nil {
 		receipt, sendErr = e.Sender.Send(sendCtx, n.Target, n.ID, fmt.Sprintf("Super Niuma 工单 %s 已通过所配置的独立验收规则。请在 Desktop 核对证据与交付范围。", r.ID))
+	} else if ctx.Err() != nil {
+		// Shutdown before anything was sent: nothing left this process.
+		sendErr = &SendError{Code: SafeInterrupted, Retryable: true, DefinitelyNotAccepted: true}
 	} else {
 		sendErr = &SendError{Code: "authority_revoked_before_send", DefinitelyNotAccepted: true}
 	}
@@ -220,7 +229,8 @@ type DesktopSender struct{}
 
 func (DesktopSender) Send(ctx context.Context, t Target, id, text string) (Receipt, error) {
 	if ctx.Err() != nil {
-		return Receipt{}, ctx.Err()
+		// The local receipt is written synchronously; nothing was accepted.
+		return Receipt{}, &SendError{Code: SafeInterrupted, Retryable: true, DefinitelyNotAccepted: true}
 	}
 	if t.Provider != ProviderDesktop {
 		return Receipt{}, &SendError{Code: "provider_unconfigured", DefinitelyNotAccepted: true}

@@ -333,11 +333,15 @@ func (e *Engine) execute(parent context.Context, r Run, id string) error {
 			} else if ctxErr != nil {
 				job.SafeCode = execution.FailureCode(ctxErr)
 			}
-			if !result.UsageKnown {
-				if runErr == nil && ctxErr == nil {
-					job.SafeCode = "usage_unknown"
-				}
+			// The executor has returned, so this attempt is definitively stopped.
+			// Unknown usage keeps its whole unsettled reservation charged (never a
+			// refund) and the root is failed, not auto-retried: an operator may
+			// retry with consent. Only a "success" without usage is quarantined.
+			if !result.UsageKnown && runErr == nil && ctxErr == nil {
+				job.SafeCode = "usage_unknown"
 				n.Status = NeedsAttention
+			} else if parent.Err() != nil {
+				job.SafeCode = SafeInterrupted
 			}
 			n.SafeCode = job.SafeCode
 			return nil
