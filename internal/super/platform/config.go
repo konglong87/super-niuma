@@ -82,10 +82,7 @@ func decodeConfig(data []byte) (Config, error) {
 			}
 			p.Grant.Workspace = root
 		}
-		p.Grant.ChannelPolicyHash = control.Digest(struct {
-			Accounts []channelbridge.Account
-			Bindings []router.Binding
-		}{c.Accounts, c.Bindings})
+		p.Grant.ChannelPolicyHash = control.Digest(profileChannelPolicy(c, *p))
 		p.Grant.ProfileID = p.ID
 		p.Grant.Revision = "draft"
 		if err := control.ValidateGrant(p.Grant); err != nil {
@@ -136,6 +133,33 @@ func decodeConfig(data []byte) (Config, error) {
 		}
 	}
 	return c, nil
+}
+// profileChannelPolicy is the channel configuration one profile's grant
+// depends on: bindings routing to it and the accounts those bindings or its
+// targets use. Editing an unrelated account or binding no longer revokes it.
+func profileChannelPolicy(c Config, p Profile) any {
+	used := map[string]bool{}
+	for _, t := range p.Grant.Targets {
+		if t.Account != "" {
+			used[t.Account] = true
+		}
+	}
+	var policy struct {
+		Accounts []channelbridge.Account
+		Bindings []router.Binding
+	}
+	for _, b := range c.Bindings {
+		if b.ProfileID == p.ID {
+			policy.Bindings = append(policy.Bindings, b)
+			used[b.Account] = true
+		}
+	}
+	for _, a := range c.Accounts {
+		if used[a.ID] {
+			policy.Accounts = append(policy.Accounts, a)
+		}
+	}
+	return policy
 }
 func (s *configStore) load() (Config, error) {
 	s.mu.Lock()

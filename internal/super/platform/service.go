@@ -171,6 +171,13 @@ func (s *Service) Save(ctx context.Context, text string) (Snapshot, error) {
 	for i := range candidate.Profiles {
 		p := &candidate.Profiles[i]
 		if p.Enabled {
+			if p.Grant.Provider == "" {
+				name, e := s.runner.SelectedRoute(ctx, p.Grant.Model)
+				if e != nil {
+					return Snapshot{}, control.ErrUnavailable
+				}
+				p.Grant.Provider = name
+			}
 			hash, e := s.runner.RouteFingerprint(ctx, p.Grant.Provider, p.Grant.Model)
 			if e != nil {
 				return Snapshot{}, control.ErrUnavailable

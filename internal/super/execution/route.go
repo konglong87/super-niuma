@@ -49,3 +49,24 @@ func (r *Runner) RouteFingerprint(ctx context.Context, provider, model string) (
 	sum := sha256.Sum256(data)
 	return hex.EncodeToString(sum[:]), nil
 }
+
+// SelectedRoute names the route a grant without an explicit provider resolves
+// to right now. Saving a profile pins it, so later changes to the interactive
+// model selection cannot silently retarget (and so revoke) Super grants.
+func (r *Runner) SelectedRoute(ctx context.Context, model string) (string, error) {
+	if ctx == nil {
+		return "", ErrInvalid
+	}
+	cfg, err := r.configuration(ctx, "", model)
+	if err != nil {
+		return "", err
+	}
+	name := cfg.SelectedProvider
+	if name == "" {
+		name = cfg.Provider
+	}
+	if !validID(name) {
+		return "", ErrUnavailable
+	}
+	return name, nil
+}

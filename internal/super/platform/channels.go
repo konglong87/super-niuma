@@ -4,6 +4,9 @@ import (
 	"context"
 	"net"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/konglong87/super-niuma/internal/super/channelbridge"
@@ -65,7 +68,7 @@ func (s *Service) reloadChannels() {
 		}
 		return cfg.Bindings
 	}, s.Grant, s.logger)
-	bridge, err := channelbridge.New(channelbridge.Options{Accounts: func() []channelbridge.Account {
+	bridge, err := channelbridge.New(channelbridge.Options{Getenv: s.channelEnv, Accounts: func() []channelbridge.Account {
 		cfg, err := s.config.load()
 		if err != nil {
 			return nil
@@ -127,6 +130,42 @@ func (s *Service) reloadChannels() {
 	s.webhookAddress = address
 	s.channelCode = "transports_started_not_live_acceptance"
 	s.channelMu.Unlock()
+}
+// ChannelSecretsFileName holds channel credentials for Desktop launches from
+// Finder/Dock, which do not inherit shell environment variables. It is a
+// private (0600) KEY=VALUE file next to platform.json, never in config or Git.
+const ChannelSecretsFileName = "channel-secrets.env"
+
+const maxChannelSecretsBytes = 64 * 1024
+
+// channelEnv resolves a credential reference: the process environment first,
+// then the private channel secrets file. Insecure files are ignored.
+func (s *Service) channelEnv(name string) string {
+	if value := os.Getenv(name); value != "" {
+		return value
+	}
+	path := filepath.Join(filepath.Dir(s.config.path), ChannelSecretsFileName)
+	info, err := os.Lstat(path)
+	if err != nil || !info.Mode().IsRegular() || info.Mode().Perm()&0077 != 0 || info.Size() > maxChannelSecretsBytes {
+		return ""
+	}
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return ""
+	}
+	for _, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(line), "export "))
+		key, value, ok := strings.Cut(line, "=")
+		if !ok || strings.HasPrefix(line, "#") || strings.TrimSpace(key) != name {
+			continue
+		}
+		value = strings.TrimSpace(value)
+		if len(value) >= 2 && (value[0] == '"' || value[0] == '\'') && value[len(value)-1] == value[0] {
+			value = value[1 : len(value)-1]
+		}
+		return value
+	}
+	return ""
 }
 func (s *Service) setChannelCode(code string) {
 	s.channelMu.Lock()
