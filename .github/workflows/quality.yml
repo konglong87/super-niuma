@@ -52,6 +52,12 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: go mod download
       - run: go install github.com/swaggo/swag/cmd/swag@v1.16.4
+      - name: API 注解只在 swag 搜索的包里
+        run: |
+          if git grep -l '@Router' -- '*.go' | grep -v '^internal/server/'; then
+            echo "::error::上面的文件有 @Router 注解，但 swag 只搜索 cmd/niuma 和 internal/server；请把它加进 swag init 的 -d 列表。"
+            exit 1
+          fi
       - name: 重新生成 docs/swagger.json
         # Search the two packages that hold the annotations rather than the
         # repository root: the root has no Go package, so swag would also load
