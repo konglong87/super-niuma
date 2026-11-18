@@ -87,7 +87,7 @@ for i := commitIndex + 1; i < len(calls); i++ {   // ← 回读必须在"更后�
 
 ### 前置：工具链
 
-Go 版本以 [`.tool-versions`](../../.tool-versions) 为准（当前 pin **1.26.10**）。
+Go 版本以 [`.tool-versions`](../../.tool-versions) 为准（当前 pin **1.26.11**）。
 
 **不要用 `which go` 找 go** —— 很多机器上它解析到一个过旧的版本，Go 会去下载 `go.mod` 声明的 toolchain，而本机若配了 `GOSUMDB=off`（国内 proxy 环境常见）会失败并报
 `verifying module: checksum database disabled by GOSUMDB=off`。

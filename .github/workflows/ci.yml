@@ -21,7 +21,7 @@ env:
   # Keep CI and release on the same patched Go toolchain. The source of truth
   # for release jobs is .tool-versions; this explicit pin keeps the fast gate
   # reproducible and prevents a runner image update from changing the result.
-  GO_VERSION: '1.26.10'
+  GO_VERSION: '1.26.11'
 
 jobs:
   build:
