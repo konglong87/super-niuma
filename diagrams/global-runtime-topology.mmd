@@ -53,6 +53,16 @@ graph TD
     CAS --> FO["Channel / Feishu Outbox"]
   end
 
+  subgraph SUPER["Super 工单（独立入口与 SQLite，不进入交互 Session）"]
+    direction TB
+    SIN["显式受理<br/>loopback HTTP / 渠道精确绑定命令"] --> SCTL["工单控制<br/>审批 取消 Worker 租约与预算"]
+    SCTL --> SEXE["隔离执行<br/>bare profile 受限工具 手机设备工具<br/>模型请求有界重试"]
+    SEXE --> SVER["只读验收<br/>产物 文件 屏幕文字"]
+    SVER --> SNOTE["持久通知<br/>eventbus 投递 至多一次"]
+    SCTL --> SDB[("Super SQLite<br/>intake run event delivery")]
+    SNOTE --> SDB
+  end
+
   C --> M
   X -->|tool_result 下一轮| M
   D -->|candidate final| F
@@ -83,3 +93,8 @@ graph TD
   SCS -.-> V
   CAS -.-> V
   COST -.-> V
+  E -->|super-niuma 桌面 手机| SIN
+  A -->|Feishu transport 仅受理| SIN
+  SEXE -->|自有 streamer| M
+  SNOTE -->|桌面 / Feishu| O
+  SEXE -.-> V

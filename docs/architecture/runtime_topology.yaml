@@ -34,7 +34,7 @@ nodes:
       - desktop-v2/
       - scripts/channel-worker-screen.sh
       - scripts/channel-worker-screen_test.sh
-    downstream: [RT-BOUNDARY, RT-WIRING]
+    downstream: [RT-BOUNDARY, RT-WIRING, RT-SUPER]
     tests:
       - go test ./internal/buildinfo -count=1
       - go test ./desktop-v2 -count=1
@@ -270,6 +270,15 @@ nodes:
     tests:
       - go test ./internal/imagegen ./internal/cli -count=1
 
+  - id: RT-SUPER
+    summary: Super 工单：super-niuma、桌面与手机入口；loopback HTTP 与已认证渠道精确绑定命令的显式受理、审批、取消与 Worker 预算；bare profile、受限工具（含手机设备工具）和自有 streamer 的隔离执行，模型请求按是否已被处理分类有界重试，设备动作与投递不重试；只读产物验收、持久通知与独立 SQLite；不进入交互 Session 与 legacy channel runtime
+    paths:
+      - internal/super/
+    downstream: [RT-WIRING, RT-MODEL, RT-PRETOOL, RT-TOOLS, RT-BOUNDARY, RT-OBSERVE]
+    tests:
+      - go test ./internal/super/... -count=1
+      - go test ./desktop-v2 -count=1
+
 views:
   - id: agent-platform-architecture
     source: diagrams/agent-platform-architecture.mmd
@@ -304,6 +313,7 @@ views:
       - RT-OUTPUT
       - RT-OBSERVE
       - RT-COST
+      - RT-SUPER
 
   - id: evidence-finding
     source: diagrams/evidence-finding-topology.mmd
@@ -434,3 +444,11 @@ anchors:
     symbols: [AdmitImageGeneration, ClaimDueImageGenerations, CompleteClaimedImageAttempt, ClaimDueImageCompletionEvents]
   - path: internal/storage/mysql/channel_repository.go
     symbols: [MaterializeChannelImageCompletion, ResolveChannelImageCompletion]
+  - path: internal/super/platform/service.go
+    symbols: [Service, New]
+  - path: internal/super/control/engine.go
+    symbols: [Engine, Start, Approve, Cancel]
+  - path: internal/super/execution/runner.go
+    symbols: [Runner, New]
+  - path: internal/super/execution/retry.go
+    symbols: [DefaultRetryPolicy]
