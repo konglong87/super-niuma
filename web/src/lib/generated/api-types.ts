@@ -32,7 +32,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListAgentSlashCommandsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListAgentSlashCommandsResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -41,7 +41,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -50,7 +50,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -83,7 +83,7 @@ export interface paths {
             /** @description Workspace cwd */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerAgentWorkspaceValidateRequest"];
+                    "application/json": components["schemas"]["server.SwaggerAgentWorkspaceValidateRequest"];
                 };
             };
             responses: {
@@ -93,7 +93,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentWorkspaceValidateResponse"];
+                        "application/json": components["schemas"]["server.SwaggerAgentWorkspaceValidateResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -102,7 +102,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -111,7 +111,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -145,7 +145,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerHealthResponse"];
+                        "application/json": components["schemas"]["server.SwaggerHealthResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -154,7 +154,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -193,7 +193,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerLivenessResponse"];
+                        "application/json": components["schemas"]["server.SwaggerLivenessResponse"];
                     };
                 };
             };
@@ -232,7 +232,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListLocalSkillsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListLocalSkillsResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -304,7 +304,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": components["schemas"]["internal_server.SwaggerError"];
+                        "text/plain": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -337,7 +337,7 @@ export interface paths {
             /** @description Attachment upload metadata */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerMobileAttachmentPresignRequest"];
+                    "application/json": components["schemas"]["server.SwaggerMobileAttachmentPresignRequest"];
                 };
             };
             responses: {
@@ -347,7 +347,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerMobileAttachmentPresignResponse"];
+                        "application/json": components["schemas"]["server.SwaggerMobileAttachmentPresignResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -356,7 +356,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -365,7 +365,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -402,7 +402,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListSessionsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListSessionsResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -411,7 +411,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -425,7 +425,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerMobileSessionRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerMobileSessionRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -433,7 +433,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSessionIDResponse"];
                     };
                 };
             };
@@ -470,7 +470,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerMobileSessionDetailResponse"];
+                        "application/json": components["schemas"]["server.SwaggerMobileSessionDetailResponse"];
                     };
                 };
             };
@@ -486,7 +486,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerMobileSessionRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerMobileSessionRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -494,7 +494,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
             };
@@ -519,7 +519,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerArchiveResponse"];
+                        "application/json": components["schemas"]["server.SwaggerArchiveResponse"];
                     };
                 };
             };
@@ -537,7 +537,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerMobileSessionRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerMobileSessionRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -545,7 +545,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
             };
@@ -575,7 +575,7 @@ export interface paths {
             /** @description Branch request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerMobileBranchRequest"];
+                    "application/json": components["schemas"]["server.SwaggerMobileBranchRequest"];
                 };
             };
             responses: {
@@ -585,7 +585,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerMobileBranchResponse"];
+                        "application/json": components["schemas"]["server.SwaggerMobileBranchResponse"];
                     };
                 };
             };
@@ -629,7 +629,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerMobileMessageListResponse"];
+                        "application/json": components["schemas"]["server.SwaggerMobileMessageListResponse"];
                     };
                 };
             };
@@ -672,7 +672,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerMobileCancelResponse"];
+                        "application/json": components["schemas"]["server.SwaggerMobileCancelResponse"];
                     };
                 };
             };
@@ -708,7 +708,7 @@ export interface paths {
             /** @description Regenerate request */
             requestBody?: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerMobileRegenerateRequest"];
+                    "application/json": components["schemas"]["server.SwaggerMobileRegenerateRequest"];
                 };
             };
             responses: {
@@ -718,7 +718,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSSEEvent"];
+                        "application/json": components["schemas"]["server.SwaggerSSEEvent"];
                     };
                 };
             };
@@ -752,7 +752,7 @@ export interface paths {
             /** @description Message stream request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerMobileMessageStreamRequest"];
+                    "application/json": components["schemas"]["server.SwaggerMobileMessageStreamRequest"];
                 };
             };
             responses: {
@@ -762,7 +762,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSSEEvent"];
+                        "application/json": components["schemas"]["server.SwaggerSSEEvent"];
                     };
                 };
             };
@@ -808,7 +808,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -893,7 +893,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPromptDumpRecordsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPromptDumpRecordsResponse"];
                     };
                 };
             };
@@ -926,7 +926,7 @@ export interface paths {
             /** @description Query request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.QueryRequest"];
+                    "application/json": components["schemas"]["server.QueryRequest"];
                 };
             };
             responses: {
@@ -936,7 +936,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerQueryResult"];
+                        "application/json": components["schemas"]["server.SwaggerQueryResult"];
                     };
                 };
                 /** @description Bad Request */
@@ -945,7 +945,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -954,7 +954,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -963,7 +963,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1000,7 +1000,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerReadinessResponse"];
+                        "application/json": components["schemas"]["server.SwaggerReadinessResponse"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -1009,7 +1009,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerReadinessResponse"];
+                        "application/json": components["schemas"]["server.SwaggerReadinessResponse"];
                     };
                 };
             };
@@ -1052,7 +1052,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerRuntimeBackgroundListResponse"];
+                        "application/json": components["schemas"]["server.SwaggerRuntimeBackgroundListResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1061,7 +1061,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1070,7 +1070,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1084,7 +1084,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerRuntimeLoopRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerRuntimeLoopRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -1092,7 +1092,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.RuntimeBackgroundJob"];
+                        "application/json": components["schemas"]["server.RuntimeBackgroundJob"];
                     };
                 };
                 /** @description Bad Request */
@@ -1101,7 +1101,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1110,7 +1110,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1119,7 +1119,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1154,7 +1154,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerRuntimeLoopRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerRuntimeLoopRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -1162,7 +1162,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.RuntimeBackgroundJob"];
+                        "application/json": components["schemas"]["server.RuntimeBackgroundJob"];
                     };
                 };
                 /** @description Bad Request */
@@ -1171,7 +1171,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1180,7 +1180,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -1189,7 +1189,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1198,7 +1198,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1234,7 +1234,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerRuntimeBackgroundLogsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerRuntimeBackgroundLogsResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1243,7 +1243,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -1252,7 +1252,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1261,7 +1261,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1302,7 +1302,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.RuntimeBackgroundJob"];
+                        "application/json": components["schemas"]["server.RuntimeBackgroundJob"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1311,7 +1311,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -1320,7 +1320,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1329,7 +1329,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1369,7 +1369,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerRuntimeBackgroundRunsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerRuntimeBackgroundRunsResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1378,7 +1378,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1387,7 +1387,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1428,7 +1428,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerRuntimeBackgroundStopResponse"];
+                        "application/json": components["schemas"]["server.SwaggerRuntimeBackgroundStopResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1437,7 +1437,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -1446,7 +1446,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1455,7 +1455,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1494,7 +1494,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerRuntimeBackgroundEventsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerRuntimeBackgroundEventsResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1503,7 +1503,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1512,7 +1512,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1551,7 +1551,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.GlobalSettingsResponse"];
+                        "application/json": components["schemas"]["server.GlobalSettingsResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1560,7 +1560,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1569,7 +1569,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1598,7 +1598,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.GlobalSettingsSaveResponse"];
+                        "application/json": components["schemas"]["server.GlobalSettingsSaveResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -1607,7 +1607,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1616,7 +1616,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -1625,7 +1625,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1634,7 +1634,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1672,7 +1672,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.EffectiveSettingsResponse"];
+                        "application/json": components["schemas"]["server.EffectiveSettingsResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1681,7 +1681,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -1690,7 +1690,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1731,7 +1731,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SettingsEnvironmentsResponse"];
+                        "application/json": components["schemas"]["server.SettingsEnvironmentsResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1740,7 +1740,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -1749,7 +1749,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1807,7 +1807,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1816,7 +1816,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -1825,7 +1825,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -1834,7 +1834,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -1843,7 +1843,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1886,7 +1886,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1895,7 +1895,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -1904,7 +1904,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -1913,7 +1913,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -1922,7 +1922,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -1965,7 +1965,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1974,7 +1974,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -1983,7 +1983,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -1992,7 +1992,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -2001,7 +2001,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -2044,7 +2044,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -2053,7 +2053,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -2062,7 +2062,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -2071,7 +2071,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -2080,7 +2080,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -2125,7 +2125,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -2134,7 +2134,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -2143,7 +2143,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -2152,7 +2152,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -2161,7 +2161,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -2191,7 +2191,7 @@ export interface paths {
             /** @description Current settings draft and fallback provider index */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.GlobalSettingsPromoteRequest"];
+                    "application/json": components["schemas"]["server.GlobalSettingsPromoteRequest"];
                 };
             };
             responses: {
@@ -2201,7 +2201,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.GlobalSettingsPromoteResponse"];
+                        "application/json": components["schemas"]["server.GlobalSettingsPromoteResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -2210,7 +2210,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -2219,7 +2219,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -2228,7 +2228,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -2262,7 +2262,7 @@ export interface paths {
             /** @description Settings document and optional named provider */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SettingsProviderTestRequest"];
+                    "application/json": components["schemas"]["server.SettingsProviderTestRequest"];
                 };
             };
             responses: {
@@ -2272,7 +2272,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SettingsProviderTestResponse"];
+                        "application/json": components["schemas"]["server.SettingsProviderTestResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -2281,7 +2281,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -2290,7 +2290,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -2326,7 +2326,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SettingsValidationResponse"];
+                        "application/json": components["schemas"]["server.SettingsValidationResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -2335,7 +2335,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -2344,7 +2344,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -2378,7 +2378,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSnapshotResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSnapshotResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -2387,7 +2387,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -2423,7 +2423,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSnapshotResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSnapshotResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -2432,7 +2432,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -2471,7 +2471,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentProfileAssignment"];
+                        "application/json": components["schemas"]["server.SwaggerAgentProfileAssignment"];
                     };
                 };
             };
@@ -2495,7 +2495,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentProfileAssignment"];
+                        "application/json": components["schemas"]["server.SwaggerAgentProfileAssignment"];
                     };
                 };
             };
@@ -2564,7 +2564,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentProfile"];
+                        "application/json": components["schemas"]["server.SwaggerAgentProfile"];
                     };
                 };
             };
@@ -2604,7 +2604,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentProfile"];
+                        "application/json": components["schemas"]["server.SwaggerAgentProfile"];
                     };
                 };
             };
@@ -2633,7 +2633,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentProfile"];
+                        "application/json": components["schemas"]["server.SwaggerAgentProfile"];
                     };
                 };
             };
@@ -2713,7 +2713,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentProfileChannelBinding"];
+                        "application/json": components["schemas"]["server.SwaggerAgentProfileChannelBinding"];
                     };
                 };
             };
@@ -2740,7 +2740,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentProfileChannelBinding"];
+                        "application/json": components["schemas"]["server.SwaggerAgentProfileChannelBinding"];
                     };
                 };
             };
@@ -2768,7 +2768,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentProfileChannelBinding"];
+                        "application/json": components["schemas"]["server.SwaggerAgentProfileChannelBinding"];
                     };
                 };
             };
@@ -2812,7 +2812,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentProfileConversationCatalog"];
+                        "application/json": components["schemas"]["server.SwaggerAgentProfileConversationCatalog"];
                     };
                 };
                 /** @description Bad Request */
@@ -2821,7 +2821,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -2830,7 +2830,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -2884,7 +2884,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerEffectiveAgentProfile"];
+                        "application/json": components["schemas"]["server.SwaggerEffectiveAgentProfile"];
                     };
                 };
             };
@@ -2972,7 +2972,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentProfile"];
+                        "application/json": components["schemas"]["server.SwaggerAgentProfile"];
                     };
                 };
             };
@@ -3221,7 +3221,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListAgentTasksResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListAgentTasksResponse"];
                     };
                 };
             };
@@ -3243,7 +3243,7 @@ export interface paths {
             /** @description Agent task metadata */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerCreateAgentTaskRequest"];
+                    "application/json": components["schemas"]["server.SwaggerCreateAgentTaskRequest"];
                 };
             };
             responses: {
@@ -3253,7 +3253,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerCreateAgentTaskResponse"];
+                        "application/json": components["schemas"]["server.SwaggerCreateAgentTaskResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -3262,7 +3262,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -3304,7 +3304,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentTaskResponse"];
+                        "application/json": components["schemas"]["server.SwaggerAgentTaskResponse"];
                     };
                 };
                 /** @description Not Found */
@@ -3313,7 +3313,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -3342,7 +3342,7 @@ export interface paths {
             /** @description Agent task update */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerUpdateAgentTaskRequest"];
+                    "application/json": components["schemas"]["server.SwaggerUpdateAgentTaskRequest"];
                 };
             };
             responses: {
@@ -3352,7 +3352,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerUpdateAgentTaskResponse"];
+                        "application/json": components["schemas"]["server.SwaggerUpdateAgentTaskResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -3361,7 +3361,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -3370,7 +3370,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -3410,7 +3410,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerCancelAgentTaskResponse"];
+                        "application/json": components["schemas"]["server.SwaggerCancelAgentTaskResponse"];
                     };
                 };
                 /** @description Not Found */
@@ -3419,7 +3419,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -3428,7 +3428,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -3475,7 +3475,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListAgentTaskEventsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListAgentTaskEventsResponse"];
                     };
                 };
             };
@@ -3536,7 +3536,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -3545,7 +3545,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -3554,7 +3554,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -3595,7 +3595,7 @@ export interface paths {
             /** @description Agent task message; content may be empty when image attachments are provided */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerAgentTaskMessageRequest"];
+                    "application/json": components["schemas"]["server.SwaggerAgentTaskMessageRequest"];
                 };
             };
             responses: {
@@ -3605,7 +3605,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentTaskMessageResponse"];
+                        "application/json": components["schemas"]["server.SwaggerAgentTaskMessageResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -3614,7 +3614,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -3623,7 +3623,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -3632,7 +3632,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -3641,7 +3641,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -3675,7 +3675,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerPendingInputSettingsRequest"];
+            requestBody?: components["requestBodies"]["server.SwaggerPendingInputSettingsRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -3694,7 +3694,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -3720,7 +3720,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerPendingInputSettingsRequest"];
+            requestBody?: components["requestBodies"]["server.SwaggerPendingInputSettingsRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -3739,7 +3739,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -3772,7 +3772,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerPendingInputRequest"];
+            requestBody?: components["requestBodies"]["server.SwaggerPendingInputRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -3780,7 +3780,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPendingInputResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPendingInputResponse"];
                     };
                 };
                 /** @description Accepted */
@@ -3789,7 +3789,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPendingInputResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPendingInputResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -3798,7 +3798,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -3807,7 +3807,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -3816,7 +3816,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Too Many Requests */
@@ -3825,7 +3825,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -3850,7 +3850,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerPendingInputRequest"];
+            requestBody?: components["requestBodies"]["server.SwaggerPendingInputRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -3858,7 +3858,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPendingInputResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPendingInputResponse"];
                     };
                 };
                 /** @description Accepted */
@@ -3867,7 +3867,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPendingInputResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPendingInputResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -3876,7 +3876,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -3885,7 +3885,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -3894,7 +3894,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Too Many Requests */
@@ -3903,7 +3903,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -3945,7 +3945,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerPendingInputRequest"];
+            requestBody?: components["requestBodies"]["server.SwaggerPendingInputRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -3953,7 +3953,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPendingInputResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPendingInputResponse"];
                     };
                 };
                 /** @description Accepted */
@@ -3962,7 +3962,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPendingInputResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPendingInputResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -3971,7 +3971,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -3980,7 +3980,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -3989,7 +3989,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Too Many Requests */
@@ -3998,7 +3998,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -4026,7 +4026,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerPendingInputRequest"];
+            requestBody?: components["requestBodies"]["server.SwaggerPendingInputRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -4034,7 +4034,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPendingInputResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPendingInputResponse"];
                     };
                 };
                 /** @description Accepted */
@@ -4043,7 +4043,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPendingInputResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPendingInputResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -4052,7 +4052,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -4061,7 +4061,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -4070,7 +4070,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Too Many Requests */
@@ -4079,7 +4079,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -4118,7 +4118,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerPendingInputRequest"];
+            requestBody?: components["requestBodies"]["server.SwaggerPendingInputRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -4126,7 +4126,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPendingInputResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPendingInputResponse"];
                     };
                 };
                 /** @description Accepted */
@@ -4135,7 +4135,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPendingInputResponse"];
+                        "application/json": components["schemas"]["server.SwaggerPendingInputResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -4144,7 +4144,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -4153,7 +4153,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -4162,7 +4162,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Too Many Requests */
@@ -4171,7 +4171,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -4216,7 +4216,7 @@ export interface paths {
             /** @description Permission decision */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerAgentTaskPermissionRequest"];
+                    "application/json": components["schemas"]["server.SwaggerAgentTaskPermissionRequest"];
                 };
             };
             responses: {
@@ -4226,7 +4226,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentTaskPermissionResponse"];
+                        "application/json": components["schemas"]["server.SwaggerAgentTaskPermissionResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -4235,7 +4235,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -4244,7 +4244,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -4253,7 +4253,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -4297,7 +4297,7 @@ export interface paths {
             /** @description Non-empty answer, at most 16384 bytes */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerAgentTaskQuestionAnswerRequest"];
+                    "application/json": components["schemas"]["server.SwaggerAgentTaskQuestionAnswerRequest"];
                 };
             };
             responses: {
@@ -4307,7 +4307,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentTaskQuestionAnswerResponse"];
+                        "application/json": components["schemas"]["server.SwaggerAgentTaskQuestionAnswerResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -4316,7 +4316,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -4325,7 +4325,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -4334,7 +4334,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -4343,7 +4343,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -4352,7 +4352,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -4411,7 +4411,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentTeam"];
+                        "application/json": components["schemas"]["server.SwaggerAgentTeam"];
                     };
                 };
             };
@@ -4451,7 +4451,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentTeam"];
+                        "application/json": components["schemas"]["server.SwaggerAgentTeam"];
                     };
                 };
             };
@@ -4480,7 +4480,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentTeam"];
+                        "application/json": components["schemas"]["server.SwaggerAgentTeam"];
                     };
                 };
             };
@@ -4552,7 +4552,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerAgentTeamBindingArray"];
+            requestBody?: components["requestBodies"]["server.SwaggerAgentTeamBindingArray"];
             responses: {
                 /** @description OK */
                 200: {
@@ -4581,7 +4581,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerAgentTeamBindingArray"];
+            requestBody?: components["requestBodies"]["server.SwaggerAgentTeamBindingArray"];
             responses: {
                 /** @description OK */
                 200: {
@@ -4624,7 +4624,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerAgentTeamMemberArray"];
+            requestBody?: components["requestBodies"]["server.SwaggerAgentTeamMemberArray"];
             responses: {
                 /** @description OK */
                 200: {
@@ -4653,7 +4653,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerAgentTeamMemberArray"];
+            requestBody?: components["requestBodies"]["server.SwaggerAgentTeamMemberArray"];
             responses: {
                 /** @description OK */
                 200: {
@@ -4750,7 +4750,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentTeam"];
+                        "application/json": components["schemas"]["server.SwaggerAgentTeam"];
                     };
                 };
             };
@@ -4838,7 +4838,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerAgentTeamRun"];
+                        "application/json": components["schemas"]["server.SwaggerAgentTeamRun"];
                     };
                 };
             };
@@ -5027,7 +5027,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowTypes"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowTypes"];
                     };
                 };
                 /** @description Bad Request */
@@ -5036,7 +5036,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -5045,7 +5045,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -5054,7 +5054,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -5063,7 +5063,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -5072,7 +5072,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -5081,7 +5081,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -5129,7 +5129,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListAuditLogsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListAuditLogsResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -5138,7 +5138,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -5182,7 +5182,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListMemoriesResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListMemoriesResponse"];
                     };
                 };
             };
@@ -5220,7 +5220,7 @@ export interface paths {
             /** @description AutoMem review request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerAutoMemoryReviewRequest"];
+                    "application/json": components["schemas"]["server.SwaggerAutoMemoryReviewRequest"];
                 };
             };
             responses: {
@@ -5230,7 +5230,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -5239,7 +5239,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -5319,7 +5319,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTenantContext"];
+                        "application/json": components["schemas"]["server.SwaggerTenantContext"];
                     };
                 };
                 /** @description Bad Request */
@@ -5328,7 +5328,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -5337,7 +5337,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -5385,7 +5385,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListDocumentsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListDocumentsResponse"];
                     };
                 };
             };
@@ -5407,7 +5407,7 @@ export interface paths {
             /** @description Document request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantDocumentRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantDocumentRequest"];
                 };
             };
             responses: {
@@ -5417,7 +5417,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
             };
@@ -5465,7 +5465,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListEffectiveSkillsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListEffectiveSkillsResponse"];
                     };
                 };
             };
@@ -5658,7 +5658,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListGoalsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListGoalsResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -5667,7 +5667,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -5689,7 +5689,7 @@ export interface paths {
             /** @description Goal metadata */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerCreateGoalRequest"];
+                    "application/json": components["schemas"]["server.SwaggerCreateGoalRequest"];
                 };
             };
             responses: {
@@ -5699,7 +5699,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerGoalResponse"];
+                        "application/json": components["schemas"]["server.SwaggerGoalResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -5708,7 +5708,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -5750,7 +5750,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerGoalResponse"];
+                        "application/json": components["schemas"]["server.SwaggerGoalResponse"];
                     };
                 };
                 /** @description Not Found */
@@ -5759,7 +5759,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -5788,7 +5788,7 @@ export interface paths {
             /** @description Goal update */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerUpdateGoalRequest"];
+                    "application/json": components["schemas"]["server.SwaggerUpdateGoalRequest"];
                 };
             };
             responses: {
@@ -5798,7 +5798,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerGoalResponse"];
+                        "application/json": components["schemas"]["server.SwaggerGoalResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -5807,7 +5807,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -5816,7 +5816,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -5857,7 +5857,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListGoalEventsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListGoalEventsResponse"];
                     };
                 };
                 /** @description Not Found */
@@ -5866,7 +5866,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -5913,7 +5913,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListGoalEvidenceResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListGoalEvidenceResponse"];
                     };
                 };
                 /** @description Not Found */
@@ -5922,7 +5922,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -5966,7 +5966,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerGoalPlanResponse"];
+                        "application/json": components["schemas"]["server.SwaggerGoalPlanResponse"];
                     };
                 };
                 /** @description Not Found */
@@ -5975,7 +5975,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -6024,7 +6024,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerGoalResponse"];
+                        "application/json": components["schemas"]["server.SwaggerGoalResponse"];
                     };
                 };
                 /** @description Not Found */
@@ -6033,7 +6033,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -6042,7 +6042,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -6096,7 +6096,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerRunGoalResponse"];
+                        "application/json": components["schemas"]["server.SwaggerRunGoalResponse"];
                     };
                 };
                 /** @description Not Found */
@@ -6105,7 +6105,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -6114,7 +6114,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -6158,7 +6158,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerGoalResponse"];
+                        "application/json": components["schemas"]["server.SwaggerGoalResponse"];
                     };
                 };
                 /** @description Not Found */
@@ -6167,7 +6167,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -6201,7 +6201,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerImageCapabilitiesResponse"];
+                        "application/json": components["schemas"]["server.SwaggerImageCapabilitiesResponse"];
                     };
                 };
             };
@@ -6245,7 +6245,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListKnowledgeDocumentsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListKnowledgeDocumentsResponse"];
                     };
                 };
             };
@@ -6267,7 +6267,7 @@ export interface paths {
             /** @description Knowledge document request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantKnowledgeDocumentRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantKnowledgeDocumentRequest"];
                 };
             };
             responses: {
@@ -6277,7 +6277,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -6286,7 +6286,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -6322,7 +6322,7 @@ export interface paths {
             /** @description Knowledge search request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantKnowledgeSearchRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantKnowledgeSearchRequest"];
                 };
             };
             responses: {
@@ -6332,7 +6332,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerKnowledgeSearchResponse"];
+                        "application/json": components["schemas"]["server.SwaggerKnowledgeSearchResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -6341,7 +6341,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -6383,7 +6383,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListMemoriesResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListMemoriesResponse"];
                     };
                 };
             };
@@ -6405,7 +6405,7 @@ export interface paths {
             /** @description Memory request. Category is forced to managed. */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantMemoryRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantMemoryRequest"];
                 };
             };
             responses: {
@@ -6415,7 +6415,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -6424,7 +6424,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -6470,7 +6470,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "image/png": components["schemas"]["internal_server.SwaggerError"];
+                        "image/png": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -6479,7 +6479,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "image/png": components["schemas"]["internal_server.SwaggerError"];
+                        "image/png": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -6488,7 +6488,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "image/png": components["schemas"]["internal_server.SwaggerError"];
+                        "image/png": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -6534,7 +6534,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListMemoriesResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListMemoriesResponse"];
                     };
                 };
             };
@@ -6556,7 +6556,7 @@ export interface paths {
             /** @description Memory request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantMemoryRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantMemoryRequest"];
                 };
             };
             responses: {
@@ -6566,7 +6566,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
             };
@@ -6617,7 +6617,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListMemoriesResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListMemoriesResponse"];
                     };
                 };
             };
@@ -6658,7 +6658,7 @@ export interface paths {
             /** @description Memory review request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerMemoryReviewRequest"];
+                    "application/json": components["schemas"]["server.SwaggerMemoryReviewRequest"];
                 };
             };
             responses: {
@@ -6668,7 +6668,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -6677,7 +6677,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -6721,7 +6721,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListMessagesResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListMessagesResponse"];
                     };
                 };
             };
@@ -6743,7 +6743,7 @@ export interface paths {
             /** @description Message request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantMessageRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantMessageRequest"];
                 };
             };
             responses: {
@@ -6753,7 +6753,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
             };
@@ -6795,7 +6795,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTenantProfile"];
+                        "application/json": components["schemas"]["server.SwaggerTenantProfile"];
                     };
                 };
             };
@@ -6817,7 +6817,7 @@ export interface paths {
             /** @description Profile request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantProfileRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantProfileRequest"];
                 };
             };
             responses: {
@@ -6827,7 +6827,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
             };
@@ -6871,8 +6871,8 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPromptTemplate"][];
-                        "text/plain": components["schemas"]["internal_server.SwaggerPromptTemplate"][];
+                        "application/json": components["schemas"]["server.SwaggerPromptTemplate"][];
+                        "text/plain": components["schemas"]["server.SwaggerPromptTemplate"][];
                     };
                 };
                 /** @description Unauthorized */
@@ -6912,7 +6912,7 @@ export interface paths {
             /** @description Template; omit ID to upsert by owner/title */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerPromptTemplateRequest"];
+                    "application/json": components["schemas"]["server.SwaggerPromptTemplateRequest"];
                 };
             };
             responses: {
@@ -6922,8 +6922,8 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPromptTemplate"];
-                        "text/plain": components["schemas"]["internal_server.SwaggerPromptTemplate"];
+                        "application/json": components["schemas"]["server.SwaggerPromptTemplate"];
+                        "text/plain": components["schemas"]["server.SwaggerPromptTemplate"];
                     };
                 };
                 /** @description Bad Request */
@@ -6995,7 +6995,7 @@ export interface paths {
             /** @description Template with a nonzero ID */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerPromptTemplateRequest"];
+                    "application/json": components["schemas"]["server.SwaggerPromptTemplateRequest"];
                 };
             };
             responses: {
@@ -7005,8 +7005,8 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerPromptTemplate"];
-                        "text/plain": components["schemas"]["internal_server.SwaggerPromptTemplate"];
+                        "application/json": components["schemas"]["server.SwaggerPromptTemplate"];
+                        "text/plain": components["schemas"]["server.SwaggerPromptTemplate"];
                     };
                 };
                 /** @description Bad Request */
@@ -7167,7 +7167,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTenantQuotaConfig"];
+                        "application/json": components["schemas"]["server.SwaggerTenantQuotaConfig"];
                     };
                 };
                 /** @description Unauthorized */
@@ -7176,7 +7176,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -7185,7 +7185,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -7206,7 +7206,7 @@ export interface paths {
             /** @description Tenant quota config */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantQuotaConfigRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantQuotaConfigRequest"];
                 };
             };
             responses: {
@@ -7216,7 +7216,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTenantQuotaConfig"];
+                        "application/json": components["schemas"]["server.SwaggerTenantQuotaConfig"];
                     };
                 };
                 /** @description Bad Request */
@@ -7225,7 +7225,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -7234,7 +7234,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -7243,7 +7243,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -7290,7 +7290,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListTenantQuotaEventsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListTenantQuotaEventsResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -7299,7 +7299,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -7308,7 +7308,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -7344,7 +7344,7 @@ export interface paths {
             /** @description Session refs and cursors */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerSessionConversationSubscribe"];
+                    "application/json": components["schemas"]["server.SwaggerSessionConversationSubscribe"];
                 };
             };
             responses: {
@@ -7354,7 +7354,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.sessionConversationPage"];
+                        "text/event-stream": components["schemas"]["server.sessionConversationPage"];
                     };
                 };
                 /** @description Forbidden */
@@ -7363,7 +7363,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -7410,7 +7410,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlSessionListResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlSessionListResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -7419,7 +7419,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -7428,7 +7428,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Forbidden */
@@ -7437,7 +7437,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -7446,7 +7446,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -7473,7 +7473,7 @@ export interface paths {
             /** @description Managed session request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerSessionControlCreateRequest"];
+                    "application/json": components["schemas"]["server.SwaggerSessionControlCreateRequest"];
                 };
             };
             responses: {
@@ -7483,7 +7483,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlOperationResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlOperationResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -7492,7 +7492,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -7501,7 +7501,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Forbidden */
@@ -7510,7 +7510,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Conflict */
@@ -7519,7 +7519,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -7528,7 +7528,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -7578,7 +7578,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlSessionResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlSessionResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -7587,7 +7587,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -7596,7 +7596,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Forbidden */
@@ -7605,7 +7605,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Not Found */
@@ -7614,7 +7614,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -7623,7 +7623,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -7671,7 +7671,7 @@ export interface paths {
             /** @description Handoff attachment request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerSessionControlAttachRequest"];
+                    "application/json": components["schemas"]["server.SwaggerSessionControlAttachRequest"];
                 };
             };
             responses: {
@@ -7681,7 +7681,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlOperationResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlOperationResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -7690,7 +7690,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -7699,7 +7699,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Forbidden */
@@ -7708,7 +7708,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Not Found */
@@ -7717,7 +7717,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Conflict */
@@ -7726,7 +7726,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unprocessable Entity */
@@ -7735,7 +7735,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -7744,7 +7744,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -7787,7 +7787,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerSessionControlStopRequest"];
+            requestBody?: components["requestBodies"]["server.SwaggerSessionControlStopRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -7795,7 +7795,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlOperationResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlOperationResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -7804,7 +7804,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -7813,7 +7813,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Forbidden */
@@ -7822,7 +7822,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Not Found */
@@ -7831,7 +7831,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Conflict */
@@ -7840,7 +7840,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -7849,7 +7849,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -7891,7 +7891,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerComputerOwnerResponse"];
+                        "application/json": components["schemas"]["server.SwaggerComputerOwnerResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -7900,7 +7900,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -7909,7 +7909,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Forbidden */
@@ -7918,7 +7918,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Not Found */
@@ -7927,7 +7927,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -7936,7 +7936,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -7983,7 +7983,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionConversationResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSessionConversationResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -7992,7 +7992,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -8048,7 +8048,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerSessionControlStateEvent"];
+                        "text/event-stream": components["schemas"]["server.SwaggerSessionControlStateEvent"];
                     };
                 };
                 /** @description Bad Request */
@@ -8057,7 +8057,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -8066,7 +8066,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Forbidden */
@@ -8075,7 +8075,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Not Found */
@@ -8084,7 +8084,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -8093,7 +8093,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -8141,7 +8141,7 @@ export interface paths {
             /** @description Message request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerSessionControlSendRequest"];
+                    "application/json": components["schemas"]["server.SwaggerSessionControlSendRequest"];
                 };
             };
             responses: {
@@ -8151,7 +8151,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlOperationResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlOperationResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -8160,7 +8160,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -8169,7 +8169,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Forbidden */
@@ -8178,7 +8178,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Not Found */
@@ -8187,7 +8187,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Conflict */
@@ -8196,7 +8196,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Request Entity Too Large */
@@ -8205,7 +8205,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -8214,7 +8214,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -8260,7 +8260,7 @@ export interface paths {
             /** @description Monitor request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerSessionControlMonitorRequest"];
+                    "application/json": components["schemas"]["server.SwaggerSessionControlMonitorRequest"];
                 };
             };
             responses: {
@@ -8270,7 +8270,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlOperationResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlOperationResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -8279,7 +8279,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -8288,7 +8288,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Forbidden */
@@ -8297,7 +8297,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Not Found */
@@ -8306,7 +8306,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Conflict */
@@ -8315,7 +8315,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -8324,7 +8324,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -8367,7 +8367,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: components["requestBodies"]["internal_server.SwaggerSessionControlStopRequest"];
+            requestBody?: components["requestBodies"]["server.SwaggerSessionControlStopRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -8375,7 +8375,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlOperationResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlOperationResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -8384,7 +8384,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -8393,7 +8393,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Forbidden */
@@ -8402,7 +8402,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Not Found */
@@ -8411,7 +8411,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Conflict */
@@ -8420,7 +8420,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -8429,7 +8429,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSessionControlError"];
+                        "application/json": components["schemas"]["server.SwaggerSessionControlError"];
                     };
                 };
             };
@@ -8471,7 +8471,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListSessionsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListSessionsResponse"];
                     };
                 };
             };
@@ -8490,7 +8490,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantSessionRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantSessionRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -8498,7 +8498,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
             };
@@ -8540,7 +8540,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTenantSession"];
+                        "application/json": components["schemas"]["server.SwaggerTenantSession"];
                     };
                 };
             };
@@ -8561,7 +8561,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantSessionRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantSessionRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -8569,7 +8569,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
             };
@@ -8599,7 +8599,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerArchiveResponse"];
+                        "application/json": components["schemas"]["server.SwaggerArchiveResponse"];
                     };
                 };
             };
@@ -8622,7 +8622,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantSessionRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantSessionRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -8630,7 +8630,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
             };
@@ -8666,7 +8666,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerImageGenerationListResponse"];
+                        "application/json": components["schemas"]["server.SwaggerImageGenerationListResponse"];
                     };
                 };
             };
@@ -8721,7 +8721,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerImageArtifactResponse"];
+                        "application/json": components["schemas"]["server.SwaggerImageArtifactResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -8730,7 +8730,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -8739,7 +8739,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -8748,7 +8748,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -8757,7 +8757,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Bad Gateway */
@@ -8766,7 +8766,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Gateway Timeout */
@@ -8775,7 +8775,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -8809,7 +8809,7 @@ export interface paths {
             /** @description Image generation request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerImageGenerateRequest"];
+                    "application/json": components["schemas"]["server.SwaggerImageGenerateRequest"];
                 };
             };
             responses: {
@@ -8819,7 +8819,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerImageArtifactResponse"];
+                        "application/json": components["schemas"]["server.SwaggerImageArtifactResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -8828,7 +8828,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -8837,7 +8837,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -8846,7 +8846,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -8855,7 +8855,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Bad Gateway */
@@ -8864,7 +8864,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Gateway Timeout */
@@ -8873,7 +8873,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -8925,7 +8925,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTenantSessionTimelineResponse"];
+                        "application/json": components["schemas"]["server.SwaggerTenantSessionTimelineResponse"];
                     };
                 };
             };
@@ -8973,7 +8973,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListSkillOverridesResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListSkillOverridesResponse"];
                     };
                 };
             };
@@ -8995,7 +8995,7 @@ export interface paths {
             /** @description Skill override request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantSkillOverrideRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantSkillOverrideRequest"];
                 };
             };
             responses: {
@@ -9005,7 +9005,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
             };
@@ -9041,7 +9041,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantSkillPackageRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantSkillPackageRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -9049,7 +9049,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTenantSkillPackageResult"];
+                        "application/json": components["schemas"]["server.SwaggerTenantSkillPackageResult"];
                     };
                 };
                 /** @description Forbidden */
@@ -9058,7 +9058,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9094,7 +9094,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantSkillPackageRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantSkillPackageRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -9102,7 +9102,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTenantSkillPackageResult"];
+                        "application/json": components["schemas"]["server.SwaggerTenantSkillPackageResult"];
                     };
                 };
                 /** @description Forbidden */
@@ -9111,7 +9111,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9147,7 +9147,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantSkillPackageRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantSkillPackageRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -9155,7 +9155,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTenantSkillPackageResult"];
+                        "application/json": components["schemas"]["server.SwaggerTenantSkillPackageResult"];
                     };
                 };
                 /** @description Forbidden */
@@ -9164,7 +9164,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9203,7 +9203,7 @@ export interface paths {
             /** @description Skill package runtime verify request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerSkillPackageVerifyRequest"];
+                    "application/json": components["schemas"]["server.SwaggerSkillPackageVerifyRequest"];
                 };
             };
             responses: {
@@ -9213,7 +9213,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSkillPackageVerifyResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSkillPackageVerifyResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -9222,7 +9222,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9270,7 +9270,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListSkillsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListSkillsResponse"];
                     };
                 };
             };
@@ -9292,7 +9292,7 @@ export interface paths {
             /** @description Skill request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantSkillRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantSkillRequest"];
                 };
             };
             responses: {
@@ -9302,7 +9302,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -9311,7 +9311,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9347,7 +9347,7 @@ export interface paths {
             /** @description Skill rollback request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerSkillRollbackRequest"];
+                    "application/json": components["schemas"]["server.SwaggerSkillRollbackRequest"];
                 };
             };
             responses: {
@@ -9357,7 +9357,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSkillRollbackResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSkillRollbackResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -9366,7 +9366,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9408,7 +9408,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListMemoriesResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListMemoriesResponse"];
                     };
                 };
             };
@@ -9430,7 +9430,7 @@ export interface paths {
             /** @description Memory request. Category is forced to team. */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTenantMemoryRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTenantMemoryRequest"];
                 };
             };
             responses: {
@@ -9440,7 +9440,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -9449,7 +9449,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9495,7 +9495,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListTelemetryEventsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListTelemetryEventsResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -9504,7 +9504,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9526,7 +9526,7 @@ export interface paths {
             /** @description Telemetry event */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerTelemetryEventRequest"];
+                    "application/json": components["schemas"]["server.SwaggerTelemetryEventRequest"];
                 };
             };
             responses: {
@@ -9536,7 +9536,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -9545,7 +9545,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9591,7 +9591,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListTenantsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListTenantsResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -9600,7 +9600,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9619,7 +9619,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -9627,7 +9627,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -9636,7 +9636,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -9645,7 +9645,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9674,7 +9674,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerArchiveResponse"];
+                        "application/json": components["schemas"]["server.SwaggerArchiveResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -9683,7 +9683,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -9692,7 +9692,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9712,7 +9712,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -9720,7 +9720,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -9729,7 +9729,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -9738,7 +9738,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9780,7 +9780,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListTenantUsageDailyResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListTenantUsageDailyResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -9789,7 +9789,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -9798,7 +9798,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9846,7 +9846,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListTenantUsageLedgerResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListTenantUsageLedgerResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -9855,7 +9855,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -9864,7 +9864,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9905,7 +9905,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTenantUser"];
+                        "application/json": components["schemas"]["server.SwaggerTenantUser"];
                     };
                 };
                 /** @description Bad Request */
@@ -9914,7 +9914,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -9923,7 +9923,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9942,7 +9942,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantUserRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantUserRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -9950,7 +9950,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -9959,7 +9959,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -9980,7 +9980,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantUserRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantUserRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -9988,7 +9988,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -9997,7 +9997,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10039,7 +10039,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListUsersResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListUsersResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -10048,7 +10048,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10067,7 +10067,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantUserRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantUserRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -10075,7 +10075,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -10084,7 +10084,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10113,7 +10113,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerArchiveResponse"];
+                        "application/json": components["schemas"]["server.SwaggerArchiveResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -10122,7 +10122,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10142,7 +10142,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: components["requestBodies"]["internal_server.SwaggerTenantUserRequest"];
+            requestBody: components["requestBodies"]["server.SwaggerTenantUserRequest"];
             responses: {
                 /** @description OK */
                 200: {
@@ -10150,7 +10150,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerIDResponse"];
+                        "application/json": components["schemas"]["server.SwaggerIDResponse"];
                     };
                 };
                 /** @description Forbidden */
@@ -10159,7 +10159,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10197,7 +10197,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerListWebAgentConversationsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerListWebAgentConversationsResponse"];
                     };
                 };
             };
@@ -10246,7 +10246,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWebAgentConversationDetail"];
+                        "application/json": components["schemas"]["server.SwaggerWebAgentConversationDetail"];
                     };
                 };
                 /** @description Not Found */
@@ -10255,7 +10255,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10302,7 +10302,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowRun"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowRun"];
                     };
                 };
                 /** @description Bad Request */
@@ -10311,7 +10311,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -10320,7 +10320,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -10329,7 +10329,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -10338,7 +10338,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -10347,7 +10347,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -10356,7 +10356,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10405,7 +10405,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowRun"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowRun"];
                     };
                 };
                 /** @description Bad Request */
@@ -10414,7 +10414,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -10423,7 +10423,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -10432,7 +10432,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -10441,7 +10441,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -10450,7 +10450,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -10459,7 +10459,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10507,7 +10507,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowEvents"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowEvents"];
                     };
                 };
                 /** @description Bad Request */
@@ -10516,7 +10516,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -10525,7 +10525,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -10534,7 +10534,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -10543,7 +10543,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -10552,7 +10552,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -10561,7 +10561,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10611,7 +10611,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Event"];
+                        "text/event-stream": components["schemas"]["workflow.Event"];
                     };
                 };
                 /** @description Bad Request */
@@ -10620,7 +10620,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -10629,7 +10629,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -10638,7 +10638,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -10647,7 +10647,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -10656,7 +10656,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -10665,7 +10665,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/event-stream": components["schemas"]["internal_server.SwaggerError"];
+                        "text/event-stream": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10709,7 +10709,7 @@ export interface paths {
             /** @description Expected interrupted snapshot revision */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.SwaggerWorkflowRecovery"];
+                    "application/json": components["schemas"]["server.SwaggerWorkflowRecovery"];
                 };
             };
             responses: {
@@ -10719,7 +10719,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowRun"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowRun"];
                     };
                 };
                 /** @description Bad Request */
@@ -10728,7 +10728,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -10737,7 +10737,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -10746,7 +10746,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -10755,7 +10755,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -10764,7 +10764,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -10773,7 +10773,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10815,7 +10815,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowTemplates"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowTemplates"];
                     };
                 };
                 /** @description Bad Request */
@@ -10824,7 +10824,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -10833,7 +10833,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -10842,7 +10842,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -10851,7 +10851,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -10860,7 +10860,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -10869,7 +10869,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -10894,7 +10894,7 @@ export interface paths {
             /** @description Workflow with published Profile bindings */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflowapp.SaveRequest"];
+                    "application/json": components["schemas"]["workflowapp.SaveRequest"];
                 };
             };
             responses: {
@@ -10904,7 +10904,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowTemplate"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowTemplate"];
                     };
                 };
                 /** @description Bad Request */
@@ -10913,7 +10913,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -10922,7 +10922,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -10931,7 +10931,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -10940,7 +10940,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -10949,7 +10949,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -10958,7 +10958,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -11006,7 +11006,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowTemplate"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowTemplate"];
                     };
                 };
                 /** @description Bad Request */
@@ -11015,7 +11015,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -11024,7 +11024,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -11033,7 +11033,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -11042,7 +11042,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -11051,7 +11051,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -11060,7 +11060,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -11110,7 +11110,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowRuns"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowRuns"];
                     };
                 };
                 /** @description Bad Request */
@@ -11119,7 +11119,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -11128,7 +11128,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -11137,7 +11137,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -11146,7 +11146,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -11155,7 +11155,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -11164,7 +11164,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -11194,7 +11194,7 @@ export interface paths {
             /** @description Fixed Team version and task objective */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflowapp.StartRequest"];
+                    "application/json": components["schemas"]["workflowapp.StartRequest"];
                 };
             };
             responses: {
@@ -11204,7 +11204,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowRun"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowRun"];
                     };
                 };
                 /** @description Accepted */
@@ -11213,7 +11213,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowRun"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowRun"];
                     };
                 };
                 /** @description Bad Request */
@@ -11222,7 +11222,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -11231,7 +11231,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -11240,7 +11240,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -11249,7 +11249,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -11258,7 +11258,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -11267,7 +11267,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -11309,7 +11309,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowBuiltins"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowBuiltins"];
                     };
                 };
                 /** @description Bad Request */
@@ -11318,7 +11318,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -11327,7 +11327,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -11336,7 +11336,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -11345,7 +11345,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -11354,7 +11354,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -11363,7 +11363,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -11412,7 +11412,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerWorkflowTemplate"];
+                        "application/json": components["schemas"]["server.SwaggerWorkflowTemplate"];
                     };
                 };
                 /** @description Bad Request */
@@ -11421,7 +11421,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -11430,7 +11430,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -11439,7 +11439,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -11448,7 +11448,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Conflict */
@@ -11457,7 +11457,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -11466,7 +11466,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -11500,7 +11500,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerSnapshotResponse"];
+                        "application/json": components["schemas"]["server.SwaggerSnapshotResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -11509,7 +11509,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -11601,7 +11601,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTraceSessionsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerTraceSessionsResponse"];
                     };
                 };
             };
@@ -11657,7 +11657,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerTraceDetailResponse"];
+                        "application/json": components["schemas"]["server.SwaggerTraceDetailResponse"];
                     };
                 };
             };
@@ -11709,7 +11709,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.RuntimeTraceArtifact"];
+                        "application/json": components["schemas"]["server.RuntimeTraceArtifact"];
                     };
                 };
                 /** @description Bad Request */
@@ -11718,7 +11718,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -11727,7 +11727,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Forbidden */
@@ -11736,7 +11736,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Not Found */
@@ -11745,7 +11745,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Service Unavailable */
@@ -11754,7 +11754,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -11790,7 +11790,7 @@ export interface paths {
             /** @description OpenAI-compatible chat request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["internal_server.OpenAIChatRequest"];
+                    "application/json": components["schemas"]["server.OpenAIChatRequest"];
                 };
             };
             responses: {
@@ -11800,7 +11800,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerOpenAIChatResponse"];
+                        "application/json": components["schemas"]["server.SwaggerOpenAIChatResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -11809,7 +11809,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Unauthorized */
@@ -11818,7 +11818,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
                 /** @description Internal Server Error */
@@ -11827,7 +11827,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -11864,7 +11864,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerOpenAIModelsResponse"];
+                        "application/json": components["schemas"]["server.SwaggerOpenAIModelsResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -11873,7 +11873,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -11912,7 +11912,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerProviderListResponse"];
+                        "application/json": components["schemas"]["server.SwaggerProviderListResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -11921,7 +11921,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["internal_server.SwaggerError"];
+                        "application/json": components["schemas"]["server.SwaggerError"];
                     };
                 };
             };
@@ -12061,18 +12061,18 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        "github_com_konglong87_niuma_internal_agentprofile.BlockedOverride": {
+        "agentprofile.BlockedOverride": {
             field?: string;
             reason?: string;
         };
-        "github_com_konglong87_niuma_internal_agentprofile.CapabilityPolicy": {
+        "agentprofile.CapabilityPolicy": {
             allow_agents?: boolean;
             allow_attachments?: boolean;
             mcp_servers?: string[];
             skills?: string[];
-            tools?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.ToolPolicy"];
+            tools?: components["schemas"]["agentprofile.ToolPolicy"];
         };
-        "github_com_konglong87_niuma_internal_agentprofile.ContextPolicy": {
+        "agentprofile.ContextPolicy": {
             git?: boolean;
             knowledge_base?: boolean;
             session_history?: boolean;
@@ -12081,16 +12081,16 @@ export interface components {
             workspace?: boolean;
         };
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_agentprofile.ExecutionKind": "text" | "computer" | "image";
-        "github_com_konglong87_niuma_internal_agentprofile.ExecutionKindDescriptor": {
+        "agentprofile.ExecutionKind": "text" | "computer" | "image";
+        "agentprofile.ExecutionKindDescriptor": {
             display_name?: string;
-            kind?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.ExecutionKind"];
+            kind?: components["schemas"]["agentprofile.ExecutionKind"];
             workflow_supported?: boolean;
         };
-        "github_com_konglong87_niuma_internal_agentprofile.ExecutionPolicy": {
+        "agentprofile.ExecutionPolicy": {
             auto_compact?: boolean;
             effort?: string;
-            kind?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.ExecutionKind"];
+            kind?: components["schemas"]["agentprofile.ExecutionKind"];
             max_parallel_read_only_tools?: number;
             max_tokens?: number;
             max_turns?: number;
@@ -12098,15 +12098,15 @@ export interface components {
             provider?: string;
             runtime_profile?: string;
         };
-        "github_com_konglong87_niuma_internal_agentprofile.IdentityPolicy": {
+        "agentprofile.IdentityPolicy": {
             description?: string;
             display_name?: string;
             role_type?: string;
         };
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_agentprofile.PermissionMode": "ask" | "deny" | "allow" | "bypassPermissions";
-        "github_com_konglong87_niuma_internal_agentprofile.Profile": {
-            config?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.ProfileDocument"];
+        "agentprofile.PermissionMode": "ask" | "deny" | "allow" | "bypassPermissions";
+        "agentprofile.Profile": {
+            config?: components["schemas"]["agentprofile.ProfileDocument"];
             description?: string;
             display_name?: string;
             effective_hash?: string;
@@ -12116,49 +12116,49 @@ export interface components {
             profile_version?: number;
             published_at?: string;
             requested_hash?: string;
-            scope?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.Scope"];
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.Status"];
+            scope?: components["schemas"]["agentprofile.Scope"];
+            status?: components["schemas"]["agentprofile.Status"];
             tenant_id?: number;
         };
-        "github_com_konglong87_niuma_internal_agentprofile.ProfileDocument": {
-            capabilities?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.CapabilityPolicy"];
-            context?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.ContextPolicy"];
-            execution?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.ExecutionPolicy"];
-            identity?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.IdentityPolicy"];
-            prompt?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.PromptPolicy"];
-            safety?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.SafetyPolicy"];
+        "agentprofile.ProfileDocument": {
+            capabilities?: components["schemas"]["agentprofile.CapabilityPolicy"];
+            context?: components["schemas"]["agentprofile.ContextPolicy"];
+            execution?: components["schemas"]["agentprofile.ExecutionPolicy"];
+            identity?: components["schemas"]["agentprofile.IdentityPolicy"];
+            prompt?: components["schemas"]["agentprofile.PromptPolicy"];
+            safety?: components["schemas"]["agentprofile.SafetyPolicy"];
             schema_version?: number;
         };
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_agentprofile.PromptMode": "code" | "chat";
-        "github_com_konglong87_niuma_internal_agentprofile.PromptPolicy": {
+        "agentprofile.PromptMode": "code" | "chat";
+        "agentprofile.PromptPolicy": {
             language?: string;
-            mode?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.PromptMode"];
+            mode?: components["schemas"]["agentprofile.PromptMode"];
             output_style?: string;
             persona?: string;
             system_addendum?: string;
         };
-        "github_com_konglong87_niuma_internal_agentprofile.RoleTypeDescriptor": {
+        "agentprofile.RoleTypeDescriptor": {
             description?: string;
             display_name?: string;
             key?: string;
         };
-        "github_com_konglong87_niuma_internal_agentprofile.SafetyPolicy": {
+        "agentprofile.SafetyPolicy": {
             allow_unsandboxed_commands?: boolean;
-            permission_mode?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.PermissionMode"];
-            sandbox?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.SandboxMode"];
+            permission_mode?: components["schemas"]["agentprofile.PermissionMode"];
+            sandbox?: components["schemas"]["agentprofile.SandboxMode"];
         };
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_agentprofile.SandboxMode": "required" | "optional" | "disabled";
+        "agentprofile.SandboxMode": "required" | "optional" | "disabled";
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_agentprofile.Scope": "builtin" | "tenant_shared" | "user_private";
+        "agentprofile.Scope": "builtin" | "tenant_shared" | "user_private";
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_agentprofile.Status": "draft" | "validating" | "published" | "archived";
-        "github_com_konglong87_niuma_internal_agentprofile.ToolPolicy": {
+        "agentprofile.Status": "draft" | "validating" | "published" | "archived";
+        "agentprofile.ToolPolicy": {
             allow?: string[];
             deny?: string[];
         };
-        "github_com_konglong87_niuma_internal_agenttasks.Attachment": {
+        "agenttasks.Attachment": {
             attachment_id?: string;
             media_type?: string;
             name?: string;
@@ -12167,174 +12167,7 @@ export interface components {
             type?: string;
             url?: string;
         };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Agent": {
-            effort?: string;
-            kind?: string;
-            max_output_tokens?: number;
-            model?: string;
-            name?: string;
-            profile_hash?: string;
-            profile_id?: number;
-            profile_key?: string;
-            profile_version?: number;
-            provider?: string;
-            ref?: string;
-            role_type?: string;
-            route_hash?: string;
-            system_prompt?: string;
-            tools?: string[];
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Artifact": {
-            attempt_no?: number;
-            content?: string;
-            created_at?: string;
-            id?: string;
-            kind?: string;
-            node_id?: string;
-            sha256?: string;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Attempt": {
-            /** @description BudgetReserved is the immutable admission reservation, not provider usage. */
-            budget_reserved?: number;
-            epoch?: number;
-            failure?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Failure"];
-            finished_at?: string;
-            model?: string;
-            number?: number;
-            provider?: string;
-            started_at?: string;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Status"];
-            task_id?: number;
-            usage?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Usage"];
-            usage_known?: boolean;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Definition": {
-            limits?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Limits"];
-            nodes?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Node"][];
-            schema_version?: number;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Event": {
-            attempt_no?: number;
-            created_at?: string;
-            failure?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Failure"];
-            node_id?: string;
-            sequence?: number;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Status"];
-            text?: string;
-            type?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.EventType"];
-        };
-        /** @enum {string} */
-        "github_com_konglong87_niuma_internal_agentteam_workflow.EventType": "run_queued" | "run_started" | "task_created" | "task_waiting_dependency" | "agent_started" | "agent_output_delta" | "agent_phase" | "agent_completed" | "agent_failed" | "task_retry_scheduled" | "run_cancel_requested" | "run_cancelled" | "task_cancelled" | "run_completed" | "run_failed" | "run_timed_out" | "run_interrupted" | "run_recovered";
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Failure": {
-            code?: string;
-            message?: string;
-            retryable?: boolean;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Limits": {
-            max_parallel?: number;
-            max_total_tokens?: number;
-            run_timeout_seconds?: number;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Node": {
-            agent_ref?: string;
-            depends_on?: string[];
-            id?: string;
-            instruction?: string;
-            retry?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.RetryPolicy"];
-            timeout_seconds?: number;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.NodeRun": {
-            artifact_id?: string;
-            attempts?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Attempt"][];
-            failure?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Failure"];
-            next_retry_at?: string;
-            node_id?: string;
-            output?: string;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Status"];
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Plan": {
-            agents?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Agent"][];
-            definition?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Definition"];
-            hash?: string;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.RetryPolicy": {
-            backoff_ms?: number;
-            max_attempts?: number;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Run": {
-            artifacts?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Artifact"][];
-            cancel_requested_at?: string;
-            created_at?: string;
-            deadline?: string;
-            epoch?: number;
-            failure?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Failure"];
-            finished_at?: string;
-            id?: string;
-            input?: string;
-            last_sequence?: number;
-            lease_owner?: string;
-            lease_until?: string;
-            name?: string;
-            nodes?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.NodeRun"][];
-            plan?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Plan"];
-            revision?: number;
-            scope?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Scope"];
-            started_at?: string;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Status"];
-            team_id?: number;
-            team_key?: string;
-            team_version?: number;
-            /**
-             * @description UncertainTokens includes in-flight and unconfirmed attempt reservations.
-             *     It is not actual usage or a monetary amount.
-             */
-            uncertain_tokens?: number;
-            usage?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Usage"];
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Scope": {
-            tenant_id?: number;
-            user_id?: number;
-        };
-        /** @enum {string} */
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Status": "queued" | "pending" | "ready" | "running" | "retry_wait" | "completed" | "failed" | "timed_out" | "cancel_requested" | "cancelled" | "interrupted" | "blocked";
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Usage": {
-            cache_read_tokens?: number;
-            cache_write_tokens?: number;
-            input_tokens?: number;
-            output_tokens?: number;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflowapp.Binding": {
-            profile_id?: number;
-            profile_key?: string;
-            profile_version?: number;
-            ref?: string;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflowapp.Builtin": {
-            description?: string;
-            key?: string;
-            name?: string;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflowapp.SaveRequest": {
-            agents?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflowapp.Binding"][];
-            definition?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Definition"];
-            description?: string;
-            key?: string;
-            name?: string;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflowapp.StartRequest": {
-            input?: string;
-            version?: number;
-        };
-        "github_com_konglong87_niuma_internal_agentteam_workflowapp.Template": {
-            agents?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflowapp.Binding"][];
-            definition?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Definition"];
-            description?: string;
-            id?: number;
-            key?: string;
-            name?: string;
-            version?: number;
-        };
-        "github_com_konglong87_niuma_internal_buildinfo.Info": {
+        "buildinfo.Info": {
             build_time?: string;
             dirty?: boolean;
             dirty_known?: boolean;
@@ -12344,13 +12177,13 @@ export interface components {
             schema_version?: string;
             version?: string;
         };
-        "github_com_konglong87_niuma_internal_config.HookCommand": {
+        "config.HookCommand": {
             command?: string;
             matcher?: string;
             tool?: string;
             tools?: string[];
         };
-        "github_com_konglong87_niuma_internal_config.ImageModelCapability": {
+        "config.ImageModelCapability": {
             aspectRatios?: string[];
             maxInputImages?: number;
             operations?: string[];
@@ -12362,12 +12195,12 @@ export interface components {
             supportsMask?: boolean;
             supportsWatermark?: boolean;
         };
-        "github_com_konglong87_niuma_internal_config.SettingsIssue": {
+        "config.SettingsIssue": {
             code?: string;
             field?: string;
             message?: string;
         };
-        "github_com_konglong87_niuma_internal_files.Metadata": {
+        "files.Metadata": {
             gid?: number;
             mtime_known?: boolean;
             mtime_unix_nano?: number;
@@ -12380,19 +12213,19 @@ export interface components {
             xattrs_known?: boolean;
         };
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_goal.CriterionStatus": "pending" | "passed" | "failed" | "waived";
-        "github_com_konglong87_niuma_internal_goal.Decision": {
+        "goal.CriterionStatus": "pending" | "passed" | "failed" | "waived";
+        "goal.Decision": {
             blocker_key?: string;
             confidence?: number;
             next_action?: string;
             reason?: string;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_goal.DecisionStatus"];
+            status?: components["schemas"]["goal.DecisionStatus"];
         };
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_goal.DecisionStatus": "continue" | "complete" | "blocked" | "failed";
+        "goal.DecisionStatus": "continue" | "complete" | "blocked" | "failed";
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_goal.DependencyStatus": "unknown" | "available" | "missing" | "blocked";
-        "github_com_konglong87_niuma_internal_goal.Event": {
+        "goal.DependencyStatus": "unknown" | "available" | "missing" | "blocked";
+        "goal.Event": {
             blocker_key?: string;
             checkpoint?: string;
             created_at?: string;
@@ -12406,15 +12239,15 @@ export interface components {
             output_tokens?: number;
             reason?: string;
             session_id?: string;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_goal.Status"];
+            status?: components["schemas"]["goal.Status"];
             turn?: number;
-            type?: components["schemas"]["github_com_konglong87_niuma_internal_goal.EventType"];
+            type?: components["schemas"]["goal.EventType"];
         };
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_goal.EventType": "goal_started" | "goal_stopped" | "goal_resumed" | "turn_started" | "turn_finished" | "turn_failed" | "status_changed";
+        "goal.EventType": "goal_started" | "goal_stopped" | "goal_resumed" | "turn_started" | "turn_finished" | "turn_failed" | "status_changed";
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_goal.EvidenceType": "command" | "test" | "git" | "api" | "db" | "doc" | "artifact" | "manual";
-        "github_com_konglong87_niuma_internal_goal.Goal": {
+        "goal.EvidenceType": "command" | "test" | "git" | "api" | "db" | "doc" | "artifact" | "manual";
+        "goal.Goal": {
             created_at?: string;
             cwd?: string;
             error?: string;
@@ -12430,28 +12263,28 @@ export interface components {
             provider?: string;
             repeated_blocker_count?: number;
             session_id?: string;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_goal.Status"];
+            status?: components["schemas"]["goal.Status"];
             token_budget?: number;
             turn_budget?: number;
             turns_used?: number;
             updated_at?: string;
         };
-        "github_com_konglong87_niuma_internal_goal.GoalCriterion": {
+        "goal.GoalCriterion": {
             description?: string;
             evidence_ids?: string[];
             id?: string;
             required?: boolean;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_goal.CriterionStatus"];
+            status?: components["schemas"]["goal.CriterionStatus"];
         };
-        "github_com_konglong87_niuma_internal_goal.GoalDependency": {
+        "goal.GoalDependency": {
             description?: string;
             evidence_ids?: string[];
             id?: string;
             required?: boolean;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_goal.DependencyStatus"];
+            status?: components["schemas"]["goal.DependencyStatus"];
             type?: string;
         };
-        "github_com_konglong87_niuma_internal_goal.GoalEvidence": {
+        "goal.GoalEvidence": {
             command?: string;
             created_at?: string;
             exit_code?: number;
@@ -12460,33 +12293,33 @@ export interface components {
             passed?: boolean;
             payload?: number[];
             summary?: string;
-            type?: components["schemas"]["github_com_konglong87_niuma_internal_goal.EvidenceType"];
+            type?: components["schemas"]["goal.EvidenceType"];
         };
-        "github_com_konglong87_niuma_internal_goal.GoalRisk": {
+        "goal.GoalRisk": {
             description?: string;
             id?: string;
             mitigation?: string;
-            severity?: components["schemas"]["github_com_konglong87_niuma_internal_goal.RiskSeverity"];
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_goal.RiskStatus"];
+            severity?: components["schemas"]["goal.RiskSeverity"];
+            status?: components["schemas"]["goal.RiskStatus"];
             type?: string;
         };
-        "github_com_konglong87_niuma_internal_goal.GoalStep": {
+        "goal.GoalStep": {
             depends_on?: string[];
             evidence_ids?: string[];
             id?: string;
             rationale?: string;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_goal.StepStatus"];
+            status?: components["schemas"]["goal.StepStatus"];
             title?: string;
         };
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_goal.RiskSeverity": "low" | "medium" | "high" | "critical";
+        "goal.RiskSeverity": "low" | "medium" | "high" | "critical";
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_goal.RiskStatus": "open" | "mitigated" | "accepted" | "escalated";
+        "goal.RiskStatus": "open" | "mitigated" | "accepted" | "escalated";
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_goal.Status": "active" | "complete" | "blocked" | "stopped" | "failed";
+        "goal.Status": "active" | "complete" | "blocked" | "stopped" | "failed";
         /** @enum {string} */
-        "github_com_konglong87_niuma_internal_goal.StepStatus": "pending" | "active" | "done" | "blocked" | "skipped";
-        "github_com_konglong87_niuma_internal_imagegen.Artifact": {
+        "goal.StepStatus": "pending" | "active" | "done" | "blocked" | "skipped";
+        "imagegen.Artifact": {
             asset_id?: string;
             created_at?: string;
             generation_id?: string;
@@ -12505,7 +12338,7 @@ export interface components {
             user_id?: number;
             width?: number;
         };
-        "github_com_konglong87_niuma_internal_imagegen.GenerationRecord": {
+        "imagegen.GenerationRecord": {
             asset_id?: string;
             attempts?: number;
             batch_id?: string;
@@ -12542,244 +12375,7 @@ export interface components {
             updated_at?: string;
             user_id?: number;
         };
-        "github_com_konglong87_niuma_internal_pendinginput.PendingInput": {
-            attachments?: components["schemas"]["github_com_konglong87_niuma_internal_agenttasks.Attachment"][];
-            attempt?: number;
-            base_task_id?: number;
-            claimed_at?: string;
-            client_input_id?: string;
-            content?: string;
-            created_at?: string;
-            direction?: string;
-            dispatched_task_id?: number;
-            error_code?: string;
-            error_message?: string;
-            id?: string;
-            sequence?: number;
-            session_id?: string;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_pendinginput.Status"];
-            tenant_id?: number;
-            updated_at?: string;
-            user_id?: number;
-        };
-        /** @enum {string} */
-        "github_com_konglong87_niuma_internal_pendinginput.Status": "queued" | "running" | "sent" | "failed" | "cancelled";
-        "github_com_konglong87_niuma_internal_promptdump.CacheDiagnosticMessageBlock": {
-            block_index?: number;
-            bytes?: number;
-            has_cache_control?: boolean;
-            message_index?: number;
-            role?: string;
-            tool_name?: string;
-            tool_use_id?: string;
-            type?: string;
-        };
-        "github_com_konglong87_niuma_internal_promptdump.CacheDiagnosticSystemBlock": {
-            has_cache_control?: boolean;
-            index?: number;
-            kind?: string;
-            seen_count?: number;
-            source?: string;
-            stable?: boolean;
-            text_bytes?: number;
-            text_hash?: string;
-        };
-        "github_com_konglong87_niuma_internal_promptdump.CacheRecordDiagnostics": {
-            cache_control_block_count?: number;
-            cacheable_system_bytes?: number;
-            largest_message_blocks?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.CacheDiagnosticMessageBlock"][];
-            largest_uncached_system_blocks?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.CacheDiagnosticSystemBlock"][];
-            message_cache_marker_count?: number;
-            prefix_before_skills_hash?: string;
-            prefix_through_skills_hash?: string;
-            request_signature_delta_from_previous?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.CacheSignatureDelta"];
-            request_signature_hash?: string;
-            session_id?: string;
-            skills_catalog_bytes?: number;
-            skills_catalog_hash?: string;
-            skills_catalog_position?: number;
-            turn?: number;
-            uncached_system_bytes?: number;
-        };
-        "github_com_konglong87_niuma_internal_promptdump.CacheSessionDiagnostics": {
-            cache_control_hash_stable?: boolean;
-            cacheable_system_bytes_max?: number;
-            largest_uncached_system_blocks?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.CacheDiagnosticSystemBlock"][];
-            message_prefix_hash_stable?: boolean;
-            provider_cache_hit_ratio_input?: number;
-            provider_cache_hit_ratio_total_input?: number;
-            provider_cache_usage_state?: string;
-            records?: number;
-            request_signature_changed_fields?: string[];
-            request_signature_changed_fields_count?: {
-                [key: string]: number;
-            };
-            session_id?: string;
-            system_hash_stable?: boolean;
-            thinking_hash_stable?: boolean;
-            tools_hash_stable?: boolean;
-            uncached_system_bytes_max?: number;
-        };
-        "github_com_konglong87_niuma_internal_promptdump.CacheSignatureDelta": {
-            breaks_cache?: boolean;
-            cache_control_changed?: boolean;
-            changed_fields?: string[];
-            initialized?: boolean;
-            message_prefix_changed?: boolean;
-            model_changed?: boolean;
-            previous_signature_hash?: string;
-            signature_hash?: string;
-            system_changed?: boolean;
-            thinking_changed?: boolean;
-            tools_changed?: boolean;
-        };
-        "github_com_konglong87_niuma_internal_promptdump.ContentBlockSummary": {
-            actual_truncated?: boolean;
-            connector_text_bytes?: number;
-            content_bytes?: number;
-            content_hash?: string;
-            has_cache_control?: boolean;
-            image_media_type?: string;
-            image_source_type?: string;
-            input_bytes?: number;
-            input_hash?: string;
-            is_error?: boolean;
-            persisted_output?: boolean;
-            raw_over_default_limit?: boolean;
-            raw_over_limit?: boolean;
-            suspected_truncated?: boolean;
-            text_bytes?: number;
-            thinking_bytes?: number;
-            tool_name?: string;
-            tool_use_id?: string;
-            type?: string;
-        };
-        "github_com_konglong87_niuma_internal_promptdump.MessageSummary": {
-            block_count?: number;
-            blocks?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.ContentBlockSummary"][];
-            bytes?: number;
-            role?: string;
-        };
-        "github_com_konglong87_niuma_internal_promptdump.RequestRedaction": {
-            mode?: string;
-            raw_request_included?: boolean;
-            text_omitted?: boolean;
-        };
-        "github_com_konglong87_niuma_internal_promptdump.SystemBlockSummary": {
-            cache_scope?: string;
-            cache_ttl?: string;
-            cache_type?: string;
-            has_cache_control?: boolean;
-            index?: number;
-            kind?: string;
-            source?: string;
-            text_bytes?: number;
-            text_hash?: string;
-        };
-        "github_com_konglong87_niuma_internal_promptdump.ToolSummary": {
-            description_bytes?: number;
-            input_schema_bytes?: number;
-            input_schema_fields?: string[];
-            input_schema_hash?: string;
-            name?: string;
-        };
-        "github_com_konglong87_niuma_internal_query.ComputerObservationReference": {
-            asset_id?: string;
-            media_type?: string;
-            name?: string;
-            observation_id?: string;
-            sha256?: string;
-            size_bytes?: number;
-        };
-        "github_com_konglong87_niuma_internal_query.ToolTrace": {
-            computer_observation?: components["schemas"]["github_com_konglong87_niuma_internal_query.ComputerObservationReference"];
-            file_changes?: components["schemas"]["github_com_konglong87_niuma_internal_tools.FileChange"][];
-            id?: string;
-            input?: string;
-            is_error?: boolean;
-            name?: string;
-            output?: string;
-        };
-        "github_com_konglong87_niuma_internal_query.Usage": {
-            cache_creation_ephemeral_1h_input_tokens?: number;
-            cache_creation_ephemeral_5m_input_tokens?: number;
-            cache_creation_input_tokens?: number;
-            cache_read_input_tokens?: number;
-            inference_geo?: string;
-            input_tokens?: number;
-            output_tokens?: number;
-            service_tier?: string;
-            speed?: string;
-        };
-        "github_com_konglong87_niuma_internal_scheduler.Event": {
-            background_id?: string;
-            created_at?: string;
-            cwd?: string;
-            error?: string;
-            id?: string;
-            offset?: number;
-            prompt?: string;
-            run_count?: number;
-            schedule_id?: string;
-            status?: string;
-            type?: string;
-        };
-        "github_com_konglong87_niuma_internal_scheduler.RunRecord": {
-            background_id?: string;
-            cwd?: string;
-            error?: string;
-            finished_at?: string;
-            id?: string;
-            log_bytes?: number;
-            prompt?: string;
-            schedule_id?: string;
-            started_at?: string;
-            status?: string;
-        };
-        "github_com_konglong87_niuma_internal_sessioncontrol.HandoffCandidateRemoval": {
-            category?: string;
-            estimated_tokens?: number;
-        };
-        "github_com_konglong87_niuma_internal_sessioncontrol.SessionChannel": {
-            account_key?: string;
-            provider?: string;
-        };
-        /** @enum {string} */
-        "github_com_konglong87_niuma_internal_sessioncontrol.SessionStatus": "idle" | "queued" | "running" | "waiting_permission" | "waiting_input" | "blocked" | "completed" | "failed" | "stopped" | "archived";
-        /** @enum {string} */
-        "github_com_konglong87_niuma_internal_sessioncontrol.Source": "tenant" | "local";
-        "github_com_konglong87_niuma_internal_skills.Skill": {
-            agent?: string;
-            allowed_tools?: string[];
-            argument_hint?: string;
-            arguments?: string[];
-            content?: string;
-            description?: string;
-            disable_model_invocation?: boolean;
-            effort?: string;
-            execution_context?: string;
-            hooks?: {
-                [key: string]: components["schemas"]["github_com_konglong87_niuma_internal_config.HookCommand"][];
-            };
-            legacy?: boolean;
-            local_name?: string;
-            model?: string;
-            name?: string;
-            package_ref?: string;
-            package_sha256?: string;
-            path?: string;
-            paths?: string[];
-            plugin?: string;
-            root?: string;
-            runtime_ref?: string;
-            source?: components["schemas"]["github_com_konglong87_niuma_internal_skills.Source"];
-            user_invocable?: boolean;
-            version?: string;
-            when_to_use?: string;
-        };
-        /** @enum {string} */
-        "github_com_konglong87_niuma_internal_skills.Source": "user" | "project" | "plugin" | "bundled" | "marketplace" | "mcp" | "tenant";
-        "github_com_konglong87_niuma_internal_storage_mysql.AgentProfile": {
+        "mysql.AgentProfile": {
             config_json?: string;
             created_at?: string;
             created_by_user_id?: number;
@@ -12803,7 +12399,7 @@ export interface components {
             updated_by_user_id?: number;
             validation_json?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.AgentProfileConversationSummary": {
+        "mysql.AgentProfileConversationSummary": {
             account_id?: number;
             account_key?: string;
             chat_type?: string;
@@ -12823,7 +12419,7 @@ export interface components {
             session_id?: number;
             title?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.AgentProfileTeamLink": {
+        "mysql.AgentProfileTeamLink": {
             account_id?: number;
             account_key?: string;
             external_chat_id?: string;
@@ -12836,7 +12432,7 @@ export interface components {
             team_version?: number;
             trigger_policy?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.AgentTask": {
+        "mysql.AgentTask": {
             agent_name?: string;
             description?: string;
             finished_at?: string;
@@ -12853,7 +12449,7 @@ export interface components {
             trace_id?: string;
             user_id?: number;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent": {
+        "mysql.AgentTaskEvent": {
             channel?: string;
             created_at?: string;
             event_type?: string;
@@ -12864,7 +12460,7 @@ export interface components {
             task_id?: number;
             trace_id?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.AuditLog": {
+        "mysql.AuditLog": {
             action?: string;
             actor_user_id?: number;
             created_at?: string;
@@ -12875,7 +12471,7 @@ export interface components {
             tenant_id?: number;
             trace_id?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.Document": {
+        "mysql.Document": {
             active?: boolean;
             content_json?: string;
             content_md?: string;
@@ -12884,7 +12480,7 @@ export interface components {
             title?: string;
             version?: number;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.EffectiveSkill": {
+        "mysql.EffectiveSkill": {
             config_json?: string;
             content_md?: string;
             description?: string;
@@ -12900,7 +12496,7 @@ export interface components {
             updated_at?: string;
             version?: number;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.KnowledgeChunk": {
+        "mysql.KnowledgeChunk": {
             chunk_index?: number;
             content?: string;
             document_id?: number;
@@ -12912,7 +12508,7 @@ export interface components {
             source_type?: string;
             title?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.KnowledgeDocument": {
+        "mysql.KnowledgeDocument": {
             content?: string;
             id?: number;
             metadata_json?: string;
@@ -12923,7 +12519,7 @@ export interface components {
             updated_at?: string;
             user_id?: number;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.Memory": {
+        "mysql.Memory": {
             category?: string;
             content?: string;
             id?: number;
@@ -12933,7 +12529,7 @@ export interface components {
             source?: string;
             updated_at?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.Message": {
+        "mysql.Message": {
             content?: string;
             content_json?: string;
             created_at?: string;
@@ -12949,7 +12545,7 @@ export interface components {
             trace_id?: string;
             turn_index?: number;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.QuotaEvent": {
+        "mysql.QuotaEvent": {
             created_at?: string;
             current_value?: number;
             event_type?: string;
@@ -12965,7 +12561,7 @@ export interface components {
             trace_id?: string;
             user_id?: number;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.Session": {
+        "mysql.Session": {
             cwd?: string;
             id?: number;
             last_message_at?: string;
@@ -12975,7 +12571,7 @@ export interface components {
             status?: string;
             title?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.Skill": {
+        "mysql.Skill": {
             config_json?: string;
             content_md?: string;
             description?: string;
@@ -12990,7 +12586,7 @@ export interface components {
             updated_at?: string;
             version?: number;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.SkillOverride": {
+        "mysql.SkillOverride": {
             config_json?: string;
             enabled?: boolean;
             id?: number;
@@ -13000,7 +12596,7 @@ export interface components {
             updated_at?: string;
             version?: number;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.TelemetryEvent": {
+        "mysql.TelemetryEvent": {
             cache_creation_ephemeral_1h_input_tokens?: number;
             cache_creation_ephemeral_5m_input_tokens?: number;
             cache_creation_input_tokens?: number;
@@ -13037,14 +12633,14 @@ export interface components {
             user_id?: number;
             user_key?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.Tenant": {
+        "mysql.Tenant": {
             id?: number;
             name?: string;
             settings_json?: string;
             status?: string;
             tenant_key?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.UsageDaily": {
+        "mysql.UsageDaily": {
             cache_creation_input_tokens?: number;
             cache_read_input_tokens?: number;
             id?: number;
@@ -13060,7 +12656,7 @@ export interface components {
             updated_at?: string;
             usage_date?: string;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.UsageLedger": {
+        "mysql.UsageLedger": {
             cache_creation_ephemeral_1h_input_tokens?: number;
             cache_creation_ephemeral_5m_input_tokens?: number;
             cache_creation_input_tokens?: number;
@@ -13091,7 +12687,7 @@ export interface components {
             usage_source?: string;
             user_id?: number;
         };
-        "github_com_konglong87_niuma_internal_storage_mysql.User": {
+        "mysql.User": {
             display_name?: string;
             email?: string;
             id?: number;
@@ -13103,28 +12699,2056 @@ export interface components {
             user_info_json?: string;
             user_key?: string;
         };
-        "github_com_konglong87_niuma_internal_tenantpkg.Manifest": {
-            files?: components["schemas"]["github_com_konglong87_niuma_internal_tenantpkg.ManifestFile"][];
+        "pendinginput.PendingInput": {
+            attachments?: components["schemas"]["agenttasks.Attachment"][];
+            attempt?: number;
+            base_task_id?: number;
+            claimed_at?: string;
+            client_input_id?: string;
+            content?: string;
+            created_at?: string;
+            direction?: string;
+            dispatched_task_id?: number;
+            error_code?: string;
+            error_message?: string;
+            id?: string;
+            sequence?: number;
+            session_id?: string;
+            status?: components["schemas"]["pendinginput.Status"];
+            tenant_id?: number;
+            updated_at?: string;
+            user_id?: number;
+        };
+        /** @enum {string} */
+        "pendinginput.Status": "queued" | "running" | "sent" | "failed" | "cancelled";
+        "promptdump.CacheDiagnosticMessageBlock": {
+            block_index?: number;
+            bytes?: number;
+            has_cache_control?: boolean;
+            message_index?: number;
+            role?: string;
+            tool_name?: string;
+            tool_use_id?: string;
+            type?: string;
+        };
+        "promptdump.CacheDiagnosticSystemBlock": {
+            has_cache_control?: boolean;
+            index?: number;
+            kind?: string;
+            seen_count?: number;
+            source?: string;
+            stable?: boolean;
+            text_bytes?: number;
+            text_hash?: string;
+        };
+        "promptdump.CacheRecordDiagnostics": {
+            cache_control_block_count?: number;
+            cacheable_system_bytes?: number;
+            largest_message_blocks?: components["schemas"]["promptdump.CacheDiagnosticMessageBlock"][];
+            largest_uncached_system_blocks?: components["schemas"]["promptdump.CacheDiagnosticSystemBlock"][];
+            message_cache_marker_count?: number;
+            prefix_before_skills_hash?: string;
+            prefix_through_skills_hash?: string;
+            request_signature_delta_from_previous?: components["schemas"]["promptdump.CacheSignatureDelta"];
+            request_signature_hash?: string;
+            session_id?: string;
+            skills_catalog_bytes?: number;
+            skills_catalog_hash?: string;
+            skills_catalog_position?: number;
+            turn?: number;
+            uncached_system_bytes?: number;
+        };
+        "promptdump.CacheSessionDiagnostics": {
+            cache_control_hash_stable?: boolean;
+            cacheable_system_bytes_max?: number;
+            largest_uncached_system_blocks?: components["schemas"]["promptdump.CacheDiagnosticSystemBlock"][];
+            message_prefix_hash_stable?: boolean;
+            provider_cache_hit_ratio_input?: number;
+            provider_cache_hit_ratio_total_input?: number;
+            provider_cache_usage_state?: string;
+            records?: number;
+            request_signature_changed_fields?: string[];
+            request_signature_changed_fields_count?: {
+                [key: string]: number;
+            };
+            session_id?: string;
+            system_hash_stable?: boolean;
+            thinking_hash_stable?: boolean;
+            tools_hash_stable?: boolean;
+            uncached_system_bytes_max?: number;
+        };
+        "promptdump.CacheSignatureDelta": {
+            breaks_cache?: boolean;
+            cache_control_changed?: boolean;
+            changed_fields?: string[];
+            initialized?: boolean;
+            message_prefix_changed?: boolean;
+            model_changed?: boolean;
+            previous_signature_hash?: string;
+            signature_hash?: string;
+            system_changed?: boolean;
+            thinking_changed?: boolean;
+            tools_changed?: boolean;
+        };
+        "promptdump.ContentBlockSummary": {
+            actual_truncated?: boolean;
+            connector_text_bytes?: number;
+            content_bytes?: number;
+            content_hash?: string;
+            has_cache_control?: boolean;
+            image_media_type?: string;
+            image_source_type?: string;
+            input_bytes?: number;
+            input_hash?: string;
+            is_error?: boolean;
+            persisted_output?: boolean;
+            raw_over_default_limit?: boolean;
+            raw_over_limit?: boolean;
+            suspected_truncated?: boolean;
+            text_bytes?: number;
+            thinking_bytes?: number;
+            tool_name?: string;
+            tool_use_id?: string;
+            type?: string;
+        };
+        "promptdump.MessageSummary": {
+            block_count?: number;
+            blocks?: components["schemas"]["promptdump.ContentBlockSummary"][];
+            bytes?: number;
+            role?: string;
+        };
+        "promptdump.RequestRedaction": {
+            mode?: string;
+            raw_request_included?: boolean;
+            text_omitted?: boolean;
+        };
+        "promptdump.SystemBlockSummary": {
+            cache_scope?: string;
+            cache_ttl?: string;
+            cache_type?: string;
+            has_cache_control?: boolean;
+            index?: number;
+            kind?: string;
+            source?: string;
+            text_bytes?: number;
+            text_hash?: string;
+        };
+        "promptdump.ToolSummary": {
+            description_bytes?: number;
+            input_schema_bytes?: number;
+            input_schema_fields?: string[];
+            input_schema_hash?: string;
+            name?: string;
+        };
+        "query.ComputerObservationReference": {
+            asset_id?: string;
+            media_type?: string;
+            name?: string;
+            observation_id?: string;
+            sha256?: string;
+            size_bytes?: number;
+        };
+        "query.ToolTrace": {
+            computer_observation?: components["schemas"]["query.ComputerObservationReference"];
+            file_changes?: components["schemas"]["tools.FileChange"][];
+            id?: string;
+            input?: string;
+            is_error?: boolean;
+            name?: string;
+            output?: string;
+        };
+        "query.Usage": {
+            cache_creation_ephemeral_1h_input_tokens?: number;
+            cache_creation_ephemeral_5m_input_tokens?: number;
+            cache_creation_input_tokens?: number;
+            cache_read_input_tokens?: number;
+            inference_geo?: string;
+            input_tokens?: number;
+            output_tokens?: number;
+            service_tier?: string;
+            speed?: string;
+        };
+        "scheduler.Event": {
+            background_id?: string;
+            created_at?: string;
+            cwd?: string;
+            error?: string;
+            id?: string;
+            offset?: number;
+            prompt?: string;
+            run_count?: number;
+            schedule_id?: string;
+            status?: string;
+            type?: string;
+        };
+        "scheduler.RunRecord": {
+            background_id?: string;
+            cwd?: string;
+            error?: string;
+            finished_at?: string;
+            id?: string;
+            log_bytes?: number;
+            prompt?: string;
+            schedule_id?: string;
+            started_at?: string;
+            status?: string;
+        };
+        "server.conversationSubscription": {
+            cursor?: string;
+            ref?: string;
+        };
+        "server.EffectiveSettingsResponse": {
+            activation?: components["schemas"]["server.SettingsActivation"];
+            file_resolved?: components["schemas"]["server.SettingsFileResolved"];
+            global_path?: string;
+            process_snapshot?: components["schemas"]["server.SettingsProcessSnapshot"];
+            scope?: string;
+            workspace?: string;
+        };
+        "server.GlobalSettingsPromoteRequest": {
+            doc?: {
+                [key: string]: unknown;
+            };
+            provider_index?: number;
+        };
+        "server.GlobalSettingsPromoteResponse": {
+            doc?: {
+                [key: string]: unknown;
+            };
+            masked?: string[];
+            revision?: string;
+        };
+        "server.GlobalSettingsResponse": {
+            doc?: {
+                [key: string]: unknown;
+            };
+            exists?: boolean;
+            masked?: string[];
+            path?: string;
+            revision?: string;
+        };
+        "server.GlobalSettingsSaveResponse": {
+            path?: string;
+            requires_restart?: boolean;
+            revision?: string;
+            saved?: boolean;
+        };
+        "server.OpenAIChatRequest": {
+            max_completion_tokens?: number;
+            max_tokens?: number;
+            messages?: components["schemas"]["server.OpenAIMessage"][];
+            metadata?: {
+                [key: string]: unknown;
+            };
+            model?: string;
+            profile_id?: string;
+            profile_overrides?: {
+                [key: string]: unknown;
+            };
+            profile_version?: number;
+            response_format?: components["schemas"]["server.OpenAIResponseFormat"];
+            stream?: boolean;
+            temperature?: number;
+            top_p?: number;
+            user?: string;
+        };
+        "server.OpenAIFunctionCall": {
+            arguments?: string;
+            name?: string;
+        };
+        "server.OpenAIMessage": {
+            content?: number[];
+            function_call?: components["schemas"]["server.OpenAIFunctionCall"];
+            name?: string;
+            role?: string;
+            tool_call_id?: string;
+            tool_calls?: components["schemas"]["server.OpenAIToolCall"][];
+        };
+        "server.OpenAIResponseFormat": {
+            json_schema?: components["schemas"]["server.OpenAIResponseFormatSchema"];
+            type?: string;
+        };
+        "server.OpenAIResponseFormatSchema": {
+            description?: string;
+            name?: string;
+            schema?: number[];
+            strict?: boolean;
+        };
+        "server.openAITenantRuntimeMetadata": {
+            active?: boolean;
+            bytes?: number;
+            loaded_keys?: string[];
+            package_refs?: string[];
+            package_sha256?: string[];
+            resolved?: boolean;
+            runtime_refs?: string[];
+            skill_keys?: string[];
+            source?: string;
+            tenant_addendum?: boolean;
+            versions?: string[];
+        };
+        "server.OpenAIToolCall": {
+            function?: components["schemas"]["server.OpenAIFunctionCall"];
+            id?: string;
+            type?: string;
+        };
+        "server.QueryAttachment": {
+            attachment_id?: string;
+            inline_data?: string;
+            media_type?: string;
+            name?: string;
+            sha256?: string;
+            size_bytes?: number;
+            transcript?: string;
+            type?: string;
+            url?: string;
+        };
+        "server.QueryRequest": {
+            attachments?: components["schemas"]["server.QueryAttachment"][];
+            cwd?: string;
+            max_tokens?: number;
+            model?: string;
+            profile_blocked_override_count?: number;
+            profile_effective_hash?: string;
+            profile_id?: string;
+            profile_overrides?: {
+                [key: string]: unknown;
+            };
+            profile_requested_hash?: string;
+            profile_source?: string;
+            profile_surface?: string;
+            profile_version?: number;
+            prompt?: string;
+            prompt_mode?: string;
+            provider?: string;
+            session_key?: string;
+            system_prompt?: string;
+        };
+        "server.RuntimeBackgroundJob": {
+            created_at?: string;
+            cwd?: string;
+            enabled?: boolean;
+            id?: string;
+            interval_seconds?: number;
+            kind?: string;
+            last_error?: string;
+            last_run_at?: string;
+            log_path?: string;
+            log_tail?: string;
+            next_run_at?: string;
+            pid?: number;
+            prompt?: string;
+            run_count?: number;
+            schedule_id?: string;
+            spec?: string;
+            status?: string;
+            updated_at?: string;
+        };
+        "server.RuntimeTraceArtifact": {
+            configuration?: components["schemas"]["server.RuntimeTraceConfiguration"];
+            diagnostics?: components["schemas"]["server.RuntimeTraceDiagnostic"][];
+            quality?: components["schemas"]["server.RuntimeTraceQuality"];
+            run?: components["schemas"]["server.RuntimeTraceRun"];
+            schema_version?: string;
+            spans?: components["schemas"]["server.RuntimeTraceArtifactSpan"][];
+            summary?: components["schemas"]["server.RuntimeTraceSummary"];
+        };
+        "server.RuntimeTraceArtifactSpan": {
+            concurrency_class?: string;
+            duration_ms?: number;
+            id?: string;
+            model?: string;
+            name?: string;
+            parent_id?: string;
+            self_duration_ms?: number;
+            skill?: string;
+            start?: string;
+            status?: string;
+            tool_name?: string;
+            trace_id?: string;
+            turn_index?: number;
+            type?: string;
+        };
+        "server.RuntimeTraceConfiguration": {
+            effective_max_parallel_read_only_tools?: number;
+            read_only_tool_mode?: components["schemas"]["server.RuntimeTraceReadOnlyToolMode"];
+            requested_max_parallel_read_only_tools?: number;
+        };
+        "server.RuntimeTraceDiagnostic": {
+            code?: string;
+            count?: number;
+            estimated_savings_ms?: number;
+            fingerprint?: string;
+            message?: string;
+            severity?: string;
+            span_ids?: string[];
+            tool_name?: string;
+            turn_index?: number;
+        };
+        "server.RuntimeTraceQuality": {
+            completion_verified?: boolean;
+            failed_test_attempts?: number;
+            final_verification_passed?: boolean;
+            gate_blocks?: number;
+            recoveries?: number;
+            test_attempts?: number;
+            test_failure_recovered?: boolean;
+            tests_passed?: boolean;
+            tests_run?: boolean;
+            todo_writes?: number;
+            tool_errors?: number;
+        };
+        /** @enum {string} */
+        "server.RuntimeTraceReadOnlyToolMode": "serial" | "parallel";
+        "server.RuntimeTraceRun": {
+            agent?: string;
+            agent_version?: string;
+            build_info?: components["schemas"]["buildinfo.Info"];
+            duration_ms?: number;
+            run_id?: string;
+            session_id?: string;
+            started_at?: string;
+            status?: components["schemas"]["server.RuntimeTraceRunStatus"];
+        };
+        /** @enum {string} */
+        "server.RuntimeTraceRunStatus": "unknown" | "failed" | "completed";
+        "server.RuntimeTraceSummary": {
+            agent_tasks?: number;
+            cache_creation_tokens?: number;
+            cache_hit_ratio?: number;
+            cache_read_tokens?: number;
+            cache_summary?: string;
+            critical_path_ms?: number;
+            duration_ms?: number;
+            errors?: number;
+            files_changed?: number;
+            input_tokens?: number;
+            messages?: number;
+            model_wall_ms?: number;
+            output_tokens?: number;
+            parallel_savings_ms?: number;
+            permission_decisions?: number;
+            skills?: string[];
+            task_wall_ms?: number;
+            token_summary?: string;
+            tool_calls?: number;
+            tool_errors?: number;
+            tool_wall_ms?: number;
+            tool_work_ms?: number;
+            total_model_duration_ms?: number;
+            total_tokens?: number;
+            total_tool_duration_ms?: number;
+            turns?: number;
+            unattributed_ms?: number;
+        };
+        "server.sessionControlLinkDTO": {
+            created_at?: string;
+            id?: number;
+            relation_type?: string;
+            source?: string;
+            target?: string;
+        };
+        "server.sessionControlSessionDTO": {
+            active_run_id?: number;
+            channel?: components["schemas"]["sessioncontrol.SessionChannel"];
+            cwd?: string;
+            effort?: string;
+            id?: number;
+            links?: components["schemas"]["server.sessionControlLinkDTO"][];
+            model?: string;
+            permission_mode?: string;
+            prompt_mode?: string;
+            provider?: string;
+            read_only?: boolean;
+            ref?: string;
+            short_id?: string;
+            source?: components["schemas"]["sessioncontrol.Source"];
+            status?: components["schemas"]["sessioncontrol.SessionStatus"];
+            title?: string;
+            updated_at?: string;
+        };
+        "server.sessionConversationPage": {
+            cursor?: string;
+            events?: components["schemas"]["mysql.AgentTaskEvent"][];
+            has_more?: boolean;
+            schema_version?: string;
+            session?: components["schemas"]["server.sessionControlSessionDTO"];
+        };
+        "server.SettingsActivation": {
+            existing_runs?: string;
+            new_runs?: string;
+            requires_restart?: boolean;
+        };
+        "server.SettingsEnvironmentInfo": {
+            api_path?: string;
+            available?: boolean;
+            database?: string;
+            id?: string;
+            label?: string;
+            tenant_key?: string;
+            user_id?: string;
+        };
+        "server.SettingsEnvironmentsResponse": {
+            environments?: components["schemas"]["server.SettingsEnvironmentInfo"][];
+            global_settings_path?: string;
+            global_settings_shared?: boolean;
+        };
+        "server.SettingsFileResolved": {
+            doc?: {
+                [key: string]: unknown;
+            };
+            includes_process_environment?: boolean;
+            masked?: string[];
+            route_sources?: {
+                [key: string]: string;
+            };
+            sources?: string[];
+        };
+        "server.SettingsProcessSnapshot": {
+            active_run_config_known?: boolean;
+            available?: boolean;
+            doc?: {
+                [key: string]: unknown;
+            };
+            kind?: string;
+        };
+        "server.SettingsProviderTestRequest": {
+            doc?: {
+                [key: string]: unknown;
+            };
+            provider?: string;
+        };
+        "server.SettingsProviderTestResponse": {
+            kind?: string;
+            message?: string;
+            ok?: boolean;
+            status_code?: number;
+        };
+        "server.SettingsValidationResponse": {
+            issues?: components["schemas"]["config.SettingsIssue"][];
+            valid?: boolean;
+        };
+        "server.SwaggerAgentProfile": {
+            config_json?: string;
+            created_at?: string;
+            created_by_user_id?: number;
+            description?: string;
+            display_name?: string;
+            effective_hash?: string;
+            id?: number;
+            owner_key?: string;
+            owner_user_id?: number;
+            profile_key?: string;
+            profile_version?: number;
+            published_at?: string;
+            requested_hash?: string;
+            scope?: string;
+            source_kind?: string;
+            source_path?: string;
+            source_ref?: string;
+            status?: string;
+            tenant_id?: number;
+            updated_at?: string;
+            updated_by_user_id?: number;
+            validation_json?: string;
+        };
+        "server.SwaggerAgentProfileAssignment": {
+            assigned_by_user_id?: number;
+            created_at?: string;
+            id?: number;
+            profile_id?: number;
+            surface?: string;
+            tenant_id?: number;
+            updated_at?: string;
+            user_id?: number;
+        };
+        "server.SwaggerAgentProfileChannelBinding": {
+            account_id?: number;
+            archived_at?: string;
+            binding_key?: string;
+            created_at?: string;
+            created_by_user_id?: number;
+            id?: number;
+            profile_id?: number;
+            provider?: string;
+            status?: string;
+            tenant_id?: number;
+            updated_at?: string;
+        };
+        "server.SwaggerAgentProfileConversationCatalog": {
+            conversations?: components["schemas"]["mysql.AgentProfileConversationSummary"][];
+            message_count?: number;
+            profile?: components["schemas"]["mysql.AgentProfile"];
+            run_count?: number;
+            teams?: components["schemas"]["mysql.AgentProfileTeamLink"][];
+        };
+        "server.SwaggerAgentSlashCommand": {
+            /** @example Run a code review prompt */
+            description?: string;
+            /** @example review */
+            name?: string;
+            /** @example builtin */
+            source?: string;
+        };
+        "server.SwaggerAgentTaskAttachment": {
+            /** @example att_123 */
+            attachment_id?: string;
+            /** @example iVBORw0KGgo... */
+            inline_data?: string;
+            /** @example image/png */
+            media_type?: string;
+            /** @example screenshot.png */
+            name?: string;
+            /** @example abc123 */
+            sha256?: string;
+            /** @example 1024 */
+            size_bytes?: number;
+            /** @example image */
+            type?: string;
+            /** @example https://cdn.example.test/screenshot.png */
+            url?: string;
+        };
+        "server.SwaggerAgentTaskMessageRequest": {
+            attachments?: components["schemas"]["server.SwaggerAgentTaskAttachment"][];
+            content?: string;
+            from_agent?: string;
+            trace_id?: string;
+        };
+        "server.SwaggerAgentTaskMessageResponse": {
+            id?: number;
+            /** @example running */
+            status?: string;
+            task_id?: number;
+        };
+        "server.SwaggerAgentTaskPermissionRequest": {
+            allowed?: boolean;
+            destination?: string;
+            reason?: string;
+            rule?: string;
+        };
+        "server.SwaggerAgentTaskPermissionResponse": {
+            allowed?: boolean;
+            id?: number;
+            request_id?: string;
+        };
+        "server.SwaggerAgentTaskQuestionAnswerRequest": {
+            /** @example Architecture diagram */
+            answer?: string;
+        };
+        "server.SwaggerAgentTaskQuestionAnswerResponse": {
+            /** @example Architecture diagram */
+            answer?: string;
+            /** @example 44 */
+            id?: number;
+            /** @example question-uuid */
+            request_id?: string;
+            /** @example answered */
+            status?: string;
+        };
+        "server.SwaggerAgentTaskResponse": {
+            agent_name?: string;
+            description?: string;
+            finished_at?: string;
+            id?: number;
+            idempotency_key?: string;
+            metadata_json?: string;
+            model?: string;
+            parent_session_id?: number;
+            result_json?: string;
+            started_at?: string;
+            status?: string;
+            subagent_session_key?: string;
+            tenant_id?: number;
+            trace_id?: string;
+            user_id?: number;
+        };
+        "server.SwaggerAgentTeam": {
+            created_at?: string;
+            created_by_user_id?: number;
+            description?: string;
+            display_name?: string;
+            effective_hash?: string;
+            id?: number;
+            owner_key?: string;
+            owner_user_id?: number;
+            policy_json?: string;
+            published_at?: string;
+            requested_hash?: string;
+            schema_version?: number;
+            scope?: string;
+            status?: string;
+            team_key?: string;
+            team_version?: number;
+            tenant_id?: number;
+            updated_at?: string;
+            updated_by_user_id?: number;
+            validation_json?: string;
+        };
+        "server.SwaggerAgentTeamBinding": {
+            account_id?: number;
+            created_at?: string;
+            external_chat_id?: string;
+            external_thread_id?: string;
+            id?: number;
+            provider?: string;
+            status?: string;
+            team_id?: number;
+            tenant_id?: number;
+            trigger_policy?: string;
+            updated_at?: string;
+        };
+        "server.SwaggerAgentTeamMember": {
+            account_id?: number;
+            created_at?: string;
+            execution_override_json?: string;
+            id?: number;
+            member_key?: string;
+            profile_id?: number;
+            role?: string;
+            status?: string;
+            team_id?: number;
+            tenant_id?: number;
+            tool_policy_json?: string;
+            updated_at?: string;
+            workspace_policy_json?: string;
+        };
+        "server.SwaggerAgentTeamRun": {
+            cancel_requested_at?: string;
+            conversation_id?: number;
+            coordinator_member_key?: string;
+            created_at?: string;
+            error_code?: string;
+            error_message?: string;
+            finished_at?: string;
+            heartbeat_at?: string;
+            id?: string;
+            inbox_event_id?: number;
+            max_parallel_members?: number;
+            max_rounds?: number;
+            max_total_tokens?: number;
+            member_count?: number;
+            result_json?: string;
+            source_account_id?: number;
+            source_kind?: string;
+            started_at?: string;
+            status?: string;
+            team_effective_hash?: string;
+            team_id?: number;
+            tenant_id?: number;
+            updated_at?: string;
+            used_tokens?: number;
+            used_turns?: number;
+        };
+        "server.SwaggerAgentWorkspaceValidateRequest": {
+            /** @example /Users/example/GolandProjects/niuma */
+            cwd?: string;
+        };
+        "server.SwaggerAgentWorkspaceValidateResponse": {
+            cwd?: string;
+            exists?: boolean;
+            git_root?: string;
+            is_dir?: boolean;
+            is_git_repo?: boolean;
+            workspace_name?: string;
+        };
+        "server.SwaggerArchiveResponse": {
+            archived?: boolean;
+            id?: number;
+        };
+        "server.SwaggerAutoMemoryReviewRequest": {
+            action?: string;
+            memory_key?: string;
+        };
+        "server.SwaggerCancelAgentTaskResponse": {
+            cancelled?: boolean;
+            id?: number;
+            in_process?: boolean;
+        };
+        "server.SwaggerComputerOwnerResponse": {
+            data?: {
+                session_id?: number;
+                tenant_id?: number;
+                user_id?: number;
+            };
+        };
+        "server.SwaggerCreateAgentTaskRequest": {
+            agent_name?: string;
+            description?: string;
+            metadata_json?: number[];
+            model?: string;
+            parent_session_id?: number;
+            prompt?: string;
+            result_json?: number[];
+            /** @example running */
+            status?: string;
+            subagent_session_key?: string;
+            trace_id?: string;
+        };
+        "server.SwaggerCreateAgentTaskResponse": {
+            id?: number;
+        };
+        "server.SwaggerCreateGoalRequest": {
+            cwd?: string;
+            model?: string;
+            objective?: string;
+            session_id?: string;
+            token_budget?: number;
+            turn_budget?: number;
+        };
+        "server.SwaggerEffectiveAgentProfile": {
+            blocked_overrides?: components["schemas"]["agentprofile.BlockedOverride"][];
+            config?: components["schemas"]["agentprofile.ProfileDocument"];
+            effective_hash?: string;
+            profile?: components["schemas"]["agentprofile.Profile"];
+            profile_key?: string;
+            profile_version?: number;
+            requested?: components["schemas"]["agentprofile.ProfileDocument"];
+            requested_hash?: string;
+            source?: string;
+        };
+        "server.SwaggerError": {
+            error?: string;
+        };
+        "server.SwaggerGoalPlanResponse": {
+            acceptance_criteria?: components["schemas"]["goal.GoalCriterion"][];
+            created_at?: string;
+            current_step_id?: string;
+            dependencies?: components["schemas"]["goal.GoalDependency"][];
+            goal_id?: string;
+            risks?: components["schemas"]["goal.GoalRisk"][];
+            steps?: components["schemas"]["goal.GoalStep"][];
+            summary?: string;
+            updated_at?: string;
+            version?: number;
+        };
+        "server.SwaggerGoalResponse": {
+            created_at?: string;
+            cwd?: string;
+            error?: string;
+            id?: string;
+            input_tokens?: number;
+            last_blocker?: string;
+            last_checkpoint?: string;
+            last_next_action?: string;
+            last_reason?: string;
+            model?: string;
+            objective?: string;
+            output_tokens?: number;
+            provider?: string;
+            repeated_blocker_count?: number;
+            session_id?: string;
+            status?: components["schemas"]["goal.Status"];
+            token_budget?: number;
+            turn_budget?: number;
+            turns_used?: number;
+            updated_at?: string;
+        };
+        "server.SwaggerHealthResponse": {
+            ok?: boolean;
+            workspace?: string;
+        };
+        "server.SwaggerIDResponse": {
+            id?: number;
+        };
+        "server.SwaggerImageArtifactResponse": {
+            asset?: components["schemas"]["imagegen.Artifact"];
+        };
+        "server.SwaggerImageCapabilitiesResponse": {
+            data?: components["schemas"]["server.SwaggerImageCapabilityEntry"][];
+        };
+        "server.SwaggerImageCapabilityEntry": {
+            capability?: components["schemas"]["config.ImageModelCapability"];
+            image_protocol?: string;
+            label?: string;
+            model?: string;
+            provider?: string;
+        };
+        "server.SwaggerImageGenerateRequest": {
+            aspect_ratio?: string;
+            background?: string;
+            idempotency_key?: string;
+            model?: string;
+            output_format?: string;
+            prompt?: string;
+            provider?: string;
+            quality?: string;
+            resolution?: string;
+            size?: string;
+            watermark?: boolean;
+        };
+        "server.SwaggerImageGenerationListResponse": {
+            data?: components["schemas"]["imagegen.GenerationRecord"][];
+        };
+        "server.SwaggerKnowledgeSearchResponse": {
+            data?: components["schemas"]["mysql.KnowledgeChunk"][];
+        };
+        "server.SwaggerListAgentSlashCommandsResponse": {
+            data?: components["schemas"]["server.SwaggerAgentSlashCommand"][];
+        };
+        "server.SwaggerListAgentTaskEventsResponse": {
+            data?: components["schemas"]["mysql.AgentTaskEvent"][];
+        };
+        "server.SwaggerListAgentTasksResponse": {
+            data?: components["schemas"]["mysql.AgentTask"][];
+        };
+        "server.SwaggerListAuditLogsResponse": {
+            data?: components["schemas"]["mysql.AuditLog"][];
+            has_more?: boolean;
+            next_cursor?: string;
+        };
+        "server.SwaggerListDocumentsResponse": {
+            data?: components["schemas"]["mysql.Document"][];
+        };
+        "server.SwaggerListEffectiveSkillsResponse": {
+            data?: components["schemas"]["mysql.EffectiveSkill"][];
+        };
+        "server.SwaggerListGoalEventsResponse": {
+            data?: components["schemas"]["goal.Event"][];
+        };
+        "server.SwaggerListGoalEvidenceResponse": {
+            data?: components["schemas"]["goal.GoalEvidence"][];
+        };
+        "server.SwaggerListGoalsResponse": {
+            data?: components["schemas"]["goal.Goal"][];
+        };
+        "server.SwaggerListKnowledgeDocumentsResponse": {
+            data?: components["schemas"]["mysql.KnowledgeDocument"][];
+        };
+        "server.SwaggerListLocalSkillsResponse": {
+            data?: components["schemas"]["skills.Skill"][];
+            workspace?: string;
+        };
+        "server.SwaggerListMemoriesResponse": {
+            data?: components["schemas"]["mysql.Memory"][];
+        };
+        "server.SwaggerListMessagesResponse": {
+            data?: components["schemas"]["mysql.Message"][];
+        };
+        "server.SwaggerListSessionsResponse": {
+            data?: components["schemas"]["mysql.Session"][];
+        };
+        "server.SwaggerListSkillOverridesResponse": {
+            data?: components["schemas"]["mysql.SkillOverride"][];
+        };
+        "server.SwaggerListSkillsResponse": {
+            data?: components["schemas"]["mysql.Skill"][];
+        };
+        "server.SwaggerListTelemetryEventsResponse": {
+            data?: components["schemas"]["mysql.TelemetryEvent"][];
+            has_more?: boolean;
+            next_cursor?: string;
+        };
+        "server.SwaggerListTenantQuotaEventsResponse": {
+            data?: components["schemas"]["mysql.QuotaEvent"][];
+            has_more?: boolean;
+            next_cursor?: string;
+        };
+        "server.SwaggerListTenantsResponse": {
+            data?: components["schemas"]["mysql.Tenant"][];
+            has_more?: boolean;
+            next_cursor?: string;
+        };
+        "server.SwaggerListTenantUsageDailyResponse": {
+            data?: components["schemas"]["mysql.UsageDaily"][];
+            has_more?: boolean;
+            next_cursor?: string;
+        };
+        "server.SwaggerListTenantUsageLedgerResponse": {
+            data?: components["schemas"]["mysql.UsageLedger"][];
+            has_more?: boolean;
+            next_cursor?: string;
+        };
+        "server.SwaggerListUsersResponse": {
+            data?: components["schemas"]["mysql.User"][];
+            has_more?: boolean;
+            next_cursor?: string;
+        };
+        "server.SwaggerListWebAgentConversationsResponse": {
+            data?: components["schemas"]["server.SwaggerWebAgentConversation"][];
+        };
+        "server.SwaggerLivenessResponse": {
+            /** @example ok */
+            status?: string;
+        };
+        "server.SwaggerMemoryReviewRequest": {
+            action?: string;
+            memory_key?: string;
+        };
+        "server.SwaggerMobileAttachment": {
+            attachment_id?: string;
+            media_type?: string;
+            name?: string;
+            sha256?: string;
+            size_bytes?: number;
+            transcript?: string;
+            type?: string;
+            url?: string;
+        };
+        "server.SwaggerMobileAttachmentPresignRequest": {
+            media_type?: string;
+            name?: string;
+            sha256?: string;
+            size_bytes?: number;
+            type?: string;
+        };
+        "server.SwaggerMobileAttachmentPresignResponse": {
+            attachment?: components["schemas"]["server.SwaggerMobileAttachment"];
+            attachment_id?: string;
+            expires_at?: string;
+            headers?: {
+                [key: string]: string;
+            };
+            max_size_bytes?: number;
+            object_key?: string;
+            upload_url?: string;
+        };
+        "server.SwaggerMobileBranchRequest": {
+            session_key?: string;
+            title?: string;
+            until_message_id?: number;
+            until_turn?: number;
+        };
+        "server.SwaggerMobileBranchResponse": {
+            copied_messages?: number;
+            id?: number;
+            parent_session_id?: number;
+            session_key?: string;
+            until_turn?: number;
+        };
+        "server.SwaggerMobileCancelResponse": {
+            active?: boolean;
+            id?: number;
+            status?: string;
+        };
+        "server.SwaggerMobileLatestRecap": {
+            content?: string;
+            created_at?: string;
+            message_id?: number;
+            model?: string;
+            turn_index?: number;
+        };
+        "server.SwaggerMobileMessageListResponse": {
+            data?: components["schemas"]["mysql.Message"][];
+            has_more?: boolean;
+            next_cursor?: string;
+        };
+        "server.SwaggerMobileMessageStreamRequest": {
+            attachments?: components["schemas"]["server.SwaggerMobileAttachment"][];
+            content?: string;
+            message_key?: string;
+            model?: string;
+        };
+        "server.SwaggerMobileRegenerateRequest": {
+            message_key?: string;
+            model?: string;
+        };
+        "server.SwaggerMobileSessionDetailResponse": {
+            cwd?: string;
+            id?: number;
+            last_message_at?: string;
+            latest_recap?: components["schemas"]["server.SwaggerMobileLatestRecap"];
+            model?: string;
+            session_key?: string;
+            started_at?: string;
+            status?: string;
+            title?: string;
+        };
+        "server.SwaggerMobileSessionRequest": {
+            cwd?: string;
+            metadata_json?: string;
+            model?: string;
+            session_key?: string;
+            status?: string;
+            title?: string;
+        };
+        "server.SwaggerOpenAIChatResponse": {
+            choices?: components["schemas"]["server.SwaggerOpenAIChoice"][];
+            created?: number;
+            id?: string;
+            model?: string;
+            object?: string;
+            tenant_runtime?: components["schemas"]["server.SwaggerTenantRuntimeMetadata"];
+            usage?: components["schemas"]["server.SwaggerOpenAIUsage"];
+        };
+        "server.SwaggerOpenAIChoice": {
+            finish_reason?: string;
+            index?: number;
+            message?: components["schemas"]["server.SwaggerOpenAIMessage"];
+        };
+        "server.SwaggerOpenAIMessage": {
+            content?: string;
+            role?: string;
+        };
+        "server.SwaggerOpenAIModel": {
+            created?: number;
+            id?: string;
+            object?: string;
+            owned_by?: string;
+        };
+        "server.SwaggerOpenAIModelsResponse": {
+            data?: components["schemas"]["server.SwaggerOpenAIModel"][];
+            object?: string;
+        };
+        "server.SwaggerOpenAIUsage": {
+            completion_tokens?: number;
+            prompt_tokens?: number;
+            total_tokens?: number;
+        };
+        "server.SwaggerPendingInputRequest": {
+            attachments?: components["schemas"]["server.SwaggerAgentTaskAttachment"][];
+            /** @example web-123 */
+            client_input_id?: string;
+            content?: string;
+            direction?: string;
+        };
+        "server.SwaggerPendingInputResponse": {
+            data?: components["schemas"]["pendinginput.PendingInput"];
+            session_id?: number;
+            source_pending_input_id?: string;
+            task_id?: number;
+        };
+        "server.SwaggerPendingInputSettingsRequest": {
+            enabled?: boolean;
+        };
+        "server.SwaggerPromptDumpFilter": {
+            include_request?: boolean;
+            limit?: number;
+            session_id?: string;
+        };
+        "server.SwaggerPromptDumpRecordsResponse": {
+            exists?: boolean;
+            filter?: components["schemas"]["server.SwaggerPromptDumpFilter"];
+            generated_at?: string;
+            path?: string;
+            records?: components["schemas"]["server.SwaggerPromptDumpRecordSummary"][];
+            sessions?: components["schemas"]["server.SwaggerPromptDumpSessionSummary"][];
+            size_bytes?: number;
+            warning?: string;
+        };
+        "server.SwaggerPromptDumpRecordSummary": {
+            cache_control_blocks?: number;
+            cache_control_bytes?: number;
+            cache_diagnostics?: components["schemas"]["promptdump.CacheRecordDiagnostics"];
+            context_manifest?: number[];
+            line_number?: number;
+            max_tokens?: number;
+            message_count?: number;
+            messages_summary?: components["schemas"]["promptdump.MessageSummary"][];
+            model?: string;
+            prompt_mode?: string;
+            request?: number[];
+            request_redaction?: components["schemas"]["promptdump.RequestRedaction"];
+            scope?: string;
+            session_id?: string;
+            system_block_count?: number;
+            system_blocks_summary?: components["schemas"]["promptdump.SystemBlockSummary"][];
+            system_bytes?: number;
+            system_hash?: string;
+            timestamp?: string;
+            tool_count?: number;
+            tools_summary?: components["schemas"]["promptdump.ToolSummary"][];
+            turn?: number;
+        };
+        "server.SwaggerPromptDumpSessionSummary": {
+            cache_control_blocks?: number;
+            cache_diagnostics?: components["schemas"]["promptdump.CacheSessionDiagnostics"];
+            first_timestamp?: string;
+            last_timestamp?: string;
+            max_turn?: number;
+            models?: string[];
+            prompt_modes?: string[];
+            raw_request_records?: number;
+            records?: number;
+            scopes?: string[];
+            session_id?: string;
+            system_bytes_max?: number;
+            system_hashes?: string[];
+            tool_count_max?: number;
+            trace_summary?: components["schemas"]["server.traceSummary"];
+            trace_usage_available?: boolean;
+        };
+        "server.SwaggerPromptTemplate": {
+            category?: string;
+            content?: string;
+            created_at?: string;
+            id?: number;
+            pinned?: boolean;
+            sort_order?: number;
+            tenant_id?: number;
+            title?: string;
+            updated_at?: string;
+            user_id?: number;
+        };
+        "server.SwaggerPromptTemplateRequest": {
+            category?: string;
+            content?: string;
+            id?: number;
+            pinned?: boolean;
+            sort_order?: number;
+            title?: string;
+        };
+        "server.SwaggerProviderListResponse": {
+            data?: components["schemas"]["server.SwaggerProviderOption"][];
+            object?: string;
+        };
+        "server.SwaggerProviderOption": {
+            model?: string;
+            name?: string;
+        };
+        "server.SwaggerQueryResult": {
+            model?: string;
+            response?: string;
+            session_id?: string;
+            stop_reason?: string;
+            tool_calls?: components["schemas"]["query.ToolTrace"][];
+            transcript_path?: string;
+            turns?: number;
+            usage?: components["schemas"]["query.Usage"];
+        };
+        "server.SwaggerReadinessResponse": {
+            /** @description Checks 是依赖名到 "ok"/"unavailable" 的映射，键取决于服务端配置了哪些依赖。 */
+            checks?: {
+                [key: string]: string;
+            };
+            /** @example ok */
+            status?: string;
+        };
+        "server.SwaggerRunGoalResponse": {
+            decision?: components["schemas"]["goal.Decision"];
+            event?: components["schemas"]["goal.Event"];
+            goal?: components["schemas"]["goal.Goal"];
+        };
+        "server.SwaggerRuntimeBackgroundEventsResponse": {
+            data?: components["schemas"]["scheduler.Event"][];
+            next_offset?: number;
+        };
+        "server.SwaggerRuntimeBackgroundListResponse": {
+            data?: components["schemas"]["server.RuntimeBackgroundJob"][];
+        };
+        "server.SwaggerRuntimeBackgroundLogsResponse": {
+            id?: string;
+            log_tail?: string;
+            logs?: string;
+        };
+        "server.SwaggerRuntimeBackgroundRunsResponse": {
+            data?: components["schemas"]["scheduler.RunRecord"][];
+        };
+        "server.SwaggerRuntimeBackgroundStopResponse": {
+            disabled?: boolean;
+            id?: string;
+            schedule_id?: string;
+            stopped?: boolean;
+        };
+        "server.SwaggerRuntimeLoopRequest": {
+            cwd?: string;
+            interval?: string;
+            interval_seconds?: number;
+            max_tokens?: number;
+            max_turns?: number;
+            model?: string;
+            prompt?: string;
+        };
+        "server.SwaggerSessionControlAttachment": {
+            /** @example att_123 */
+            attachment_id?: string;
+            /** @example iVBORw0KGgo... */
+            inline_data?: string;
+            /** @example image/png */
+            media_type?: string;
+            /** @example screenshot.png */
+            name?: string;
+            /** @example abc123 */
+            sha256?: string;
+            /** @example 1024 */
+            size_bytes?: number;
+            /** @example image */
+            type?: string;
+            /** @example https://cdn.example.test/screenshot.png */
+            url?: string;
+        };
+        "server.SwaggerSessionControlAttachRequest": {
+            /** @example handoff */
+            relation_type?: string;
+            /**
+             * @example [
+             *       "tenant:research",
+             *       "local:review"
+             *     ]
+             */
+            sources?: string[];
+            /** @example 16384 */
+            target_context_window_tokens?: number;
+            /** @example 41 */
+            target_task_id?: number;
+        };
+        "server.SwaggerSessionControlCreateRequest": {
+            /** @example /workspace/project */
+            cwd?: string;
+            /** @example high */
+            effort?: string;
+            /** @example Start by reviewing the rollout plan. */
+            initial_text?: string;
+            /** @example claude-sonnet-4-5 */
+            model?: string;
+            /** @example ask */
+            permission_mode?: string;
+            /** @enum {string} */
+            prompt_mode?: "code" | "chat";
+            provider?: string;
+            /** @example support-case-42 */
+            session_key?: string;
+            /** @example Support case 42 */
+            title?: string;
+        };
+        "server.SwaggerSessionControlError": {
+            /** @example invalid_state */
+            code?: string;
+            /** @example session is not available in this state */
+            error?: string;
+        };
+        "server.SwaggerSessionControlHandoff": {
+            estimated_tokens?: number;
+            replayed?: boolean;
+            source_results?: components["schemas"]["server.SwaggerSessionControlHandoffSource"][];
+            stale?: boolean;
+            target_task_id?: number;
+        };
+        "server.SwaggerSessionControlHandoffSource": {
+            candidate_removals?: components["schemas"]["sessioncontrol.HandoffCandidateRemoval"][];
+            cursor_prefix?: string;
+            error_code?: string;
+            estimated_tokens?: number;
+            event_id?: number;
+            link_id?: number;
+            package_id?: string;
+            package_sha256_prefix?: string;
+            source?: string;
+            success?: boolean;
+        };
+        "server.SwaggerSessionControlLink": {
+            created_at?: string;
+            id?: number;
+            /** @example handoff */
+            relation_type?: string;
+            /** @example local:source */
+            source?: string;
+            /** @example tenant:target */
+            target?: string;
+        };
+        "server.SwaggerSessionControlMonitorRequest": {
+            /**
+             * @example feishu
+             * @enum {string}
+             */
+            channel: "feishu";
+            /** @example 300 */
+            interval_seconds: number;
+            /**
+             * @example [
+             *       "tenant:research"
+             *     ]
+             */
+            sources: string[];
+        };
+        "server.SwaggerSessionControlOperation": {
+            audit_id?: number;
+            error_code?: string;
+            handoff?: components["schemas"]["server.SwaggerSessionControlHandoff"];
+            link_ids?: number[];
+            operation_id?: string;
+            replayed?: boolean;
+            run_id?: number;
+            schedule_id?: string;
+            session?: components["schemas"]["server.SwaggerSessionControlSession"];
+        };
+        "server.SwaggerSessionControlOperationResponse": {
+            data?: components["schemas"]["server.SwaggerSessionControlOperation"];
+        };
+        "server.SwaggerSessionControlSendRequest": {
+            attachments?: components["schemas"]["server.SwaggerSessionControlAttachment"][];
+            /** @example Continue with the verified plan. */
+            content?: string;
+            /** @example high */
+            effort?: string;
+            /** @example claude-sonnet-4-5 */
+            model?: string;
+            /** @example ask */
+            permission_mode?: string;
+            /** @enum {string} */
+            prompt_mode?: "code" | "chat";
+            provider?: string;
+            /**
+             * @example [
+             *       "tenant:research"
+             *     ]
+             */
+            source_refs?: string[];
+        };
+        "server.SwaggerSessionControlSession": {
+            active_run_id?: number;
+            cwd?: string;
+            effort?: string;
+            id?: number;
+            links?: components["schemas"]["server.SwaggerSessionControlLink"][];
+            model?: string;
+            permission_mode?: string;
+            /** @enum {string} */
+            prompt_mode?: "code" | "chat";
+            provider?: string;
+            read_only?: boolean;
+            /** @example tenant:support-case-42 */
+            ref?: string;
+            /** @example support-case */
+            short_id?: string;
+            /**
+             * @example tenant
+             * @enum {unknown}
+             */
+            source?: "tenant" | "local";
+            /**
+             * @example running
+             * @enum {unknown}
+             */
+            status?: "idle" | "queued" | "running" | "waiting_permission" | "waiting_input" | "blocked" | "completed" | "failed" | "stopped" | "archived";
+            title?: string;
+            updated_at?: string;
+        };
+        "server.SwaggerSessionControlSessionListResponse": {
+            data?: components["schemas"]["server.SwaggerSessionControlSession"][];
+        };
+        "server.SwaggerSessionControlSessionResponse": {
+            data?: components["schemas"]["server.SwaggerSessionControlSession"];
+        };
+        "server.SwaggerSessionControlStateEvent": {
+            /** @example 81 */
+            cursor?: string;
+            operation_id?: string;
+            run_id?: number;
+            /** @example niuma.session-control-state.v1 */
+            schema_version?: string;
+            /** @example tenant:support-case-42 */
+            session_ref?: string;
+            /** @example running */
+            status?: components["schemas"]["sessioncontrol.SessionStatus"];
+            updated_at?: string;
+        };
+        "server.SwaggerSessionControlStopRequest": Record<string, never>;
+        "server.SwaggerSessionConversationResponse": {
+            data?: components["schemas"]["server.sessionConversationPage"];
+        };
+        "server.SwaggerSessionConversationSubscribe": {
+            sessions?: components["schemas"]["server.conversationSubscription"][];
+        };
+        "server.SwaggerSessionIDResponse": {
+            id?: number;
+            session_key?: string;
+        };
+        "server.SwaggerSkillPackageVerifyRequest": {
+            expected_package_sha256?: string;
+            expected_version?: number;
+            model?: string;
+            prompt?: string;
+            schema_name?: string;
+            skill_key?: string;
+        };
+        "server.SwaggerSkillPackageVerifyResponse": {
+            error?: string;
+            ok?: boolean;
+            tenant_runtime?: components["schemas"]["server.openAITenantRuntimeMetadata"];
+            trace_id?: string;
+        };
+        "server.SwaggerSkillRollbackRequest": {
+            skill_key?: string;
+            target_version?: number;
+            version?: number;
+        };
+        "server.SwaggerSkillRollbackResponse": {
+            from_version?: number;
+            id?: number;
+            skill_key?: string;
+            version?: number;
+        };
+        "server.SwaggerSnapshotResponse": {
+            data?: {
+                [key: string]: unknown;
+            };
+        };
+        "server.SwaggerSSEEvent": {
+            delta?: string;
+            error?: string;
+            message_id?: number;
+            message_key?: string;
+            session_id?: number;
+            status?: string;
+            type?: string;
+        };
+        "server.SwaggerTelemetryEventRequest": {
+            category?: string;
+            duration_ms?: number;
+            error?: string;
+            input_tokens?: number;
+            model?: string;
+            name?: string;
+            output_tokens?: number;
+            parent_span_id?: string;
+            properties?: {
+                [key: string]: unknown;
+            };
+            resource_id?: string;
+            resource_type?: string;
+            schema_version?: string;
+            session_id?: number;
+            source?: string;
+            span_id?: string;
+            started_at?: string;
+            status?: string;
+            tool_name?: string;
+            turn_index?: number;
+        };
+        "server.SwaggerTenantContext": {
+            tenant?: components["schemas"]["mysql.Tenant"];
+            tenant_id?: number;
+            user_id?: number;
+            user_key?: string;
+        };
+        "server.SwaggerTenantDocumentRequest": {
+            active?: boolean;
+            content_json?: string;
+            content_md?: string;
+            doc_type?: string;
+            title?: string;
+            version?: number;
+        };
+        "server.SwaggerTenantKnowledgeDocumentRequest": {
+            content?: string;
+            metadata_json?: string;
+            source_type?: string;
+            status?: string;
+            title?: string;
+        };
+        "server.SwaggerTenantKnowledgeSearchRequest": {
+            limit?: number;
+            query?: string;
+        };
+        "server.SwaggerTenantMemoryRequest": {
+            category?: string;
+            content?: string;
+            embedding_ref?: string;
+            importance?: number;
+            memory_key?: string;
+            metadata_json?: string;
+            source?: string;
+        };
+        "server.SwaggerTenantMessageRequest": {
+            content?: string;
+            content_json?: string;
+            input_tokens?: number;
+            is_error?: boolean;
+            model?: string;
+            output_tokens?: number;
+            role?: string;
+            session_id?: number;
+            tool_id?: string;
+            tool_name?: string;
+            trace_id?: string;
+            turn_index?: number;
+        };
+        "server.SwaggerTenantProfile": {
+            created_at?: string;
+            generated_from_session_id?: number;
+            id?: number;
+            profile_json?: string;
+            profile_version?: number;
+            summary?: string;
+        };
+        "server.SwaggerTenantProfileRequest": {
+            generated_from_session_id?: number;
+            profile_json?: string;
+            profile_version?: number;
+            summary?: string;
+        };
+        "server.SwaggerTenantQuotaConfig": {
+            created_at?: string;
+            daily_message_limit?: number;
+            daily_token_limit?: number;
+            max_concurrent_requests?: number;
+            qps_limit?: number;
+            quota_enabled?: boolean;
+            reserve_output_tokens?: number;
+            status?: string;
+            tenant_id?: number;
+            timezone?: string;
+            updated_at?: string;
+            updated_by_user_id?: number;
+        };
+        "server.SwaggerTenantQuotaConfigRequest": {
+            daily_message_limit?: number;
+            daily_token_limit?: number;
+            max_concurrent_requests?: number;
+            qps_limit?: number;
+            quota_enabled?: boolean;
+            reserve_output_tokens?: number;
+            status?: string;
+            timezone?: string;
+        };
+        "server.SwaggerTenantRequest": {
+            name?: string;
+            settings_json?: string;
+            status?: string;
+            tenant_key?: string;
+        };
+        "server.SwaggerTenantRuntimeMetadata": {
+            active?: boolean;
+            bytes?: number;
+            loaded_keys?: string[];
+            package_refs?: string[];
+            package_sha256?: string[];
+            resolved?: boolean;
+            runtime_refs?: string[];
+            skill_keys?: string[];
+            source?: string;
+            tenant_addendum?: boolean;
+            versions?: string[];
+        };
+        "server.SwaggerTenantSession": {
+            cwd?: string;
+            id?: number;
+            last_message_at?: string;
+            model?: string;
+            session_key?: string;
+            started_at?: string;
+            status?: string;
+            title?: string;
+        };
+        "server.SwaggerTenantSessionRequest": {
+            cwd?: string;
+            metadata_json?: string;
+            model?: string;
+            session_key?: string;
+            status?: string;
+            title?: string;
+        };
+        "server.SwaggerTenantSessionTimelineResponse": {
+            agent_task_events?: components["schemas"]["mysql.AgentTaskEvent"][];
+            agent_tasks?: components["schemas"]["mysql.AgentTask"][];
+            audit_logs?: components["schemas"]["mysql.AuditLog"][];
+            messages?: components["schemas"]["mysql.Message"][];
+            session?: components["schemas"]["mysql.Session"];
+            telemetry_events?: components["schemas"]["mysql.TelemetryEvent"][];
+            timeline?: components["schemas"]["server.SwaggerTenantTimelineItem"][];
+            trace_ids?: string[];
+        };
+        "server.SwaggerTenantSkillOverrideRequest": {
+            config_json?: string;
+            enabled?: boolean;
+            skill_key?: string;
+            version?: number;
+        };
+        "server.SwaggerTenantSkillPackageRequest": {
+            content_base64?: string;
+            description?: string;
+            enabled?: boolean;
+            name?: string;
+            skill_key?: string;
+            source_path?: string;
+            store_root?: string;
+            version?: number;
+        };
+        "server.SwaggerTenantSkillPackageResult": {
+            description?: string;
+            enabled?: boolean;
+            id?: number;
+            manifest?: components["schemas"]["tenantpkg.Manifest"];
+            manifest_ref?: string;
+            name?: string;
+            package_ref?: string;
             package_sha256?: string;
-            render?: components["schemas"]["github_com_konglong87_niuma_internal_tenantpkg.RenderInfo"];
+            runtime_md?: string;
+            runtime_ref?: string;
+            skill_key?: string;
+            version?: number;
+        };
+        "server.SwaggerTenantSkillRequest": {
+            config_json?: string;
+            content_md?: string;
+            description?: string;
+            enabled?: boolean;
+            manifest_json?: string;
+            name?: string;
+            package_ref?: string;
+            package_sha256?: string;
+            runtime_ref?: string;
+            skill_key?: string;
+            version?: number;
+        };
+        "server.SwaggerTenantTimelineItem": {
+            agent_task?: components["schemas"]["mysql.AgentTask"];
+            agent_task_event?: components["schemas"]["mysql.AgentTaskEvent"];
+            audit_log?: components["schemas"]["mysql.AuditLog"];
+            message?: components["schemas"]["mysql.Message"];
+            telemetry_event?: components["schemas"]["mysql.TelemetryEvent"];
+            time?: string;
+            trace_id?: string;
+            type?: string;
+        };
+        "server.SwaggerTenantUser": {
+            display_name?: string;
+            email?: string;
+            id?: number;
+            metadata_json?: string;
+            role?: string;
+            status?: string;
+            tenant_id?: number;
+            updated_at?: string;
+            user_info_json?: string;
+            user_key?: string;
+        };
+        "server.SwaggerTenantUserRequest": {
+            display_name?: string;
+            email?: string;
+            metadata_json?: string;
+            role?: string;
+            status?: string;
+            user_info_json?: string;
+            user_key?: string;
+        };
+        "server.SwaggerTraceDetailResponse": {
+            diagnostics?: components["schemas"]["server.traceDiagnostic"][];
+            events?: components["schemas"]["server.traceEvent"][];
+            generated_at?: string;
+            latest_recap?: components["schemas"]["server.traceRecap"];
+            quality?: components["schemas"]["server.traceQuality"];
+            raw?: unknown;
+            recaps?: components["schemas"]["server.traceRecap"][];
+            rewind?: components["schemas"]["server.traceRewind"];
+            session_id?: string;
+            source?: string;
+            span_tree?: components["schemas"]["server.traceTree"][];
+            spans?: components["schemas"]["server.traceSpan"][];
+            summary?: components["schemas"]["server.traceSummary"];
+            title?: string;
+            trace_ids?: string[];
+        };
+        "server.SwaggerTraceSessionsResponse": {
+            data?: components["schemas"]["server.traceSessionSummary"][];
+            source?: string;
+        };
+        "server.SwaggerUpdateAgentTaskRequest": {
+            metadata_json?: number[];
+            result_json?: number[];
+            /** @example completed */
+            status?: string;
+        };
+        "server.SwaggerUpdateAgentTaskResponse": {
+            id?: number;
+            updated?: boolean;
+        };
+        "server.SwaggerUpdateGoalRequest": {
+            cwd?: string;
+            error?: string;
+            input_tokens?: number;
+            last_blocker?: string;
+            last_checkpoint?: string;
+            last_next_action?: string;
+            last_reason?: string;
+            model?: string;
+            objective?: string;
+            output_tokens?: number;
+            repeated_blocker_count?: number;
+            session_id?: string;
+            /** @example blocked */
+            status?: components["schemas"]["goal.Status"];
+            token_budget?: number;
+            turn_budget?: number;
+            turns_used?: number;
+        };
+        "server.SwaggerWebAgentConversation": {
+            cwd?: string;
+            id?: string;
+            latest_task?: components["schemas"]["mysql.AgentTask"];
+            session?: components["schemas"]["mysql.Session"];
+            session_id?: number;
+            session_key?: string;
+            status?: string;
+            tasks?: components["schemas"]["mysql.AgentTask"][];
+            title?: string;
+            updated_at?: string;
+            workspace_name?: string;
+        };
+        "server.SwaggerWebAgentConversationDetail": {
+            cwd?: string;
+            events?: components["schemas"]["mysql.AgentTaskEvent"][];
+            id?: string;
+            latest_task?: components["schemas"]["mysql.AgentTask"];
+            messages?: components["schemas"]["mysql.Message"][];
+            session?: components["schemas"]["mysql.Session"];
+            session_id?: number;
+            session_key?: string;
+            status?: string;
+            tasks?: components["schemas"]["mysql.AgentTask"][];
+            title?: string;
+            updated_at?: string;
+            usage?: components["schemas"]["server.SwaggerWebAgentConversationUsage"];
+            workspace_name?: string;
+        };
+        "server.SwaggerWebAgentConversationUsage": {
+            cancelled_runs?: number;
+            completed_runs?: number;
+            context_length?: number;
+            context_percent?: number;
+            failed_runs?: number;
+            input_tokens?: number;
+            output_tokens?: number;
+            running_runs?: number;
+            timeout_runs?: number;
+            tool_calls?: number;
+            total_duration_ms?: number;
+            total_runs?: number;
+            total_tokens?: number;
+        };
+        "server.SwaggerWorkflowBuiltins": {
+            items?: components["schemas"]["workflowapp.Builtin"][];
+        };
+        "server.SwaggerWorkflowEvents": {
+            events?: components["schemas"]["workflow.Event"][];
+            has_more?: boolean;
+            last_sequence?: number;
+        };
+        "server.SwaggerWorkflowRecovery": {
+            revision?: number;
+        };
+        "server.SwaggerWorkflowRun": {
+            replayed?: boolean;
+            run?: components["schemas"]["workflow.Run"];
+        };
+        "server.SwaggerWorkflowRuns": {
+            items?: components["schemas"]["workflow.Run"][];
+        };
+        "server.SwaggerWorkflowTemplate": {
+            template?: components["schemas"]["workflowapp.Template"];
+        };
+        "server.SwaggerWorkflowTemplates": {
+            items?: components["schemas"]["workflowapp.Template"][];
+        };
+        "server.SwaggerWorkflowTypes": {
+            execution_kinds?: components["schemas"]["agentprofile.ExecutionKindDescriptor"][];
+            roles?: components["schemas"]["agentprofile.RoleTypeDescriptor"][];
+        };
+        "server.traceDiagnostic": {
+            code?: string;
+            count?: number;
+            estimated_savings_ms?: number;
+            fingerprint?: string;
+            message?: string;
+            severity?: string;
+            span_ids?: string[];
+            tool_name?: string;
+            turn_index?: number;
+        };
+        "server.traceEvent": {
+            content?: string;
+            duration_ms?: number;
+            id?: string;
+            input?: string;
+            is_error?: boolean;
+            model?: string;
+            name?: string;
+            output?: string;
+            parent_span_id?: string;
+            properties?: {
+                [key: string]: unknown;
+            };
+            raw?: unknown;
+            role?: string;
+            skill?: string;
+            span_id?: string;
+            started_at?: string;
+            status?: string;
+            time?: string;
+            tool_id?: string;
+            tool_name?: string;
+            trace_id?: string;
+            turn_index?: number;
+            type?: string;
+        };
+        "server.traceQuality": {
+            completion_verified?: boolean;
+            failed_test_attempts?: number;
+            final_verification_passed?: boolean;
+            gate_blocks?: number;
+            recoveries?: number;
+            test_attempts?: number;
+            test_failure_recovered?: boolean;
+            tests_passed?: boolean;
+            tests_run?: boolean;
+            todo_writes?: number;
+            tool_errors?: number;
+        };
+        "server.traceRecap": {
+            content?: string;
+            duration_ms?: number;
+            id?: string;
+            model?: string;
+            properties?: {
+                [key: string]: unknown;
+            };
+            source?: string;
+            status?: string;
+            summarizes_entry_id?: string;
+            time?: string;
+        };
+        "server.traceRewind": {
+            checkpoints?: components["schemas"]["server.traceRewindCheckpoint"][];
+            rewinds?: components["schemas"]["server.traceRewindEvent"][];
+        };
+        "server.traceRewindCheckpoint": {
+            events_after?: number;
+            file_changes?: number;
+            id?: string;
+            index?: number;
+            message?: string;
+            message_id?: string;
+            name?: string;
+            next_index?: number;
+            time?: string;
+        };
+        "server.traceRewindEvent": {
+            content?: string;
+            id?: string;
+            index?: number;
+            name?: string;
+            time?: string;
+        };
+        "server.traceSessionSummary": {
+            cwd?: string;
+            message_hint?: string;
+            model?: string;
+            path?: string;
+            session_id?: string;
+            source?: string;
+            started_at?: string;
+            status?: string;
+            title?: string;
+            updated_at?: string;
+        };
+        "server.traceSpan": {
+            concurrency_class?: string;
+            depth?: number;
+            duration_ms?: number;
+            end?: string;
+            error?: string;
+            id?: string;
+            model?: string;
+            name?: string;
+            parent_id?: string;
+            self_duration_ms?: number;
+            sequence?: number;
+            skill?: string;
+            start?: string;
+            status?: string;
+            tool_name?: string;
+            trace_id?: string;
+            turn_index?: number;
+            type?: string;
+        };
+        "server.traceSummary": {
+            agent_tasks?: number;
+            cache_creation_tokens?: number;
+            cache_hit_ratio?: number;
+            cache_read_tokens?: number;
+            cache_summary?: string;
+            critical_path_ms?: number;
+            duration_ms?: number;
+            errors?: number;
+            files_changed?: number;
+            input_tokens?: number;
+            messages?: number;
+            model_wall_ms?: number;
+            output_tokens?: number;
+            parallel_savings_ms?: number;
+            permission_decisions?: number;
+            skills?: string[];
+            task_wall_ms?: number;
+            token_summary?: string;
+            tool_calls?: number;
+            tool_errors?: number;
+            tool_wall_ms?: number;
+            tool_work_ms?: number;
+            total_model_duration_ms?: number;
+            total_tokens?: number;
+            total_tool_duration_ms?: number;
+            turns?: number;
+            unattributed_ms?: number;
+        };
+        "server.traceTree": {
+            children?: components["schemas"]["server.traceTree"][];
+            span?: components["schemas"]["server.traceSpan"];
+        };
+        "sessioncontrol.HandoffCandidateRemoval": {
+            category?: string;
+            estimated_tokens?: number;
+        };
+        "sessioncontrol.SessionChannel": {
+            account_key?: string;
+            provider?: string;
+        };
+        /** @enum {string} */
+        "sessioncontrol.SessionStatus": "idle" | "queued" | "running" | "waiting_permission" | "waiting_input" | "blocked" | "completed" | "failed" | "stopped" | "archived";
+        /** @enum {string} */
+        "sessioncontrol.Source": "tenant" | "local";
+        "skills.Skill": {
+            agent?: string;
+            allowed_tools?: string[];
+            argument_hint?: string;
+            arguments?: string[];
+            content?: string;
+            description?: string;
+            disable_model_invocation?: boolean;
+            effort?: string;
+            execution_context?: string;
+            hooks?: {
+                [key: string]: components["schemas"]["config.HookCommand"][];
+            };
+            legacy?: boolean;
+            local_name?: string;
+            model?: string;
+            name?: string;
+            package_ref?: string;
+            package_sha256?: string;
+            path?: string;
+            paths?: string[];
+            plugin?: string;
+            root?: string;
+            runtime_ref?: string;
+            source?: components["schemas"]["skills.Source"];
+            user_invocable?: boolean;
+            version?: string;
+            when_to_use?: string;
+        };
+        /** @enum {string} */
+        "skills.Source": "user" | "project" | "plugin" | "bundled" | "marketplace" | "mcp" | "tenant";
+        "tenantpkg.Manifest": {
+            files?: components["schemas"]["tenantpkg.ManifestFile"][];
+            package_sha256?: string;
+            render?: components["schemas"]["tenantpkg.RenderInfo"];
             schema_version?: string;
             skill_key?: string;
         };
-        "github_com_konglong87_niuma_internal_tenantpkg.ManifestFile": {
+        "tenantpkg.ManifestFile": {
             path?: string;
             render_order?: number;
             runtime?: boolean;
             sha256?: string;
             size?: number;
         };
-        "github_com_konglong87_niuma_internal_tenantpkg.RenderInfo": {
+        "tenantpkg.RenderInfo": {
             entrypoint?: string;
             excluded_prefixes?: string[];
             runtime_excludes?: string[];
             runtime_files?: string[];
             runtime_includes?: string[];
         };
-        "github_com_konglong87_niuma_internal_tools.FileChange": {
+        "tools.FileChange": {
             after?: string;
             after_exists?: boolean;
             after_is_dir?: boolean;
@@ -13152,7 +14776,7 @@ export interface components {
              *     xattr) restored best-effort after content. A nil pointer means no metadata
              *     was captured; individual capabilities carry their own "known" flags.
              */
-            before_metadata?: components["schemas"]["github_com_konglong87_niuma_internal_files.Metadata"];
+            before_metadata?: components["schemas"]["files.Metadata"];
             before_mode?: number;
             before_mode_known?: boolean;
             /**
@@ -13186,1867 +14810,177 @@ export interface components {
              */
             source?: string;
         };
-        "internal_server.conversationSubscription": {
-            cursor?: string;
-            ref?: string;
-        };
-        "internal_server.EffectiveSettingsResponse": {
-            activation?: components["schemas"]["internal_server.SettingsActivation"];
-            file_resolved?: components["schemas"]["internal_server.SettingsFileResolved"];
-            global_path?: string;
-            process_snapshot?: components["schemas"]["internal_server.SettingsProcessSnapshot"];
-            scope?: string;
-            workspace?: string;
-        };
-        "internal_server.GlobalSettingsPromoteRequest": {
-            doc?: {
-                [key: string]: unknown;
-            };
-            provider_index?: number;
-        };
-        "internal_server.GlobalSettingsPromoteResponse": {
-            doc?: {
-                [key: string]: unknown;
-            };
-            masked?: string[];
-            revision?: string;
-        };
-        "internal_server.GlobalSettingsResponse": {
-            doc?: {
-                [key: string]: unknown;
-            };
-            exists?: boolean;
-            masked?: string[];
-            path?: string;
-            revision?: string;
-        };
-        "internal_server.GlobalSettingsSaveResponse": {
-            path?: string;
-            requires_restart?: boolean;
-            revision?: string;
-            saved?: boolean;
-        };
-        "internal_server.OpenAIChatRequest": {
-            max_completion_tokens?: number;
-            max_tokens?: number;
-            messages?: components["schemas"]["internal_server.OpenAIMessage"][];
-            metadata?: {
-                [key: string]: unknown;
-            };
+        "workflow.Agent": {
+            effort?: string;
+            kind?: string;
+            max_output_tokens?: number;
             model?: string;
-            profile_id?: string;
-            profile_overrides?: {
-                [key: string]: unknown;
-            };
+            name?: string;
+            profile_hash?: string;
+            profile_id?: number;
+            profile_key?: string;
             profile_version?: number;
-            response_format?: components["schemas"]["internal_server.OpenAIResponseFormat"];
-            stream?: boolean;
-            temperature?: number;
-            top_p?: number;
-            user?: string;
-        };
-        "internal_server.OpenAIFunctionCall": {
-            arguments?: string;
-            name?: string;
-        };
-        "internal_server.OpenAIMessage": {
-            content?: number[];
-            function_call?: components["schemas"]["internal_server.OpenAIFunctionCall"];
-            name?: string;
-            role?: string;
-            tool_call_id?: string;
-            tool_calls?: components["schemas"]["internal_server.OpenAIToolCall"][];
-        };
-        "internal_server.OpenAIResponseFormat": {
-            json_schema?: components["schemas"]["internal_server.OpenAIResponseFormatSchema"];
-            type?: string;
-        };
-        "internal_server.OpenAIResponseFormatSchema": {
-            description?: string;
-            name?: string;
-            schema?: number[];
-            strict?: boolean;
-        };
-        "internal_server.openAITenantRuntimeMetadata": {
-            active?: boolean;
-            bytes?: number;
-            loaded_keys?: string[];
-            package_refs?: string[];
-            package_sha256?: string[];
-            resolved?: boolean;
-            runtime_refs?: string[];
-            skill_keys?: string[];
-            source?: string;
-            tenant_addendum?: boolean;
-            versions?: string[];
-        };
-        "internal_server.OpenAIToolCall": {
-            function?: components["schemas"]["internal_server.OpenAIFunctionCall"];
-            id?: string;
-            type?: string;
-        };
-        "internal_server.QueryAttachment": {
-            attachment_id?: string;
-            inline_data?: string;
-            media_type?: string;
-            name?: string;
-            sha256?: string;
-            size_bytes?: number;
-            transcript?: string;
-            type?: string;
-            url?: string;
-        };
-        "internal_server.QueryRequest": {
-            attachments?: components["schemas"]["internal_server.QueryAttachment"][];
-            cwd?: string;
-            max_tokens?: number;
-            model?: string;
-            profile_blocked_override_count?: number;
-            profile_effective_hash?: string;
-            profile_id?: string;
-            profile_overrides?: {
-                [key: string]: unknown;
-            };
-            profile_requested_hash?: string;
-            profile_source?: string;
-            profile_surface?: string;
-            profile_version?: number;
-            prompt?: string;
-            prompt_mode?: string;
             provider?: string;
-            session_key?: string;
+            ref?: string;
+            role_type?: string;
+            route_hash?: string;
             system_prompt?: string;
+            tools?: string[];
         };
-        "internal_server.RuntimeBackgroundJob": {
-            created_at?: string;
-            cwd?: string;
-            enabled?: boolean;
-            id?: string;
-            interval_seconds?: number;
-            kind?: string;
-            last_error?: string;
-            last_run_at?: string;
-            log_path?: string;
-            log_tail?: string;
-            next_run_at?: string;
-            pid?: number;
-            prompt?: string;
-            run_count?: number;
-            schedule_id?: string;
-            spec?: string;
-            status?: string;
-            updated_at?: string;
-        };
-        "internal_server.RuntimeTraceArtifact": {
-            configuration?: components["schemas"]["internal_server.RuntimeTraceConfiguration"];
-            diagnostics?: components["schemas"]["internal_server.RuntimeTraceDiagnostic"][];
-            quality?: components["schemas"]["internal_server.RuntimeTraceQuality"];
-            run?: components["schemas"]["internal_server.RuntimeTraceRun"];
-            schema_version?: string;
-            spans?: components["schemas"]["internal_server.RuntimeTraceArtifactSpan"][];
-            summary?: components["schemas"]["internal_server.RuntimeTraceSummary"];
-        };
-        "internal_server.RuntimeTraceArtifactSpan": {
-            concurrency_class?: string;
-            duration_ms?: number;
-            id?: string;
-            model?: string;
-            name?: string;
-            parent_id?: string;
-            self_duration_ms?: number;
-            skill?: string;
-            start?: string;
-            status?: string;
-            tool_name?: string;
-            trace_id?: string;
-            turn_index?: number;
-            type?: string;
-        };
-        "internal_server.RuntimeTraceConfiguration": {
-            effective_max_parallel_read_only_tools?: number;
-            read_only_tool_mode?: components["schemas"]["internal_server.RuntimeTraceReadOnlyToolMode"];
-            requested_max_parallel_read_only_tools?: number;
-        };
-        "internal_server.RuntimeTraceDiagnostic": {
-            code?: string;
-            count?: number;
-            estimated_savings_ms?: number;
-            fingerprint?: string;
-            message?: string;
-            severity?: string;
-            span_ids?: string[];
-            tool_name?: string;
-            turn_index?: number;
-        };
-        "internal_server.RuntimeTraceQuality": {
-            completion_verified?: boolean;
-            failed_test_attempts?: number;
-            final_verification_passed?: boolean;
-            gate_blocks?: number;
-            recoveries?: number;
-            test_attempts?: number;
-            test_failure_recovered?: boolean;
-            tests_passed?: boolean;
-            tests_run?: boolean;
-            todo_writes?: number;
-            tool_errors?: number;
-        };
-        /** @enum {string} */
-        "internal_server.RuntimeTraceReadOnlyToolMode": "serial" | "parallel";
-        "internal_server.RuntimeTraceRun": {
-            agent?: string;
-            agent_version?: string;
-            build_info?: components["schemas"]["github_com_konglong87_niuma_internal_buildinfo.Info"];
-            duration_ms?: number;
-            run_id?: string;
-            session_id?: string;
-            started_at?: string;
-            status?: components["schemas"]["internal_server.RuntimeTraceRunStatus"];
-        };
-        /** @enum {string} */
-        "internal_server.RuntimeTraceRunStatus": "unknown" | "failed" | "completed";
-        "internal_server.RuntimeTraceSummary": {
-            agent_tasks?: number;
-            cache_creation_tokens?: number;
-            cache_hit_ratio?: number;
-            cache_read_tokens?: number;
-            cache_summary?: string;
-            critical_path_ms?: number;
-            duration_ms?: number;
-            errors?: number;
-            files_changed?: number;
-            input_tokens?: number;
-            messages?: number;
-            model_wall_ms?: number;
-            output_tokens?: number;
-            parallel_savings_ms?: number;
-            permission_decisions?: number;
-            skills?: string[];
-            task_wall_ms?: number;
-            token_summary?: string;
-            tool_calls?: number;
-            tool_errors?: number;
-            tool_wall_ms?: number;
-            tool_work_ms?: number;
-            total_model_duration_ms?: number;
-            total_tokens?: number;
-            total_tool_duration_ms?: number;
-            turns?: number;
-            unattributed_ms?: number;
-        };
-        "internal_server.sessionControlLinkDTO": {
-            created_at?: string;
-            id?: number;
-            relation_type?: string;
-            source?: string;
-            target?: string;
-        };
-        "internal_server.sessionControlSessionDTO": {
-            active_run_id?: number;
-            channel?: components["schemas"]["github_com_konglong87_niuma_internal_sessioncontrol.SessionChannel"];
-            cwd?: string;
-            effort?: string;
-            id?: number;
-            links?: components["schemas"]["internal_server.sessionControlLinkDTO"][];
-            model?: string;
-            permission_mode?: string;
-            prompt_mode?: string;
-            provider?: string;
-            read_only?: boolean;
-            ref?: string;
-            short_id?: string;
-            source?: components["schemas"]["github_com_konglong87_niuma_internal_sessioncontrol.Source"];
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_sessioncontrol.SessionStatus"];
-            title?: string;
-            updated_at?: string;
-        };
-        "internal_server.sessionConversationPage": {
-            cursor?: string;
-            events?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"][];
-            has_more?: boolean;
-            schema_version?: string;
-            session?: components["schemas"]["internal_server.sessionControlSessionDTO"];
-        };
-        "internal_server.SettingsActivation": {
-            existing_runs?: string;
-            new_runs?: string;
-            requires_restart?: boolean;
-        };
-        "internal_server.SettingsEnvironmentInfo": {
-            api_path?: string;
-            available?: boolean;
-            database?: string;
-            id?: string;
-            label?: string;
-            tenant_key?: string;
-            user_id?: string;
-        };
-        "internal_server.SettingsEnvironmentsResponse": {
-            environments?: components["schemas"]["internal_server.SettingsEnvironmentInfo"][];
-            global_settings_path?: string;
-            global_settings_shared?: boolean;
-        };
-        "internal_server.SettingsFileResolved": {
-            doc?: {
-                [key: string]: unknown;
-            };
-            includes_process_environment?: boolean;
-            masked?: string[];
-            route_sources?: {
-                [key: string]: string;
-            };
-            sources?: string[];
-        };
-        "internal_server.SettingsProcessSnapshot": {
-            active_run_config_known?: boolean;
-            available?: boolean;
-            doc?: {
-                [key: string]: unknown;
-            };
-            kind?: string;
-        };
-        "internal_server.SettingsProviderTestRequest": {
-            doc?: {
-                [key: string]: unknown;
-            };
-            provider?: string;
-        };
-        "internal_server.SettingsProviderTestResponse": {
-            kind?: string;
-            message?: string;
-            ok?: boolean;
-            status_code?: number;
-        };
-        "internal_server.SettingsValidationResponse": {
-            issues?: components["schemas"]["github_com_konglong87_niuma_internal_config.SettingsIssue"][];
-            valid?: boolean;
-        };
-        "internal_server.SwaggerAgentProfile": {
-            config_json?: string;
-            created_at?: string;
-            created_by_user_id?: number;
-            description?: string;
-            display_name?: string;
-            effective_hash?: string;
-            id?: number;
-            owner_key?: string;
-            owner_user_id?: number;
-            profile_key?: string;
-            profile_version?: number;
-            published_at?: string;
-            requested_hash?: string;
-            scope?: string;
-            source_kind?: string;
-            source_path?: string;
-            source_ref?: string;
-            status?: string;
-            tenant_id?: number;
-            updated_at?: string;
-            updated_by_user_id?: number;
-            validation_json?: string;
-        };
-        "internal_server.SwaggerAgentProfileAssignment": {
-            assigned_by_user_id?: number;
-            created_at?: string;
-            id?: number;
-            profile_id?: number;
-            surface?: string;
-            tenant_id?: number;
-            updated_at?: string;
-            user_id?: number;
-        };
-        "internal_server.SwaggerAgentProfileChannelBinding": {
-            account_id?: number;
-            archived_at?: string;
-            binding_key?: string;
-            created_at?: string;
-            created_by_user_id?: number;
-            id?: number;
-            profile_id?: number;
-            provider?: string;
-            status?: string;
-            tenant_id?: number;
-            updated_at?: string;
-        };
-        "internal_server.SwaggerAgentProfileConversationCatalog": {
-            conversations?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentProfileConversationSummary"][];
-            message_count?: number;
-            profile?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentProfile"];
-            run_count?: number;
-            teams?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentProfileTeamLink"][];
-        };
-        "internal_server.SwaggerAgentSlashCommand": {
-            /** @example Run a code review prompt */
-            description?: string;
-            /** @example review */
-            name?: string;
-            /** @example builtin */
-            source?: string;
-        };
-        "internal_server.SwaggerAgentTaskAttachment": {
-            /** @example att_123 */
-            attachment_id?: string;
-            /** @example iVBORw0KGgo... */
-            inline_data?: string;
-            /** @example image/png */
-            media_type?: string;
-            /** @example screenshot.png */
-            name?: string;
-            /** @example abc123 */
-            sha256?: string;
-            /** @example 1024 */
-            size_bytes?: number;
-            /** @example image */
-            type?: string;
-            /** @example https://cdn.example.test/screenshot.png */
-            url?: string;
-        };
-        "internal_server.SwaggerAgentTaskMessageRequest": {
-            attachments?: components["schemas"]["internal_server.SwaggerAgentTaskAttachment"][];
+        "workflow.Artifact": {
+            attempt_no?: number;
             content?: string;
-            from_agent?: string;
-            trace_id?: string;
-        };
-        "internal_server.SwaggerAgentTaskMessageResponse": {
-            id?: number;
-            /** @example running */
-            status?: string;
-            task_id?: number;
-        };
-        "internal_server.SwaggerAgentTaskPermissionRequest": {
-            allowed?: boolean;
-            destination?: string;
-            reason?: string;
-            rule?: string;
-        };
-        "internal_server.SwaggerAgentTaskPermissionResponse": {
-            allowed?: boolean;
-            id?: number;
-            request_id?: string;
-        };
-        "internal_server.SwaggerAgentTaskQuestionAnswerRequest": {
-            /** @example Architecture diagram */
-            answer?: string;
-        };
-        "internal_server.SwaggerAgentTaskQuestionAnswerResponse": {
-            /** @example Architecture diagram */
-            answer?: string;
-            /** @example 44 */
-            id?: number;
-            /** @example question-uuid */
-            request_id?: string;
-            /** @example answered */
-            status?: string;
-        };
-        "internal_server.SwaggerAgentTaskResponse": {
-            agent_name?: string;
-            description?: string;
-            finished_at?: string;
-            id?: number;
-            idempotency_key?: string;
-            metadata_json?: string;
-            model?: string;
-            parent_session_id?: number;
-            result_json?: string;
-            started_at?: string;
-            status?: string;
-            subagent_session_key?: string;
-            tenant_id?: number;
-            trace_id?: string;
-            user_id?: number;
-        };
-        "internal_server.SwaggerAgentTeam": {
             created_at?: string;
-            created_by_user_id?: number;
-            description?: string;
-            display_name?: string;
-            effective_hash?: string;
-            id?: number;
-            owner_key?: string;
-            owner_user_id?: number;
-            policy_json?: string;
-            published_at?: string;
-            requested_hash?: string;
+            id?: string;
+            kind?: string;
+            node_id?: string;
+            sha256?: string;
+        };
+        "workflow.Attempt": {
+            /** @description BudgetReserved is the immutable admission reservation, not provider usage. */
+            budget_reserved?: number;
+            epoch?: number;
+            failure?: components["schemas"]["workflow.Failure"];
+            finished_at?: string;
+            model?: string;
+            number?: number;
+            provider?: string;
+            started_at?: string;
+            status?: components["schemas"]["workflow.Status"];
+            task_id?: number;
+            usage?: components["schemas"]["workflow.Usage"];
+            usage_known?: boolean;
+        };
+        "workflow.Definition": {
+            limits?: components["schemas"]["workflow.Limits"];
+            nodes?: components["schemas"]["workflow.Node"][];
             schema_version?: number;
-            scope?: string;
-            status?: string;
-            team_key?: string;
-            team_version?: number;
-            tenant_id?: number;
-            updated_at?: string;
-            updated_by_user_id?: number;
-            validation_json?: string;
         };
-        "internal_server.SwaggerAgentTeamBinding": {
-            account_id?: number;
+        "workflow.Event": {
+            attempt_no?: number;
             created_at?: string;
-            external_chat_id?: string;
-            external_thread_id?: string;
-            id?: number;
-            provider?: string;
-            status?: string;
-            team_id?: number;
-            tenant_id?: number;
-            trigger_policy?: string;
-            updated_at?: string;
-        };
-        "internal_server.SwaggerAgentTeamMember": {
-            account_id?: number;
-            created_at?: string;
-            execution_override_json?: string;
-            id?: number;
-            member_key?: string;
-            profile_id?: number;
-            role?: string;
-            status?: string;
-            team_id?: number;
-            tenant_id?: number;
-            tool_policy_json?: string;
-            updated_at?: string;
-            workspace_policy_json?: string;
-        };
-        "internal_server.SwaggerAgentTeamRun": {
-            cancel_requested_at?: string;
-            conversation_id?: number;
-            coordinator_member_key?: string;
-            created_at?: string;
-            error_code?: string;
-            error_message?: string;
-            finished_at?: string;
-            heartbeat_at?: string;
-            id?: string;
-            inbox_event_id?: number;
-            max_parallel_members?: number;
-            max_rounds?: number;
-            max_total_tokens?: number;
-            member_count?: number;
-            result_json?: string;
-            source_account_id?: number;
-            source_kind?: string;
-            started_at?: string;
-            status?: string;
-            team_effective_hash?: string;
-            team_id?: number;
-            tenant_id?: number;
-            updated_at?: string;
-            used_tokens?: number;
-            used_turns?: number;
-        };
-        "internal_server.SwaggerAgentWorkspaceValidateRequest": {
-            /** @example /Users/example/GolandProjects/niuma */
-            cwd?: string;
-        };
-        "internal_server.SwaggerAgentWorkspaceValidateResponse": {
-            cwd?: string;
-            exists?: boolean;
-            git_root?: string;
-            is_dir?: boolean;
-            is_git_repo?: boolean;
-            workspace_name?: string;
-        };
-        "internal_server.SwaggerArchiveResponse": {
-            archived?: boolean;
-            id?: number;
-        };
-        "internal_server.SwaggerAutoMemoryReviewRequest": {
-            action?: string;
-            memory_key?: string;
-        };
-        "internal_server.SwaggerCancelAgentTaskResponse": {
-            cancelled?: boolean;
-            id?: number;
-            in_process?: boolean;
-        };
-        "internal_server.SwaggerComputerOwnerResponse": {
-            data?: {
-                session_id?: number;
-                tenant_id?: number;
-                user_id?: number;
-            };
-        };
-        "internal_server.SwaggerCreateAgentTaskRequest": {
-            agent_name?: string;
-            description?: string;
-            metadata_json?: number[];
-            model?: string;
-            parent_session_id?: number;
-            prompt?: string;
-            result_json?: number[];
-            /** @example running */
-            status?: string;
-            subagent_session_key?: string;
-            trace_id?: string;
-        };
-        "internal_server.SwaggerCreateAgentTaskResponse": {
-            id?: number;
-        };
-        "internal_server.SwaggerCreateGoalRequest": {
-            cwd?: string;
-            model?: string;
-            objective?: string;
-            session_id?: string;
-            token_budget?: number;
-            turn_budget?: number;
-        };
-        "internal_server.SwaggerEffectiveAgentProfile": {
-            blocked_overrides?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.BlockedOverride"][];
-            config?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.ProfileDocument"];
-            effective_hash?: string;
-            profile?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.Profile"];
-            profile_key?: string;
-            profile_version?: number;
-            requested?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.ProfileDocument"];
-            requested_hash?: string;
-            source?: string;
-        };
-        "internal_server.SwaggerError": {
-            error?: string;
-        };
-        "internal_server.SwaggerGoalPlanResponse": {
-            acceptance_criteria?: components["schemas"]["github_com_konglong87_niuma_internal_goal.GoalCriterion"][];
-            created_at?: string;
-            current_step_id?: string;
-            dependencies?: components["schemas"]["github_com_konglong87_niuma_internal_goal.GoalDependency"][];
-            goal_id?: string;
-            risks?: components["schemas"]["github_com_konglong87_niuma_internal_goal.GoalRisk"][];
-            steps?: components["schemas"]["github_com_konglong87_niuma_internal_goal.GoalStep"][];
-            summary?: string;
-            updated_at?: string;
-            version?: number;
-        };
-        "internal_server.SwaggerGoalResponse": {
-            created_at?: string;
-            cwd?: string;
-            error?: string;
-            id?: string;
-            input_tokens?: number;
-            last_blocker?: string;
-            last_checkpoint?: string;
-            last_next_action?: string;
-            last_reason?: string;
-            model?: string;
-            objective?: string;
-            output_tokens?: number;
-            provider?: string;
-            repeated_blocker_count?: number;
-            session_id?: string;
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_goal.Status"];
-            token_budget?: number;
-            turn_budget?: number;
-            turns_used?: number;
-            updated_at?: string;
-        };
-        "internal_server.SwaggerHealthResponse": {
-            ok?: boolean;
-            workspace?: string;
-        };
-        "internal_server.SwaggerIDResponse": {
-            id?: number;
-        };
-        "internal_server.SwaggerImageArtifactResponse": {
-            asset?: components["schemas"]["github_com_konglong87_niuma_internal_imagegen.Artifact"];
-        };
-        "internal_server.SwaggerImageCapabilitiesResponse": {
-            data?: components["schemas"]["internal_server.SwaggerImageCapabilityEntry"][];
-        };
-        "internal_server.SwaggerImageCapabilityEntry": {
-            capability?: components["schemas"]["github_com_konglong87_niuma_internal_config.ImageModelCapability"];
-            image_protocol?: string;
-            label?: string;
-            model?: string;
-            provider?: string;
-        };
-        "internal_server.SwaggerImageGenerateRequest": {
-            aspect_ratio?: string;
-            background?: string;
-            idempotency_key?: string;
-            model?: string;
-            output_format?: string;
-            prompt?: string;
-            provider?: string;
-            quality?: string;
-            resolution?: string;
-            size?: string;
-            watermark?: boolean;
-        };
-        "internal_server.SwaggerImageGenerationListResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_imagegen.GenerationRecord"][];
-        };
-        "internal_server.SwaggerKnowledgeSearchResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.KnowledgeChunk"][];
-        };
-        "internal_server.SwaggerListAgentSlashCommandsResponse": {
-            data?: components["schemas"]["internal_server.SwaggerAgentSlashCommand"][];
-        };
-        "internal_server.SwaggerListAgentTaskEventsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"][];
-        };
-        "internal_server.SwaggerListAgentTasksResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTask"][];
-        };
-        "internal_server.SwaggerListAuditLogsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AuditLog"][];
-            has_more?: boolean;
-            next_cursor?: string;
-        };
-        "internal_server.SwaggerListDocumentsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Document"][];
-        };
-        "internal_server.SwaggerListEffectiveSkillsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.EffectiveSkill"][];
-        };
-        "internal_server.SwaggerListGoalEventsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_goal.Event"][];
-        };
-        "internal_server.SwaggerListGoalEvidenceResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_goal.GoalEvidence"][];
-        };
-        "internal_server.SwaggerListGoalsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_goal.Goal"][];
-        };
-        "internal_server.SwaggerListKnowledgeDocumentsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.KnowledgeDocument"][];
-        };
-        "internal_server.SwaggerListLocalSkillsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_skills.Skill"][];
-            workspace?: string;
-        };
-        "internal_server.SwaggerListMemoriesResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Memory"][];
-        };
-        "internal_server.SwaggerListMessagesResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Message"][];
-        };
-        "internal_server.SwaggerListSessionsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Session"][];
-        };
-        "internal_server.SwaggerListSkillOverridesResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.SkillOverride"][];
-        };
-        "internal_server.SwaggerListSkillsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Skill"][];
-        };
-        "internal_server.SwaggerListTelemetryEventsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.TelemetryEvent"][];
-            has_more?: boolean;
-            next_cursor?: string;
-        };
-        "internal_server.SwaggerListTenantQuotaEventsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.QuotaEvent"][];
-            has_more?: boolean;
-            next_cursor?: string;
-        };
-        "internal_server.SwaggerListTenantsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Tenant"][];
-            has_more?: boolean;
-            next_cursor?: string;
-        };
-        "internal_server.SwaggerListTenantUsageDailyResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.UsageDaily"][];
-            has_more?: boolean;
-            next_cursor?: string;
-        };
-        "internal_server.SwaggerListTenantUsageLedgerResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.UsageLedger"][];
-            has_more?: boolean;
-            next_cursor?: string;
-        };
-        "internal_server.SwaggerListUsersResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.User"][];
-            has_more?: boolean;
-            next_cursor?: string;
-        };
-        "internal_server.SwaggerListWebAgentConversationsResponse": {
-            data?: components["schemas"]["internal_server.SwaggerWebAgentConversation"][];
-        };
-        "internal_server.SwaggerLivenessResponse": {
-            /** @example ok */
-            status?: string;
-        };
-        "internal_server.SwaggerMemoryReviewRequest": {
-            action?: string;
-            memory_key?: string;
-        };
-        "internal_server.SwaggerMobileAttachment": {
-            attachment_id?: string;
-            media_type?: string;
-            name?: string;
-            sha256?: string;
-            size_bytes?: number;
-            transcript?: string;
-            type?: string;
-            url?: string;
-        };
-        "internal_server.SwaggerMobileAttachmentPresignRequest": {
-            media_type?: string;
-            name?: string;
-            sha256?: string;
-            size_bytes?: number;
-            type?: string;
-        };
-        "internal_server.SwaggerMobileAttachmentPresignResponse": {
-            attachment?: components["schemas"]["internal_server.SwaggerMobileAttachment"];
-            attachment_id?: string;
-            expires_at?: string;
-            headers?: {
-                [key: string]: string;
-            };
-            max_size_bytes?: number;
-            object_key?: string;
-            upload_url?: string;
-        };
-        "internal_server.SwaggerMobileBranchRequest": {
-            session_key?: string;
-            title?: string;
-            until_message_id?: number;
-            until_turn?: number;
-        };
-        "internal_server.SwaggerMobileBranchResponse": {
-            copied_messages?: number;
-            id?: number;
-            parent_session_id?: number;
-            session_key?: string;
-            until_turn?: number;
-        };
-        "internal_server.SwaggerMobileCancelResponse": {
-            active?: boolean;
-            id?: number;
-            status?: string;
-        };
-        "internal_server.SwaggerMobileLatestRecap": {
-            content?: string;
-            created_at?: string;
-            message_id?: number;
-            model?: string;
-            turn_index?: number;
-        };
-        "internal_server.SwaggerMobileMessageListResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Message"][];
-            has_more?: boolean;
-            next_cursor?: string;
-        };
-        "internal_server.SwaggerMobileMessageStreamRequest": {
-            attachments?: components["schemas"]["internal_server.SwaggerMobileAttachment"][];
-            content?: string;
-            message_key?: string;
-            model?: string;
-        };
-        "internal_server.SwaggerMobileRegenerateRequest": {
-            message_key?: string;
-            model?: string;
-        };
-        "internal_server.SwaggerMobileSessionDetailResponse": {
-            cwd?: string;
-            id?: number;
-            last_message_at?: string;
-            latest_recap?: components["schemas"]["internal_server.SwaggerMobileLatestRecap"];
-            model?: string;
-            session_key?: string;
-            started_at?: string;
-            status?: string;
-            title?: string;
-        };
-        "internal_server.SwaggerMobileSessionRequest": {
-            cwd?: string;
-            metadata_json?: string;
-            model?: string;
-            session_key?: string;
-            status?: string;
-            title?: string;
-        };
-        "internal_server.SwaggerOpenAIChatResponse": {
-            choices?: components["schemas"]["internal_server.SwaggerOpenAIChoice"][];
-            created?: number;
-            id?: string;
-            model?: string;
-            object?: string;
-            tenant_runtime?: components["schemas"]["internal_server.SwaggerTenantRuntimeMetadata"];
-            usage?: components["schemas"]["internal_server.SwaggerOpenAIUsage"];
-        };
-        "internal_server.SwaggerOpenAIChoice": {
-            finish_reason?: string;
-            index?: number;
-            message?: components["schemas"]["internal_server.SwaggerOpenAIMessage"];
-        };
-        "internal_server.SwaggerOpenAIMessage": {
-            content?: string;
-            role?: string;
-        };
-        "internal_server.SwaggerOpenAIModel": {
-            created?: number;
-            id?: string;
-            object?: string;
-            owned_by?: string;
-        };
-        "internal_server.SwaggerOpenAIModelsResponse": {
-            data?: components["schemas"]["internal_server.SwaggerOpenAIModel"][];
-            object?: string;
-        };
-        "internal_server.SwaggerOpenAIUsage": {
-            completion_tokens?: number;
-            prompt_tokens?: number;
-            total_tokens?: number;
-        };
-        "internal_server.SwaggerPendingInputRequest": {
-            attachments?: components["schemas"]["internal_server.SwaggerAgentTaskAttachment"][];
-            /** @example web-123 */
-            client_input_id?: string;
-            content?: string;
-            direction?: string;
-        };
-        "internal_server.SwaggerPendingInputResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_pendinginput.PendingInput"];
-            session_id?: number;
-            source_pending_input_id?: string;
-            task_id?: number;
-        };
-        "internal_server.SwaggerPendingInputSettingsRequest": {
-            enabled?: boolean;
-        };
-        "internal_server.SwaggerPromptDumpFilter": {
-            include_request?: boolean;
-            limit?: number;
-            session_id?: string;
-        };
-        "internal_server.SwaggerPromptDumpRecordsResponse": {
-            exists?: boolean;
-            filter?: components["schemas"]["internal_server.SwaggerPromptDumpFilter"];
-            generated_at?: string;
-            path?: string;
-            records?: components["schemas"]["internal_server.SwaggerPromptDumpRecordSummary"][];
-            sessions?: components["schemas"]["internal_server.SwaggerPromptDumpSessionSummary"][];
-            size_bytes?: number;
-            warning?: string;
-        };
-        "internal_server.SwaggerPromptDumpRecordSummary": {
-            cache_control_blocks?: number;
-            cache_control_bytes?: number;
-            cache_diagnostics?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.CacheRecordDiagnostics"];
-            context_manifest?: number[];
-            line_number?: number;
-            max_tokens?: number;
-            message_count?: number;
-            messages_summary?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.MessageSummary"][];
-            model?: string;
-            prompt_mode?: string;
-            request?: number[];
-            request_redaction?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.RequestRedaction"];
-            scope?: string;
-            session_id?: string;
-            system_block_count?: number;
-            system_blocks_summary?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.SystemBlockSummary"][];
-            system_bytes?: number;
-            system_hash?: string;
-            timestamp?: string;
-            tool_count?: number;
-            tools_summary?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.ToolSummary"][];
-            turn?: number;
-        };
-        "internal_server.SwaggerPromptDumpSessionSummary": {
-            cache_control_blocks?: number;
-            cache_diagnostics?: components["schemas"]["github_com_konglong87_niuma_internal_promptdump.CacheSessionDiagnostics"];
-            first_timestamp?: string;
-            last_timestamp?: string;
-            max_turn?: number;
-            models?: string[];
-            prompt_modes?: string[];
-            raw_request_records?: number;
-            records?: number;
-            scopes?: string[];
-            session_id?: string;
-            system_bytes_max?: number;
-            system_hashes?: string[];
-            tool_count_max?: number;
-            trace_summary?: components["schemas"]["internal_server.traceSummary"];
-            trace_usage_available?: boolean;
-        };
-        "internal_server.SwaggerPromptTemplate": {
-            category?: string;
-            content?: string;
-            created_at?: string;
-            id?: number;
-            pinned?: boolean;
-            sort_order?: number;
-            tenant_id?: number;
-            title?: string;
-            updated_at?: string;
-            user_id?: number;
-        };
-        "internal_server.SwaggerPromptTemplateRequest": {
-            category?: string;
-            content?: string;
-            id?: number;
-            pinned?: boolean;
-            sort_order?: number;
-            title?: string;
-        };
-        "internal_server.SwaggerProviderListResponse": {
-            data?: components["schemas"]["internal_server.SwaggerProviderOption"][];
-            object?: string;
-        };
-        "internal_server.SwaggerProviderOption": {
-            model?: string;
-            name?: string;
-        };
-        "internal_server.SwaggerQueryResult": {
-            model?: string;
-            response?: string;
-            session_id?: string;
-            stop_reason?: string;
-            tool_calls?: components["schemas"]["github_com_konglong87_niuma_internal_query.ToolTrace"][];
-            transcript_path?: string;
-            turns?: number;
-            usage?: components["schemas"]["github_com_konglong87_niuma_internal_query.Usage"];
-        };
-        "internal_server.SwaggerReadinessResponse": {
-            /** @description Checks 是依赖名到 "ok"/"unavailable" 的映射，键取决于服务端配置了哪些依赖。 */
-            checks?: {
-                [key: string]: string;
-            };
-            /** @example ok */
-            status?: string;
-        };
-        "internal_server.SwaggerRunGoalResponse": {
-            decision?: components["schemas"]["github_com_konglong87_niuma_internal_goal.Decision"];
-            event?: components["schemas"]["github_com_konglong87_niuma_internal_goal.Event"];
-            goal?: components["schemas"]["github_com_konglong87_niuma_internal_goal.Goal"];
-        };
-        "internal_server.SwaggerRuntimeBackgroundEventsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_scheduler.Event"][];
-            next_offset?: number;
-        };
-        "internal_server.SwaggerRuntimeBackgroundListResponse": {
-            data?: components["schemas"]["internal_server.RuntimeBackgroundJob"][];
-        };
-        "internal_server.SwaggerRuntimeBackgroundLogsResponse": {
-            id?: string;
-            log_tail?: string;
-            logs?: string;
-        };
-        "internal_server.SwaggerRuntimeBackgroundRunsResponse": {
-            data?: components["schemas"]["github_com_konglong87_niuma_internal_scheduler.RunRecord"][];
-        };
-        "internal_server.SwaggerRuntimeBackgroundStopResponse": {
-            disabled?: boolean;
-            id?: string;
-            schedule_id?: string;
-            stopped?: boolean;
-        };
-        "internal_server.SwaggerRuntimeLoopRequest": {
-            cwd?: string;
-            interval?: string;
-            interval_seconds?: number;
-            max_tokens?: number;
-            max_turns?: number;
-            model?: string;
-            prompt?: string;
-        };
-        "internal_server.SwaggerSessionControlAttachment": {
-            /** @example att_123 */
-            attachment_id?: string;
-            /** @example iVBORw0KGgo... */
-            inline_data?: string;
-            /** @example image/png */
-            media_type?: string;
-            /** @example screenshot.png */
-            name?: string;
-            /** @example abc123 */
-            sha256?: string;
-            /** @example 1024 */
-            size_bytes?: number;
-            /** @example image */
-            type?: string;
-            /** @example https://cdn.example.test/screenshot.png */
-            url?: string;
-        };
-        "internal_server.SwaggerSessionControlAttachRequest": {
-            /** @example handoff */
-            relation_type?: string;
-            /**
-             * @example [
-             *       "tenant:research",
-             *       "local:review"
-             *     ]
-             */
-            sources?: string[];
-            /** @example 16384 */
-            target_context_window_tokens?: number;
-            /** @example 41 */
-            target_task_id?: number;
-        };
-        "internal_server.SwaggerSessionControlCreateRequest": {
-            /** @example /workspace/project */
-            cwd?: string;
-            /** @example high */
-            effort?: string;
-            /** @example Start by reviewing the rollout plan. */
-            initial_text?: string;
-            /** @example claude-sonnet-4-5 */
-            model?: string;
-            /** @example ask */
-            permission_mode?: string;
-            /** @enum {string} */
-            prompt_mode?: "code" | "chat";
-            provider?: string;
-            /** @example support-case-42 */
-            session_key?: string;
-            /** @example Support case 42 */
-            title?: string;
-        };
-        "internal_server.SwaggerSessionControlError": {
-            /** @example invalid_state */
+            failure?: components["schemas"]["workflow.Failure"];
+            node_id?: string;
+            sequence?: number;
+            status?: components["schemas"]["workflow.Status"];
+            text?: string;
+            type?: components["schemas"]["workflow.EventType"];
+        };
+        /** @enum {string} */
+        "workflow.EventType": "run_queued" | "run_started" | "task_created" | "task_waiting_dependency" | "agent_started" | "agent_output_delta" | "agent_phase" | "agent_completed" | "agent_failed" | "task_retry_scheduled" | "run_cancel_requested" | "run_cancelled" | "task_cancelled" | "run_completed" | "run_failed" | "run_timed_out" | "run_interrupted" | "run_recovered";
+        "workflow.Failure": {
             code?: string;
-            /** @example session is not available in this state */
-            error?: string;
-        };
-        "internal_server.SwaggerSessionControlHandoff": {
-            estimated_tokens?: number;
-            replayed?: boolean;
-            source_results?: components["schemas"]["internal_server.SwaggerSessionControlHandoffSource"][];
-            stale?: boolean;
-            target_task_id?: number;
-        };
-        "internal_server.SwaggerSessionControlHandoffSource": {
-            candidate_removals?: components["schemas"]["github_com_konglong87_niuma_internal_sessioncontrol.HandoffCandidateRemoval"][];
-            cursor_prefix?: string;
-            error_code?: string;
-            estimated_tokens?: number;
-            event_id?: number;
-            link_id?: number;
-            package_id?: string;
-            package_sha256_prefix?: string;
-            source?: string;
-            success?: boolean;
-        };
-        "internal_server.SwaggerSessionControlLink": {
-            created_at?: string;
-            id?: number;
-            /** @example handoff */
-            relation_type?: string;
-            /** @example local:source */
-            source?: string;
-            /** @example tenant:target */
-            target?: string;
-        };
-        "internal_server.SwaggerSessionControlMonitorRequest": {
-            /**
-             * @example feishu
-             * @enum {string}
-             */
-            channel: "feishu";
-            /** @example 300 */
-            interval_seconds: number;
-            /**
-             * @example [
-             *       "tenant:research"
-             *     ]
-             */
-            sources: string[];
-        };
-        "internal_server.SwaggerSessionControlOperation": {
-            audit_id?: number;
-            error_code?: string;
-            handoff?: components["schemas"]["internal_server.SwaggerSessionControlHandoff"];
-            link_ids?: number[];
-            operation_id?: string;
-            replayed?: boolean;
-            run_id?: number;
-            schedule_id?: string;
-            session?: components["schemas"]["internal_server.SwaggerSessionControlSession"];
-        };
-        "internal_server.SwaggerSessionControlOperationResponse": {
-            data?: components["schemas"]["internal_server.SwaggerSessionControlOperation"];
-        };
-        "internal_server.SwaggerSessionControlSendRequest": {
-            attachments?: components["schemas"]["internal_server.SwaggerSessionControlAttachment"][];
-            /** @example Continue with the verified plan. */
-            content?: string;
-            /** @example high */
-            effort?: string;
-            /** @example claude-sonnet-4-5 */
-            model?: string;
-            /** @example ask */
-            permission_mode?: string;
-            /** @enum {string} */
-            prompt_mode?: "code" | "chat";
-            provider?: string;
-            /**
-             * @example [
-             *       "tenant:research"
-             *     ]
-             */
-            source_refs?: string[];
-        };
-        "internal_server.SwaggerSessionControlSession": {
-            active_run_id?: number;
-            cwd?: string;
-            effort?: string;
-            id?: number;
-            links?: components["schemas"]["internal_server.SwaggerSessionControlLink"][];
-            model?: string;
-            permission_mode?: string;
-            /** @enum {string} */
-            prompt_mode?: "code" | "chat";
-            provider?: string;
-            read_only?: boolean;
-            /** @example tenant:support-case-42 */
-            ref?: string;
-            /** @example support-case */
-            short_id?: string;
-            /**
-             * @example tenant
-             * @enum {unknown}
-             */
-            source?: "tenant" | "local";
-            /**
-             * @example running
-             * @enum {unknown}
-             */
-            status?: "idle" | "queued" | "running" | "waiting_permission" | "waiting_input" | "blocked" | "completed" | "failed" | "stopped" | "archived";
-            title?: string;
-            updated_at?: string;
-        };
-        "internal_server.SwaggerSessionControlSessionListResponse": {
-            data?: components["schemas"]["internal_server.SwaggerSessionControlSession"][];
-        };
-        "internal_server.SwaggerSessionControlSessionResponse": {
-            data?: components["schemas"]["internal_server.SwaggerSessionControlSession"];
-        };
-        "internal_server.SwaggerSessionControlStateEvent": {
-            /** @example 81 */
-            cursor?: string;
-            operation_id?: string;
-            run_id?: number;
-            /** @example niuma.session-control-state.v1 */
-            schema_version?: string;
-            /** @example tenant:support-case-42 */
-            session_ref?: string;
-            /** @example running */
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_sessioncontrol.SessionStatus"];
-            updated_at?: string;
-        };
-        "internal_server.SwaggerSessionControlStopRequest": Record<string, never>;
-        "internal_server.SwaggerSessionConversationResponse": {
-            data?: components["schemas"]["internal_server.sessionConversationPage"];
-        };
-        "internal_server.SwaggerSessionConversationSubscribe": {
-            sessions?: components["schemas"]["internal_server.conversationSubscription"][];
-        };
-        "internal_server.SwaggerSessionIDResponse": {
-            id?: number;
-            session_key?: string;
-        };
-        "internal_server.SwaggerSkillPackageVerifyRequest": {
-            expected_package_sha256?: string;
-            expected_version?: number;
-            model?: string;
-            prompt?: string;
-            schema_name?: string;
-            skill_key?: string;
-        };
-        "internal_server.SwaggerSkillPackageVerifyResponse": {
-            error?: string;
-            ok?: boolean;
-            tenant_runtime?: components["schemas"]["internal_server.openAITenantRuntimeMetadata"];
-            trace_id?: string;
-        };
-        "internal_server.SwaggerSkillRollbackRequest": {
-            skill_key?: string;
-            target_version?: number;
-            version?: number;
-        };
-        "internal_server.SwaggerSkillRollbackResponse": {
-            from_version?: number;
-            id?: number;
-            skill_key?: string;
-            version?: number;
-        };
-        "internal_server.SwaggerSnapshotResponse": {
-            data?: {
-                [key: string]: unknown;
-            };
-        };
-        "internal_server.SwaggerSSEEvent": {
-            delta?: string;
-            error?: string;
-            message_id?: number;
-            message_key?: string;
-            session_id?: number;
-            status?: string;
-            type?: string;
-        };
-        "internal_server.SwaggerTelemetryEventRequest": {
-            category?: string;
-            duration_ms?: number;
-            error?: string;
-            input_tokens?: number;
-            model?: string;
-            name?: string;
-            output_tokens?: number;
-            parent_span_id?: string;
-            properties?: {
-                [key: string]: unknown;
-            };
-            resource_id?: string;
-            resource_type?: string;
-            schema_version?: string;
-            session_id?: number;
-            source?: string;
-            span_id?: string;
-            started_at?: string;
-            status?: string;
-            tool_name?: string;
-            turn_index?: number;
-        };
-        "internal_server.SwaggerTenantContext": {
-            tenant?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Tenant"];
-            tenant_id?: number;
-            user_id?: number;
-            user_key?: string;
-        };
-        "internal_server.SwaggerTenantDocumentRequest": {
-            active?: boolean;
-            content_json?: string;
-            content_md?: string;
-            doc_type?: string;
-            title?: string;
-            version?: number;
-        };
-        "internal_server.SwaggerTenantKnowledgeDocumentRequest": {
-            content?: string;
-            metadata_json?: string;
-            source_type?: string;
-            status?: string;
-            title?: string;
-        };
-        "internal_server.SwaggerTenantKnowledgeSearchRequest": {
-            limit?: number;
-            query?: string;
-        };
-        "internal_server.SwaggerTenantMemoryRequest": {
-            category?: string;
-            content?: string;
-            embedding_ref?: string;
-            importance?: number;
-            memory_key?: string;
-            metadata_json?: string;
-            source?: string;
-        };
-        "internal_server.SwaggerTenantMessageRequest": {
-            content?: string;
-            content_json?: string;
-            input_tokens?: number;
-            is_error?: boolean;
-            model?: string;
-            output_tokens?: number;
-            role?: string;
-            session_id?: number;
-            tool_id?: string;
-            tool_name?: string;
-            trace_id?: string;
-            turn_index?: number;
-        };
-        "internal_server.SwaggerTenantProfile": {
-            created_at?: string;
-            generated_from_session_id?: number;
-            id?: number;
-            profile_json?: string;
-            profile_version?: number;
-            summary?: string;
-        };
-        "internal_server.SwaggerTenantProfileRequest": {
-            generated_from_session_id?: number;
-            profile_json?: string;
-            profile_version?: number;
-            summary?: string;
-        };
-        "internal_server.SwaggerTenantQuotaConfig": {
-            created_at?: string;
-            daily_message_limit?: number;
-            daily_token_limit?: number;
-            max_concurrent_requests?: number;
-            qps_limit?: number;
-            quota_enabled?: boolean;
-            reserve_output_tokens?: number;
-            status?: string;
-            tenant_id?: number;
-            timezone?: string;
-            updated_at?: string;
-            updated_by_user_id?: number;
-        };
-        "internal_server.SwaggerTenantQuotaConfigRequest": {
-            daily_message_limit?: number;
-            daily_token_limit?: number;
-            max_concurrent_requests?: number;
-            qps_limit?: number;
-            quota_enabled?: boolean;
-            reserve_output_tokens?: number;
-            status?: string;
-            timezone?: string;
-        };
-        "internal_server.SwaggerTenantRequest": {
-            name?: string;
-            settings_json?: string;
-            status?: string;
-            tenant_key?: string;
-        };
-        "internal_server.SwaggerTenantRuntimeMetadata": {
-            active?: boolean;
-            bytes?: number;
-            loaded_keys?: string[];
-            package_refs?: string[];
-            package_sha256?: string[];
-            resolved?: boolean;
-            runtime_refs?: string[];
-            skill_keys?: string[];
-            source?: string;
-            tenant_addendum?: boolean;
-            versions?: string[];
-        };
-        "internal_server.SwaggerTenantSession": {
-            cwd?: string;
-            id?: number;
-            last_message_at?: string;
-            model?: string;
-            session_key?: string;
-            started_at?: string;
-            status?: string;
-            title?: string;
-        };
-        "internal_server.SwaggerTenantSessionRequest": {
-            cwd?: string;
-            metadata_json?: string;
-            model?: string;
-            session_key?: string;
-            status?: string;
-            title?: string;
-        };
-        "internal_server.SwaggerTenantSessionTimelineResponse": {
-            agent_task_events?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"][];
-            agent_tasks?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTask"][];
-            audit_logs?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AuditLog"][];
-            messages?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Message"][];
-            session?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Session"];
-            telemetry_events?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.TelemetryEvent"][];
-            timeline?: components["schemas"]["internal_server.SwaggerTenantTimelineItem"][];
-            trace_ids?: string[];
-        };
-        "internal_server.SwaggerTenantSkillOverrideRequest": {
-            config_json?: string;
-            enabled?: boolean;
-            skill_key?: string;
-            version?: number;
-        };
-        "internal_server.SwaggerTenantSkillPackageRequest": {
-            content_base64?: string;
-            description?: string;
-            enabled?: boolean;
-            name?: string;
-            skill_key?: string;
-            source_path?: string;
-            store_root?: string;
-            version?: number;
-        };
-        "internal_server.SwaggerTenantSkillPackageResult": {
-            description?: string;
-            enabled?: boolean;
-            id?: number;
-            manifest?: components["schemas"]["github_com_konglong87_niuma_internal_tenantpkg.Manifest"];
-            manifest_ref?: string;
-            name?: string;
-            package_ref?: string;
-            package_sha256?: string;
-            runtime_md?: string;
-            runtime_ref?: string;
-            skill_key?: string;
-            version?: number;
-        };
-        "internal_server.SwaggerTenantSkillRequest": {
-            config_json?: string;
-            content_md?: string;
-            description?: string;
-            enabled?: boolean;
-            manifest_json?: string;
-            name?: string;
-            package_ref?: string;
-            package_sha256?: string;
-            runtime_ref?: string;
-            skill_key?: string;
-            version?: number;
-        };
-        "internal_server.SwaggerTenantTimelineItem": {
-            agent_task?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTask"];
-            agent_task_event?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"];
-            audit_log?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AuditLog"];
-            message?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Message"];
-            telemetry_event?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.TelemetryEvent"];
-            time?: string;
-            trace_id?: string;
-            type?: string;
-        };
-        "internal_server.SwaggerTenantUser": {
-            display_name?: string;
-            email?: string;
-            id?: number;
-            metadata_json?: string;
-            role?: string;
-            status?: string;
-            tenant_id?: number;
-            updated_at?: string;
-            user_info_json?: string;
-            user_key?: string;
-        };
-        "internal_server.SwaggerTenantUserRequest": {
-            display_name?: string;
-            email?: string;
-            metadata_json?: string;
-            role?: string;
-            status?: string;
-            user_info_json?: string;
-            user_key?: string;
-        };
-        "internal_server.SwaggerTraceDetailResponse": {
-            diagnostics?: components["schemas"]["internal_server.traceDiagnostic"][];
-            events?: components["schemas"]["internal_server.traceEvent"][];
-            generated_at?: string;
-            latest_recap?: components["schemas"]["internal_server.traceRecap"];
-            quality?: components["schemas"]["internal_server.traceQuality"];
-            raw?: unknown;
-            recaps?: components["schemas"]["internal_server.traceRecap"][];
-            rewind?: components["schemas"]["internal_server.traceRewind"];
-            session_id?: string;
-            source?: string;
-            span_tree?: components["schemas"]["internal_server.traceTree"][];
-            spans?: components["schemas"]["internal_server.traceSpan"][];
-            summary?: components["schemas"]["internal_server.traceSummary"];
-            title?: string;
-            trace_ids?: string[];
-        };
-        "internal_server.SwaggerTraceSessionsResponse": {
-            data?: components["schemas"]["internal_server.traceSessionSummary"][];
-            source?: string;
-        };
-        "internal_server.SwaggerUpdateAgentTaskRequest": {
-            metadata_json?: number[];
-            result_json?: number[];
-            /** @example completed */
-            status?: string;
-        };
-        "internal_server.SwaggerUpdateAgentTaskResponse": {
-            id?: number;
-            updated?: boolean;
-        };
-        "internal_server.SwaggerUpdateGoalRequest": {
-            cwd?: string;
-            error?: string;
-            input_tokens?: number;
-            last_blocker?: string;
-            last_checkpoint?: string;
-            last_next_action?: string;
-            last_reason?: string;
-            model?: string;
-            objective?: string;
-            output_tokens?: number;
-            repeated_blocker_count?: number;
-            session_id?: string;
-            /** @example blocked */
-            status?: components["schemas"]["github_com_konglong87_niuma_internal_goal.Status"];
-            token_budget?: number;
-            turn_budget?: number;
-            turns_used?: number;
-        };
-        "internal_server.SwaggerWebAgentConversation": {
-            cwd?: string;
-            id?: string;
-            latest_task?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTask"];
-            session?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Session"];
-            session_id?: number;
-            session_key?: string;
-            status?: string;
-            tasks?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTask"][];
-            title?: string;
-            updated_at?: string;
-            workspace_name?: string;
-        };
-        "internal_server.SwaggerWebAgentConversationDetail": {
-            cwd?: string;
-            events?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"][];
-            id?: string;
-            latest_task?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTask"];
-            messages?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Message"][];
-            session?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.Session"];
-            session_id?: number;
-            session_key?: string;
-            status?: string;
-            tasks?: components["schemas"]["github_com_konglong87_niuma_internal_storage_mysql.AgentTask"][];
-            title?: string;
-            updated_at?: string;
-            usage?: components["schemas"]["internal_server.SwaggerWebAgentConversationUsage"];
-            workspace_name?: string;
-        };
-        "internal_server.SwaggerWebAgentConversationUsage": {
-            cancelled_runs?: number;
-            completed_runs?: number;
-            context_length?: number;
-            context_percent?: number;
-            failed_runs?: number;
-            input_tokens?: number;
-            output_tokens?: number;
-            running_runs?: number;
-            timeout_runs?: number;
-            tool_calls?: number;
-            total_duration_ms?: number;
-            total_runs?: number;
-            total_tokens?: number;
-        };
-        "internal_server.SwaggerWorkflowBuiltins": {
-            items?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflowapp.Builtin"][];
-        };
-        "internal_server.SwaggerWorkflowEvents": {
-            events?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Event"][];
-            has_more?: boolean;
-            last_sequence?: number;
-        };
-        "internal_server.SwaggerWorkflowRecovery": {
-            revision?: number;
-        };
-        "internal_server.SwaggerWorkflowRun": {
-            replayed?: boolean;
-            run?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Run"];
-        };
-        "internal_server.SwaggerWorkflowRuns": {
-            items?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflow.Run"][];
-        };
-        "internal_server.SwaggerWorkflowTemplate": {
-            template?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflowapp.Template"];
-        };
-        "internal_server.SwaggerWorkflowTemplates": {
-            items?: components["schemas"]["github_com_konglong87_niuma_internal_agentteam_workflowapp.Template"][];
-        };
-        "internal_server.SwaggerWorkflowTypes": {
-            execution_kinds?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.ExecutionKindDescriptor"][];
-            roles?: components["schemas"]["github_com_konglong87_niuma_internal_agentprofile.RoleTypeDescriptor"][];
-        };
-        "internal_server.traceDiagnostic": {
-            code?: string;
-            count?: number;
-            estimated_savings_ms?: number;
-            fingerprint?: string;
             message?: string;
-            severity?: string;
-            span_ids?: string[];
-            tool_name?: string;
-            turn_index?: number;
+            retryable?: boolean;
         };
-        "internal_server.traceEvent": {
-            content?: string;
-            duration_ms?: number;
+        "workflow.Limits": {
+            max_parallel?: number;
+            max_total_tokens?: number;
+            run_timeout_seconds?: number;
+        };
+        "workflow.Node": {
+            agent_ref?: string;
+            depends_on?: string[];
+            id?: string;
+            instruction?: string;
+            retry?: components["schemas"]["workflow.RetryPolicy"];
+            timeout_seconds?: number;
+        };
+        "workflow.NodeRun": {
+            artifact_id?: string;
+            attempts?: components["schemas"]["workflow.Attempt"][];
+            failure?: components["schemas"]["workflow.Failure"];
+            next_retry_at?: string;
+            node_id?: string;
+            output?: string;
+            status?: components["schemas"]["workflow.Status"];
+        };
+        "workflow.Plan": {
+            agents?: components["schemas"]["workflow.Agent"][];
+            definition?: components["schemas"]["workflow.Definition"];
+            hash?: string;
+        };
+        "workflow.RetryPolicy": {
+            backoff_ms?: number;
+            max_attempts?: number;
+        };
+        "workflow.Run": {
+            artifacts?: components["schemas"]["workflow.Artifact"][];
+            cancel_requested_at?: string;
+            created_at?: string;
+            deadline?: string;
+            epoch?: number;
+            failure?: components["schemas"]["workflow.Failure"];
+            finished_at?: string;
             id?: string;
             input?: string;
-            is_error?: boolean;
-            model?: string;
+            last_sequence?: number;
+            lease_owner?: string;
+            lease_until?: string;
             name?: string;
-            output?: string;
-            parent_span_id?: string;
-            properties?: {
-                [key: string]: unknown;
-            };
-            raw?: unknown;
-            role?: string;
-            skill?: string;
-            span_id?: string;
+            nodes?: components["schemas"]["workflow.NodeRun"][];
+            plan?: components["schemas"]["workflow.Plan"];
+            revision?: number;
+            scope?: components["schemas"]["workflow.Scope"];
             started_at?: string;
-            status?: string;
-            time?: string;
-            tool_id?: string;
-            tool_name?: string;
-            trace_id?: string;
-            turn_index?: number;
-            type?: string;
+            status?: components["schemas"]["workflow.Status"];
+            team_id?: number;
+            team_key?: string;
+            team_version?: number;
+            /**
+             * @description UncertainTokens includes in-flight and unconfirmed attempt reservations.
+             *     It is not actual usage or a monetary amount.
+             */
+            uncertain_tokens?: number;
+            usage?: components["schemas"]["workflow.Usage"];
         };
-        "internal_server.traceQuality": {
-            completion_verified?: boolean;
-            failed_test_attempts?: number;
-            final_verification_passed?: boolean;
-            gate_blocks?: number;
-            recoveries?: number;
-            test_attempts?: number;
-            test_failure_recovered?: boolean;
-            tests_passed?: boolean;
-            tests_run?: boolean;
-            todo_writes?: number;
-            tool_errors?: number;
+        "workflow.Scope": {
+            tenant_id?: number;
+            user_id?: number;
         };
-        "internal_server.traceRecap": {
-            content?: string;
-            duration_ms?: number;
-            id?: string;
-            model?: string;
-            properties?: {
-                [key: string]: unknown;
-            };
-            source?: string;
-            status?: string;
-            summarizes_entry_id?: string;
-            time?: string;
-        };
-        "internal_server.traceRewind": {
-            checkpoints?: components["schemas"]["internal_server.traceRewindCheckpoint"][];
-            rewinds?: components["schemas"]["internal_server.traceRewindEvent"][];
-        };
-        "internal_server.traceRewindCheckpoint": {
-            events_after?: number;
-            file_changes?: number;
-            id?: string;
-            index?: number;
-            message?: string;
-            message_id?: string;
-            name?: string;
-            next_index?: number;
-            time?: string;
-        };
-        "internal_server.traceRewindEvent": {
-            content?: string;
-            id?: string;
-            index?: number;
-            name?: string;
-            time?: string;
-        };
-        "internal_server.traceSessionSummary": {
-            cwd?: string;
-            message_hint?: string;
-            model?: string;
-            path?: string;
-            session_id?: string;
-            source?: string;
-            started_at?: string;
-            status?: string;
-            title?: string;
-            updated_at?: string;
-        };
-        "internal_server.traceSpan": {
-            concurrency_class?: string;
-            depth?: number;
-            duration_ms?: number;
-            end?: string;
-            error?: string;
-            id?: string;
-            model?: string;
-            name?: string;
-            parent_id?: string;
-            self_duration_ms?: number;
-            sequence?: number;
-            skill?: string;
-            start?: string;
-            status?: string;
-            tool_name?: string;
-            trace_id?: string;
-            turn_index?: number;
-            type?: string;
-        };
-        "internal_server.traceSummary": {
-            agent_tasks?: number;
-            cache_creation_tokens?: number;
-            cache_hit_ratio?: number;
+        /** @enum {string} */
+        "workflow.Status": "queued" | "pending" | "ready" | "running" | "retry_wait" | "completed" | "failed" | "timed_out" | "cancel_requested" | "cancelled" | "interrupted" | "blocked";
+        "workflow.Usage": {
             cache_read_tokens?: number;
-            cache_summary?: string;
-            critical_path_ms?: number;
-            duration_ms?: number;
-            errors?: number;
-            files_changed?: number;
+            cache_write_tokens?: number;
             input_tokens?: number;
-            messages?: number;
-            model_wall_ms?: number;
             output_tokens?: number;
-            parallel_savings_ms?: number;
-            permission_decisions?: number;
-            skills?: string[];
-            task_wall_ms?: number;
-            token_summary?: string;
-            tool_calls?: number;
-            tool_errors?: number;
-            tool_wall_ms?: number;
-            tool_work_ms?: number;
-            total_model_duration_ms?: number;
-            total_tokens?: number;
-            total_tool_duration_ms?: number;
-            turns?: number;
-            unattributed_ms?: number;
         };
-        "internal_server.traceTree": {
-            children?: components["schemas"]["internal_server.traceTree"][];
-            span?: components["schemas"]["internal_server.traceSpan"];
+        "workflowapp.Binding": {
+            profile_id?: number;
+            profile_key?: string;
+            profile_version?: number;
+            ref?: string;
+        };
+        "workflowapp.Builtin": {
+            description?: string;
+            key?: string;
+            name?: string;
+        };
+        "workflowapp.SaveRequest": {
+            agents?: components["schemas"]["workflowapp.Binding"][];
+            definition?: components["schemas"]["workflow.Definition"];
+            description?: string;
+            key?: string;
+            name?: string;
+        };
+        "workflowapp.StartRequest": {
+            input?: string;
+            version?: number;
+        };
+        "workflowapp.Template": {
+            agents?: components["schemas"]["workflowapp.Binding"][];
+            definition?: components["schemas"]["workflow.Definition"];
+            description?: string;
+            id?: number;
+            key?: string;
+            name?: string;
+            version?: number;
         };
     };
     responses: never;
     parameters: never;
     requestBodies: {
-        /** @description Team bindings */
-        "internal_server.SwaggerAgentTeamBindingArray": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerAgentTeamBinding"][];
-            };
-        };
-        /** @description Team members */
-        "internal_server.SwaggerAgentTeamMemberArray": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerAgentTeamMember"][];
-            };
-        };
-        /** @description Mobile session request */
-        "internal_server.SwaggerMobileSessionRequest": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerMobileSessionRequest"];
-            };
-        };
-        /** @description Pending input */
-        "internal_server.SwaggerPendingInputRequest": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerPendingInputRequest"];
-            };
-        };
-        /** @description Queue setting */
-        "internal_server.SwaggerPendingInputSettingsRequest": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerPendingInputSettingsRequest"];
-            };
-        };
-        /** @description Loop request */
-        "internal_server.SwaggerRuntimeLoopRequest": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerRuntimeLoopRequest"];
-            };
-        };
-        /** @description Optional empty JSON object */
-        "internal_server.SwaggerSessionControlStopRequest": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerSessionControlStopRequest"];
-            };
-        };
-        /** @description Tenant request */
-        "internal_server.SwaggerTenantRequest": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerTenantRequest"];
-            };
-        };
-        /** @description Session request */
-        "internal_server.SwaggerTenantSessionRequest": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerTenantSessionRequest"];
-            };
-        };
-        /** @description Skill package request */
-        "internal_server.SwaggerTenantSkillPackageRequest": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerTenantSkillPackageRequest"];
-            };
-        };
-        /** @description User request */
-        "internal_server.SwaggerTenantUserRequest": {
-            content: {
-                "application/json": components["schemas"]["internal_server.SwaggerTenantUserRequest"];
-            };
-        };
         /** @description Full global settings document */
         Request: {
             content: {
@@ -15089,6 +15023,72 @@ export interface components {
                 "application/json": {
                     [key: string]: unknown;
                 };
+            };
+        };
+        /** @description Team bindings */
+        "server.SwaggerAgentTeamBindingArray": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerAgentTeamBinding"][];
+            };
+        };
+        /** @description Team members */
+        "server.SwaggerAgentTeamMemberArray": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerAgentTeamMember"][];
+            };
+        };
+        /** @description Mobile session request */
+        "server.SwaggerMobileSessionRequest": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerMobileSessionRequest"];
+            };
+        };
+        /** @description Pending input */
+        "server.SwaggerPendingInputRequest": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerPendingInputRequest"];
+            };
+        };
+        /** @description Queue setting */
+        "server.SwaggerPendingInputSettingsRequest": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerPendingInputSettingsRequest"];
+            };
+        };
+        /** @description Loop request */
+        "server.SwaggerRuntimeLoopRequest": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerRuntimeLoopRequest"];
+            };
+        };
+        /** @description Optional empty JSON object */
+        "server.SwaggerSessionControlStopRequest": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerSessionControlStopRequest"];
+            };
+        };
+        /** @description Tenant request */
+        "server.SwaggerTenantRequest": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerTenantRequest"];
+            };
+        };
+        /** @description Session request */
+        "server.SwaggerTenantSessionRequest": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerTenantSessionRequest"];
+            };
+        };
+        /** @description Skill package request */
+        "server.SwaggerTenantSkillPackageRequest": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerTenantSkillPackageRequest"];
+            };
+        };
+        /** @description User request */
+        "server.SwaggerTenantUserRequest": {
+            content: {
+                "application/json": components["schemas"]["server.SwaggerTenantUserRequest"];
             };
         };
     };

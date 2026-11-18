@@ -53,12 +53,17 @@ jobs:
       - run: go mod download
       - run: go install github.com/swaggo/swag/cmd/swag@v1.16.4
       - name: 重新生成 docs/swagger.json
-        run: swag init -g cmd/niuma/main.go --parseInternal --parseDependency
+        # Search the two packages that hold the annotations rather than the
+        # repository root: the root has no Go package, so swag would also load
+        # every directory under a bare path (internal/goal) beside its import
+        # path, and the duplicates drop enum values and make json.RawMessage
+        # ambiguous. Dependencies still come from --parseDependency.
+        run: swag init -d ./cmd/niuma,./internal/server -g main.go --parseInternal --parseDependency
       - name: swagger 生成物与注解一致
         run: |
           if ! git diff --exit-code -- docs/swagger.json docs/swagger.yaml docs/docs.go; then
             echo "::error::docs/ 下的 swagger 生成物与 internal/server 的注解不一致。"
-            echo "::error::本地执行：swag init -g cmd/niuma/main.go --parseInternal --parseDependency"
+            echo "::error::本地执行：swag init -d ./cmd/niuma,./internal/server -g main.go --parseInternal --parseDependency"
             exit 1
           fi
       - run: npm ci --legacy-peer-deps
