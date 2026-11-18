@@ -40,10 +40,20 @@ func listenerTestRoot(t *testing.T) string {
 	if !listenerUnixSupported {
 		t.Skip("requires Unix filesystem ownership and sockets")
 	}
-	// Short paths avoid sockaddr_un limits. All filesystem effects stay in the
-	// package, not /tmp, and no test ever writes a token to disk.
-	path, err := os.MkdirTemp(".", ".l-")
+	// Short paths avoid sockaddr_un limits wherever the repository is checked
+	// out: a random 0700 directory under /tmp (a sticky ancestor, which the
+	// listener accepts), removed on cleanup. No test ever writes a token to disk.
+	base, err := filepath.EvalSymlinks("/tmp")
 	if err != nil {
+		t.Fatal(err)
+	}
+	path, err := os.MkdirTemp(base, ".l-")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// macOS gives a new directory its parent's group (wheel under /tmp); use
+	// our own group so mode checks such as setgid behave as in app data.
+	if err := os.Chown(path, -1, os.Getgid()); err != nil {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() {

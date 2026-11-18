@@ -31,7 +31,15 @@ GENERATED_CONTRACT_FILES = frozenset({
     "web/src/lib/generated/api-types.ts",
     "web/src/lib/types.ts",
 })
-REVIEWABLE_FILES = COMPOSITION_FILES | GENERATED_CONTRACT_FILES
+# Tests whose Unix socket fixtures sat inside the checkout and so exceeded
+# Darwin's sun_path limit on longer checkout paths. Only their fixture
+# location may change, under the same exact review.
+TEST_FIXTURE_FILES = frozenset({
+    "desktop-v2/computer_bridge_test.go",
+    "internal/computerbridge/client_test.go",
+    "internal/computerbridge/listener_test.go",
+})
+REVIEWABLE_FILES = COMPOSITION_FILES | GENERATED_CONTRACT_FILES | TEST_FIXTURE_FILES
 ALLOWED_NEW_GO_ROOTS = ("cmd/super-niuma/", "internal/super/")
 
 
@@ -77,7 +85,7 @@ def main():
     if failures:
         print("\n".join(failures), file=sys.stderr)
         return 1
-    print("PASS: legacy baseline protected; exact reviewed Desktop composition and generated API contract exceptions only")
+    print("PASS: legacy baseline protected; exact reviewed Desktop composition, generated API contract and test fixture exceptions only")
     return 0
 
 

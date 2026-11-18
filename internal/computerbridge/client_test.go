@@ -39,10 +39,16 @@ func testReceipt() cu.ActionReceipt {
 	return cu.ActionReceipt{ActionID: a.ID, SessionID: a.SessionID, BeforeObservationID: a.ObservationID, Outcome: cu.OutcomeExecuted, Verification: cu.VerificationNotChecked}
 }
 
-// Keep test filesystem effects inside this package and remove them on cleanup.
+// A random 0700 directory under /tmp keeps the socket path within Darwin's
+// sun_path limit wherever the repository is checked out; it is removed on
+// cleanup and no token is ever written to disk.
 func socketPath(t *testing.T) string {
 	t.Helper()
-	dir, err := os.MkdirTemp(".", ".client-test-")
+	base, err := filepath.EvalSymlinks("/tmp")
+	if err != nil {
+		t.Fatal(err)
+	}
+	dir, err := os.MkdirTemp(base, ".client-test-")
 	if err != nil {
 		t.Fatal(err)
 	}

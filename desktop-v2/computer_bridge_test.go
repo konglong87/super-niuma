@@ -13,8 +13,9 @@ import (
 )
 
 func TestDesktopBridgeBindsApprovedConversationAndCleansSocket(t *testing.T) {
-	// Keep the fixture below the repo, short enough for Darwin sun_path.
-	relative, err := os.MkdirTemp("..", ".cb-")
+	// A random 0700 fixture under /tmp keeps the socket path within Darwin's
+	// sun_path limit wherever the repository is checked out.
+	relative, err := os.MkdirTemp("/tmp", ".cb-")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -72,7 +73,7 @@ func TestDesktopBridgeBindsApprovedConversationAndCleansSocket(t *testing.T) {
 }
 
 func TestRemoteDesktopManagerUsesBridgeForLocalSession(t *testing.T) {
-	relative, err := os.MkdirTemp("..", ".cb-remote-")
+	relative, err := os.MkdirTemp("/tmp", ".cb-remote-")
 	if err != nil {
 		t.Fatal(err)
 	}

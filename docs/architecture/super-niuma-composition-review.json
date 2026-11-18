@@ -40,5 +40,23 @@
     "reviewed_sha256": "b45191f185ae2fd266c0de9aa4f450b91fb6fedb0b99875111045513d68311d1",
     "reason": "Only the 35 OpenAPISchema names are renamed to the regenerated schema names; no type shape or runtime code changes.",
     "verification": "web typecheck + build + 959 web tests"
+  },
+  "desktop-v2/computer_bridge_test.go": {
+    "baseline_sha256": "9cbadcb8672f1c751e5c2ac1a97a3f5e2eb61f29db7583cbb2d09c71d5d6aa1e",
+    "reviewed_sha256": "9c2109b39aec48dd5c0165c880bb35d50441374ccadcc48874ccf244edaa9f49",
+    "reason": "Fixture root moves from the parent of the package to a random 0700 directory under /tmp; test assertions unchanged.",
+    "verification": "go test ./internal/computerbridge ./desktop-v2 -count=3 on macOS (previously 16 sun_path failures) + node --test scripts/test-desktop-ci-prerequisites.mjs + Linux CI"
+  },
+  "internal/computerbridge/client_test.go": {
+    "baseline_sha256": "45aa3d4a28b887594804dffe93eacedca9ebb9c4ab8266abb724f55bd1629ebb",
+    "reviewed_sha256": "f93b11580f606020efba05ff7ffe2f42cbd572220b29ce49483dcbe66c2033f7",
+    "reason": "Socket directory moves from the package directory to a random 0700 directory under /tmp (symlinks resolved); test assertions unchanged.",
+    "verification": "go test ./internal/computerbridge ./desktop-v2 -count=3 on macOS (previously 16 sun_path failures) + node --test scripts/test-desktop-ci-prerequisites.mjs + Linux CI"
+  },
+  "internal/computerbridge/listener_test.go": {
+    "baseline_sha256": "993eb68343266c6ecc12c76d661cef5bf4782e15550ec747cc43883dfc854967",
+    "reviewed_sha256": "96ff67a7871011aa9294617c7ea479116d822e8b3a6446d4983d60ca3eefc409",
+    "reason": "Fixture root moves from the package directory to a random 0700 directory under /tmp (symlinks resolved, own group so setgid checks hold on macOS); test assertions unchanged.",
+    "verification": "go test ./internal/computerbridge ./desktop-v2 -count=3 on macOS (previously 16 sun_path failures) + node --test scripts/test-desktop-ci-prerequisites.mjs + Linux CI"
   }
 }
