@@ -52,7 +52,10 @@ go run ./scripts/runtime-topology-check --base HEAD --working-tree \
 ```bash
 go test ./internal/server -count=1
 swag init -d ./cmd/niuma,./internal/server -g main.go --parseInternal --parseDependency
+npm --prefix web run generate:api-types
 ```
+
+`docs/docs.go`、`web/src/lib/generated/api-types.ts` 和 `web/src/lib/types.ts` 在旧代码基线里，只能以精确审查放行：重新生成后，在 `docs/architecture/super-niuma-composition-review.json` 里更新对应条目的 `reviewed_sha256`、`reason` 和 `verification`，再跑 `python3 scripts/super-niuma-boundary-test.py`。
 
 ## Pull Request 要求
 

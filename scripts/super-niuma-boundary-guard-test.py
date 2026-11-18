@@ -17,7 +17,8 @@ class BoundaryReviewTest(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        self.files = {"desktop-v2/main.go": b"package main\n", "internal/session/engine.go": b"package session\n"}
+        self.files = {"desktop-v2/main.go": b"package main\n", "internal/session/engine.go": b"package session\n",
+                      "docs/docs.go": b"package docs\n"}
         for name, data in self.files.items():
             self.write(name, data)
         self.write("go.mod", f"module {boundary.NEW_MODULE}\n".encode())
@@ -45,6 +46,15 @@ class BoundaryReviewTest(unittest.TestCase):
     def test_exact_composition_review_passes(self):
         self.approve("desktop-v2/main.go", b"package main\n// composition\n")
         self.assertEqual(boundary.verify(self.root), [])
+
+    def test_exact_generated_contract_review_passes(self):
+        self.approve("docs/docs.go", b"package docs\n// regenerated\n")
+        self.assertEqual(boundary.verify(self.root), [])
+
+    def test_post_review_generated_contract_changes_fail(self):
+        self.approve("docs/docs.go", b"package docs\n// regenerated\n")
+        self.write("docs/docs.go", b"package docs\n// unreviewed\n")
+        self.assertTrue(any("baseline changed: docs/docs.go" in error for error in boundary.verify(self.root)))
 
     def test_post_review_changes_fail(self):
         self.approve("desktop-v2/main.go", b"package main\n// composition\n")

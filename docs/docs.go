@@ -53,19 +53,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListAgentSlashCommandsResponse"
+                            "$ref": "#/definitions/server.SwaggerListAgentSlashCommandsResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -95,7 +95,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentWorkspaceValidateRequest"
+                            "$ref": "#/definitions/server.SwaggerAgentWorkspaceValidateRequest"
                         }
                     }
                 ],
@@ -103,19 +103,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentWorkspaceValidateResponse"
+                            "$ref": "#/definitions/server.SwaggerAgentWorkspaceValidateResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -139,13 +139,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerHealthResponse"
+                            "$ref": "#/definitions/server.SwaggerHealthResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -165,7 +165,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerLivenessResponse"
+                            "$ref": "#/definitions/server.SwaggerLivenessResponse"
                         }
                     }
                 }
@@ -190,7 +190,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListLocalSkillsResponse"
+                            "$ref": "#/definitions/server.SwaggerListLocalSkillsResponse"
                         }
                     },
                     "401": {
@@ -238,7 +238,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -268,7 +268,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileAttachmentPresignRequest"
+                            "$ref": "#/definitions/server.SwaggerMobileAttachmentPresignRequest"
                         }
                     }
                 ],
@@ -276,19 +276,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileAttachmentPresignResponse"
+                            "$ref": "#/definitions/server.SwaggerMobileAttachmentPresignResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -320,13 +320,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListSessionsResponse"
+                            "$ref": "#/definitions/server.SwaggerListSessionsResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -354,7 +354,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileSessionRequest"
+                            "$ref": "#/definitions/server.SwaggerMobileSessionRequest"
                         }
                     }
                 ],
@@ -362,7 +362,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionIDResponse"
+                            "$ref": "#/definitions/server.SwaggerSessionIDResponse"
                         }
                     }
                 }
@@ -395,7 +395,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileSessionDetailResponse"
+                            "$ref": "#/definitions/server.SwaggerMobileSessionDetailResponse"
                         }
                     }
                 }
@@ -430,7 +430,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileSessionRequest"
+                            "$ref": "#/definitions/server.SwaggerMobileSessionRequest"
                         }
                     }
                 ],
@@ -438,7 +438,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     }
                 }
@@ -469,7 +469,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerArchiveResponse"
+                            "$ref": "#/definitions/server.SwaggerArchiveResponse"
                         }
                     }
                 }
@@ -504,7 +504,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileSessionRequest"
+                            "$ref": "#/definitions/server.SwaggerMobileSessionRequest"
                         }
                     }
                 ],
@@ -512,7 +512,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     }
                 }
@@ -549,7 +549,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileBranchRequest"
+                            "$ref": "#/definitions/server.SwaggerMobileBranchRequest"
                         }
                     }
                 ],
@@ -557,7 +557,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileBranchResponse"
+                            "$ref": "#/definitions/server.SwaggerMobileBranchResponse"
                         }
                     }
                 }
@@ -608,7 +608,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileMessageListResponse"
+                            "$ref": "#/definitions/server.SwaggerMobileMessageListResponse"
                         }
                     }
                 }
@@ -645,7 +645,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileMessageStreamRequest"
+                            "$ref": "#/definitions/server.SwaggerMobileMessageStreamRequest"
                         }
                     }
                 ],
@@ -653,7 +653,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSSEEvent"
+                            "$ref": "#/definitions/server.SwaggerSSEEvent"
                         }
                     }
                 }
@@ -693,7 +693,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileCancelResponse"
+                            "$ref": "#/definitions/server.SwaggerMobileCancelResponse"
                         }
                     }
                 }
@@ -736,7 +736,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMobileRegenerateRequest"
+                            "$ref": "#/definitions/server.SwaggerMobileRegenerateRequest"
                         }
                     }
                 ],
@@ -744,7 +744,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSSEEvent"
+                            "$ref": "#/definitions/server.SwaggerSSEEvent"
                         }
                     }
                 }
@@ -775,7 +775,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -845,7 +845,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPromptDumpRecordsResponse"
+                            "$ref": "#/definitions/server.SwaggerPromptDumpRecordsResponse"
                         }
                     }
                 }
@@ -875,7 +875,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.QueryRequest"
+                            "$ref": "#/definitions/server.QueryRequest"
                         }
                     }
                 ],
@@ -883,25 +883,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerQueryResult"
+                            "$ref": "#/definitions/server.SwaggerQueryResult"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -921,13 +921,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerReadinessResponse"
+                            "$ref": "#/definitions/server.SwaggerReadinessResponse"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerReadinessResponse"
+                            "$ref": "#/definitions/server.SwaggerReadinessResponse"
                         }
                     }
                 }
@@ -971,19 +971,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerRuntimeBackgroundListResponse"
+                            "$ref": "#/definitions/server.SwaggerRuntimeBackgroundListResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1011,7 +1011,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerRuntimeLoopRequest"
+                            "$ref": "#/definitions/server.SwaggerRuntimeLoopRequest"
                         }
                     }
                 ],
@@ -1019,25 +1019,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.RuntimeBackgroundJob"
+                            "$ref": "#/definitions/server.RuntimeBackgroundJob"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1075,19 +1075,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerRuntimeBackgroundEventsResponse"
+                            "$ref": "#/definitions/server.SwaggerRuntimeBackgroundEventsResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1124,7 +1124,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerRuntimeLoopRequest"
+                            "$ref": "#/definitions/server.SwaggerRuntimeLoopRequest"
                         }
                     }
                 ],
@@ -1132,31 +1132,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.RuntimeBackgroundJob"
+                            "$ref": "#/definitions/server.RuntimeBackgroundJob"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1195,25 +1195,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerRuntimeBackgroundLogsResponse"
+                            "$ref": "#/definitions/server.SwaggerRuntimeBackgroundLogsResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1246,25 +1246,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.RuntimeBackgroundJob"
+                            "$ref": "#/definitions/server.RuntimeBackgroundJob"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1303,19 +1303,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerRuntimeBackgroundRunsResponse"
+                            "$ref": "#/definitions/server.SwaggerRuntimeBackgroundRunsResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1348,25 +1348,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerRuntimeBackgroundStopResponse"
+                            "$ref": "#/definitions/server.SwaggerRuntimeBackgroundStopResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1391,19 +1391,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.GlobalSettingsResponse"
+                            "$ref": "#/definitions/server.GlobalSettingsResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1452,31 +1452,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.GlobalSettingsSaveResponse"
+                            "$ref": "#/definitions/server.GlobalSettingsSaveResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1501,19 +1501,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.EffectiveSettingsResponse"
+                            "$ref": "#/definitions/server.EffectiveSettingsResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1553,19 +1553,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SettingsEnvironmentsResponse"
+                            "$ref": "#/definitions/server.SettingsEnvironmentsResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1637,31 +1637,31 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1731,31 +1731,31 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1825,31 +1825,31 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -1919,31 +1919,31 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -2013,31 +2013,31 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -2068,7 +2068,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.GlobalSettingsPromoteRequest"
+                            "$ref": "#/definitions/server.GlobalSettingsPromoteRequest"
                         }
                     }
                 ],
@@ -2076,25 +2076,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.GlobalSettingsPromoteResponse"
+                            "$ref": "#/definitions/server.GlobalSettingsPromoteResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -2125,7 +2125,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SettingsProviderTestRequest"
+                            "$ref": "#/definitions/server.SettingsProviderTestRequest"
                         }
                     }
                 ],
@@ -2133,19 +2133,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SettingsProviderTestResponse"
+                            "$ref": "#/definitions/server.SettingsProviderTestResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -2183,19 +2183,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SettingsValidationResponse"
+                            "$ref": "#/definitions/server.SettingsValidationResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -2219,13 +2219,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSnapshotResponse"
+                            "$ref": "#/definitions/server.SwaggerSnapshotResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -2249,13 +2249,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSnapshotResponse"
+                            "$ref": "#/definitions/server.SwaggerSnapshotResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -2300,7 +2300,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentProfileAssignment"
+                            "$ref": "#/definitions/server.SwaggerAgentProfileAssignment"
                         }
                     }
                 }
@@ -2343,7 +2343,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentProfileAssignment"
+                            "$ref": "#/definitions/server.SwaggerAgentProfileAssignment"
                         }
                     }
                 }
@@ -2433,7 +2433,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentProfile"
+                            "$ref": "#/definitions/server.SwaggerAgentProfile"
                         }
                     }
                 }
@@ -2472,7 +2472,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentProfile"
+                            "$ref": "#/definitions/server.SwaggerAgentProfile"
                         }
                     }
                 }
@@ -2515,7 +2515,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentProfile"
+                            "$ref": "#/definitions/server.SwaggerAgentProfile"
                         }
                     }
                 }
@@ -2608,7 +2608,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentProfileChannelBinding"
+                            "$ref": "#/definitions/server.SwaggerAgentProfileChannelBinding"
                         }
                     }
                 }
@@ -2658,7 +2658,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentProfileChannelBinding"
+                            "$ref": "#/definitions/server.SwaggerAgentProfileChannelBinding"
                         }
                     }
                 }
@@ -2708,7 +2708,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentProfileChannelBinding"
+                            "$ref": "#/definitions/server.SwaggerAgentProfileChannelBinding"
                         }
                     }
                 }
@@ -2754,19 +2754,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentProfileConversationCatalog"
+                            "$ref": "#/definitions/server.SwaggerAgentProfileConversationCatalog"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -2841,7 +2841,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerEffectiveAgentProfile"
+                            "$ref": "#/definitions/server.SwaggerEffectiveAgentProfile"
                         }
                     }
                 }
@@ -2922,7 +2922,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentProfile"
+                            "$ref": "#/definitions/server.SwaggerAgentProfile"
                         }
                     }
                 }
@@ -3132,7 +3132,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListAgentTasksResponse"
+                            "$ref": "#/definitions/server.SwaggerListAgentTasksResponse"
                         }
                     }
                 }
@@ -3174,7 +3174,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerCreateAgentTaskRequest"
+                            "$ref": "#/definitions/server.SwaggerCreateAgentTaskRequest"
                         }
                     }
                 ],
@@ -3182,13 +3182,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerCreateAgentTaskResponse"
+                            "$ref": "#/definitions/server.SwaggerCreateAgentTaskResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -3235,13 +3235,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTaskResponse"
+                            "$ref": "#/definitions/server.SwaggerAgentTaskResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -3290,7 +3290,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerUpdateAgentTaskRequest"
+                            "$ref": "#/definitions/server.SwaggerUpdateAgentTaskRequest"
                         }
                     }
                 ],
@@ -3298,19 +3298,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerUpdateAgentTaskResponse"
+                            "$ref": "#/definitions/server.SwaggerUpdateAgentTaskResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -3357,19 +3357,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerCancelAgentTaskResponse"
+                            "$ref": "#/definitions/server.SwaggerCancelAgentTaskResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -3428,7 +3428,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListAgentTaskEventsResponse"
+                            "$ref": "#/definitions/server.SwaggerListAgentTaskEventsResponse"
                         }
                     }
                 }
@@ -3494,19 +3494,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -3557,7 +3557,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTaskMessageRequest"
+                            "$ref": "#/definitions/server.SwaggerAgentTaskMessageRequest"
                         }
                     }
                 ],
@@ -3565,31 +3565,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTaskMessageResponse"
+                            "$ref": "#/definitions/server.SwaggerAgentTaskMessageResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -3639,7 +3639,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputSettingsRequest"
+                            "$ref": "#/definitions/server.SwaggerPendingInputSettingsRequest"
                         }
                     }
                 ],
@@ -3656,7 +3656,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -3704,7 +3704,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputSettingsRequest"
+                            "$ref": "#/definitions/server.SwaggerPendingInputSettingsRequest"
                         }
                     }
                 ],
@@ -3721,7 +3721,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -3772,7 +3772,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputRequest"
+                            "$ref": "#/definitions/server.SwaggerPendingInputRequest"
                         }
                     }
                 ],
@@ -3780,37 +3780,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputResponse"
+                            "$ref": "#/definitions/server.SwaggerPendingInputResponse"
                         }
                     },
                     "202": {
                         "description": "Accepted",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputResponse"
+                            "$ref": "#/definitions/server.SwaggerPendingInputResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "429": {
                         "description": "Too Many Requests",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -3859,7 +3859,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputRequest"
+                            "$ref": "#/definitions/server.SwaggerPendingInputRequest"
                         }
                     }
                 ],
@@ -3867,37 +3867,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputResponse"
+                            "$ref": "#/definitions/server.SwaggerPendingInputResponse"
                         }
                     },
                     "202": {
                         "description": "Accepted",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputResponse"
+                            "$ref": "#/definitions/server.SwaggerPendingInputResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "429": {
                         "description": "Too Many Requests",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -3954,7 +3954,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputRequest"
+                            "$ref": "#/definitions/server.SwaggerPendingInputRequest"
                         }
                     }
                 ],
@@ -3962,37 +3962,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputResponse"
+                            "$ref": "#/definitions/server.SwaggerPendingInputResponse"
                         }
                     },
                     "202": {
                         "description": "Accepted",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputResponse"
+                            "$ref": "#/definitions/server.SwaggerPendingInputResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "429": {
                         "description": "Too Many Requests",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -4047,7 +4047,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputRequest"
+                            "$ref": "#/definitions/server.SwaggerPendingInputRequest"
                         }
                     }
                 ],
@@ -4055,37 +4055,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputResponse"
+                            "$ref": "#/definitions/server.SwaggerPendingInputResponse"
                         }
                     },
                     "202": {
                         "description": "Accepted",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputResponse"
+                            "$ref": "#/definitions/server.SwaggerPendingInputResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "429": {
                         "description": "Too Many Requests",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -4148,7 +4148,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputRequest"
+                            "$ref": "#/definitions/server.SwaggerPendingInputRequest"
                         }
                     }
                 ],
@@ -4156,37 +4156,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputResponse"
+                            "$ref": "#/definitions/server.SwaggerPendingInputResponse"
                         }
                     },
                     "202": {
                         "description": "Accepted",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPendingInputResponse"
+                            "$ref": "#/definitions/server.SwaggerPendingInputResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "429": {
                         "description": "Too Many Requests",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -4244,7 +4244,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTaskPermissionRequest"
+                            "$ref": "#/definitions/server.SwaggerAgentTaskPermissionRequest"
                         }
                     }
                 ],
@@ -4252,25 +4252,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTaskPermissionResponse"
+                            "$ref": "#/definitions/server.SwaggerAgentTaskPermissionResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -4329,7 +4329,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTaskQuestionAnswerRequest"
+                            "$ref": "#/definitions/server.SwaggerAgentTaskQuestionAnswerRequest"
                         }
                     }
                 ],
@@ -4337,37 +4337,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTaskQuestionAnswerResponse"
+                            "$ref": "#/definitions/server.SwaggerAgentTaskQuestionAnswerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -4443,7 +4443,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTeam"
+                            "$ref": "#/definitions/server.SwaggerAgentTeam"
                         }
                     }
                 }
@@ -4482,7 +4482,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTeam"
+                            "$ref": "#/definitions/server.SwaggerAgentTeam"
                         }
                     }
                 }
@@ -4525,7 +4525,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTeam"
+                            "$ref": "#/definitions/server.SwaggerAgentTeam"
                         }
                     }
                 }
@@ -4611,7 +4611,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/internal_server.SwaggerAgentTeamBinding"
+                                "$ref": "#/definitions/server.SwaggerAgentTeamBinding"
                             }
                         }
                     }
@@ -4664,7 +4664,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/internal_server.SwaggerAgentTeamBinding"
+                                "$ref": "#/definitions/server.SwaggerAgentTeamBinding"
                             }
                         }
                     }
@@ -4719,7 +4719,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/internal_server.SwaggerAgentTeamMember"
+                                "$ref": "#/definitions/server.SwaggerAgentTeamMember"
                             }
                         }
                     }
@@ -4772,7 +4772,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/internal_server.SwaggerAgentTeamMember"
+                                "$ref": "#/definitions/server.SwaggerAgentTeamMember"
                             }
                         }
                     }
@@ -4863,7 +4863,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTeam"
+                            "$ref": "#/definitions/server.SwaggerAgentTeam"
                         }
                     }
                 }
@@ -4957,7 +4957,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAgentTeamRun"
+                            "$ref": "#/definitions/server.SwaggerAgentTeamRun"
                         }
                     }
                 }
@@ -5154,43 +5154,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowTypes"
+                            "$ref": "#/definitions/server.SwaggerWorkflowTypes"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -5248,13 +5248,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListAuditLogsResponse"
+                            "$ref": "#/definitions/server.SwaggerListAuditLogsResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -5300,7 +5300,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListMemoriesResponse"
+                            "$ref": "#/definitions/server.SwaggerListMemoriesResponse"
                         }
                     }
                 }
@@ -5344,7 +5344,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerAutoMemoryReviewRequest"
+                            "$ref": "#/definitions/server.SwaggerAutoMemoryReviewRequest"
                         }
                     }
                 ],
@@ -5352,13 +5352,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -5431,19 +5431,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantContext"
+                            "$ref": "#/definitions/server.SwaggerTenantContext"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -5501,7 +5501,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListDocumentsResponse"
+                            "$ref": "#/definitions/server.SwaggerListDocumentsResponse"
                         }
                     }
                 }
@@ -5543,7 +5543,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantDocumentRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantDocumentRequest"
                         }
                     }
                 ],
@@ -5551,7 +5551,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     }
                 }
@@ -5615,7 +5615,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListEffectiveSkillsResponse"
+                            "$ref": "#/definitions/server.SwaggerListEffectiveSkillsResponse"
                         }
                     }
                 }
@@ -5763,13 +5763,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListGoalsResponse"
+                            "$ref": "#/definitions/server.SwaggerListGoalsResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -5811,7 +5811,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerCreateGoalRequest"
+                            "$ref": "#/definitions/server.SwaggerCreateGoalRequest"
                         }
                     }
                 ],
@@ -5819,13 +5819,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerGoalResponse"
+                            "$ref": "#/definitions/server.SwaggerGoalResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -5872,13 +5872,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerGoalResponse"
+                            "$ref": "#/definitions/server.SwaggerGoalResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -5927,7 +5927,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerUpdateGoalRequest"
+                            "$ref": "#/definitions/server.SwaggerUpdateGoalRequest"
                         }
                     }
                 ],
@@ -5935,19 +5935,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerGoalResponse"
+                            "$ref": "#/definitions/server.SwaggerGoalResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6000,13 +6000,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListGoalEventsResponse"
+                            "$ref": "#/definitions/server.SwaggerListGoalEventsResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6059,13 +6059,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListGoalEvidenceResponse"
+                            "$ref": "#/definitions/server.SwaggerListGoalEvidenceResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6112,13 +6112,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerGoalPlanResponse"
+                            "$ref": "#/definitions/server.SwaggerGoalPlanResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6171,19 +6171,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerGoalResponse"
+                            "$ref": "#/definitions/server.SwaggerGoalResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6249,19 +6249,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerRunGoalResponse"
+                            "$ref": "#/definitions/server.SwaggerRunGoalResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6308,13 +6308,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerGoalResponse"
+                            "$ref": "#/definitions/server.SwaggerGoalResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6338,7 +6338,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerImageCapabilitiesResponse"
+                            "$ref": "#/definitions/server.SwaggerImageCapabilitiesResponse"
                         }
                     }
                 }
@@ -6384,7 +6384,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListKnowledgeDocumentsResponse"
+                            "$ref": "#/definitions/server.SwaggerListKnowledgeDocumentsResponse"
                         }
                     }
                 }
@@ -6426,7 +6426,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantKnowledgeDocumentRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantKnowledgeDocumentRequest"
                         }
                     }
                 ],
@@ -6434,13 +6434,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6484,7 +6484,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantKnowledgeSearchRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantKnowledgeSearchRequest"
                         }
                     }
                 ],
@@ -6492,13 +6492,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerKnowledgeSearchResponse"
+                            "$ref": "#/definitions/server.SwaggerKnowledgeSearchResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6544,7 +6544,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListMemoriesResponse"
+                            "$ref": "#/definitions/server.SwaggerListMemoriesResponse"
                         }
                     }
                 }
@@ -6586,7 +6586,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantMemoryRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantMemoryRequest"
                         }
                     }
                 ],
@@ -6594,13 +6594,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6639,19 +6639,19 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6703,7 +6703,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListMemoriesResponse"
+                            "$ref": "#/definitions/server.SwaggerListMemoriesResponse"
                         }
                     }
                 }
@@ -6745,7 +6745,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantMemoryRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantMemoryRequest"
                         }
                     }
                 ],
@@ -6753,7 +6753,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     }
                 }
@@ -6818,7 +6818,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListMemoriesResponse"
+                            "$ref": "#/definitions/server.SwaggerListMemoriesResponse"
                         }
                     }
                 }
@@ -6863,7 +6863,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerMemoryReviewRequest"
+                            "$ref": "#/definitions/server.SwaggerMemoryReviewRequest"
                         }
                     }
                 ],
@@ -6871,13 +6871,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -6930,7 +6930,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListMessagesResponse"
+                            "$ref": "#/definitions/server.SwaggerListMessagesResponse"
                         }
                     }
                 }
@@ -6972,7 +6972,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantMessageRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantMessageRequest"
                         }
                     }
                 ],
@@ -6980,7 +6980,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     }
                 }
@@ -7026,7 +7026,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantProfile"
+                            "$ref": "#/definitions/server.SwaggerTenantProfile"
                         }
                     }
                 }
@@ -7068,7 +7068,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantProfileRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantProfileRequest"
                         }
                     }
                 ],
@@ -7076,7 +7076,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     }
                 }
@@ -7124,7 +7124,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/internal_server.SwaggerPromptTemplate"
+                                "$ref": "#/definitions/server.SwaggerPromptTemplate"
                             }
                         }
                     },
@@ -7167,7 +7167,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPromptTemplateRequest"
+                            "$ref": "#/definitions/server.SwaggerPromptTemplateRequest"
                         }
                     }
                 ],
@@ -7175,7 +7175,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPromptTemplate"
+                            "$ref": "#/definitions/server.SwaggerPromptTemplate"
                         }
                     },
                     "400": {
@@ -7235,7 +7235,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPromptTemplateRequest"
+                            "$ref": "#/definitions/server.SwaggerPromptTemplateRequest"
                         }
                     }
                 ],
@@ -7243,7 +7243,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerPromptTemplate"
+                            "$ref": "#/definitions/server.SwaggerPromptTemplate"
                         }
                     },
                     "400": {
@@ -7368,19 +7368,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantQuotaConfig"
+                            "$ref": "#/definitions/server.SwaggerTenantQuotaConfig"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -7422,7 +7422,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantQuotaConfigRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantQuotaConfigRequest"
                         }
                     }
                 ],
@@ -7430,25 +7430,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantQuotaConfig"
+                            "$ref": "#/definitions/server.SwaggerTenantQuotaConfig"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -7506,19 +7506,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListTenantQuotaEventsResponse"
+                            "$ref": "#/definitions/server.SwaggerListTenantQuotaEventsResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -7549,7 +7549,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionConversationSubscribe"
+                            "$ref": "#/definitions/server.SwaggerSessionConversationSubscribe"
                         }
                     }
                 ],
@@ -7557,13 +7557,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.sessionConversationPage"
+                            "$ref": "#/definitions/server.sessionConversationPage"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -7621,31 +7621,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlSessionListResponse"
+                            "$ref": "#/definitions/server.SwaggerSessionControlSessionListResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -7695,7 +7695,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlCreateRequest"
+                            "$ref": "#/definitions/server.SwaggerSessionControlCreateRequest"
                         }
                     }
                 ],
@@ -7703,37 +7703,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlOperationResponse"
+                            "$ref": "#/definitions/server.SwaggerSessionControlOperationResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -7798,37 +7798,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlSessionResponse"
+                            "$ref": "#/definitions/server.SwaggerSessionControlSessionResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -7897,7 +7897,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlAttachRequest"
+                            "$ref": "#/definitions/server.SwaggerSessionControlAttachRequest"
                         }
                     }
                 ],
@@ -7905,49 +7905,49 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlOperationResponse"
+                            "$ref": "#/definitions/server.SwaggerSessionControlOperationResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -8015,7 +8015,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlStopRequest"
+                            "$ref": "#/definitions/server.SwaggerSessionControlStopRequest"
                         }
                     }
                 ],
@@ -8023,43 +8023,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlOperationResponse"
+                            "$ref": "#/definitions/server.SwaggerSessionControlOperationResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -8103,37 +8103,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerComputerOwnerResponse"
+                            "$ref": "#/definitions/server.SwaggerComputerOwnerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -8183,13 +8183,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionConversationResponse"
+                            "$ref": "#/definitions/server.SwaggerSessionConversationResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -8266,37 +8266,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlStateEvent"
+                            "$ref": "#/definitions/server.SwaggerSessionControlStateEvent"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -8365,7 +8365,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlSendRequest"
+                            "$ref": "#/definitions/server.SwaggerSessionControlSendRequest"
                         }
                     }
                 ],
@@ -8373,49 +8373,49 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlOperationResponse"
+                            "$ref": "#/definitions/server.SwaggerSessionControlOperationResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "413": {
                         "description": "Request Entity Too Large",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -8484,7 +8484,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlMonitorRequest"
+                            "$ref": "#/definitions/server.SwaggerSessionControlMonitorRequest"
                         }
                     }
                 ],
@@ -8492,43 +8492,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlOperationResponse"
+                            "$ref": "#/definitions/server.SwaggerSessionControlOperationResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -8596,7 +8596,7 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlStopRequest"
+                            "$ref": "#/definitions/server.SwaggerSessionControlStopRequest"
                         }
                     }
                 ],
@@ -8604,43 +8604,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlOperationResponse"
+                            "$ref": "#/definitions/server.SwaggerSessionControlOperationResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSessionControlError"
+                            "$ref": "#/definitions/server.SwaggerSessionControlError"
                         }
                     }
                 }
@@ -8686,7 +8686,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListSessionsResponse"
+                            "$ref": "#/definitions/server.SwaggerListSessionsResponse"
                         }
                     }
                 }
@@ -8728,7 +8728,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSessionRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantSessionRequest"
                         }
                     }
                 ],
@@ -8736,7 +8736,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     }
                 }
@@ -8783,7 +8783,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSession"
+                            "$ref": "#/definitions/server.SwaggerTenantSession"
                         }
                     }
                 }
@@ -8832,7 +8832,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSessionRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantSessionRequest"
                         }
                     }
                 ],
@@ -8840,7 +8840,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     }
                 }
@@ -8885,7 +8885,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerArchiveResponse"
+                            "$ref": "#/definitions/server.SwaggerArchiveResponse"
                         }
                     }
                 }
@@ -8934,7 +8934,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSessionRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantSessionRequest"
                         }
                     }
                 ],
@@ -8942,7 +8942,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     }
                 }
@@ -8981,7 +8981,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerImageGenerationListResponse"
+                            "$ref": "#/definitions/server.SwaggerImageGenerationListResponse"
                         }
                     }
                 }
@@ -9036,43 +9036,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerImageArtifactResponse"
+                            "$ref": "#/definitions/server.SwaggerImageArtifactResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "502": {
                         "description": "Bad Gateway",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "504": {
                         "description": "Gateway Timeout",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -9109,7 +9109,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerImageGenerateRequest"
+                            "$ref": "#/definitions/server.SwaggerImageGenerateRequest"
                         }
                     }
                 ],
@@ -9117,43 +9117,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerImageArtifactResponse"
+                            "$ref": "#/definitions/server.SwaggerImageArtifactResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "502": {
                         "description": "Bad Gateway",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "504": {
                         "description": "Gateway Timeout",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -9219,7 +9219,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSessionTimelineResponse"
+                            "$ref": "#/definitions/server.SwaggerTenantSessionTimelineResponse"
                         }
                     }
                 }
@@ -9277,7 +9277,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListSkillOverridesResponse"
+                            "$ref": "#/definitions/server.SwaggerListSkillOverridesResponse"
                         }
                     }
                 }
@@ -9319,7 +9319,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSkillOverrideRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantSkillOverrideRequest"
                         }
                     }
                 ],
@@ -9327,7 +9327,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     }
                 }
@@ -9372,7 +9372,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSkillPackageRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantSkillPackageRequest"
                         }
                     }
                 ],
@@ -9380,13 +9380,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSkillPackageResult"
+                            "$ref": "#/definitions/server.SwaggerTenantSkillPackageResult"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -9431,7 +9431,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSkillPackageRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantSkillPackageRequest"
                         }
                     }
                 ],
@@ -9439,13 +9439,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSkillPackageResult"
+                            "$ref": "#/definitions/server.SwaggerTenantSkillPackageResult"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -9490,7 +9490,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSkillPackageRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantSkillPackageRequest"
                         }
                     }
                 ],
@@ -9498,13 +9498,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSkillPackageResult"
+                            "$ref": "#/definitions/server.SwaggerTenantSkillPackageResult"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -9549,7 +9549,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSkillPackageVerifyRequest"
+                            "$ref": "#/definitions/server.SwaggerSkillPackageVerifyRequest"
                         }
                     }
                 ],
@@ -9557,13 +9557,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSkillPackageVerifyResponse"
+                            "$ref": "#/definitions/server.SwaggerSkillPackageVerifyResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -9627,7 +9627,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListSkillsResponse"
+                            "$ref": "#/definitions/server.SwaggerListSkillsResponse"
                         }
                     }
                 }
@@ -9669,7 +9669,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantSkillRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantSkillRequest"
                         }
                     }
                 ],
@@ -9677,13 +9677,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -9727,7 +9727,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSkillRollbackRequest"
+                            "$ref": "#/definitions/server.SwaggerSkillRollbackRequest"
                         }
                     }
                 ],
@@ -9735,13 +9735,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSkillRollbackResponse"
+                            "$ref": "#/definitions/server.SwaggerSkillRollbackResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -9787,7 +9787,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListMemoriesResponse"
+                            "$ref": "#/definitions/server.SwaggerListMemoriesResponse"
                         }
                     }
                 }
@@ -9829,7 +9829,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantMemoryRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantMemoryRequest"
                         }
                     }
                 ],
@@ -9837,13 +9837,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -9901,13 +9901,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListTelemetryEventsResponse"
+                            "$ref": "#/definitions/server.SwaggerListTelemetryEventsResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -9949,7 +9949,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTelemetryEventRequest"
+                            "$ref": "#/definitions/server.SwaggerTelemetryEventRequest"
                         }
                     }
                 ],
@@ -9957,13 +9957,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10021,13 +10021,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListTenantsResponse"
+                            "$ref": "#/definitions/server.SwaggerListTenantsResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10069,7 +10069,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantRequest"
                         }
                     }
                 ],
@@ -10077,19 +10077,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10134,19 +10134,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerArchiveResponse"
+                            "$ref": "#/definitions/server.SwaggerArchiveResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10188,7 +10188,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantRequest"
                         }
                     }
                 ],
@@ -10196,19 +10196,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10266,19 +10266,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListTenantUsageDailyResponse"
+                            "$ref": "#/definitions/server.SwaggerListTenantUsageDailyResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10336,19 +10336,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListTenantUsageLedgerResponse"
+                            "$ref": "#/definitions/server.SwaggerListTenantUsageLedgerResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10388,19 +10388,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantUser"
+                            "$ref": "#/definitions/server.SwaggerTenantUser"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10442,7 +10442,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantUserRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantUserRequest"
                         }
                     }
                 ],
@@ -10450,13 +10450,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10498,7 +10498,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantUserRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantUserRequest"
                         }
                     }
                 ],
@@ -10506,13 +10506,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10570,13 +10570,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListUsersResponse"
+                            "$ref": "#/definitions/server.SwaggerListUsersResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10618,7 +10618,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantUserRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantUserRequest"
                         }
                     }
                 ],
@@ -10626,13 +10626,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10677,13 +10677,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerArchiveResponse"
+                            "$ref": "#/definitions/server.SwaggerArchiveResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10725,7 +10725,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTenantUserRequest"
+                            "$ref": "#/definitions/server.SwaggerTenantUserRequest"
                         }
                     }
                 ],
@@ -10733,13 +10733,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerIDResponse"
+                            "$ref": "#/definitions/server.SwaggerIDResponse"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10785,7 +10785,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerListWebAgentConversationsResponse"
+                            "$ref": "#/definitions/server.SwaggerListWebAgentConversationsResponse"
                         }
                     }
                 }
@@ -10844,13 +10844,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWebAgentConversationDetail"
+                            "$ref": "#/definitions/server.SwaggerWebAgentConversationDetail"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10898,43 +10898,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowRun"
+                            "$ref": "#/definitions/server.SwaggerWorkflowRun"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -10982,43 +10982,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowRun"
+                            "$ref": "#/definitions/server.SwaggerWorkflowRun"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11072,43 +11072,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowEvents"
+                            "$ref": "#/definitions/server.SwaggerWorkflowEvents"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11162,43 +11162,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Event"
+                            "$ref": "#/definitions/workflow.Event"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11250,7 +11250,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowRecovery"
+                            "$ref": "#/definitions/server.SwaggerWorkflowRecovery"
                         }
                     }
                 ],
@@ -11258,43 +11258,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowRun"
+                            "$ref": "#/definitions/server.SwaggerWorkflowRun"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11335,43 +11335,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowTemplates"
+                            "$ref": "#/definitions/server.SwaggerWorkflowTemplates"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11414,7 +11414,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflowapp.SaveRequest"
+                            "$ref": "#/definitions/workflowapp.SaveRequest"
                         }
                     }
                 ],
@@ -11422,43 +11422,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowTemplate"
+                            "$ref": "#/definitions/server.SwaggerWorkflowTemplate"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11499,43 +11499,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowBuiltins"
+                            "$ref": "#/definitions/server.SwaggerWorkflowBuiltins"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11583,43 +11583,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowTemplate"
+                            "$ref": "#/definitions/server.SwaggerWorkflowTemplate"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11673,43 +11673,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowTemplate"
+                            "$ref": "#/definitions/server.SwaggerWorkflowTemplate"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11763,43 +11763,43 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowRuns"
+                            "$ref": "#/definitions/server.SwaggerWorkflowRuns"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11856,7 +11856,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflowapp.StartRequest"
+                            "$ref": "#/definitions/workflowapp.StartRequest"
                         }
                     }
                 ],
@@ -11864,49 +11864,49 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowRun"
+                            "$ref": "#/definitions/server.SwaggerWorkflowRun"
                         }
                     },
                     "202": {
                         "description": "Accepted",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerWorkflowRun"
+                            "$ref": "#/definitions/server.SwaggerWorkflowRun"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -11930,13 +11930,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerSnapshotResponse"
+                            "$ref": "#/definitions/server.SwaggerSnapshotResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -12024,7 +12024,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTraceSessionsResponse"
+                            "$ref": "#/definitions/server.SwaggerTraceSessionsResponse"
                         }
                     }
                 }
@@ -12094,7 +12094,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerTraceDetailResponse"
+                            "$ref": "#/definitions/server.SwaggerTraceDetailResponse"
                         }
                     }
                 }
@@ -12152,37 +12152,37 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.RuntimeTraceArtifact"
+                            "$ref": "#/definitions/server.RuntimeTraceArtifact"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -12218,7 +12218,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_server.OpenAIChatRequest"
+                            "$ref": "#/definitions/server.OpenAIChatRequest"
                         }
                     }
                 ],
@@ -12226,25 +12226,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerOpenAIChatResponse"
+                            "$ref": "#/definitions/server.SwaggerOpenAIChatResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -12269,13 +12269,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerOpenAIModelsResponse"
+                            "$ref": "#/definitions/server.SwaggerOpenAIModelsResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -12300,13 +12300,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerProviderListResponse"
+                            "$ref": "#/definitions/server.SwaggerProviderListResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/internal_server.SwaggerError"
+                            "$ref": "#/definitions/server.SwaggerError"
                         }
                     }
                 }
@@ -12411,7 +12411,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_konglong87_niuma_internal_agentprofile.BlockedOverride": {
+        "agentprofile.BlockedOverride": {
             "type": "object",
             "properties": {
                 "field": {
@@ -12422,7 +12422,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.CapabilityPolicy": {
+        "agentprofile.CapabilityPolicy": {
             "type": "object",
             "properties": {
                 "allow_agents": {
@@ -12444,11 +12444,11 @@ const docTemplate = `{
                     }
                 },
                 "tools": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.ToolPolicy"
+                    "$ref": "#/definitions/agentprofile.ToolPolicy"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.ContextPolicy": {
+        "agentprofile.ContextPolicy": {
             "type": "object",
             "properties": {
                 "git": {
@@ -12471,7 +12471,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.ExecutionKind": {
+        "agentprofile.ExecutionKind": {
             "type": "string",
             "enum": [
                 "text",
@@ -12484,21 +12484,21 @@ const docTemplate = `{
                 "ExecutionKindImage"
             ]
         },
-        "github_com_konglong87_niuma_internal_agentprofile.ExecutionKindDescriptor": {
+        "agentprofile.ExecutionKindDescriptor": {
             "type": "object",
             "properties": {
                 "display_name": {
                     "type": "string"
                 },
                 "kind": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.ExecutionKind"
+                    "$ref": "#/definitions/agentprofile.ExecutionKind"
                 },
                 "workflow_supported": {
                     "type": "boolean"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.ExecutionPolicy": {
+        "agentprofile.ExecutionPolicy": {
             "type": "object",
             "properties": {
                 "auto_compact": {
@@ -12508,7 +12508,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "kind": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.ExecutionKind"
+                    "$ref": "#/definitions/agentprofile.ExecutionKind"
                 },
                 "max_parallel_read_only_tools": {
                     "type": "integer"
@@ -12530,7 +12530,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.IdentityPolicy": {
+        "agentprofile.IdentityPolicy": {
             "type": "object",
             "properties": {
                 "description": {
@@ -12544,7 +12544,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.PermissionMode": {
+        "agentprofile.PermissionMode": {
             "type": "string",
             "enum": [
                 "ask",
@@ -12559,11 +12559,11 @@ const docTemplate = `{
                 "PermissionModeBypass"
             ]
         },
-        "github_com_konglong87_niuma_internal_agentprofile.Profile": {
+        "agentprofile.Profile": {
             "type": "object",
             "properties": {
                 "config": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.ProfileDocument"
+                    "$ref": "#/definitions/agentprofile.ProfileDocument"
                 },
                 "description": {
                     "type": "string"
@@ -12593,43 +12593,43 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "scope": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.Scope"
+                    "$ref": "#/definitions/agentprofile.Scope"
                 },
                 "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.Status"
+                    "$ref": "#/definitions/agentprofile.Status"
                 },
                 "tenant_id": {
                     "type": "integer"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.ProfileDocument": {
+        "agentprofile.ProfileDocument": {
             "type": "object",
             "properties": {
                 "capabilities": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.CapabilityPolicy"
+                    "$ref": "#/definitions/agentprofile.CapabilityPolicy"
                 },
                 "context": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.ContextPolicy"
+                    "$ref": "#/definitions/agentprofile.ContextPolicy"
                 },
                 "execution": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.ExecutionPolicy"
+                    "$ref": "#/definitions/agentprofile.ExecutionPolicy"
                 },
                 "identity": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.IdentityPolicy"
+                    "$ref": "#/definitions/agentprofile.IdentityPolicy"
                 },
                 "prompt": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.PromptPolicy"
+                    "$ref": "#/definitions/agentprofile.PromptPolicy"
                 },
                 "safety": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.SafetyPolicy"
+                    "$ref": "#/definitions/agentprofile.SafetyPolicy"
                 },
                 "schema_version": {
                     "type": "integer"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.PromptMode": {
+        "agentprofile.PromptMode": {
             "type": "string",
             "enum": [
                 "code",
@@ -12640,14 +12640,14 @@ const docTemplate = `{
                 "PromptModeChat"
             ]
         },
-        "github_com_konglong87_niuma_internal_agentprofile.PromptPolicy": {
+        "agentprofile.PromptPolicy": {
             "type": "object",
             "properties": {
                 "language": {
                     "type": "string"
                 },
                 "mode": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.PromptMode"
+                    "$ref": "#/definitions/agentprofile.PromptMode"
                 },
                 "output_style": {
                     "type": "string"
@@ -12660,7 +12660,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.RoleTypeDescriptor": {
+        "agentprofile.RoleTypeDescriptor": {
             "type": "object",
             "properties": {
                 "description": {
@@ -12674,21 +12674,21 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.SafetyPolicy": {
+        "agentprofile.SafetyPolicy": {
             "type": "object",
             "properties": {
                 "allow_unsandboxed_commands": {
                     "type": "boolean"
                 },
                 "permission_mode": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.PermissionMode"
+                    "$ref": "#/definitions/agentprofile.PermissionMode"
                 },
                 "sandbox": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.SandboxMode"
+                    "$ref": "#/definitions/agentprofile.SandboxMode"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentprofile.SandboxMode": {
+        "agentprofile.SandboxMode": {
             "type": "string",
             "enum": [
                 "required",
@@ -12701,7 +12701,7 @@ const docTemplate = `{
                 "SandboxDisabled"
             ]
         },
-        "github_com_konglong87_niuma_internal_agentprofile.Scope": {
+        "agentprofile.Scope": {
             "type": "string",
             "enum": [
                 "builtin",
@@ -12714,7 +12714,7 @@ const docTemplate = `{
                 "ScopeUserPrivate"
             ]
         },
-        "github_com_konglong87_niuma_internal_agentprofile.Status": {
+        "agentprofile.Status": {
             "type": "string",
             "enum": [
                 "draft",
@@ -12729,7 +12729,7 @@ const docTemplate = `{
                 "StatusArchived"
             ]
         },
-        "github_com_konglong87_niuma_internal_agentprofile.ToolPolicy": {
+        "agentprofile.ToolPolicy": {
             "type": "object",
             "properties": {
                 "allow": {
@@ -12746,7 +12746,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agenttasks.Attachment": {
+        "agenttasks.Attachment": {
             "type": "object",
             "properties": {
                 "attachment_id": {
@@ -12772,565 +12772,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Agent": {
-            "type": "object",
-            "properties": {
-                "effort": {
-                    "type": "string"
-                },
-                "kind": {
-                    "type": "string"
-                },
-                "max_output_tokens": {
-                    "type": "integer"
-                },
-                "model": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "profile_hash": {
-                    "type": "string"
-                },
-                "profile_id": {
-                    "type": "integer"
-                },
-                "profile_key": {
-                    "type": "string"
-                },
-                "profile_version": {
-                    "type": "integer"
-                },
-                "provider": {
-                    "type": "string"
-                },
-                "ref": {
-                    "type": "string"
-                },
-                "role_type": {
-                    "type": "string"
-                },
-                "route_hash": {
-                    "type": "string"
-                },
-                "system_prompt": {
-                    "type": "string"
-                },
-                "tools": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Artifact": {
-            "type": "object",
-            "properties": {
-                "attempt_no": {
-                    "type": "integer"
-                },
-                "content": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "kind": {
-                    "type": "string"
-                },
-                "node_id": {
-                    "type": "string"
-                },
-                "sha256": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Attempt": {
-            "type": "object",
-            "properties": {
-                "budget_reserved": {
-                    "description": "BudgetReserved is the immutable admission reservation, not provider usage.",
-                    "type": "integer"
-                },
-                "epoch": {
-                    "type": "integer"
-                },
-                "failure": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Failure"
-                },
-                "finished_at": {
-                    "type": "string"
-                },
-                "model": {
-                    "type": "string"
-                },
-                "number": {
-                    "type": "integer"
-                },
-                "provider": {
-                    "type": "string"
-                },
-                "started_at": {
-                    "type": "string"
-                },
-                "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Status"
-                },
-                "task_id": {
-                    "type": "integer"
-                },
-                "usage": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Usage"
-                },
-                "usage_known": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Definition": {
-            "type": "object",
-            "properties": {
-                "limits": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Limits"
-                },
-                "nodes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Node"
-                    }
-                },
-                "schema_version": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Event": {
-            "type": "object",
-            "properties": {
-                "attempt_no": {
-                    "type": "integer"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "failure": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Failure"
-                },
-                "node_id": {
-                    "type": "string"
-                },
-                "sequence": {
-                    "type": "integer"
-                },
-                "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Status"
-                },
-                "text": {
-                    "type": "string"
-                },
-                "type": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.EventType"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.EventType": {
-            "type": "string",
-            "enum": [
-                "run_queued",
-                "run_started",
-                "task_created",
-                "task_waiting_dependency",
-                "agent_started",
-                "agent_output_delta",
-                "agent_phase",
-                "agent_completed",
-                "agent_failed",
-                "task_retry_scheduled",
-                "run_cancel_requested",
-                "run_cancelled",
-                "task_cancelled",
-                "run_completed",
-                "run_failed",
-                "run_timed_out",
-                "run_interrupted",
-                "run_recovered"
-            ],
-            "x-enum-varnames": [
-                "EventQueued",
-                "EventStarted",
-                "EventTaskCreated",
-                "EventWaiting",
-                "EventAgentStarted",
-                "EventDelta",
-                "EventPhase",
-                "EventAgentCompleted",
-                "EventAgentFailed",
-                "EventRetry",
-                "EventCancelRequested",
-                "EventCancelled",
-                "EventTaskCancelled",
-                "EventCompleted",
-                "EventFailed",
-                "EventTimedOut",
-                "EventInterrupted",
-                "EventRecovered"
-            ]
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Failure": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "retryable": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Limits": {
-            "type": "object",
-            "properties": {
-                "max_parallel": {
-                    "type": "integer"
-                },
-                "max_total_tokens": {
-                    "type": "integer"
-                },
-                "run_timeout_seconds": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Node": {
-            "type": "object",
-            "properties": {
-                "agent_ref": {
-                    "type": "string"
-                },
-                "depends_on": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "id": {
-                    "type": "string"
-                },
-                "instruction": {
-                    "type": "string"
-                },
-                "retry": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.RetryPolicy"
-                },
-                "timeout_seconds": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.NodeRun": {
-            "type": "object",
-            "properties": {
-                "artifact_id": {
-                    "type": "string"
-                },
-                "attempts": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Attempt"
-                    }
-                },
-                "failure": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Failure"
-                },
-                "next_retry_at": {
-                    "type": "string"
-                },
-                "node_id": {
-                    "type": "string"
-                },
-                "output": {
-                    "type": "string"
-                },
-                "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Status"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Plan": {
-            "type": "object",
-            "properties": {
-                "agents": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Agent"
-                    }
-                },
-                "definition": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Definition"
-                },
-                "hash": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.RetryPolicy": {
-            "type": "object",
-            "properties": {
-                "backoff_ms": {
-                    "type": "integer"
-                },
-                "max_attempts": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Run": {
-            "type": "object",
-            "properties": {
-                "artifacts": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Artifact"
-                    }
-                },
-                "cancel_requested_at": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deadline": {
-                    "type": "string"
-                },
-                "epoch": {
-                    "type": "integer"
-                },
-                "failure": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Failure"
-                },
-                "finished_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "input": {
-                    "type": "string"
-                },
-                "last_sequence": {
-                    "type": "integer"
-                },
-                "lease_owner": {
-                    "type": "string"
-                },
-                "lease_until": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "nodes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.NodeRun"
-                    }
-                },
-                "plan": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Plan"
-                },
-                "revision": {
-                    "type": "integer"
-                },
-                "scope": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Scope"
-                },
-                "started_at": {
-                    "type": "string"
-                },
-                "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Status"
-                },
-                "team_id": {
-                    "type": "integer"
-                },
-                "team_key": {
-                    "type": "string"
-                },
-                "team_version": {
-                    "type": "integer"
-                },
-                "uncertain_tokens": {
-                    "description": "UncertainTokens includes in-flight and unconfirmed attempt reservations.\nIt is not actual usage or a monetary amount.",
-                    "type": "integer"
-                },
-                "usage": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Usage"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Scope": {
-            "type": "object",
-            "properties": {
-                "tenant_id": {
-                    "type": "integer"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Status": {
-            "type": "string",
-            "enum": [
-                "queued",
-                "pending",
-                "ready",
-                "running",
-                "retry_wait",
-                "completed",
-                "failed",
-                "timed_out",
-                "cancel_requested",
-                "cancelled",
-                "interrupted",
-                "blocked"
-            ],
-            "x-enum-varnames": [
-                "Queued",
-                "Pending",
-                "Ready",
-                "Running",
-                "RetryWait",
-                "Completed",
-                "Failed",
-                "TimedOut",
-                "CancelRequested",
-                "Cancelled",
-                "Interrupted",
-                "Blocked"
-            ]
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflow.Usage": {
-            "type": "object",
-            "properties": {
-                "cache_read_tokens": {
-                    "type": "integer"
-                },
-                "cache_write_tokens": {
-                    "type": "integer"
-                },
-                "input_tokens": {
-                    "type": "integer"
-                },
-                "output_tokens": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflowapp.Binding": {
-            "type": "object",
-            "properties": {
-                "profile_id": {
-                    "type": "integer"
-                },
-                "profile_key": {
-                    "type": "string"
-                },
-                "profile_version": {
-                    "type": "integer"
-                },
-                "ref": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflowapp.Builtin": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "key": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflowapp.SaveRequest": {
-            "type": "object",
-            "properties": {
-                "agents": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflowapp.Binding"
-                    }
-                },
-                "definition": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Definition"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "key": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflowapp.StartRequest": {
-            "type": "object",
-            "properties": {
-                "input": {
-                    "type": "string"
-                },
-                "version": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_agentteam_workflowapp.Template": {
-            "type": "object",
-            "properties": {
-                "agents": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflowapp.Binding"
-                    }
-                },
-                "definition": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Definition"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "key": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "version": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_buildinfo.Info": {
+        "buildinfo.Info": {
             "type": "object",
             "properties": {
                 "build_time": {
@@ -13359,7 +12801,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_config.HookCommand": {
+        "config.HookCommand": {
             "type": "object",
             "properties": {
                 "command": {
@@ -13379,7 +12821,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_config.ImageModelCapability": {
+        "config.ImageModelCapability": {
             "type": "object",
             "properties": {
                 "aspectRatios": {
@@ -13435,7 +12877,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_config.SettingsIssue": {
+        "config.SettingsIssue": {
             "type": "object",
             "properties": {
                 "code": {
@@ -13449,7 +12891,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_files.Metadata": {
+        "files.Metadata": {
             "type": "object",
             "properties": {
                 "gid": {
@@ -13479,7 +12921,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_goal.CriterionStatus": {
+        "goal.CriterionStatus": {
             "type": "string",
             "enum": [
                 "pending",
@@ -13494,7 +12936,7 @@ const docTemplate = `{
                 "CriterionStatusWaived"
             ]
         },
-        "github_com_konglong87_niuma_internal_goal.Decision": {
+        "goal.Decision": {
             "type": "object",
             "properties": {
                 "blocker_key": {
@@ -13510,11 +12952,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.DecisionStatus"
+                    "$ref": "#/definitions/goal.DecisionStatus"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_goal.DecisionStatus": {
+        "goal.DecisionStatus": {
             "type": "string",
             "enum": [
                 "continue",
@@ -13529,7 +12971,7 @@ const docTemplate = `{
                 "DecisionFailed"
             ]
         },
-        "github_com_konglong87_niuma_internal_goal.DependencyStatus": {
+        "goal.DependencyStatus": {
             "type": "string",
             "enum": [
                 "unknown",
@@ -13544,7 +12986,7 @@ const docTemplate = `{
                 "DependencyStatusBlocked"
             ]
         },
-        "github_com_konglong87_niuma_internal_goal.Event": {
+        "goal.Event": {
             "type": "object",
             "properties": {
                 "blocker_key": {
@@ -13587,17 +13029,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.Status"
+                    "$ref": "#/definitions/goal.Status"
                 },
                 "turn": {
                     "type": "integer"
                 },
                 "type": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.EventType"
+                    "$ref": "#/definitions/goal.EventType"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_goal.EventType": {
+        "goal.EventType": {
             "type": "string",
             "enum": [
                 "goal_started",
@@ -13618,7 +13060,7 @@ const docTemplate = `{
                 "EventStatusChanged"
             ]
         },
-        "github_com_konglong87_niuma_internal_goal.EvidenceType": {
+        "goal.EvidenceType": {
             "type": "string",
             "enum": [
                 "command",
@@ -13641,7 +13083,7 @@ const docTemplate = `{
                 "EvidenceTypeManual"
             ]
         },
-        "github_com_konglong87_niuma_internal_goal.Goal": {
+        "goal.Goal": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -13690,7 +13132,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.Status"
+                    "$ref": "#/definitions/goal.Status"
                 },
                 "token_budget": {
                     "type": "integer"
@@ -13706,7 +13148,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_goal.GoalCriterion": {
+        "goal.GoalCriterion": {
             "type": "object",
             "properties": {
                 "description": {
@@ -13725,11 +13167,11 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.CriterionStatus"
+                    "$ref": "#/definitions/goal.CriterionStatus"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_goal.GoalDependency": {
+        "goal.GoalDependency": {
             "type": "object",
             "properties": {
                 "description": {
@@ -13748,14 +13190,14 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.DependencyStatus"
+                    "$ref": "#/definitions/goal.DependencyStatus"
                 },
                 "type": {
                     "type": "string"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_goal.GoalEvidence": {
+        "goal.GoalEvidence": {
             "type": "object",
             "properties": {
                 "command": {
@@ -13786,11 +13228,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.EvidenceType"
+                    "$ref": "#/definitions/goal.EvidenceType"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_goal.GoalRisk": {
+        "goal.GoalRisk": {
             "type": "object",
             "properties": {
                 "description": {
@@ -13803,17 +13245,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "severity": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.RiskSeverity"
+                    "$ref": "#/definitions/goal.RiskSeverity"
                 },
                 "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.RiskStatus"
+                    "$ref": "#/definitions/goal.RiskStatus"
                 },
                 "type": {
                     "type": "string"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_goal.GoalStep": {
+        "goal.GoalStep": {
             "type": "object",
             "properties": {
                 "depends_on": {
@@ -13835,14 +13277,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.StepStatus"
+                    "$ref": "#/definitions/goal.StepStatus"
                 },
                 "title": {
                     "type": "string"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_goal.RiskSeverity": {
+        "goal.RiskSeverity": {
             "type": "string",
             "enum": [
                 "low",
@@ -13857,7 +13299,7 @@ const docTemplate = `{
                 "RiskSeverityCritical"
             ]
         },
-        "github_com_konglong87_niuma_internal_goal.RiskStatus": {
+        "goal.RiskStatus": {
             "type": "string",
             "enum": [
                 "open",
@@ -13872,7 +13314,7 @@ const docTemplate = `{
                 "RiskStatusEscalated"
             ]
         },
-        "github_com_konglong87_niuma_internal_goal.Status": {
+        "goal.Status": {
             "type": "string",
             "enum": [
                 "active",
@@ -13889,7 +13331,7 @@ const docTemplate = `{
                 "StatusFailed"
             ]
         },
-        "github_com_konglong87_niuma_internal_goal.StepStatus": {
+        "goal.StepStatus": {
             "type": "string",
             "enum": [
                 "pending",
@@ -13906,7 +13348,7 @@ const docTemplate = `{
                 "StepStatusSkipped"
             ]
         },
-        "github_com_konglong87_niuma_internal_imagegen.Artifact": {
+        "imagegen.Artifact": {
             "type": "object",
             "properties": {
                 "asset_id": {
@@ -13962,7 +13404,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_imagegen.GenerationRecord": {
+        "imagegen.GenerationRecord": {
             "type": "object",
             "properties": {
                 "asset_id": {
@@ -14072,784 +13514,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_pendinginput.PendingInput": {
-            "type": "object",
-            "properties": {
-                "attachments": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agenttasks.Attachment"
-                    }
-                },
-                "attempt": {
-                    "type": "integer"
-                },
-                "base_task_id": {
-                    "type": "integer"
-                },
-                "claimed_at": {
-                    "type": "string"
-                },
-                "client_input_id": {
-                    "type": "string"
-                },
-                "content": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "direction": {
-                    "type": "string"
-                },
-                "dispatched_task_id": {
-                    "type": "integer"
-                },
-                "error_code": {
-                    "type": "string"
-                },
-                "error_message": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "sequence": {
-                    "type": "integer"
-                },
-                "session_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_pendinginput.Status"
-                },
-                "tenant_id": {
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_pendinginput.Status": {
-            "type": "string",
-            "enum": [
-                "queued",
-                "running",
-                "sent",
-                "failed",
-                "cancelled"
-            ],
-            "x-enum-varnames": [
-                "StatusQueued",
-                "StatusRunning",
-                "StatusSent",
-                "StatusFailed",
-                "StatusCancelled"
-            ]
-        },
-        "github_com_konglong87_niuma_internal_promptdump.CacheDiagnosticMessageBlock": {
-            "type": "object",
-            "properties": {
-                "block_index": {
-                    "type": "integer"
-                },
-                "bytes": {
-                    "type": "integer"
-                },
-                "has_cache_control": {
-                    "type": "boolean"
-                },
-                "message_index": {
-                    "type": "integer"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "tool_name": {
-                    "type": "string"
-                },
-                "tool_use_id": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_promptdump.CacheDiagnosticSystemBlock": {
-            "type": "object",
-            "properties": {
-                "has_cache_control": {
-                    "type": "boolean"
-                },
-                "index": {
-                    "type": "integer"
-                },
-                "kind": {
-                    "type": "string"
-                },
-                "seen_count": {
-                    "type": "integer"
-                },
-                "source": {
-                    "type": "string"
-                },
-                "stable": {
-                    "type": "boolean"
-                },
-                "text_bytes": {
-                    "type": "integer"
-                },
-                "text_hash": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_promptdump.CacheRecordDiagnostics": {
-            "type": "object",
-            "properties": {
-                "cache_control_block_count": {
-                    "type": "integer"
-                },
-                "cacheable_system_bytes": {
-                    "type": "integer"
-                },
-                "largest_message_blocks": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.CacheDiagnosticMessageBlock"
-                    }
-                },
-                "largest_uncached_system_blocks": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.CacheDiagnosticSystemBlock"
-                    }
-                },
-                "message_cache_marker_count": {
-                    "type": "integer"
-                },
-                "prefix_before_skills_hash": {
-                    "type": "string"
-                },
-                "prefix_through_skills_hash": {
-                    "type": "string"
-                },
-                "request_signature_delta_from_previous": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.CacheSignatureDelta"
-                },
-                "request_signature_hash": {
-                    "type": "string"
-                },
-                "session_id": {
-                    "type": "string"
-                },
-                "skills_catalog_bytes": {
-                    "type": "integer"
-                },
-                "skills_catalog_hash": {
-                    "type": "string"
-                },
-                "skills_catalog_position": {
-                    "type": "integer"
-                },
-                "turn": {
-                    "type": "integer"
-                },
-                "uncached_system_bytes": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_promptdump.CacheSessionDiagnostics": {
-            "type": "object",
-            "properties": {
-                "cache_control_hash_stable": {
-                    "type": "boolean"
-                },
-                "cacheable_system_bytes_max": {
-                    "type": "integer"
-                },
-                "largest_uncached_system_blocks": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.CacheDiagnosticSystemBlock"
-                    }
-                },
-                "message_prefix_hash_stable": {
-                    "type": "boolean"
-                },
-                "provider_cache_hit_ratio_input": {
-                    "type": "number"
-                },
-                "provider_cache_hit_ratio_total_input": {
-                    "type": "number"
-                },
-                "provider_cache_usage_state": {
-                    "type": "string"
-                },
-                "records": {
-                    "type": "integer"
-                },
-                "request_signature_changed_fields": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "request_signature_changed_fields_count": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "integer"
-                    }
-                },
-                "session_id": {
-                    "type": "string"
-                },
-                "system_hash_stable": {
-                    "type": "boolean"
-                },
-                "thinking_hash_stable": {
-                    "type": "boolean"
-                },
-                "tools_hash_stable": {
-                    "type": "boolean"
-                },
-                "uncached_system_bytes_max": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_promptdump.CacheSignatureDelta": {
-            "type": "object",
-            "properties": {
-                "breaks_cache": {
-                    "type": "boolean"
-                },
-                "cache_control_changed": {
-                    "type": "boolean"
-                },
-                "changed_fields": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "initialized": {
-                    "type": "boolean"
-                },
-                "message_prefix_changed": {
-                    "type": "boolean"
-                },
-                "model_changed": {
-                    "type": "boolean"
-                },
-                "previous_signature_hash": {
-                    "type": "string"
-                },
-                "signature_hash": {
-                    "type": "string"
-                },
-                "system_changed": {
-                    "type": "boolean"
-                },
-                "thinking_changed": {
-                    "type": "boolean"
-                },
-                "tools_changed": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_promptdump.ContentBlockSummary": {
-            "type": "object",
-            "properties": {
-                "actual_truncated": {
-                    "type": "boolean"
-                },
-                "connector_text_bytes": {
-                    "type": "integer"
-                },
-                "content_bytes": {
-                    "type": "integer"
-                },
-                "content_hash": {
-                    "type": "string"
-                },
-                "has_cache_control": {
-                    "type": "boolean"
-                },
-                "image_media_type": {
-                    "type": "string"
-                },
-                "image_source_type": {
-                    "type": "string"
-                },
-                "input_bytes": {
-                    "type": "integer"
-                },
-                "input_hash": {
-                    "type": "string"
-                },
-                "is_error": {
-                    "type": "boolean"
-                },
-                "persisted_output": {
-                    "type": "boolean"
-                },
-                "raw_over_default_limit": {
-                    "type": "boolean"
-                },
-                "raw_over_limit": {
-                    "type": "boolean"
-                },
-                "suspected_truncated": {
-                    "type": "boolean"
-                },
-                "text_bytes": {
-                    "type": "integer"
-                },
-                "thinking_bytes": {
-                    "type": "integer"
-                },
-                "tool_name": {
-                    "type": "string"
-                },
-                "tool_use_id": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_promptdump.MessageSummary": {
-            "type": "object",
-            "properties": {
-                "block_count": {
-                    "type": "integer"
-                },
-                "blocks": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.ContentBlockSummary"
-                    }
-                },
-                "bytes": {
-                    "type": "integer"
-                },
-                "role": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_promptdump.RequestRedaction": {
-            "type": "object",
-            "properties": {
-                "mode": {
-                    "type": "string"
-                },
-                "raw_request_included": {
-                    "type": "boolean"
-                },
-                "text_omitted": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_promptdump.SystemBlockSummary": {
-            "type": "object",
-            "properties": {
-                "cache_scope": {
-                    "type": "string"
-                },
-                "cache_ttl": {
-                    "type": "string"
-                },
-                "cache_type": {
-                    "type": "string"
-                },
-                "has_cache_control": {
-                    "type": "boolean"
-                },
-                "index": {
-                    "type": "integer"
-                },
-                "kind": {
-                    "type": "string"
-                },
-                "source": {
-                    "type": "string"
-                },
-                "text_bytes": {
-                    "type": "integer"
-                },
-                "text_hash": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_promptdump.ToolSummary": {
-            "type": "object",
-            "properties": {
-                "description_bytes": {
-                    "type": "integer"
-                },
-                "input_schema_bytes": {
-                    "type": "integer"
-                },
-                "input_schema_fields": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "input_schema_hash": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_query.ComputerObservationReference": {
-            "type": "object",
-            "properties": {
-                "asset_id": {
-                    "type": "string"
-                },
-                "media_type": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "observation_id": {
-                    "type": "string"
-                },
-                "sha256": {
-                    "type": "string"
-                },
-                "size_bytes": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_query.ToolTrace": {
-            "type": "object",
-            "properties": {
-                "computer_observation": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_query.ComputerObservationReference"
-                },
-                "file_changes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_tools.FileChange"
-                    }
-                },
-                "id": {
-                    "type": "string"
-                },
-                "input": {
-                    "type": "string"
-                },
-                "is_error": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "output": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_query.Usage": {
-            "type": "object",
-            "properties": {
-                "cache_creation_ephemeral_1h_input_tokens": {
-                    "type": "integer"
-                },
-                "cache_creation_ephemeral_5m_input_tokens": {
-                    "type": "integer"
-                },
-                "cache_creation_input_tokens": {
-                    "type": "integer"
-                },
-                "cache_read_input_tokens": {
-                    "type": "integer"
-                },
-                "inference_geo": {
-                    "type": "string"
-                },
-                "input_tokens": {
-                    "type": "integer"
-                },
-                "output_tokens": {
-                    "type": "integer"
-                },
-                "service_tier": {
-                    "type": "string"
-                },
-                "speed": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_scheduler.Event": {
-            "type": "object",
-            "properties": {
-                "background_id": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "cwd": {
-                    "type": "string"
-                },
-                "error": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "offset": {
-                    "type": "integer"
-                },
-                "prompt": {
-                    "type": "string"
-                },
-                "run_count": {
-                    "type": "integer"
-                },
-                "schedule_id": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_scheduler.RunRecord": {
-            "type": "object",
-            "properties": {
-                "background_id": {
-                    "type": "string"
-                },
-                "cwd": {
-                    "type": "string"
-                },
-                "error": {
-                    "type": "string"
-                },
-                "finished_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "log_bytes": {
-                    "type": "integer"
-                },
-                "prompt": {
-                    "type": "string"
-                },
-                "schedule_id": {
-                    "type": "string"
-                },
-                "started_at": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_sessioncontrol.HandoffCandidateRemoval": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "estimated_tokens": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_sessioncontrol.SessionChannel": {
-            "type": "object",
-            "properties": {
-                "account_key": {
-                    "type": "string"
-                },
-                "provider": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_sessioncontrol.SessionStatus": {
-            "type": "string",
-            "enum": [
-                "idle",
-                "queued",
-                "running",
-                "waiting_permission",
-                "waiting_input",
-                "blocked",
-                "completed",
-                "failed",
-                "stopped",
-                "archived"
-            ],
-            "x-enum-varnames": [
-                "StatusIdle",
-                "StatusQueued",
-                "StatusRunning",
-                "StatusWaitingPermission",
-                "StatusWaitingInput",
-                "StatusBlocked",
-                "StatusCompleted",
-                "StatusFailed",
-                "StatusStopped",
-                "StatusArchived"
-            ]
-        },
-        "github_com_konglong87_niuma_internal_sessioncontrol.Source": {
-            "type": "string",
-            "enum": [
-                "tenant",
-                "local"
-            ],
-            "x-enum-varnames": [
-                "SourceTenant",
-                "SourceLocal"
-            ]
-        },
-        "github_com_konglong87_niuma_internal_skills.Skill": {
-            "type": "object",
-            "properties": {
-                "agent": {
-                    "type": "string"
-                },
-                "allowed_tools": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "argument_hint": {
-                    "type": "string"
-                },
-                "arguments": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "content": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "disable_model_invocation": {
-                    "type": "boolean"
-                },
-                "effort": {
-                    "type": "string"
-                },
-                "execution_context": {
-                    "type": "string"
-                },
-                "hooks": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/github_com_konglong87_niuma_internal_config.HookCommand"
-                        }
-                    }
-                },
-                "legacy": {
-                    "type": "boolean"
-                },
-                "local_name": {
-                    "type": "string"
-                },
-                "model": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "package_ref": {
-                    "type": "string"
-                },
-                "package_sha256": {
-                    "type": "string"
-                },
-                "path": {
-                    "type": "string"
-                },
-                "paths": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "plugin": {
-                    "type": "string"
-                },
-                "root": {
-                    "type": "string"
-                },
-                "runtime_ref": {
-                    "type": "string"
-                },
-                "source": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_skills.Source"
-                },
-                "user_invocable": {
-                    "type": "boolean"
-                },
-                "version": {
-                    "type": "string"
-                },
-                "when_to_use": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_konglong87_niuma_internal_skills.Source": {
-            "type": "string",
-            "enum": [
-                "user",
-                "project",
-                "plugin",
-                "bundled",
-                "marketplace",
-                "mcp",
-                "tenant"
-            ],
-            "x-enum-varnames": [
-                "SourceUser",
-                "SourceProject",
-                "SourcePlugin",
-                "SourceBundled",
-                "SourceMarketplace",
-                "SourceMCP",
-                "SourceTenant"
-            ]
-        },
-        "github_com_konglong87_niuma_internal_storage_mysql.AgentProfile": {
+        "mysql.AgentProfile": {
             "type": "object",
             "properties": {
                 "config_json": {
@@ -14920,7 +13585,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.AgentProfileConversationSummary": {
+        "mysql.AgentProfileConversationSummary": {
             "type": "object",
             "properties": {
                 "account_id": {
@@ -14979,7 +13644,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.AgentProfileTeamLink": {
+        "mysql.AgentProfileTeamLink": {
             "type": "object",
             "properties": {
                 "account_id": {
@@ -15017,7 +13682,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.AgentTask": {
+        "mysql.AgentTask": {
             "type": "object",
             "properties": {
                 "agent_name": {
@@ -15067,7 +13732,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent": {
+        "mysql.AgentTaskEvent": {
             "type": "object",
             "properties": {
                 "channel": {
@@ -15099,7 +13764,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.AuditLog": {
+        "mysql.AuditLog": {
             "type": "object",
             "properties": {
                 "action": {
@@ -15131,7 +13796,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.Document": {
+        "mysql.Document": {
             "type": "object",
             "properties": {
                 "active": {
@@ -15157,7 +13822,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.EffectiveSkill": {
+        "mysql.EffectiveSkill": {
             "type": "object",
             "properties": {
                 "config_json": {
@@ -15204,7 +13869,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.KnowledgeChunk": {
+        "mysql.KnowledgeChunk": {
             "type": "object",
             "properties": {
                 "chunk_index": {
@@ -15239,7 +13904,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.KnowledgeDocument": {
+        "mysql.KnowledgeDocument": {
             "type": "object",
             "properties": {
                 "content": {
@@ -15271,7 +13936,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.Memory": {
+        "mysql.Memory": {
             "type": "object",
             "properties": {
                 "category": {
@@ -15300,7 +13965,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.Message": {
+        "mysql.Message": {
             "type": "object",
             "properties": {
                 "content": {
@@ -15347,7 +14012,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.QuotaEvent": {
+        "mysql.QuotaEvent": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -15394,7 +14059,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.Session": {
+        "mysql.Session": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -15423,7 +14088,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.Skill": {
+        "mysql.Skill": {
             "type": "object",
             "properties": {
                 "config_json": {
@@ -15467,7 +14132,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.SkillOverride": {
+        "mysql.SkillOverride": {
             "type": "object",
             "properties": {
                 "config_json": {
@@ -15496,7 +14161,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.TelemetryEvent": {
+        "mysql.TelemetryEvent": {
             "type": "object",
             "properties": {
                 "cache_creation_ephemeral_1h_input_tokens": {
@@ -15601,7 +14266,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.Tenant": {
+        "mysql.Tenant": {
             "type": "object",
             "properties": {
                 "id": {
@@ -15621,7 +14286,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.UsageDaily": {
+        "mysql.UsageDaily": {
             "type": "object",
             "properties": {
                 "cache_creation_input_tokens": {
@@ -15668,7 +14333,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.UsageLedger": {
+        "mysql.UsageLedger": {
             "type": "object",
             "properties": {
                 "cache_creation_ephemeral_1h_input_tokens": {
@@ -15760,7 +14425,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_storage_mysql.User": {
+        "mysql.User": {
             "type": "object",
             "properties": {
                 "display_name": {
@@ -15795,183 +14460,621 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_tenantpkg.Manifest": {
+        "pendinginput.PendingInput": {
             "type": "object",
             "properties": {
-                "files": {
+                "attachments": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_tenantpkg.ManifestFile"
+                        "$ref": "#/definitions/agenttasks.Attachment"
                     }
                 },
-                "package_sha256": {
+                "attempt": {
+                    "type": "integer"
+                },
+                "base_task_id": {
+                    "type": "integer"
+                },
+                "claimed_at": {
                     "type": "string"
                 },
-                "render": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_tenantpkg.RenderInfo"
-                },
-                "schema_version": {
+                "client_input_id": {
                     "type": "string"
                 },
-                "skill_key": {
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "direction": {
+                    "type": "string"
+                },
+                "dispatched_task_id": {
+                    "type": "integer"
+                },
+                "error_code": {
+                    "type": "string"
+                },
+                "error_message": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "sequence": {
+                    "type": "integer"
+                },
+                "session_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/pendinginput.Status"
+                },
+                "tenant_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pendinginput.Status": {
+            "type": "string",
+            "enum": [
+                "queued",
+                "running",
+                "sent",
+                "failed",
+                "cancelled"
+            ],
+            "x-enum-varnames": [
+                "StatusQueued",
+                "StatusRunning",
+                "StatusSent",
+                "StatusFailed",
+                "StatusCancelled"
+            ]
+        },
+        "promptdump.CacheDiagnosticMessageBlock": {
+            "type": "object",
+            "properties": {
+                "block_index": {
+                    "type": "integer"
+                },
+                "bytes": {
+                    "type": "integer"
+                },
+                "has_cache_control": {
+                    "type": "boolean"
+                },
+                "message_index": {
+                    "type": "integer"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "tool_name": {
+                    "type": "string"
+                },
+                "tool_use_id": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_tenantpkg.ManifestFile": {
+        "promptdump.CacheDiagnosticSystemBlock": {
             "type": "object",
             "properties": {
-                "path": {
-                    "type": "string"
+                "has_cache_control": {
+                    "type": "boolean"
                 },
-                "render_order": {
+                "index": {
                     "type": "integer"
                 },
-                "runtime": {
+                "kind": {
+                    "type": "string"
+                },
+                "seen_count": {
+                    "type": "integer"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "stable": {
                     "type": "boolean"
+                },
+                "text_bytes": {
+                    "type": "integer"
+                },
+                "text_hash": {
+                    "type": "string"
+                }
+            }
+        },
+        "promptdump.CacheRecordDiagnostics": {
+            "type": "object",
+            "properties": {
+                "cache_control_block_count": {
+                    "type": "integer"
+                },
+                "cacheable_system_bytes": {
+                    "type": "integer"
+                },
+                "largest_message_blocks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/promptdump.CacheDiagnosticMessageBlock"
+                    }
+                },
+                "largest_uncached_system_blocks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/promptdump.CacheDiagnosticSystemBlock"
+                    }
+                },
+                "message_cache_marker_count": {
+                    "type": "integer"
+                },
+                "prefix_before_skills_hash": {
+                    "type": "string"
+                },
+                "prefix_through_skills_hash": {
+                    "type": "string"
+                },
+                "request_signature_delta_from_previous": {
+                    "$ref": "#/definitions/promptdump.CacheSignatureDelta"
+                },
+                "request_signature_hash": {
+                    "type": "string"
+                },
+                "session_id": {
+                    "type": "string"
+                },
+                "skills_catalog_bytes": {
+                    "type": "integer"
+                },
+                "skills_catalog_hash": {
+                    "type": "string"
+                },
+                "skills_catalog_position": {
+                    "type": "integer"
+                },
+                "turn": {
+                    "type": "integer"
+                },
+                "uncached_system_bytes": {
+                    "type": "integer"
+                }
+            }
+        },
+        "promptdump.CacheSessionDiagnostics": {
+            "type": "object",
+            "properties": {
+                "cache_control_hash_stable": {
+                    "type": "boolean"
+                },
+                "cacheable_system_bytes_max": {
+                    "type": "integer"
+                },
+                "largest_uncached_system_blocks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/promptdump.CacheDiagnosticSystemBlock"
+                    }
+                },
+                "message_prefix_hash_stable": {
+                    "type": "boolean"
+                },
+                "provider_cache_hit_ratio_input": {
+                    "type": "number"
+                },
+                "provider_cache_hit_ratio_total_input": {
+                    "type": "number"
+                },
+                "provider_cache_usage_state": {
+                    "type": "string"
+                },
+                "records": {
+                    "type": "integer"
+                },
+                "request_signature_changed_fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "request_signature_changed_fields_count": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "session_id": {
+                    "type": "string"
+                },
+                "system_hash_stable": {
+                    "type": "boolean"
+                },
+                "thinking_hash_stable": {
+                    "type": "boolean"
+                },
+                "tools_hash_stable": {
+                    "type": "boolean"
+                },
+                "uncached_system_bytes_max": {
+                    "type": "integer"
+                }
+            }
+        },
+        "promptdump.CacheSignatureDelta": {
+            "type": "object",
+            "properties": {
+                "breaks_cache": {
+                    "type": "boolean"
+                },
+                "cache_control_changed": {
+                    "type": "boolean"
+                },
+                "changed_fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "initialized": {
+                    "type": "boolean"
+                },
+                "message_prefix_changed": {
+                    "type": "boolean"
+                },
+                "model_changed": {
+                    "type": "boolean"
+                },
+                "previous_signature_hash": {
+                    "type": "string"
+                },
+                "signature_hash": {
+                    "type": "string"
+                },
+                "system_changed": {
+                    "type": "boolean"
+                },
+                "thinking_changed": {
+                    "type": "boolean"
+                },
+                "tools_changed": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "promptdump.ContentBlockSummary": {
+            "type": "object",
+            "properties": {
+                "actual_truncated": {
+                    "type": "boolean"
+                },
+                "connector_text_bytes": {
+                    "type": "integer"
+                },
+                "content_bytes": {
+                    "type": "integer"
+                },
+                "content_hash": {
+                    "type": "string"
+                },
+                "has_cache_control": {
+                    "type": "boolean"
+                },
+                "image_media_type": {
+                    "type": "string"
+                },
+                "image_source_type": {
+                    "type": "string"
+                },
+                "input_bytes": {
+                    "type": "integer"
+                },
+                "input_hash": {
+                    "type": "string"
+                },
+                "is_error": {
+                    "type": "boolean"
+                },
+                "persisted_output": {
+                    "type": "boolean"
+                },
+                "raw_over_default_limit": {
+                    "type": "boolean"
+                },
+                "raw_over_limit": {
+                    "type": "boolean"
+                },
+                "suspected_truncated": {
+                    "type": "boolean"
+                },
+                "text_bytes": {
+                    "type": "integer"
+                },
+                "thinking_bytes": {
+                    "type": "integer"
+                },
+                "tool_name": {
+                    "type": "string"
+                },
+                "tool_use_id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "promptdump.MessageSummary": {
+            "type": "object",
+            "properties": {
+                "block_count": {
+                    "type": "integer"
+                },
+                "blocks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/promptdump.ContentBlockSummary"
+                    }
+                },
+                "bytes": {
+                    "type": "integer"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "promptdump.RequestRedaction": {
+            "type": "object",
+            "properties": {
+                "mode": {
+                    "type": "string"
+                },
+                "raw_request_included": {
+                    "type": "boolean"
+                },
+                "text_omitted": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "promptdump.SystemBlockSummary": {
+            "type": "object",
+            "properties": {
+                "cache_scope": {
+                    "type": "string"
+                },
+                "cache_ttl": {
+                    "type": "string"
+                },
+                "cache_type": {
+                    "type": "string"
+                },
+                "has_cache_control": {
+                    "type": "boolean"
+                },
+                "index": {
+                    "type": "integer"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "text_bytes": {
+                    "type": "integer"
+                },
+                "text_hash": {
+                    "type": "string"
+                }
+            }
+        },
+        "promptdump.ToolSummary": {
+            "type": "object",
+            "properties": {
+                "description_bytes": {
+                    "type": "integer"
+                },
+                "input_schema_bytes": {
+                    "type": "integer"
+                },
+                "input_schema_fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "input_schema_hash": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "query.ComputerObservationReference": {
+            "type": "object",
+            "properties": {
+                "asset_id": {
+                    "type": "string"
+                },
+                "media_type": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "observation_id": {
+                    "type": "string"
                 },
                 "sha256": {
                     "type": "string"
                 },
-                "size": {
+                "size_bytes": {
                     "type": "integer"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_tenantpkg.RenderInfo": {
+        "query.ToolTrace": {
             "type": "object",
             "properties": {
-                "entrypoint": {
+                "computer_observation": {
+                    "$ref": "#/definitions/query.ComputerObservationReference"
+                },
+                "file_changes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/tools.FileChange"
+                    }
+                },
+                "id": {
                     "type": "string"
                 },
-                "excluded_prefixes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "input": {
+                    "type": "string"
                 },
-                "runtime_excludes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "is_error": {
+                    "type": "boolean"
                 },
-                "runtime_files": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "name": {
+                    "type": "string"
                 },
-                "runtime_includes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "output": {
+                    "type": "string"
                 }
             }
         },
-        "github_com_konglong87_niuma_internal_tools.FileChange": {
+        "query.Usage": {
             "type": "object",
             "properties": {
-                "after": {
-                    "type": "string"
-                },
-                "after_exists": {
-                    "type": "boolean"
-                },
-                "after_is_dir": {
-                    "type": "boolean"
-                },
-                "after_is_symlink": {
-                    "type": "boolean"
-                },
-                "after_link_target": {
-                    "type": "string"
-                },
-                "after_mode": {
+                "cache_creation_ephemeral_1h_input_tokens": {
                     "type": "integer"
                 },
-                "after_mode_known": {
-                    "type": "boolean"
-                },
-                "after_sha256": {
-                    "type": "string"
-                },
-                "after_snapshot_path": {
-                    "type": "string"
-                },
-                "before": {
-                    "type": "string"
-                },
-                "before_exists": {
-                    "type": "boolean"
-                },
-                "before_is_dir": {
-                    "description": "Directory object type. Restore recreates/removes directories rather than\ntreating them as regular files.",
-                    "type": "boolean"
-                },
-                "before_is_symlink": {
-                    "description": "Object-type fields describe symlinks so rewind can restore the link\nitself rather than following it. Regular files leave these empty.",
-                    "type": "boolean"
-                },
-                "before_link_target": {
-                    "type": "string"
-                },
-                "before_metadata": {
-                    "description": "BeforeMetadata carries capability-aware filesystem metadata (mtime, owner,\nxattr) restored best-effort after content. A nil pointer means no metadata\nwas captured; individual capabilities carry their own \"known\" flags.",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/github_com_konglong87_niuma_internal_files.Metadata"
-                        }
-                    ]
-                },
-                "before_mode": {
+                "cache_creation_ephemeral_5m_input_tokens": {
                     "type": "integer"
                 },
-                "before_mode_known": {
-                    "type": "boolean"
+                "cache_creation_input_tokens": {
+                    "type": "integer"
                 },
-                "before_sha256": {
-                    "description": "BeforeSHA256 / AfterSHA256 record content hashes so a content-free\ntranscript (file bodies externalized to the snapshot store) stays\nauditable: you can still tell what changed and compare versions without\nthe transcript carrying the file body. Empty for empty/inline content.",
+                "cache_read_input_tokens": {
+                    "type": "integer"
+                },
+                "inference_geo": {
                     "type": "string"
                 },
-                "before_snapshot_path": {
+                "input_tokens": {
+                    "type": "integer"
+                },
+                "output_tokens": {
+                    "type": "integer"
+                },
+                "service_tier": {
                     "type": "string"
                 },
-                "before_superseded": {
-                    "description": "BeforeSuperseded marks a turn-level lite entry: an earlier file_change in\nthe same turn already holds the recoverable turn-start state for this path,\nso this entry keeps only path + hashes for observability and carries no\nrestorable body. Rewind restores the turn-start state, so intermediate\nversions need no snapshot.",
-                    "type": "boolean"
-                },
-                "message_id": {
-                    "description": "MessageID keys the change to the message/turn that produced it in a v2\nmessage-graph transcript (aligning with Claude Code's messageId-\u003ebackup\nmodel). Empty for v1 linear transcripts. It is observability/interop only;\nrewind derives its restore set from the message-graph chain structure.",
-                    "type": "string"
-                },
-                "mode_changed": {
-                    "type": "boolean"
-                },
-                "path": {
-                    "type": "string"
-                },
-                "source": {
-                    "description": "Source records which tool boundary captured the change (edit/write/bash)\nfor observability; it never affects restore.",
+                "speed": {
                     "type": "string"
                 }
             }
         },
-        "internal_server.EffectiveSettingsResponse": {
+        "scheduler.Event": {
+            "type": "object",
+            "properties": {
+                "background_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "cwd": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "prompt": {
+                    "type": "string"
+                },
+                "run_count": {
+                    "type": "integer"
+                },
+                "schedule_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "scheduler.RunRecord": {
+            "type": "object",
+            "properties": {
+                "background_id": {
+                    "type": "string"
+                },
+                "cwd": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "finished_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "log_bytes": {
+                    "type": "integer"
+                },
+                "prompt": {
+                    "type": "string"
+                },
+                "schedule_id": {
+                    "type": "string"
+                },
+                "started_at": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "server.EffectiveSettingsResponse": {
             "type": "object",
             "properties": {
                 "activation": {
-                    "$ref": "#/definitions/internal_server.SettingsActivation"
+                    "$ref": "#/definitions/server.SettingsActivation"
                 },
                 "file_resolved": {
-                    "$ref": "#/definitions/internal_server.SettingsFileResolved"
+                    "$ref": "#/definitions/server.SettingsFileResolved"
                 },
                 "global_path": {
                     "type": "string"
                 },
                 "process_snapshot": {
-                    "$ref": "#/definitions/internal_server.SettingsProcessSnapshot"
+                    "$ref": "#/definitions/server.SettingsProcessSnapshot"
                 },
                 "scope": {
                     "type": "string"
@@ -15981,7 +15084,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.GlobalSettingsPromoteRequest": {
+        "server.GlobalSettingsPromoteRequest": {
             "type": "object",
             "properties": {
                 "doc": {
@@ -15993,7 +15096,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.GlobalSettingsPromoteResponse": {
+        "server.GlobalSettingsPromoteResponse": {
             "type": "object",
             "properties": {
                 "doc": {
@@ -16011,7 +15114,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.GlobalSettingsResponse": {
+        "server.GlobalSettingsResponse": {
             "type": "object",
             "properties": {
                 "doc": {
@@ -16035,7 +15138,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.GlobalSettingsSaveResponse": {
+        "server.GlobalSettingsSaveResponse": {
             "type": "object",
             "properties": {
                 "path": {
@@ -16052,7 +15155,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.OpenAIChatRequest": {
+        "server.OpenAIChatRequest": {
             "type": "object",
             "properties": {
                 "max_completion_tokens": {
@@ -16064,7 +15167,7 @@ const docTemplate = `{
                 "messages": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.OpenAIMessage"
+                        "$ref": "#/definitions/server.OpenAIMessage"
                     }
                 },
                 "metadata": {
@@ -16085,7 +15188,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "response_format": {
-                    "$ref": "#/definitions/internal_server.OpenAIResponseFormat"
+                    "$ref": "#/definitions/server.OpenAIResponseFormat"
                 },
                 "stream": {
                     "type": "boolean"
@@ -16101,7 +15204,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.OpenAIFunctionCall": {
+        "server.OpenAIFunctionCall": {
             "type": "object",
             "properties": {
                 "arguments": {
@@ -16112,7 +15215,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.OpenAIMessage": {
+        "server.OpenAIMessage": {
             "type": "object",
             "properties": {
                 "content": {
@@ -16122,7 +15225,7 @@ const docTemplate = `{
                     }
                 },
                 "function_call": {
-                    "$ref": "#/definitions/internal_server.OpenAIFunctionCall"
+                    "$ref": "#/definitions/server.OpenAIFunctionCall"
                 },
                 "name": {
                     "type": "string"
@@ -16136,23 +15239,23 @@ const docTemplate = `{
                 "tool_calls": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.OpenAIToolCall"
+                        "$ref": "#/definitions/server.OpenAIToolCall"
                     }
                 }
             }
         },
-        "internal_server.OpenAIResponseFormat": {
+        "server.OpenAIResponseFormat": {
             "type": "object",
             "properties": {
                 "json_schema": {
-                    "$ref": "#/definitions/internal_server.OpenAIResponseFormatSchema"
+                    "$ref": "#/definitions/server.OpenAIResponseFormatSchema"
                 },
                 "type": {
                     "type": "string"
                 }
             }
         },
-        "internal_server.OpenAIResponseFormatSchema": {
+        "server.OpenAIResponseFormatSchema": {
             "type": "object",
             "properties": {
                 "description": {
@@ -16172,11 +15275,11 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.OpenAIToolCall": {
+        "server.OpenAIToolCall": {
             "type": "object",
             "properties": {
                 "function": {
-                    "$ref": "#/definitions/internal_server.OpenAIFunctionCall"
+                    "$ref": "#/definitions/server.OpenAIFunctionCall"
                 },
                 "id": {
                     "type": "string"
@@ -16186,7 +15289,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.QueryAttachment": {
+        "server.QueryAttachment": {
             "type": "object",
             "properties": {
                 "attachment_id": {
@@ -16218,13 +15321,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.QueryRequest": {
+        "server.QueryRequest": {
             "type": "object",
             "properties": {
                 "attachments": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.QueryAttachment"
+                        "$ref": "#/definitions/server.QueryAttachment"
                     }
                 },
                 "cwd": {
@@ -16278,7 +15381,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.RuntimeBackgroundJob": {
+        "server.RuntimeBackgroundJob": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -16337,23 +15440,23 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.RuntimeTraceArtifact": {
+        "server.RuntimeTraceArtifact": {
             "type": "object",
             "properties": {
                 "configuration": {
-                    "$ref": "#/definitions/internal_server.RuntimeTraceConfiguration"
+                    "$ref": "#/definitions/server.RuntimeTraceConfiguration"
                 },
                 "diagnostics": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.RuntimeTraceDiagnostic"
+                        "$ref": "#/definitions/server.RuntimeTraceDiagnostic"
                     }
                 },
                 "quality": {
-                    "$ref": "#/definitions/internal_server.RuntimeTraceQuality"
+                    "$ref": "#/definitions/server.RuntimeTraceQuality"
                 },
                 "run": {
-                    "$ref": "#/definitions/internal_server.RuntimeTraceRun"
+                    "$ref": "#/definitions/server.RuntimeTraceRun"
                 },
                 "schema_version": {
                     "type": "string"
@@ -16361,15 +15464,15 @@ const docTemplate = `{
                 "spans": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.RuntimeTraceArtifactSpan"
+                        "$ref": "#/definitions/server.RuntimeTraceArtifactSpan"
                     }
                 },
                 "summary": {
-                    "$ref": "#/definitions/internal_server.RuntimeTraceSummary"
+                    "$ref": "#/definitions/server.RuntimeTraceSummary"
                 }
             }
         },
-        "internal_server.RuntimeTraceArtifactSpan": {
+        "server.RuntimeTraceArtifactSpan": {
             "type": "object",
             "properties": {
                 "concurrency_class": {
@@ -16416,21 +15519,21 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.RuntimeTraceConfiguration": {
+        "server.RuntimeTraceConfiguration": {
             "type": "object",
             "properties": {
                 "effective_max_parallel_read_only_tools": {
                     "type": "integer"
                 },
                 "read_only_tool_mode": {
-                    "$ref": "#/definitions/internal_server.RuntimeTraceReadOnlyToolMode"
+                    "$ref": "#/definitions/server.RuntimeTraceReadOnlyToolMode"
                 },
                 "requested_max_parallel_read_only_tools": {
                     "type": "integer"
                 }
             }
         },
-        "internal_server.RuntimeTraceDiagnostic": {
+        "server.RuntimeTraceDiagnostic": {
             "type": "object",
             "properties": {
                 "code": {
@@ -16465,7 +15568,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.RuntimeTraceQuality": {
+        "server.RuntimeTraceQuality": {
             "type": "object",
             "properties": {
                 "completion_verified": {
@@ -16503,7 +15606,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.RuntimeTraceReadOnlyToolMode": {
+        "server.RuntimeTraceReadOnlyToolMode": {
             "type": "string",
             "enum": [
                 "serial",
@@ -16514,7 +15617,7 @@ const docTemplate = `{
                 "RuntimeTraceReadOnlyToolModeParallel"
             ]
         },
-        "internal_server.RuntimeTraceRun": {
+        "server.RuntimeTraceRun": {
             "type": "object",
             "properties": {
                 "agent": {
@@ -16524,7 +15627,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "build_info": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_buildinfo.Info"
+                    "$ref": "#/definitions/buildinfo.Info"
                 },
                 "duration_ms": {
                     "type": "integer"
@@ -16539,11 +15642,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/internal_server.RuntimeTraceRunStatus"
+                    "$ref": "#/definitions/server.RuntimeTraceRunStatus"
                 }
             }
         },
-        "internal_server.RuntimeTraceRunStatus": {
+        "server.RuntimeTraceRunStatus": {
             "type": "string",
             "enum": [
                 "unknown",
@@ -16556,7 +15659,7 @@ const docTemplate = `{
                 "RuntimeTraceRunStatusCompleted"
             ]
         },
-        "internal_server.RuntimeTraceSummary": {
+        "server.RuntimeTraceSummary": {
             "type": "object",
             "properties": {
                 "agent_tasks": {
@@ -16645,7 +15748,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SettingsActivation": {
+        "server.SettingsActivation": {
             "type": "object",
             "properties": {
                 "existing_runs": {
@@ -16659,7 +15762,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SettingsEnvironmentInfo": {
+        "server.SettingsEnvironmentInfo": {
             "type": "object",
             "properties": {
                 "api_path": {
@@ -16685,13 +15788,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SettingsEnvironmentsResponse": {
+        "server.SettingsEnvironmentsResponse": {
             "type": "object",
             "properties": {
                 "environments": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SettingsEnvironmentInfo"
+                        "$ref": "#/definitions/server.SettingsEnvironmentInfo"
                     }
                 },
                 "global_settings_path": {
@@ -16702,7 +15805,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SettingsFileResolved": {
+        "server.SettingsFileResolved": {
             "type": "object",
             "properties": {
                 "doc": {
@@ -16732,7 +15835,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SettingsProcessSnapshot": {
+        "server.SettingsProcessSnapshot": {
             "type": "object",
             "properties": {
                 "active_run_config_known": {
@@ -16750,7 +15853,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SettingsProviderTestRequest": {
+        "server.SettingsProviderTestRequest": {
             "type": "object",
             "properties": {
                 "doc": {
@@ -16762,7 +15865,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SettingsProviderTestResponse": {
+        "server.SettingsProviderTestResponse": {
             "type": "object",
             "properties": {
                 "kind": {
@@ -16779,13 +15882,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SettingsValidationResponse": {
+        "server.SettingsValidationResponse": {
             "type": "object",
             "properties": {
                 "issues": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_config.SettingsIssue"
+                        "$ref": "#/definitions/config.SettingsIssue"
                     }
                 },
                 "valid": {
@@ -16793,7 +15896,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentProfile": {
+        "server.SwaggerAgentProfile": {
             "type": "object",
             "properties": {
                 "config_json": {
@@ -16864,7 +15967,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentProfileAssignment": {
+        "server.SwaggerAgentProfileAssignment": {
             "type": "object",
             "properties": {
                 "assigned_by_user_id": {
@@ -16893,7 +15996,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentProfileChannelBinding": {
+        "server.SwaggerAgentProfileChannelBinding": {
             "type": "object",
             "properties": {
                 "account_id": {
@@ -16931,20 +16034,20 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentProfileConversationCatalog": {
+        "server.SwaggerAgentProfileConversationCatalog": {
             "type": "object",
             "properties": {
                 "conversations": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentProfileConversationSummary"
+                        "$ref": "#/definitions/mysql.AgentProfileConversationSummary"
                     }
                 },
                 "message_count": {
                     "type": "integer"
                 },
                 "profile": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentProfile"
+                    "$ref": "#/definitions/mysql.AgentProfile"
                 },
                 "run_count": {
                     "type": "integer"
@@ -16952,12 +16055,12 @@ const docTemplate = `{
                 "teams": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentProfileTeamLink"
+                        "$ref": "#/definitions/mysql.AgentProfileTeamLink"
                     }
                 }
             }
         },
-        "internal_server.SwaggerAgentSlashCommand": {
+        "server.SwaggerAgentSlashCommand": {
             "type": "object",
             "properties": {
                 "description": {
@@ -16974,7 +16077,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTaskAttachment": {
+        "server.SwaggerAgentTaskAttachment": {
             "type": "object",
             "properties": {
                 "attachment_id": {
@@ -17011,13 +16114,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTaskMessageRequest": {
+        "server.SwaggerAgentTaskMessageRequest": {
             "type": "object",
             "properties": {
                 "attachments": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerAgentTaskAttachment"
+                        "$ref": "#/definitions/server.SwaggerAgentTaskAttachment"
                     }
                 },
                 "content": {
@@ -17031,7 +16134,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTaskMessageResponse": {
+        "server.SwaggerAgentTaskMessageResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -17046,7 +16149,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTaskPermissionRequest": {
+        "server.SwaggerAgentTaskPermissionRequest": {
             "type": "object",
             "properties": {
                 "allowed": {
@@ -17063,7 +16166,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTaskPermissionResponse": {
+        "server.SwaggerAgentTaskPermissionResponse": {
             "type": "object",
             "properties": {
                 "allowed": {
@@ -17077,7 +16180,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTaskQuestionAnswerRequest": {
+        "server.SwaggerAgentTaskQuestionAnswerRequest": {
             "type": "object",
             "properties": {
                 "answer": {
@@ -17086,7 +16189,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTaskQuestionAnswerResponse": {
+        "server.SwaggerAgentTaskQuestionAnswerResponse": {
             "type": "object",
             "properties": {
                 "answer": {
@@ -17107,7 +16210,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTaskResponse": {
+        "server.SwaggerAgentTaskResponse": {
             "type": "object",
             "properties": {
                 "agent_name": {
@@ -17157,7 +16260,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTeam": {
+        "server.SwaggerAgentTeam": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -17222,7 +16325,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTeamBinding": {
+        "server.SwaggerAgentTeamBinding": {
             "type": "object",
             "properties": {
                 "account_id": {
@@ -17260,7 +16363,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTeamMember": {
+        "server.SwaggerAgentTeamMember": {
             "type": "object",
             "properties": {
                 "account_id": {
@@ -17304,7 +16407,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentTeamRun": {
+        "server.SwaggerAgentTeamRun": {
             "type": "object",
             "properties": {
                 "cancel_requested_at": {
@@ -17384,7 +16487,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentWorkspaceValidateRequest": {
+        "server.SwaggerAgentWorkspaceValidateRequest": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -17393,7 +16496,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAgentWorkspaceValidateResponse": {
+        "server.SwaggerAgentWorkspaceValidateResponse": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -17416,7 +16519,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerArchiveResponse": {
+        "server.SwaggerArchiveResponse": {
             "type": "object",
             "properties": {
                 "archived": {
@@ -17427,7 +16530,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerAutoMemoryReviewRequest": {
+        "server.SwaggerAutoMemoryReviewRequest": {
             "type": "object",
             "properties": {
                 "action": {
@@ -17438,7 +16541,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerCancelAgentTaskResponse": {
+        "server.SwaggerCancelAgentTaskResponse": {
             "type": "object",
             "properties": {
                 "cancelled": {
@@ -17452,7 +16555,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerComputerOwnerResponse": {
+        "server.SwaggerComputerOwnerResponse": {
             "type": "object",
             "properties": {
                 "data": {
@@ -17471,7 +16574,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerCreateAgentTaskRequest": {
+        "server.SwaggerCreateAgentTaskRequest": {
             "type": "object",
             "properties": {
                 "agent_name": {
@@ -17513,7 +16616,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerCreateAgentTaskResponse": {
+        "server.SwaggerCreateAgentTaskResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -17521,7 +16624,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerCreateGoalRequest": {
+        "server.SwaggerCreateGoalRequest": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -17544,23 +16647,23 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerEffectiveAgentProfile": {
+        "server.SwaggerEffectiveAgentProfile": {
             "type": "object",
             "properties": {
                 "blocked_overrides": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.BlockedOverride"
+                        "$ref": "#/definitions/agentprofile.BlockedOverride"
                     }
                 },
                 "config": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.ProfileDocument"
+                    "$ref": "#/definitions/agentprofile.ProfileDocument"
                 },
                 "effective_hash": {
                     "type": "string"
                 },
                 "profile": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.Profile"
+                    "$ref": "#/definitions/agentprofile.Profile"
                 },
                 "profile_key": {
                     "type": "string"
@@ -17569,7 +16672,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "requested": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.ProfileDocument"
+                    "$ref": "#/definitions/agentprofile.ProfileDocument"
                 },
                 "requested_hash": {
                     "type": "string"
@@ -17579,7 +16682,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerError": {
+        "server.SwaggerError": {
             "type": "object",
             "properties": {
                 "error": {
@@ -17587,13 +16690,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerGoalPlanResponse": {
+        "server.SwaggerGoalPlanResponse": {
             "type": "object",
             "properties": {
                 "acceptance_criteria": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.GoalCriterion"
+                        "$ref": "#/definitions/goal.GoalCriterion"
                     }
                 },
                 "created_at": {
@@ -17605,7 +16708,7 @@ const docTemplate = `{
                 "dependencies": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.GoalDependency"
+                        "$ref": "#/definitions/goal.GoalDependency"
                     }
                 },
                 "goal_id": {
@@ -17614,13 +16717,13 @@ const docTemplate = `{
                 "risks": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.GoalRisk"
+                        "$ref": "#/definitions/goal.GoalRisk"
                     }
                 },
                 "steps": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.GoalStep"
+                        "$ref": "#/definitions/goal.GoalStep"
                     }
                 },
                 "summary": {
@@ -17634,7 +16737,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerGoalResponse": {
+        "server.SwaggerGoalResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -17683,7 +16786,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.Status"
+                    "$ref": "#/definitions/goal.Status"
                 },
                 "token_budget": {
                     "type": "integer"
@@ -17699,7 +16802,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerHealthResponse": {
+        "server.SwaggerHealthResponse": {
             "type": "object",
             "properties": {
                 "ok": {
@@ -17710,7 +16813,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerIDResponse": {
+        "server.SwaggerIDResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -17718,30 +16821,30 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerImageArtifactResponse": {
+        "server.SwaggerImageArtifactResponse": {
             "type": "object",
             "properties": {
                 "asset": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_imagegen.Artifact"
+                    "$ref": "#/definitions/imagegen.Artifact"
                 }
             }
         },
-        "internal_server.SwaggerImageCapabilitiesResponse": {
+        "server.SwaggerImageCapabilitiesResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerImageCapabilityEntry"
+                        "$ref": "#/definitions/server.SwaggerImageCapabilityEntry"
                     }
                 }
             }
         },
-        "internal_server.SwaggerImageCapabilityEntry": {
+        "server.SwaggerImageCapabilityEntry": {
             "type": "object",
             "properties": {
                 "capability": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_config.ImageModelCapability"
+                    "$ref": "#/definitions/config.ImageModelCapability"
                 },
                 "image_protocol": {
                     "type": "string"
@@ -17757,7 +16860,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerImageGenerateRequest": {
+        "server.SwaggerImageGenerateRequest": {
             "type": "object",
             "properties": {
                 "aspect_ratio": {
@@ -17795,68 +16898,68 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerImageGenerationListResponse": {
+        "server.SwaggerImageGenerationListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_imagegen.GenerationRecord"
+                        "$ref": "#/definitions/imagegen.GenerationRecord"
                     }
                 }
             }
         },
-        "internal_server.SwaggerKnowledgeSearchResponse": {
+        "server.SwaggerKnowledgeSearchResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.KnowledgeChunk"
+                        "$ref": "#/definitions/mysql.KnowledgeChunk"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListAgentSlashCommandsResponse": {
+        "server.SwaggerListAgentSlashCommandsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerAgentSlashCommand"
+                        "$ref": "#/definitions/server.SwaggerAgentSlashCommand"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListAgentTaskEventsResponse": {
+        "server.SwaggerListAgentTaskEventsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"
+                        "$ref": "#/definitions/mysql.AgentTaskEvent"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListAgentTasksResponse": {
+        "server.SwaggerListAgentTasksResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTask"
+                        "$ref": "#/definitions/mysql.AgentTask"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListAuditLogsResponse": {
+        "server.SwaggerListAuditLogsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AuditLog"
+                        "$ref": "#/definitions/mysql.AuditLog"
                     }
                 },
                 "has_more": {
@@ -17867,79 +16970,79 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerListDocumentsResponse": {
+        "server.SwaggerListDocumentsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Document"
+                        "$ref": "#/definitions/mysql.Document"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListEffectiveSkillsResponse": {
+        "server.SwaggerListEffectiveSkillsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.EffectiveSkill"
+                        "$ref": "#/definitions/mysql.EffectiveSkill"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListGoalEventsResponse": {
+        "server.SwaggerListGoalEventsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.Event"
+                        "$ref": "#/definitions/goal.Event"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListGoalEvidenceResponse": {
+        "server.SwaggerListGoalEvidenceResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.GoalEvidence"
+                        "$ref": "#/definitions/goal.GoalEvidence"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListGoalsResponse": {
+        "server.SwaggerListGoalsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.Goal"
+                        "$ref": "#/definitions/goal.Goal"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListKnowledgeDocumentsResponse": {
+        "server.SwaggerListKnowledgeDocumentsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.KnowledgeDocument"
+                        "$ref": "#/definitions/mysql.KnowledgeDocument"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListLocalSkillsResponse": {
+        "server.SwaggerListLocalSkillsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_skills.Skill"
+                        "$ref": "#/definitions/skills.Skill"
                     }
                 },
                 "workspace": {
@@ -17947,85 +17050,68 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerListMemoriesResponse": {
+        "server.SwaggerListMemoriesResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Memory"
+                        "$ref": "#/definitions/mysql.Memory"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListMessagesResponse": {
+        "server.SwaggerListMessagesResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Message"
+                        "$ref": "#/definitions/mysql.Message"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListSessionsResponse": {
+        "server.SwaggerListSessionsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Session"
+                        "$ref": "#/definitions/mysql.Session"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListSkillOverridesResponse": {
+        "server.SwaggerListSkillOverridesResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.SkillOverride"
+                        "$ref": "#/definitions/mysql.SkillOverride"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListSkillsResponse": {
+        "server.SwaggerListSkillsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Skill"
+                        "$ref": "#/definitions/mysql.Skill"
                     }
                 }
             }
         },
-        "internal_server.SwaggerListTelemetryEventsResponse": {
+        "server.SwaggerListTelemetryEventsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.TelemetryEvent"
-                    }
-                },
-                "has_more": {
-                    "type": "boolean"
-                },
-                "next_cursor": {
-                    "type": "string"
-                }
-            }
-        },
-        "internal_server.SwaggerListTenantQuotaEventsResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.QuotaEvent"
+                        "$ref": "#/definitions/mysql.TelemetryEvent"
                     }
                 },
                 "has_more": {
@@ -18036,13 +17122,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerListTenantUsageDailyResponse": {
+        "server.SwaggerListTenantQuotaEventsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.UsageDaily"
+                        "$ref": "#/definitions/mysql.QuotaEvent"
                     }
                 },
                 "has_more": {
@@ -18053,13 +17139,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerListTenantUsageLedgerResponse": {
+        "server.SwaggerListTenantUsageDailyResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.UsageLedger"
+                        "$ref": "#/definitions/mysql.UsageDaily"
                     }
                 },
                 "has_more": {
@@ -18070,13 +17156,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerListTenantsResponse": {
+        "server.SwaggerListTenantUsageLedgerResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Tenant"
+                        "$ref": "#/definitions/mysql.UsageLedger"
                     }
                 },
                 "has_more": {
@@ -18087,13 +17173,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerListUsersResponse": {
+        "server.SwaggerListTenantsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.User"
+                        "$ref": "#/definitions/mysql.Tenant"
                     }
                 },
                 "has_more": {
@@ -18104,18 +17190,35 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerListWebAgentConversationsResponse": {
+        "server.SwaggerListUsersResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerWebAgentConversation"
+                        "$ref": "#/definitions/mysql.User"
+                    }
+                },
+                "has_more": {
+                    "type": "boolean"
+                },
+                "next_cursor": {
+                    "type": "string"
+                }
+            }
+        },
+        "server.SwaggerListWebAgentConversationsResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/server.SwaggerWebAgentConversation"
                     }
                 }
             }
         },
-        "internal_server.SwaggerLivenessResponse": {
+        "server.SwaggerLivenessResponse": {
             "type": "object",
             "properties": {
                 "status": {
@@ -18124,7 +17227,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMemoryReviewRequest": {
+        "server.SwaggerMemoryReviewRequest": {
             "type": "object",
             "properties": {
                 "action": {
@@ -18135,7 +17238,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileAttachment": {
+        "server.SwaggerMobileAttachment": {
             "type": "object",
             "properties": {
                 "attachment_id": {
@@ -18164,7 +17267,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileAttachmentPresignRequest": {
+        "server.SwaggerMobileAttachmentPresignRequest": {
             "type": "object",
             "properties": {
                 "media_type": {
@@ -18184,11 +17287,11 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileAttachmentPresignResponse": {
+        "server.SwaggerMobileAttachmentPresignResponse": {
             "type": "object",
             "properties": {
                 "attachment": {
-                    "$ref": "#/definitions/internal_server.SwaggerMobileAttachment"
+                    "$ref": "#/definitions/server.SwaggerMobileAttachment"
                 },
                 "attachment_id": {
                     "type": "string"
@@ -18213,7 +17316,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileBranchRequest": {
+        "server.SwaggerMobileBranchRequest": {
             "type": "object",
             "properties": {
                 "session_key": {
@@ -18230,7 +17333,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileBranchResponse": {
+        "server.SwaggerMobileBranchResponse": {
             "type": "object",
             "properties": {
                 "copied_messages": {
@@ -18250,7 +17353,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileCancelResponse": {
+        "server.SwaggerMobileCancelResponse": {
             "type": "object",
             "properties": {
                 "active": {
@@ -18264,7 +17367,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileLatestRecap": {
+        "server.SwaggerMobileLatestRecap": {
             "type": "object",
             "properties": {
                 "content": {
@@ -18284,13 +17387,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileMessageListResponse": {
+        "server.SwaggerMobileMessageListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Message"
+                        "$ref": "#/definitions/mysql.Message"
                     }
                 },
                 "has_more": {
@@ -18301,13 +17404,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileMessageStreamRequest": {
+        "server.SwaggerMobileMessageStreamRequest": {
             "type": "object",
             "properties": {
                 "attachments": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerMobileAttachment"
+                        "$ref": "#/definitions/server.SwaggerMobileAttachment"
                     }
                 },
                 "content": {
@@ -18321,7 +17424,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileRegenerateRequest": {
+        "server.SwaggerMobileRegenerateRequest": {
             "type": "object",
             "properties": {
                 "message_key": {
@@ -18332,7 +17435,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileSessionDetailResponse": {
+        "server.SwaggerMobileSessionDetailResponse": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -18345,7 +17448,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "latest_recap": {
-                    "$ref": "#/definitions/internal_server.SwaggerMobileLatestRecap"
+                    "$ref": "#/definitions/server.SwaggerMobileLatestRecap"
                 },
                 "model": {
                     "type": "string"
@@ -18364,7 +17467,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerMobileSessionRequest": {
+        "server.SwaggerMobileSessionRequest": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -18387,13 +17490,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerOpenAIChatResponse": {
+        "server.SwaggerOpenAIChatResponse": {
             "type": "object",
             "properties": {
                 "choices": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerOpenAIChoice"
+                        "$ref": "#/definitions/server.SwaggerOpenAIChoice"
                     }
                 },
                 "created": {
@@ -18409,14 +17512,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "tenant_runtime": {
-                    "$ref": "#/definitions/internal_server.SwaggerTenantRuntimeMetadata"
+                    "$ref": "#/definitions/server.SwaggerTenantRuntimeMetadata"
                 },
                 "usage": {
-                    "$ref": "#/definitions/internal_server.SwaggerOpenAIUsage"
+                    "$ref": "#/definitions/server.SwaggerOpenAIUsage"
                 }
             }
         },
-        "internal_server.SwaggerOpenAIChoice": {
+        "server.SwaggerOpenAIChoice": {
             "type": "object",
             "properties": {
                 "finish_reason": {
@@ -18426,11 +17529,11 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "message": {
-                    "$ref": "#/definitions/internal_server.SwaggerOpenAIMessage"
+                    "$ref": "#/definitions/server.SwaggerOpenAIMessage"
                 }
             }
         },
-        "internal_server.SwaggerOpenAIMessage": {
+        "server.SwaggerOpenAIMessage": {
             "type": "object",
             "properties": {
                 "content": {
@@ -18441,7 +17544,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerOpenAIModel": {
+        "server.SwaggerOpenAIModel": {
             "type": "object",
             "properties": {
                 "created": {
@@ -18458,13 +17561,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerOpenAIModelsResponse": {
+        "server.SwaggerOpenAIModelsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerOpenAIModel"
+                        "$ref": "#/definitions/server.SwaggerOpenAIModel"
                     }
                 },
                 "object": {
@@ -18472,7 +17575,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerOpenAIUsage": {
+        "server.SwaggerOpenAIUsage": {
             "type": "object",
             "properties": {
                 "completion_tokens": {
@@ -18486,13 +17589,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerPendingInputRequest": {
+        "server.SwaggerPendingInputRequest": {
             "type": "object",
             "properties": {
                 "attachments": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerAgentTaskAttachment"
+                        "$ref": "#/definitions/server.SwaggerAgentTaskAttachment"
                     }
                 },
                 "client_input_id": {
@@ -18507,11 +17610,11 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerPendingInputResponse": {
+        "server.SwaggerPendingInputResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_pendinginput.PendingInput"
+                    "$ref": "#/definitions/pendinginput.PendingInput"
                 },
                 "session_id": {
                     "type": "integer"
@@ -18524,7 +17627,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerPendingInputSettingsRequest": {
+        "server.SwaggerPendingInputSettingsRequest": {
             "type": "object",
             "properties": {
                 "enabled": {
@@ -18532,7 +17635,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerPromptDumpFilter": {
+        "server.SwaggerPromptDumpFilter": {
             "type": "object",
             "properties": {
                 "include_request": {
@@ -18546,7 +17649,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerPromptDumpRecordSummary": {
+        "server.SwaggerPromptDumpRecordSummary": {
             "type": "object",
             "properties": {
                 "cache_control_blocks": {
@@ -18556,7 +17659,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "cache_diagnostics": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.CacheRecordDiagnostics"
+                    "$ref": "#/definitions/promptdump.CacheRecordDiagnostics"
                 },
                 "context_manifest": {
                     "type": "array",
@@ -18576,7 +17679,7 @@ const docTemplate = `{
                 "messages_summary": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.MessageSummary"
+                        "$ref": "#/definitions/promptdump.MessageSummary"
                     }
                 },
                 "model": {
@@ -18592,7 +17695,7 @@ const docTemplate = `{
                     }
                 },
                 "request_redaction": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.RequestRedaction"
+                    "$ref": "#/definitions/promptdump.RequestRedaction"
                 },
                 "scope": {
                     "type": "string"
@@ -18606,7 +17709,7 @@ const docTemplate = `{
                 "system_blocks_summary": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.SystemBlockSummary"
+                        "$ref": "#/definitions/promptdump.SystemBlockSummary"
                     }
                 },
                 "system_bytes": {
@@ -18624,7 +17727,7 @@ const docTemplate = `{
                 "tools_summary": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.ToolSummary"
+                        "$ref": "#/definitions/promptdump.ToolSummary"
                     }
                 },
                 "turn": {
@@ -18632,14 +17735,14 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerPromptDumpRecordsResponse": {
+        "server.SwaggerPromptDumpRecordsResponse": {
             "type": "object",
             "properties": {
                 "exists": {
                     "type": "boolean"
                 },
                 "filter": {
-                    "$ref": "#/definitions/internal_server.SwaggerPromptDumpFilter"
+                    "$ref": "#/definitions/server.SwaggerPromptDumpFilter"
                 },
                 "generated_at": {
                     "type": "string"
@@ -18650,13 +17753,13 @@ const docTemplate = `{
                 "records": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerPromptDumpRecordSummary"
+                        "$ref": "#/definitions/server.SwaggerPromptDumpRecordSummary"
                     }
                 },
                 "sessions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerPromptDumpSessionSummary"
+                        "$ref": "#/definitions/server.SwaggerPromptDumpSessionSummary"
                     }
                 },
                 "size_bytes": {
@@ -18667,14 +17770,14 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerPromptDumpSessionSummary": {
+        "server.SwaggerPromptDumpSessionSummary": {
             "type": "object",
             "properties": {
                 "cache_control_blocks": {
                     "type": "integer"
                 },
                 "cache_diagnostics": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_promptdump.CacheSessionDiagnostics"
+                    "$ref": "#/definitions/promptdump.CacheSessionDiagnostics"
                 },
                 "first_timestamp": {
                     "type": "string"
@@ -18725,14 +17828,14 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "trace_summary": {
-                    "$ref": "#/definitions/internal_server.traceSummary"
+                    "$ref": "#/definitions/server.traceSummary"
                 },
                 "trace_usage_available": {
                     "type": "boolean"
                 }
             }
         },
-        "internal_server.SwaggerPromptTemplate": {
+        "server.SwaggerPromptTemplate": {
             "type": "object",
             "properties": {
                 "category": {
@@ -18767,7 +17870,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerPromptTemplateRequest": {
+        "server.SwaggerPromptTemplateRequest": {
             "type": "object",
             "properties": {
                 "category": {
@@ -18790,13 +17893,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerProviderListResponse": {
+        "server.SwaggerProviderListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerProviderOption"
+                        "$ref": "#/definitions/server.SwaggerProviderOption"
                     }
                 },
                 "object": {
@@ -18804,7 +17907,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerProviderOption": {
+        "server.SwaggerProviderOption": {
             "type": "object",
             "properties": {
                 "model": {
@@ -18815,7 +17918,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerQueryResult": {
+        "server.SwaggerQueryResult": {
             "type": "object",
             "properties": {
                 "model": {
@@ -18833,7 +17936,7 @@ const docTemplate = `{
                 "tool_calls": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_query.ToolTrace"
+                        "$ref": "#/definitions/query.ToolTrace"
                     }
                 },
                 "transcript_path": {
@@ -18843,11 +17946,11 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "usage": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_query.Usage"
+                    "$ref": "#/definitions/query.Usage"
                 }
             }
         },
-        "internal_server.SwaggerReadinessResponse": {
+        "server.SwaggerReadinessResponse": {
             "type": "object",
             "properties": {
                 "checks": {
@@ -18863,27 +17966,27 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerRunGoalResponse": {
+        "server.SwaggerRunGoalResponse": {
             "type": "object",
             "properties": {
                 "decision": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.Decision"
+                    "$ref": "#/definitions/goal.Decision"
                 },
                 "event": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.Event"
+                    "$ref": "#/definitions/goal.Event"
                 },
                 "goal": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.Goal"
+                    "$ref": "#/definitions/goal.Goal"
                 }
             }
         },
-        "internal_server.SwaggerRuntimeBackgroundEventsResponse": {
+        "server.SwaggerRuntimeBackgroundEventsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_scheduler.Event"
+                        "$ref": "#/definitions/scheduler.Event"
                     }
                 },
                 "next_offset": {
@@ -18891,18 +17994,18 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerRuntimeBackgroundListResponse": {
+        "server.SwaggerRuntimeBackgroundListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.RuntimeBackgroundJob"
+                        "$ref": "#/definitions/server.RuntimeBackgroundJob"
                     }
                 }
             }
         },
-        "internal_server.SwaggerRuntimeBackgroundLogsResponse": {
+        "server.SwaggerRuntimeBackgroundLogsResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -18916,18 +18019,18 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerRuntimeBackgroundRunsResponse": {
+        "server.SwaggerRuntimeBackgroundRunsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_scheduler.RunRecord"
+                        "$ref": "#/definitions/scheduler.RunRecord"
                     }
                 }
             }
         },
-        "internal_server.SwaggerRuntimeBackgroundStopResponse": {
+        "server.SwaggerRuntimeBackgroundStopResponse": {
             "type": "object",
             "properties": {
                 "disabled": {
@@ -18944,7 +18047,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerRuntimeLoopRequest": {
+        "server.SwaggerRuntimeLoopRequest": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -18970,7 +18073,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSSEEvent": {
+        "server.SwaggerSSEEvent": {
             "type": "object",
             "properties": {
                 "delta": {
@@ -18996,7 +18099,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlAttachRequest": {
+        "server.SwaggerSessionControlAttachRequest": {
             "type": "object",
             "properties": {
                 "relation_type": {
@@ -19023,7 +18126,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlAttachment": {
+        "server.SwaggerSessionControlAttachment": {
             "type": "object",
             "properties": {
                 "attachment_id": {
@@ -19060,7 +18163,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlCreateRequest": {
+        "server.SwaggerSessionControlCreateRequest": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -19103,7 +18206,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlError": {
+        "server.SwaggerSessionControlError": {
             "type": "object",
             "properties": {
                 "code": {
@@ -19116,7 +18219,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlHandoff": {
+        "server.SwaggerSessionControlHandoff": {
             "type": "object",
             "properties": {
                 "estimated_tokens": {
@@ -19128,7 +18231,7 @@ const docTemplate = `{
                 "source_results": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerSessionControlHandoffSource"
+                        "$ref": "#/definitions/server.SwaggerSessionControlHandoffSource"
                     }
                 },
                 "stale": {
@@ -19139,13 +18242,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlHandoffSource": {
+        "server.SwaggerSessionControlHandoffSource": {
             "type": "object",
             "properties": {
                 "candidate_removals": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_sessioncontrol.HandoffCandidateRemoval"
+                        "$ref": "#/definitions/sessioncontrol.HandoffCandidateRemoval"
                     }
                 },
                 "cursor_prefix": {
@@ -19177,7 +18280,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlLink": {
+        "server.SwaggerSessionControlLink": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -19200,7 +18303,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlMonitorRequest": {
+        "server.SwaggerSessionControlMonitorRequest": {
             "type": "object",
             "required": [
                 "channel",
@@ -19233,7 +18336,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlOperation": {
+        "server.SwaggerSessionControlOperation": {
             "type": "object",
             "properties": {
                 "audit_id": {
@@ -19243,7 +18346,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "handoff": {
-                    "$ref": "#/definitions/internal_server.SwaggerSessionControlHandoff"
+                    "$ref": "#/definitions/server.SwaggerSessionControlHandoff"
                 },
                 "link_ids": {
                     "type": "array",
@@ -19264,25 +18367,25 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "session": {
-                    "$ref": "#/definitions/internal_server.SwaggerSessionControlSession"
+                    "$ref": "#/definitions/server.SwaggerSessionControlSession"
                 }
             }
         },
-        "internal_server.SwaggerSessionControlOperationResponse": {
+        "server.SwaggerSessionControlOperationResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/internal_server.SwaggerSessionControlOperation"
+                    "$ref": "#/definitions/server.SwaggerSessionControlOperation"
                 }
             }
         },
-        "internal_server.SwaggerSessionControlSendRequest": {
+        "server.SwaggerSessionControlSendRequest": {
             "type": "object",
             "properties": {
                 "attachments": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerSessionControlAttachment"
+                        "$ref": "#/definitions/server.SwaggerSessionControlAttachment"
                     }
                 },
                 "content": {
@@ -19322,7 +18425,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlSession": {
+        "server.SwaggerSessionControlSession": {
             "type": "object",
             "properties": {
                 "active_run_id": {
@@ -19340,7 +18443,7 @@ const docTemplate = `{
                 "links": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerSessionControlLink"
+                        "$ref": "#/definitions/server.SwaggerSessionControlLink"
                     }
                 },
                 "model": {
@@ -19377,7 +18480,7 @@ const docTemplate = `{
                     ],
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_konglong87_niuma_internal_sessioncontrol.Source"
+                            "$ref": "#/definitions/sessioncontrol.Source"
                         }
                     ],
                     "example": "tenant"
@@ -19397,7 +18500,7 @@ const docTemplate = `{
                     ],
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_konglong87_niuma_internal_sessioncontrol.SessionStatus"
+                            "$ref": "#/definitions/sessioncontrol.SessionStatus"
                         }
                     ],
                     "example": "running"
@@ -19410,26 +18513,26 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlSessionListResponse": {
+        "server.SwaggerSessionControlSessionListResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerSessionControlSession"
+                        "$ref": "#/definitions/server.SwaggerSessionControlSession"
                     }
                 }
             }
         },
-        "internal_server.SwaggerSessionControlSessionResponse": {
+        "server.SwaggerSessionControlSessionResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/internal_server.SwaggerSessionControlSession"
+                    "$ref": "#/definitions/server.SwaggerSessionControlSession"
                 }
             }
         },
-        "internal_server.SwaggerSessionControlStateEvent": {
+        "server.SwaggerSessionControlStateEvent": {
             "type": "object",
             "properties": {
                 "cursor": {
@@ -19453,7 +18556,7 @@ const docTemplate = `{
                 "status": {
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_konglong87_niuma_internal_sessioncontrol.SessionStatus"
+                            "$ref": "#/definitions/sessioncontrol.SessionStatus"
                         }
                     ],
                     "example": "running"
@@ -19463,29 +18566,29 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSessionControlStopRequest": {
+        "server.SwaggerSessionControlStopRequest": {
             "type": "object"
         },
-        "internal_server.SwaggerSessionConversationResponse": {
+        "server.SwaggerSessionConversationResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/internal_server.sessionConversationPage"
+                    "$ref": "#/definitions/server.sessionConversationPage"
                 }
             }
         },
-        "internal_server.SwaggerSessionConversationSubscribe": {
+        "server.SwaggerSessionConversationSubscribe": {
             "type": "object",
             "properties": {
                 "sessions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.conversationSubscription"
+                        "$ref": "#/definitions/server.conversationSubscription"
                     }
                 }
             }
         },
-        "internal_server.SwaggerSessionIDResponse": {
+        "server.SwaggerSessionIDResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -19496,7 +18599,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSkillPackageVerifyRequest": {
+        "server.SwaggerSkillPackageVerifyRequest": {
             "type": "object",
             "properties": {
                 "expected_package_sha256": {
@@ -19519,7 +18622,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSkillPackageVerifyResponse": {
+        "server.SwaggerSkillPackageVerifyResponse": {
             "type": "object",
             "properties": {
                 "error": {
@@ -19529,14 +18632,14 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "tenant_runtime": {
-                    "$ref": "#/definitions/internal_server.openAITenantRuntimeMetadata"
+                    "$ref": "#/definitions/server.openAITenantRuntimeMetadata"
                 },
                 "trace_id": {
                     "type": "string"
                 }
             }
         },
-        "internal_server.SwaggerSkillRollbackRequest": {
+        "server.SwaggerSkillRollbackRequest": {
             "type": "object",
             "properties": {
                 "skill_key": {
@@ -19550,7 +18653,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSkillRollbackResponse": {
+        "server.SwaggerSkillRollbackResponse": {
             "type": "object",
             "properties": {
                 "from_version": {
@@ -19567,7 +18670,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerSnapshotResponse": {
+        "server.SwaggerSnapshotResponse": {
             "type": "object",
             "properties": {
                 "data": {
@@ -19576,7 +18679,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTelemetryEventRequest": {
+        "server.SwaggerTelemetryEventRequest": {
             "type": "object",
             "properties": {
                 "category": {
@@ -19639,11 +18742,11 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantContext": {
+        "server.SwaggerTenantContext": {
             "type": "object",
             "properties": {
                 "tenant": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Tenant"
+                    "$ref": "#/definitions/mysql.Tenant"
                 },
                 "tenant_id": {
                     "type": "integer"
@@ -19656,7 +18759,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantDocumentRequest": {
+        "server.SwaggerTenantDocumentRequest": {
             "type": "object",
             "properties": {
                 "active": {
@@ -19679,7 +18782,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantKnowledgeDocumentRequest": {
+        "server.SwaggerTenantKnowledgeDocumentRequest": {
             "type": "object",
             "properties": {
                 "content": {
@@ -19699,7 +18802,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantKnowledgeSearchRequest": {
+        "server.SwaggerTenantKnowledgeSearchRequest": {
             "type": "object",
             "properties": {
                 "limit": {
@@ -19710,7 +18813,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantMemoryRequest": {
+        "server.SwaggerTenantMemoryRequest": {
             "type": "object",
             "properties": {
                 "category": {
@@ -19736,7 +18839,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantMessageRequest": {
+        "server.SwaggerTenantMessageRequest": {
             "type": "object",
             "properties": {
                 "content": {
@@ -19777,7 +18880,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantProfile": {
+        "server.SwaggerTenantProfile": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -19800,7 +18903,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantProfileRequest": {
+        "server.SwaggerTenantProfileRequest": {
             "type": "object",
             "properties": {
                 "generated_from_session_id": {
@@ -19817,7 +18920,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantQuotaConfig": {
+        "server.SwaggerTenantQuotaConfig": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -19858,7 +18961,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantQuotaConfigRequest": {
+        "server.SwaggerTenantQuotaConfigRequest": {
             "type": "object",
             "properties": {
                 "daily_message_limit": {
@@ -19887,7 +18990,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantRequest": {
+        "server.SwaggerTenantRequest": {
             "type": "object",
             "properties": {
                 "name": {
@@ -19904,7 +19007,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantRuntimeMetadata": {
+        "server.SwaggerTenantRuntimeMetadata": {
             "type": "object",
             "properties": {
                 "active": {
@@ -19960,7 +19063,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantSession": {
+        "server.SwaggerTenantSession": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -19989,7 +19092,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantSessionRequest": {
+        "server.SwaggerTenantSessionRequest": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -20012,46 +19115,46 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantSessionTimelineResponse": {
+        "server.SwaggerTenantSessionTimelineResponse": {
             "type": "object",
             "properties": {
                 "agent_task_events": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"
+                        "$ref": "#/definitions/mysql.AgentTaskEvent"
                     }
                 },
                 "agent_tasks": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTask"
+                        "$ref": "#/definitions/mysql.AgentTask"
                     }
                 },
                 "audit_logs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AuditLog"
+                        "$ref": "#/definitions/mysql.AuditLog"
                     }
                 },
                 "messages": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Message"
+                        "$ref": "#/definitions/mysql.Message"
                     }
                 },
                 "session": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Session"
+                    "$ref": "#/definitions/mysql.Session"
                 },
                 "telemetry_events": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.TelemetryEvent"
+                        "$ref": "#/definitions/mysql.TelemetryEvent"
                     }
                 },
                 "timeline": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.SwaggerTenantTimelineItem"
+                        "$ref": "#/definitions/server.SwaggerTenantTimelineItem"
                     }
                 },
                 "trace_ids": {
@@ -20062,7 +19165,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantSkillOverrideRequest": {
+        "server.SwaggerTenantSkillOverrideRequest": {
             "type": "object",
             "properties": {
                 "config_json": {
@@ -20079,7 +19182,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantSkillPackageRequest": {
+        "server.SwaggerTenantSkillPackageRequest": {
             "type": "object",
             "properties": {
                 "content_base64": {
@@ -20108,7 +19211,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantSkillPackageResult": {
+        "server.SwaggerTenantSkillPackageResult": {
             "type": "object",
             "properties": {
                 "description": {
@@ -20121,7 +19224,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "manifest": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_tenantpkg.Manifest"
+                    "$ref": "#/definitions/tenantpkg.Manifest"
                 },
                 "manifest_ref": {
                     "type": "string"
@@ -20149,7 +19252,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantSkillRequest": {
+        "server.SwaggerTenantSkillRequest": {
             "type": "object",
             "properties": {
                 "config_json": {
@@ -20187,23 +19290,23 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantTimelineItem": {
+        "server.SwaggerTenantTimelineItem": {
             "type": "object",
             "properties": {
                 "agent_task": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTask"
+                    "$ref": "#/definitions/mysql.AgentTask"
                 },
                 "agent_task_event": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"
+                    "$ref": "#/definitions/mysql.AgentTaskEvent"
                 },
                 "audit_log": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AuditLog"
+                    "$ref": "#/definitions/mysql.AuditLog"
                 },
                 "message": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Message"
+                    "$ref": "#/definitions/mysql.Message"
                 },
                 "telemetry_event": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.TelemetryEvent"
+                    "$ref": "#/definitions/mysql.TelemetryEvent"
                 },
                 "time": {
                     "type": "string"
@@ -20216,7 +19319,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantUser": {
+        "server.SwaggerTenantUser": {
             "type": "object",
             "properties": {
                 "display_name": {
@@ -20251,7 +19354,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTenantUserRequest": {
+        "server.SwaggerTenantUserRequest": {
             "type": "object",
             "properties": {
                 "display_name": {
@@ -20277,39 +19380,39 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTraceDetailResponse": {
+        "server.SwaggerTraceDetailResponse": {
             "type": "object",
             "properties": {
                 "diagnostics": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.traceDiagnostic"
+                        "$ref": "#/definitions/server.traceDiagnostic"
                     }
                 },
                 "events": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.traceEvent"
+                        "$ref": "#/definitions/server.traceEvent"
                     }
                 },
                 "generated_at": {
                     "type": "string"
                 },
                 "latest_recap": {
-                    "$ref": "#/definitions/internal_server.traceRecap"
+                    "$ref": "#/definitions/server.traceRecap"
                 },
                 "quality": {
-                    "$ref": "#/definitions/internal_server.traceQuality"
+                    "$ref": "#/definitions/server.traceQuality"
                 },
                 "raw": {},
                 "recaps": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.traceRecap"
+                        "$ref": "#/definitions/server.traceRecap"
                     }
                 },
                 "rewind": {
-                    "$ref": "#/definitions/internal_server.traceRewind"
+                    "$ref": "#/definitions/server.traceRewind"
                 },
                 "session_id": {
                     "type": "string"
@@ -20320,17 +19423,17 @@ const docTemplate = `{
                 "span_tree": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.traceTree"
+                        "$ref": "#/definitions/server.traceTree"
                     }
                 },
                 "spans": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.traceSpan"
+                        "$ref": "#/definitions/server.traceSpan"
                     }
                 },
                 "summary": {
-                    "$ref": "#/definitions/internal_server.traceSummary"
+                    "$ref": "#/definitions/server.traceSummary"
                 },
                 "title": {
                     "type": "string"
@@ -20343,13 +19446,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerTraceSessionsResponse": {
+        "server.SwaggerTraceSessionsResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.traceSessionSummary"
+                        "$ref": "#/definitions/server.traceSessionSummary"
                     }
                 },
                 "source": {
@@ -20357,7 +19460,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerUpdateAgentTaskRequest": {
+        "server.SwaggerUpdateAgentTaskRequest": {
             "type": "object",
             "properties": {
                 "metadata_json": {
@@ -20378,7 +19481,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerUpdateAgentTaskResponse": {
+        "server.SwaggerUpdateAgentTaskResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -20389,7 +19492,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerUpdateGoalRequest": {
+        "server.SwaggerUpdateGoalRequest": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -20431,7 +19534,7 @@ const docTemplate = `{
                 "status": {
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_konglong87_niuma_internal_goal.Status"
+                            "$ref": "#/definitions/goal.Status"
                         }
                     ],
                     "example": "blocked"
@@ -20447,7 +19550,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerWebAgentConversation": {
+        "server.SwaggerWebAgentConversation": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -20457,10 +19560,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "latest_task": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTask"
+                    "$ref": "#/definitions/mysql.AgentTask"
                 },
                 "session": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Session"
+                    "$ref": "#/definitions/mysql.Session"
                 },
                 "session_id": {
                     "type": "integer"
@@ -20474,7 +19577,7 @@ const docTemplate = `{
                 "tasks": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTask"
+                        "$ref": "#/definitions/mysql.AgentTask"
                     }
                 },
                 "title": {
@@ -20488,7 +19591,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerWebAgentConversationDetail": {
+        "server.SwaggerWebAgentConversationDetail": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -20497,23 +19600,23 @@ const docTemplate = `{
                 "events": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"
+                        "$ref": "#/definitions/mysql.AgentTaskEvent"
                     }
                 },
                 "id": {
                     "type": "string"
                 },
                 "latest_task": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTask"
+                    "$ref": "#/definitions/mysql.AgentTask"
                 },
                 "messages": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Message"
+                        "$ref": "#/definitions/mysql.Message"
                     }
                 },
                 "session": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.Session"
+                    "$ref": "#/definitions/mysql.Session"
                 },
                 "session_id": {
                     "type": "integer"
@@ -20527,7 +19630,7 @@ const docTemplate = `{
                 "tasks": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTask"
+                        "$ref": "#/definitions/mysql.AgentTask"
                     }
                 },
                 "title": {
@@ -20537,14 +19640,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "usage": {
-                    "$ref": "#/definitions/internal_server.SwaggerWebAgentConversationUsage"
+                    "$ref": "#/definitions/server.SwaggerWebAgentConversationUsage"
                 },
                 "workspace_name": {
                     "type": "string"
                 }
             }
         },
-        "internal_server.SwaggerWebAgentConversationUsage": {
+        "server.SwaggerWebAgentConversationUsage": {
             "type": "object",
             "properties": {
                 "cancelled_runs": {
@@ -20588,24 +19691,24 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerWorkflowBuiltins": {
+        "server.SwaggerWorkflowBuiltins": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflowapp.Builtin"
+                        "$ref": "#/definitions/workflowapp.Builtin"
                     }
                 }
             }
         },
-        "internal_server.SwaggerWorkflowEvents": {
+        "server.SwaggerWorkflowEvents": {
             "type": "object",
             "properties": {
                 "events": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Event"
+                        "$ref": "#/definitions/workflow.Event"
                     }
                 },
                 "has_more": {
@@ -20616,7 +19719,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerWorkflowRecovery": {
+        "server.SwaggerWorkflowRecovery": {
             "type": "object",
             "properties": {
                 "revision": {
@@ -20624,65 +19727,65 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.SwaggerWorkflowRun": {
+        "server.SwaggerWorkflowRun": {
             "type": "object",
             "properties": {
                 "replayed": {
                     "type": "boolean"
                 },
                 "run": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Run"
+                    "$ref": "#/definitions/workflow.Run"
                 }
             }
         },
-        "internal_server.SwaggerWorkflowRuns": {
+        "server.SwaggerWorkflowRuns": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflow.Run"
+                        "$ref": "#/definitions/workflow.Run"
                     }
                 }
             }
         },
-        "internal_server.SwaggerWorkflowTemplate": {
+        "server.SwaggerWorkflowTemplate": {
             "type": "object",
             "properties": {
                 "template": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflowapp.Template"
+                    "$ref": "#/definitions/workflowapp.Template"
                 }
             }
         },
-        "internal_server.SwaggerWorkflowTemplates": {
+        "server.SwaggerWorkflowTemplates": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentteam_workflowapp.Template"
+                        "$ref": "#/definitions/workflowapp.Template"
                     }
                 }
             }
         },
-        "internal_server.SwaggerWorkflowTypes": {
+        "server.SwaggerWorkflowTypes": {
             "type": "object",
             "properties": {
                 "execution_kinds": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.ExecutionKindDescriptor"
+                        "$ref": "#/definitions/agentprofile.ExecutionKindDescriptor"
                     }
                 },
                 "roles": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_agentprofile.RoleTypeDescriptor"
+                        "$ref": "#/definitions/agentprofile.RoleTypeDescriptor"
                     }
                 }
             }
         },
-        "internal_server.conversationSubscription": {
+        "server.conversationSubscription": {
             "type": "object",
             "properties": {
                 "cursor": {
@@ -20693,7 +19796,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.openAITenantRuntimeMetadata": {
+        "server.openAITenantRuntimeMetadata": {
             "type": "object",
             "properties": {
                 "active": {
@@ -20749,7 +19852,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.sessionControlLinkDTO": {
+        "server.sessionControlLinkDTO": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -20769,14 +19872,14 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.sessionControlSessionDTO": {
+        "server.sessionControlSessionDTO": {
             "type": "object",
             "properties": {
                 "active_run_id": {
                     "type": "integer"
                 },
                 "channel": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_sessioncontrol.SessionChannel"
+                    "$ref": "#/definitions/sessioncontrol.SessionChannel"
                 },
                 "cwd": {
                     "type": "string"
@@ -20790,7 +19893,7 @@ const docTemplate = `{
                 "links": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.sessionControlLinkDTO"
+                        "$ref": "#/definitions/server.sessionControlLinkDTO"
                     }
                 },
                 "model": {
@@ -20815,10 +19918,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "source": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_sessioncontrol.Source"
+                    "$ref": "#/definitions/sessioncontrol.Source"
                 },
                 "status": {
-                    "$ref": "#/definitions/github_com_konglong87_niuma_internal_sessioncontrol.SessionStatus"
+                    "$ref": "#/definitions/sessioncontrol.SessionStatus"
                 },
                 "title": {
                     "type": "string"
@@ -20828,7 +19931,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.sessionConversationPage": {
+        "server.sessionConversationPage": {
             "type": "object",
             "properties": {
                 "cursor": {
@@ -20837,7 +19940,7 @@ const docTemplate = `{
                 "events": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"
+                        "$ref": "#/definitions/mysql.AgentTaskEvent"
                     }
                 },
                 "has_more": {
@@ -20847,11 +19950,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "session": {
-                    "$ref": "#/definitions/internal_server.sessionControlSessionDTO"
+                    "$ref": "#/definitions/server.sessionControlSessionDTO"
                 }
             }
         },
-        "internal_server.traceDiagnostic": {
+        "server.traceDiagnostic": {
             "type": "object",
             "properties": {
                 "code": {
@@ -20886,7 +19989,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.traceEvent": {
+        "server.traceEvent": {
             "type": "object",
             "properties": {
                 "content": {
@@ -20956,7 +20059,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.traceQuality": {
+        "server.traceQuality": {
             "type": "object",
             "properties": {
                 "completion_verified": {
@@ -20994,7 +20097,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.traceRecap": {
+        "server.traceRecap": {
             "type": "object",
             "properties": {
                 "content": {
@@ -21027,24 +20130,24 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.traceRewind": {
+        "server.traceRewind": {
             "type": "object",
             "properties": {
                 "checkpoints": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.traceRewindCheckpoint"
+                        "$ref": "#/definitions/server.traceRewindCheckpoint"
                     }
                 },
                 "rewinds": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.traceRewindEvent"
+                        "$ref": "#/definitions/server.traceRewindEvent"
                     }
                 }
             }
         },
-        "internal_server.traceRewindCheckpoint": {
+        "server.traceRewindCheckpoint": {
             "type": "object",
             "properties": {
                 "events_after": {
@@ -21076,7 +20179,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.traceRewindEvent": {
+        "server.traceRewindEvent": {
             "type": "object",
             "properties": {
                 "content": {
@@ -21096,7 +20199,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.traceSessionSummary": {
+        "server.traceSessionSummary": {
             "type": "object",
             "properties": {
                 "cwd": {
@@ -21131,7 +20234,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.traceSpan": {
+        "server.traceSpan": {
             "type": "object",
             "properties": {
                 "concurrency_class": {
@@ -21190,7 +20293,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.traceSummary": {
+        "server.traceSummary": {
             "type": "object",
             "properties": {
                 "agent_tasks": {
@@ -21279,17 +20382,914 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_server.traceTree": {
+        "server.traceTree": {
             "type": "object",
             "properties": {
                 "children": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_server.traceTree"
+                        "$ref": "#/definitions/server.traceTree"
                     }
                 },
                 "span": {
-                    "$ref": "#/definitions/internal_server.traceSpan"
+                    "$ref": "#/definitions/server.traceSpan"
+                }
+            }
+        },
+        "sessioncontrol.HandoffCandidateRemoval": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "estimated_tokens": {
+                    "type": "integer"
+                }
+            }
+        },
+        "sessioncontrol.SessionChannel": {
+            "type": "object",
+            "properties": {
+                "account_key": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "string"
+                }
+            }
+        },
+        "sessioncontrol.SessionStatus": {
+            "type": "string",
+            "enum": [
+                "idle",
+                "queued",
+                "running",
+                "waiting_permission",
+                "waiting_input",
+                "blocked",
+                "completed",
+                "failed",
+                "stopped",
+                "archived"
+            ],
+            "x-enum-varnames": [
+                "StatusIdle",
+                "StatusQueued",
+                "StatusRunning",
+                "StatusWaitingPermission",
+                "StatusWaitingInput",
+                "StatusBlocked",
+                "StatusCompleted",
+                "StatusFailed",
+                "StatusStopped",
+                "StatusArchived"
+            ]
+        },
+        "sessioncontrol.Source": {
+            "type": "string",
+            "enum": [
+                "tenant",
+                "local"
+            ],
+            "x-enum-varnames": [
+                "SourceTenant",
+                "SourceLocal"
+            ]
+        },
+        "skills.Skill": {
+            "type": "object",
+            "properties": {
+                "agent": {
+                    "type": "string"
+                },
+                "allowed_tools": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "argument_hint": {
+                    "type": "string"
+                },
+                "arguments": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "content": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disable_model_invocation": {
+                    "type": "boolean"
+                },
+                "effort": {
+                    "type": "string"
+                },
+                "execution_context": {
+                    "type": "string"
+                },
+                "hooks": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/config.HookCommand"
+                        }
+                    }
+                },
+                "legacy": {
+                    "type": "boolean"
+                },
+                "local_name": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "package_ref": {
+                    "type": "string"
+                },
+                "package_sha256": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "paths": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "plugin": {
+                    "type": "string"
+                },
+                "root": {
+                    "type": "string"
+                },
+                "runtime_ref": {
+                    "type": "string"
+                },
+                "source": {
+                    "$ref": "#/definitions/skills.Source"
+                },
+                "user_invocable": {
+                    "type": "boolean"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "when_to_use": {
+                    "type": "string"
+                }
+            }
+        },
+        "skills.Source": {
+            "type": "string",
+            "enum": [
+                "user",
+                "project",
+                "plugin",
+                "bundled",
+                "marketplace",
+                "mcp",
+                "tenant"
+            ],
+            "x-enum-varnames": [
+                "SourceUser",
+                "SourceProject",
+                "SourcePlugin",
+                "SourceBundled",
+                "SourceMarketplace",
+                "SourceMCP",
+                "SourceTenant"
+            ]
+        },
+        "tenantpkg.Manifest": {
+            "type": "object",
+            "properties": {
+                "files": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/tenantpkg.ManifestFile"
+                    }
+                },
+                "package_sha256": {
+                    "type": "string"
+                },
+                "render": {
+                    "$ref": "#/definitions/tenantpkg.RenderInfo"
+                },
+                "schema_version": {
+                    "type": "string"
+                },
+                "skill_key": {
+                    "type": "string"
+                }
+            }
+        },
+        "tenantpkg.ManifestFile": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "render_order": {
+                    "type": "integer"
+                },
+                "runtime": {
+                    "type": "boolean"
+                },
+                "sha256": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "tenantpkg.RenderInfo": {
+            "type": "object",
+            "properties": {
+                "entrypoint": {
+                    "type": "string"
+                },
+                "excluded_prefixes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "runtime_excludes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "runtime_files": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "runtime_includes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "tools.FileChange": {
+            "type": "object",
+            "properties": {
+                "after": {
+                    "type": "string"
+                },
+                "after_exists": {
+                    "type": "boolean"
+                },
+                "after_is_dir": {
+                    "type": "boolean"
+                },
+                "after_is_symlink": {
+                    "type": "boolean"
+                },
+                "after_link_target": {
+                    "type": "string"
+                },
+                "after_mode": {
+                    "type": "integer"
+                },
+                "after_mode_known": {
+                    "type": "boolean"
+                },
+                "after_sha256": {
+                    "type": "string"
+                },
+                "after_snapshot_path": {
+                    "type": "string"
+                },
+                "before": {
+                    "type": "string"
+                },
+                "before_exists": {
+                    "type": "boolean"
+                },
+                "before_is_dir": {
+                    "description": "Directory object type. Restore recreates/removes directories rather than\ntreating them as regular files.",
+                    "type": "boolean"
+                },
+                "before_is_symlink": {
+                    "description": "Object-type fields describe symlinks so rewind can restore the link\nitself rather than following it. Regular files leave these empty.",
+                    "type": "boolean"
+                },
+                "before_link_target": {
+                    "type": "string"
+                },
+                "before_metadata": {
+                    "description": "BeforeMetadata carries capability-aware filesystem metadata (mtime, owner,\nxattr) restored best-effort after content. A nil pointer means no metadata\nwas captured; individual capabilities carry their own \"known\" flags.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/files.Metadata"
+                        }
+                    ]
+                },
+                "before_mode": {
+                    "type": "integer"
+                },
+                "before_mode_known": {
+                    "type": "boolean"
+                },
+                "before_sha256": {
+                    "description": "BeforeSHA256 / AfterSHA256 record content hashes so a content-free\ntranscript (file bodies externalized to the snapshot store) stays\nauditable: you can still tell what changed and compare versions without\nthe transcript carrying the file body. Empty for empty/inline content.",
+                    "type": "string"
+                },
+                "before_snapshot_path": {
+                    "type": "string"
+                },
+                "before_superseded": {
+                    "description": "BeforeSuperseded marks a turn-level lite entry: an earlier file_change in\nthe same turn already holds the recoverable turn-start state for this path,\nso this entry keeps only path + hashes for observability and carries no\nrestorable body. Rewind restores the turn-start state, so intermediate\nversions need no snapshot.",
+                    "type": "boolean"
+                },
+                "message_id": {
+                    "description": "MessageID keys the change to the message/turn that produced it in a v2\nmessage-graph transcript (aligning with Claude Code's messageId-\u003ebackup\nmodel). Empty for v1 linear transcripts. It is observability/interop only;\nrewind derives its restore set from the message-graph chain structure.",
+                    "type": "string"
+                },
+                "mode_changed": {
+                    "type": "boolean"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "source": {
+                    "description": "Source records which tool boundary captured the change (edit/write/bash)\nfor observability; it never affects restore.",
+                    "type": "string"
+                }
+            }
+        },
+        "workflow.Agent": {
+            "type": "object",
+            "properties": {
+                "effort": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "max_output_tokens": {
+                    "type": "integer"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "profile_hash": {
+                    "type": "string"
+                },
+                "profile_id": {
+                    "type": "integer"
+                },
+                "profile_key": {
+                    "type": "string"
+                },
+                "profile_version": {
+                    "type": "integer"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "ref": {
+                    "type": "string"
+                },
+                "role_type": {
+                    "type": "string"
+                },
+                "route_hash": {
+                    "type": "string"
+                },
+                "system_prompt": {
+                    "type": "string"
+                },
+                "tools": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "workflow.Artifact": {
+            "type": "object",
+            "properties": {
+                "attempt_no": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "sha256": {
+                    "type": "string"
+                }
+            }
+        },
+        "workflow.Attempt": {
+            "type": "object",
+            "properties": {
+                "budget_reserved": {
+                    "description": "BudgetReserved is the immutable admission reservation, not provider usage.",
+                    "type": "integer"
+                },
+                "epoch": {
+                    "type": "integer"
+                },
+                "failure": {
+                    "$ref": "#/definitions/workflow.Failure"
+                },
+                "finished_at": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "integer"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "started_at": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/workflow.Status"
+                },
+                "task_id": {
+                    "type": "integer"
+                },
+                "usage": {
+                    "$ref": "#/definitions/workflow.Usage"
+                },
+                "usage_known": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "workflow.Definition": {
+            "type": "object",
+            "properties": {
+                "limits": {
+                    "$ref": "#/definitions/workflow.Limits"
+                },
+                "nodes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/workflow.Node"
+                    }
+                },
+                "schema_version": {
+                    "type": "integer"
+                }
+            }
+        },
+        "workflow.Event": {
+            "type": "object",
+            "properties": {
+                "attempt_no": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "failure": {
+                    "$ref": "#/definitions/workflow.Failure"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "sequence": {
+                    "type": "integer"
+                },
+                "status": {
+                    "$ref": "#/definitions/workflow.Status"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/workflow.EventType"
+                }
+            }
+        },
+        "workflow.EventType": {
+            "type": "string",
+            "enum": [
+                "run_queued",
+                "run_started",
+                "task_created",
+                "task_waiting_dependency",
+                "agent_started",
+                "agent_output_delta",
+                "agent_phase",
+                "agent_completed",
+                "agent_failed",
+                "task_retry_scheduled",
+                "run_cancel_requested",
+                "run_cancelled",
+                "task_cancelled",
+                "run_completed",
+                "run_failed",
+                "run_timed_out",
+                "run_interrupted",
+                "run_recovered"
+            ],
+            "x-enum-varnames": [
+                "EventQueued",
+                "EventStarted",
+                "EventTaskCreated",
+                "EventWaiting",
+                "EventAgentStarted",
+                "EventDelta",
+                "EventPhase",
+                "EventAgentCompleted",
+                "EventAgentFailed",
+                "EventRetry",
+                "EventCancelRequested",
+                "EventCancelled",
+                "EventTaskCancelled",
+                "EventCompleted",
+                "EventFailed",
+                "EventTimedOut",
+                "EventInterrupted",
+                "EventRecovered"
+            ]
+        },
+        "workflow.Failure": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "retryable": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "workflow.Limits": {
+            "type": "object",
+            "properties": {
+                "max_parallel": {
+                    "type": "integer"
+                },
+                "max_total_tokens": {
+                    "type": "integer"
+                },
+                "run_timeout_seconds": {
+                    "type": "integer"
+                }
+            }
+        },
+        "workflow.Node": {
+            "type": "object",
+            "properties": {
+                "agent_ref": {
+                    "type": "string"
+                },
+                "depends_on": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "instruction": {
+                    "type": "string"
+                },
+                "retry": {
+                    "$ref": "#/definitions/workflow.RetryPolicy"
+                },
+                "timeout_seconds": {
+                    "type": "integer"
+                }
+            }
+        },
+        "workflow.NodeRun": {
+            "type": "object",
+            "properties": {
+                "artifact_id": {
+                    "type": "string"
+                },
+                "attempts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/workflow.Attempt"
+                    }
+                },
+                "failure": {
+                    "$ref": "#/definitions/workflow.Failure"
+                },
+                "next_retry_at": {
+                    "type": "string"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "output": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/workflow.Status"
+                }
+            }
+        },
+        "workflow.Plan": {
+            "type": "object",
+            "properties": {
+                "agents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/workflow.Agent"
+                    }
+                },
+                "definition": {
+                    "$ref": "#/definitions/workflow.Definition"
+                },
+                "hash": {
+                    "type": "string"
+                }
+            }
+        },
+        "workflow.RetryPolicy": {
+            "type": "object",
+            "properties": {
+                "backoff_ms": {
+                    "type": "integer"
+                },
+                "max_attempts": {
+                    "type": "integer"
+                }
+            }
+        },
+        "workflow.Run": {
+            "type": "object",
+            "properties": {
+                "artifacts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/workflow.Artifact"
+                    }
+                },
+                "cancel_requested_at": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deadline": {
+                    "type": "string"
+                },
+                "epoch": {
+                    "type": "integer"
+                },
+                "failure": {
+                    "$ref": "#/definitions/workflow.Failure"
+                },
+                "finished_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "input": {
+                    "type": "string"
+                },
+                "last_sequence": {
+                    "type": "integer"
+                },
+                "lease_owner": {
+                    "type": "string"
+                },
+                "lease_until": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nodes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/workflow.NodeRun"
+                    }
+                },
+                "plan": {
+                    "$ref": "#/definitions/workflow.Plan"
+                },
+                "revision": {
+                    "type": "integer"
+                },
+                "scope": {
+                    "$ref": "#/definitions/workflow.Scope"
+                },
+                "started_at": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/workflow.Status"
+                },
+                "team_id": {
+                    "type": "integer"
+                },
+                "team_key": {
+                    "type": "string"
+                },
+                "team_version": {
+                    "type": "integer"
+                },
+                "uncertain_tokens": {
+                    "description": "UncertainTokens includes in-flight and unconfirmed attempt reservations.\nIt is not actual usage or a monetary amount.",
+                    "type": "integer"
+                },
+                "usage": {
+                    "$ref": "#/definitions/workflow.Usage"
+                }
+            }
+        },
+        "workflow.Scope": {
+            "type": "object",
+            "properties": {
+                "tenant_id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "workflow.Status": {
+            "type": "string",
+            "enum": [
+                "queued",
+                "pending",
+                "ready",
+                "running",
+                "retry_wait",
+                "completed",
+                "failed",
+                "timed_out",
+                "cancel_requested",
+                "cancelled",
+                "interrupted",
+                "blocked"
+            ],
+            "x-enum-varnames": [
+                "Queued",
+                "Pending",
+                "Ready",
+                "Running",
+                "RetryWait",
+                "Completed",
+                "Failed",
+                "TimedOut",
+                "CancelRequested",
+                "Cancelled",
+                "Interrupted",
+                "Blocked"
+            ]
+        },
+        "workflow.Usage": {
+            "type": "object",
+            "properties": {
+                "cache_read_tokens": {
+                    "type": "integer"
+                },
+                "cache_write_tokens": {
+                    "type": "integer"
+                },
+                "input_tokens": {
+                    "type": "integer"
+                },
+                "output_tokens": {
+                    "type": "integer"
+                }
+            }
+        },
+        "workflowapp.Binding": {
+            "type": "object",
+            "properties": {
+                "profile_id": {
+                    "type": "integer"
+                },
+                "profile_key": {
+                    "type": "string"
+                },
+                "profile_version": {
+                    "type": "integer"
+                },
+                "ref": {
+                    "type": "string"
+                }
+            }
+        },
+        "workflowapp.Builtin": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "workflowapp.SaveRequest": {
+            "type": "object",
+            "properties": {
+                "agents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/workflowapp.Binding"
+                    }
+                },
+                "definition": {
+                    "$ref": "#/definitions/workflow.Definition"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "workflowapp.StartRequest": {
+            "type": "object",
+            "properties": {
+                "input": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "integer"
+                }
+            }
+        },
+        "workflowapp.Template": {
+            "type": "object",
+            "properties": {
+                "agents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/workflowapp.Binding"
+                    }
+                },
+                "definition": {
+                    "$ref": "#/definitions/workflow.Definition"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "integer"
                 }
             }
         }

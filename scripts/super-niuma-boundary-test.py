@@ -22,6 +22,16 @@ COMPOSITION_FILES = frozenset({
     "web/src/v2/components/SessionSidebar.tsx",
     "web/src/v2/desktopServiceBridge.ts",
 })
+# Generated API contract artifacts and the one file that names their schemas.
+# They follow the swagger annotations, which this successor can regenerate but
+# never byte-match: the legacy output names carry the old module path. They get
+# the same exact review as composition files, never a blanket waiver.
+GENERATED_CONTRACT_FILES = frozenset({
+    "docs/docs.go",
+    "web/src/lib/generated/api-types.ts",
+    "web/src/lib/types.ts",
+})
+REVIEWABLE_FILES = COMPOSITION_FILES | GENERATED_CONTRACT_FILES
 ALLOWED_NEW_GO_ROOTS = ("cmd/super-niuma/", "internal/super/")
 
 
@@ -31,8 +41,8 @@ def verify(root=ROOT):
     review_path = root / REVIEW.relative_to(ROOT)
     review = json.loads(review_path.read_text()) if review_path.is_file() else {}
     for name, item in review.items():
-        if name not in COMPOSITION_FILES:
-            failures.append(f"non-composition exception forbidden: {name}")
+        if name not in REVIEWABLE_FILES:
+            failures.append(f"non-reviewable exception forbidden: {name}")
         if not isinstance(item, dict) or item.get("baseline_sha256") != manifest["files"].get(name) or not item.get("reason") or not item.get("verification"):
             failures.append(f"invalid composition review: {name}")
     for name, expected in manifest["files"].items():
@@ -46,7 +56,7 @@ def verify(root=ROOT):
         data = data.rstrip(b"\n") + b"\n"
         actual = hashlib.sha256(data).hexdigest()
         item = review.get(name, {})
-        approved = item.get("reviewed_sha256") if name in COMPOSITION_FILES and isinstance(item, dict) else None
+        approved = item.get("reviewed_sha256") if name in REVIEWABLE_FILES and isinstance(item, dict) else None
         if actual != (approved or expected):
             failures.append(f"legacy behavioral baseline changed: {name}")
     for folder in ("internal", "cmd"):
@@ -67,7 +77,7 @@ def main():
     if failures:
         print("\n".join(failures), file=sys.stderr)
         return 1
-    print("PASS: legacy baseline protected; exact reviewed Desktop composition exceptions only")
+    print("PASS: legacy baseline protected; exact reviewed Desktop composition and generated API contract exceptions only")
     return 0
 
 
