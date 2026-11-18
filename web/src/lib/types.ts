@@ -47,8 +47,8 @@ export type PromptTemplate = {
 // Derived from the generated schema rather than hand-written: /v1/providers and
 // /v1/models went undocumented for 19 commits and the frontend covered for it
 // with inline types that nothing kept in sync (AUDIT-P0-18).
-export type ProviderListResponse = OpenAPISchema<"server.SwaggerProviderListResponse">;
-export type OpenAIModelsResponse = OpenAPISchema<"server.SwaggerOpenAIModelsResponse">;
+export type ProviderListResponse = OpenAPISchema<"internal_server.SwaggerProviderListResponse">;
+export type OpenAIModelsResponse = OpenAPISchema<"internal_server.SwaggerOpenAIModelsResponse">;
 
 export type ProviderOption = {
   name: string;
@@ -75,13 +75,13 @@ export type FeishuOnboardingSession = {
   updated_at?: string;
 };
 
-export type TenantRecord = OpenAPISchema<"mysql.Tenant"> & {
+export type TenantRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.Tenant"> & {
   tenant_key?: string;
   name?: string;
   status?: string;
 };
 
-export type TenantUserRecord = OpenAPISchema<"mysql.User"> & {
+export type TenantUserRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.User"> & {
   user_key?: string;
   display_name?: string;
   email?: string;
@@ -89,7 +89,7 @@ export type TenantUserRecord = OpenAPISchema<"mysql.User"> & {
   status?: string;
 };
 
-export type TenantSession = OpenAPISchema<"mysql.Session"> & {
+export type TenantSession = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.Session"> & {
   id: number;
   tenant_id?: number;
   user_id?: number;
@@ -99,16 +99,16 @@ export type TenantSession = OpenAPISchema<"mysql.Session"> & {
   updated_at?: string;
 };
 
-export type MobileLatestRecap = OpenAPISchema<"server.SwaggerMobileLatestRecap"> & {
+export type MobileLatestRecap = OpenAPISchema<"internal_server.SwaggerMobileLatestRecap"> & {
   content: string;
 };
 
-export type MobileSessionDetail = OpenAPISchema<"server.SwaggerMobileSessionDetailResponse"> &
+export type MobileSessionDetail = OpenAPISchema<"internal_server.SwaggerMobileSessionDetailResponse"> &
   TenantSession & {
     latest_recap?: MobileLatestRecap;
   };
 
-export type TenantMessage = OpenAPISchema<"mysql.Message"> & {
+export type TenantMessage = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.Message"> & {
   id: number;
   status?: string;
   total_tokens?: number;
@@ -158,11 +158,11 @@ export type ChatMessage = {
   createdAt?: string;
 };
 
-export type MobileAttachment = OpenAPISchema<"server.SwaggerMobileAttachment"> & {
+export type MobileAttachment = OpenAPISchema<"internal_server.SwaggerMobileAttachment"> & {
   type: string;
 };
 
-export type AttachmentPresignResponse = OpenAPISchema<"server.SwaggerMobileAttachmentPresignResponse"> & {
+export type AttachmentPresignResponse = OpenAPISchema<"internal_server.SwaggerMobileAttachmentPresignResponse"> & {
   attachment_id: string;
   object_key: string;
   upload_url: string;
@@ -170,20 +170,20 @@ export type AttachmentPresignResponse = OpenAPISchema<"server.SwaggerMobileAttac
   attachment: MobileAttachment;
 };
 
-export type MemoryRecord = OpenAPISchema<"mysql.Memory"> & {
+export type MemoryRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.Memory"> & {
   source?: string;
   created_at?: string;
 };
 
-export type KnowledgeDocumentRecord = OpenAPISchema<"mysql.KnowledgeDocument">;
+export type KnowledgeDocumentRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.KnowledgeDocument">;
 
-export type KnowledgeChunkRecord = OpenAPISchema<"mysql.KnowledgeChunk">;
+export type KnowledgeChunkRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.KnowledgeChunk">;
 
-export type AutoMemoryReviewRequest = OpenAPISchema<"server.SwaggerAutoMemoryReviewRequest">;
+export type AutoMemoryReviewRequest = OpenAPISchema<"internal_server.SwaggerAutoMemoryReviewRequest">;
 
-export type ProfileRecord = OpenAPISchema<"server.SwaggerTenantProfile">;
+export type ProfileRecord = OpenAPISchema<"internal_server.SwaggerTenantProfile">;
 
-export type SkillRecord = OpenAPISchema<"mysql.Skill"> & {
+export type SkillRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.Skill"> & {
   source?: string;
   package_ref?: string;
   package_sha256?: string;
@@ -193,7 +193,7 @@ export type SkillRecord = OpenAPISchema<"mysql.Skill"> & {
   updated_at?: string;
 };
 
-export type LocalSkillRecord = OpenAPISchema<"skills.Skill"> & {
+export type LocalSkillRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_skills.Skill"> & {
   name: string;
   path: string;
 };
@@ -257,14 +257,14 @@ export type SkillPackageVerifyResult = {
   };
 };
 
-export type SkillOverrideRecord = OpenAPISchema<"mysql.SkillOverride">;
+export type SkillOverrideRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.SkillOverride">;
 
-export type DocumentRecord = OpenAPISchema<"mysql.Document"> & {
+export type DocumentRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.Document"> & {
   created_at?: string;
   updated_at?: string;
 };
 
-export type TelemetryRecord = OpenAPISchema<"mysql.TelemetryEvent"> & {
+export type TelemetryRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.TelemetryEvent"> & {
   properties_json?: string;
 };
 
@@ -340,7 +340,7 @@ export type TenantQuotaEvent = {
   created_at?: string;
 };
 
-export type AgentTaskRecord = OpenAPISchema<"mysql.AgentTask"> & {
+export type AgentTaskRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.AgentTask"> & {
   id: number;
 };
 
@@ -421,7 +421,7 @@ export type AgentWorkspaceValidation = {
   is_git_repo: boolean;
 };
 
-export type AgentTaskEventRecord = OpenAPISchema<"mysql.AgentTaskEvent"> & {
+export type AgentTaskEventRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_storage_mysql.AgentTaskEvent"> & {
   id: number;
   task_id: number;
 };
@@ -440,12 +440,12 @@ export type AgentTaskSSEEvent =
       error?: string;
     };
 
-export type AgentTaskCreateRequest = Omit<OpenAPISchema<"server.SwaggerCreateAgentTaskRequest">, "metadata_json" | "result_json"> & {
+export type AgentTaskCreateRequest = Omit<OpenAPISchema<"internal_server.SwaggerCreateAgentTaskRequest">, "metadata_json" | "result_json"> & {
   metadata_json?: unknown;
   result_json?: unknown;
 };
 
-export type AgentTaskUpdateRequest = Omit<OpenAPISchema<"server.SwaggerUpdateAgentTaskRequest">, "metadata_json" | "result_json"> & {
+export type AgentTaskUpdateRequest = Omit<OpenAPISchema<"internal_server.SwaggerUpdateAgentTaskRequest">, "metadata_json" | "result_json"> & {
   metadata_json?: unknown;
   result_json?: unknown;
 };
@@ -523,11 +523,11 @@ export type ImageCapabilityEntry = {
   capability: ImageModelCapability;
 };
 
-export type AgentTaskMessageRequest = OpenAPISchema<"server.SwaggerAgentTaskMessageRequest"> & {
+export type AgentTaskMessageRequest = OpenAPISchema<"internal_server.SwaggerAgentTaskMessageRequest"> & {
   attachments?: AgentTaskAttachment[];
 };
 
-export type AgentTaskPermissionResolveRequest = OpenAPISchema<"server.SwaggerAgentTaskPermissionRequest">;
+export type AgentTaskPermissionResolveRequest = OpenAPISchema<"internal_server.SwaggerAgentTaskPermissionRequest">;
 
 export type AgentUserQuestion = {
   taskID: number;
@@ -539,25 +539,25 @@ export type AgentUserQuestion = {
   legacy?: boolean;
 };
 
-export type GoalRecord = OpenAPISchema<"goal.Goal"> & {
+export type GoalRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_goal.Goal"> & {
   id: string;
 };
 
-export type GoalEventRecord = OpenAPISchema<"goal.Event"> & {
-  id: string;
-  goal_id: string;
-};
-
-export type GoalPlan = OpenAPISchema<"server.SwaggerGoalPlanResponse">;
-
-export type GoalEvidence = OpenAPISchema<"goal.GoalEvidence"> & {
+export type GoalEventRecord = OpenAPISchema<"github_com_konglong87_niuma_internal_goal.Event"> & {
   id: string;
   goal_id: string;
 };
 
-export type GoalCreateRequest = OpenAPISchema<"server.SwaggerCreateGoalRequest">;
+export type GoalPlan = OpenAPISchema<"internal_server.SwaggerGoalPlanResponse">;
 
-export type GoalRunResponse = OpenAPISchema<"server.SwaggerRunGoalResponse">;
+export type GoalEvidence = OpenAPISchema<"github_com_konglong87_niuma_internal_goal.GoalEvidence"> & {
+  id: string;
+  goal_id: string;
+};
+
+export type GoalCreateRequest = OpenAPISchema<"internal_server.SwaggerCreateGoalRequest">;
+
+export type GoalRunResponse = OpenAPISchema<"internal_server.SwaggerRunGoalResponse">;
 
 export type RuntimeBackgroundJob = {
   id: string;
@@ -630,7 +630,7 @@ export type RuntimeRunRecord = {
   log_bytes?: number;
 };
 
-export type TraceSummary = OpenAPISchema<"server.traceSummary">;
+export type TraceSummary = OpenAPISchema<"internal_server.traceSummary">;
 
 export type TraceQuality = {
   tests_run: boolean;
@@ -683,7 +683,7 @@ export type TraceRecap = {
   properties?: Record<string, unknown>;
 };
 
-export type TraceDetail = OpenAPISchema<"server.SwaggerTraceDetailResponse"> & {
+export type TraceDetail = OpenAPISchema<"internal_server.SwaggerTraceDetailResponse"> & {
   source?: string;
   session_id?: string;
   title?: string;
@@ -696,7 +696,7 @@ export type TraceDetail = OpenAPISchema<"server.SwaggerTraceDetailResponse"> & {
   events?: Array<Record<string, unknown>>;
   spans?: Array<Record<string, unknown>>;
   span_tree?: Array<{
-    span?: OpenAPISchema<"server.traceSpan">;
+    span?: OpenAPISchema<"internal_server.traceSpan">;
     children?: unknown[];
   }>;
   telemetry_events?: TelemetryRecord[];

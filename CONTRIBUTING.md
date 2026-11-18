@@ -52,7 +52,6 @@ go run ./scripts/runtime-topology-check --base HEAD --working-tree \
 ```bash
 go test ./internal/server -count=1
 swag init -d ./cmd/niuma,./internal/server -g main.go --parseInternal --parseDependency
-npm --prefix web run generate:api-types
 ```
 
 ## Pull Request 要求
