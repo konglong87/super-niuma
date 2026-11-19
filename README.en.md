@@ -6,13 +6,14 @@
 
 <p align="center"><strong>Your super workhorse. Let AI do the grind. Go live your life.</strong></p>
 <p align="center">
-  An open-source, desktop-first agent workspace: conversations for exploration, work orders for delivery.<br>
+  An open-source, desktop-first agent workspace: conversations for exploration, work orders for delivery, plus an Android phone agent in development.<br>
   Delegate the task. Keep control of the scope, progress, and acceptance evidence.
 </p>
 
 <p align="center">
   <a href="#quick-start">Get started</a> ·
   <a href="#how-it-works">How it works</a> ·
+  <a href="#phone-agent">Phone agent</a> ·
   <a href="docs/usage/super-niuma.md">Super guide</a> ·
   <a href="#project-status">Project status</a> ·
   <a href="CONTRIBUTING.md">Contribute</a> ·
@@ -55,6 +56,24 @@ A chat window is useful for discussion. Delivery also needs ownership, permissio
 | **Super Niuma** | Work with a defined objective, workspace and acceptance rules; tasks that need assignments, budgets, progress and evidence | Separate Super state; workers currently use authorized file reads/writes, not the ordinary session's shell, MCP or Computer Use capabilities |
 
 **A useful first experiment:** clarify a task in an ordinary session, then use a scoped Super profile to produce a small JSON artifact or delivery note with explicit assertions. “High quality” or “fully correct” is not an executable acceptance rule; translate essential requirements into checks or review them yourself.
+
+<a id="phone-agent"></a>
+## Phone agent (Android, developer preview)
+
+Hand a task to the agent on your phone, such as “delete the 7:00 AM alarm”. It reads the screen and taps through an accessibility service, acting only inside the apps you list for that task. The Go core is built into the app with gomobile; Kotlin only reads the screen and handles the overlay, notifications and key storage.
+
+<p align="center">
+  <img src="mobile/android/build/validation/20261117/m1-notify/approval-notification.png" alt="Emulator capture: the approval notification and overlay card before deleting an alarm" width="300">
+</p>
+<p align="center"><em>A real emulator capture: before deleting the alarm, the notification and the overlay card both wait for you.</em></p>
+
+- **Acts only in apps you allow.** Other apps, including the notification shade and Super Niuma itself, are named to the model but their content stays hidden. It never types into password or verification-code fields.
+- **Risky steps ask first.** Sending, paying, deleting, installing, calling, posting, transferring or submitting waits for “Allow once” or “Deny” on the overlay card or a system notification; no answer within 60 seconds counts as a denial. The lock screen hides what the step is, and on Android 12+ allowing it there requires unlocking.
+- **The screen is the evidence.** Set text that should appear when the task is done; the task counts as verified only when it does.
+- **Failures are explicit.** Transient model service errors get bounded retries; taps, deletions and other actions with an uncertain outcome are reported, never repeated. Turning the screen reader off interrupts the task and reminds you to turn it back on.
+- **Keys stay on the phone.** The model endpoint must be https, and the key is encrypted with a non-exportable Android Keystore key.
+
+Status: on November 17, 2026 a full acceptance run with a real model on an Android 14 emulator [passed all 35 checks](mobile/android/build/validation/20261117/m1-notify/result.txt). It has not been verified on a physical phone yet, and there is no installer. See the [phone README](mobile/README.md) (Chinese) to build and use it, and the [phone plan](docs/plans/2026-11-17-mobile-agent.md) (Chinese) for design and open items.
 
 <a id="quick-start"></a>
 ## Get started: Desktop first
@@ -130,7 +149,9 @@ Built with **Go · Wails · React/TypeScript · SQLite**. Super is currently a s
 | Router, multiple workers/subtask DAGs, budgets and durable bus | Implemented; automated, concurrency and SQLite recovery tests |
 | Independent file verification, outbox and scope isolation | Implemented; code tests do not replace live integration acceptance |
 | Desktop, Feishu and signed Webhook adapters | Implemented; real external-account and recipient acceptance remains incomplete |
-| Autonomous delivery with a real model | **Not accepted yet**: the bounded November 3, 2026 recheck received provider HTTP 429 and stopped instead of retrying in a loop |
+| Autonomous delivery with a real model | **Not accepted yet**: the bounded November 3, 2026 recheck received provider HTTP 429 and stopped instead of retrying in a loop; bounded retries have been added since, but desktop work orders have not been rechecked |
+| Retries for transient model request failures | Implemented and on by default for desktop Super and phone tasks; classified as not processed / possibly processed / permanent; phone acceptance with injected 429/500 passed |
+| Android phone agent | All 35 end-to-end checks passed on an emulator with a real model (approvals, notifications, reminders, scope refusals, a killed process); **not yet verified on a physical phone**, no installer |
 | One order across native UI, a real model and external channels | **Not accepted yet**; this remains a delivery gate |
 | Official signing and installer distribution | No release yet; use the source-built developer preview |
 
@@ -162,6 +183,7 @@ If this direction resonates, **Star** the project to help others discover it, or
 - [Super guide](docs/usage/super-niuma.md) · [Architecture](docs/architecture/2026-11-03-super-niuma-control-plane.md) · [Delivery ledger](docs/plans/2026-11-03-super-niuma-platform-delivery.md)
 - [Ordinary-session setup](docs/getting-started.md) · [Use cases](docs/use-cases.md) · [Configuration](docs/configuration.md)
 - [WebUI](docs/usage/webui.md) · [Traditional Feishu integration](docs/usage/feishu.md) · [Desktop personalization](docs/usage/desktop-personalization.md)
+- [Phone README](mobile/README.md) · [Phone plan and progress](docs/plans/2026-11-17-mobile-agent.md)
 - [Contributing](CONTRIBUTING.md) · [Code of conduct](CODE_OF_CONDUCT.md) · [Changelog](CHANGELOG.md)
 
 Super Niuma is an independent public successor built from a Niuma source snapshot, preserving the traditional Session implementation. Niuma's upstream lineage is go-e2e. Exact source baselines and Apache-2.0 licensing are recorded in [UPSTREAM.md](UPSTREAM.md) and [LICENSE](LICENSE); upstream attribution does not imply endorsement.

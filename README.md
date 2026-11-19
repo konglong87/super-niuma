@@ -6,13 +6,14 @@
 
 <p align="center"><strong>你的超级牛马。让 AI 当牛马，人类去生活。</strong></p>
 <p align="center">
-  开源、桌面优先的 Agent 工作台：日常任务用会话，明确交付用工单。<br>
+  开源、桌面优先的 Agent 工作台：日常任务用会话，明确交付用工单；另有开发中的 Android 手机端 Agent。<br>
   把目标交给牛马，把授权、过程和验收证据留在你手里。
 </p>
 
 <p align="center">
   <a href="#quick-start">开始使用</a> ·
   <a href="#how-it-works">工作原理</a> ·
+  <a href="#phone-agent">手机端</a> ·
   <a href="docs/usage/super-niuma.md">使用指南</a> ·
   <a href="#project-status">当前进展</a> ·
   <a href="CONTRIBUTING.md">参与贡献</a> ·
@@ -55,6 +56,24 @@
 | **超级牛马干活** | 已明确目标、工作目录和验收规则的工单；需要分工、预算、状态和证据的任务 | 独立 Super 状态；当前 Worker 仅使用授权文件读写，不自动继承普通会话的 shell、MCP 或 Computer Use |
 
 **适合先试的小任务**：先在普通会话里梳理需求，再用 Super 的受限文件工具生成一份结构明确的 JSON 或交付说明，并配置相应断言。自然语言里的“质量好”“完全正确”不能自动变成验收标准；仍需你把关键要求写成规则或人工检查。
+
+<a id="phone-agent"></a>
+## 手机端 Agent（Android，开发预览）
+
+在手机上把一件事交给牛马，比如“删除早上 7:00 的闹钟”。它通过无障碍服务读屏幕、点按钮，只在你为这次任务列出的应用里动手。Go 核心通过 gomobile 编进 App，Kotlin 只负责读屏、悬浮卡片、通知和密钥保管。
+
+<p align="center">
+  <img src="mobile/android/build/validation/20261117/m1-notify/approval-notification.png" alt="模拟器截图：删除闹钟前的审批通知和悬浮卡片" width="300">
+</p>
+<p align="center"><em>真实模拟器截图：删除闹钟前，通知和悬浮卡片同时等你确认。</em></p>
+
+- **只在授权应用里动手**：任务之外的应用（包括通知栏和超级牛马自己）只给模型看名字，不给内容；从不在密码或验证码输入框里打字。
+- **危险步骤先问你**：发送、付款、删除、安装、拨号、发布、转账、提交这类步骤，会通过悬浮卡片和系统通知等你“允许一次”或“拒绝”，60 秒不处理按拒绝算。锁屏上的通知不显示具体内容，Android 12 起在锁屏上允许要先解锁。
+- **结果看屏幕，不看口头汇报**：可以设置完成后屏幕上应出现的文字，出现了才算已验收。
+- **出问题时说清楚**：模型服务的瞬时故障做有界重试；点击、删除这类动作结果不确定时只报告、绝不重做。屏幕助手被关掉时，任务记为中断，并提醒你重新开启。
+- **密钥只在手机上**：模型地址必须是 https，密钥用 Android Keystore 中不可导出的密钥加密保存。
+
+当前状态：2026-11-17 在 Android 14 模拟器上用真实模型跑完整验收，[35 项全部通过](mobile/android/build/validation/20261117/m1-notify/result.txt)；还没有在真机上验证，也没有安装包。构建与使用见 [手机端说明](mobile/README.md)，方案与剩余事项见 [手机端计划](docs/plans/2026-11-17-mobile-agent.md)。
 
 <a id="quick-start"></a>
 ## 开始使用：推荐 Desktop
@@ -130,7 +149,9 @@ flowchart TB
 | Router、多 Worker/子任务 DAG、预算、持久 Bus | 已实现；有自动测试、并发与 SQLite 恢复测试 |
 | 独立文件验收、通知 Outbox、作用域隔离 | 已实现；代码测试不替代真实模型/渠道验收 |
 | Desktop、飞书、签名 Webhook 接入 | 已有适配器；真实外部账号与收件目标的收发验收尚未完成 |
-| 真实模型自动交付闭环 | **尚未通过**：2026-11-03 最近一次受限复测遇到供应商 HTTP 429，已停止而非循环重试 |
+| 真实模型自动交付闭环 | **尚未通过**：2026-11-03 最近一次受限复测遇到供应商 HTTP 429，已停止而非循环重试；之后已加入有界重试，桌面工单尚未重新复测 |
+| 模型请求瞬时故障重试 | 已实现，桌面 Super 与手机任务默认开启；按“确定未处理 / 可能已处理 / 永久错误”分类，手机端注入 429/500 的验收通过 |
+| Android 手机端 Agent | 模拟器上真实模型端到端验收 35 项全部通过（审批、通知、提醒、越权拒绝、进程被杀）；**尚未在真机验证**，没有安装包 |
 | 同一工单贯通原生 UI、真实模型和外部渠道 | **尚未通过**；是接下来的交付门禁 |
 | 正式签名与安装包分发 | 尚未发布；目前以源码开发预览为主 |
 
@@ -162,6 +183,7 @@ flowchart TB
 - [Super 操作指南](docs/usage/super-niuma.md) · [控制面架构](docs/architecture/2026-11-03-super-niuma-control-plane.md) · [交付账本](docs/plans/2026-11-03-super-niuma-platform-delivery.md)
 - [普通会话入门](docs/getting-started.md) · [使用场景](docs/use-cases.md) · [配置参考](docs/configuration.md)
 - [WebUI](docs/usage/webui.md) · [传统飞书渠道](docs/usage/feishu.md) · [桌面个性化](docs/usage/desktop-personalization.md)
+- [手机端说明](mobile/README.md) · [手机端计划与进展](docs/plans/2026-11-17-mobile-agent.md)
 - [贡献](CONTRIBUTING.md) · [行为准则](CODE_OF_CONDUCT.md) · [更新日志](CHANGELOG.md)
 
 Super Niuma 是基于 Niuma 源码快照演进的独立公开项目，保留传统会话实现。Niuma 的上游来源为 go-e2e。完整提交基线、代码来源和许可见 [UPSTREAM.md](UPSTREAM.md) 与 [Apache-2.0 LICENSE](LICENSE)；不代表上游为本项目背书。
