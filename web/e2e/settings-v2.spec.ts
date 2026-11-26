@@ -302,7 +302,7 @@ test("quick setup saves only edited values and preserves hidden credentials and 
   expect(tests).toBe(0);
   await page.getByRole("button", { name: "Test connection", exact: true }).click();
   await expect(page.locator('.model-status')).toContainText("Model catalog reachable");
-  await expect(page.getByRole("tabpanel", { name: "Quick setup", exact: true }).getByText("This test checks only the model catalog, not chat, tool or vision capabilities.", { exact: true })).toBeVisible();
+  await expect(page.getByRole("tabpanel", { name: "Quick setup", exact: true }).getByText("This test checks the model catalog and sends one minimal chat request to verify the key and model. It also probes tool calling and does not verify vision capability.", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Save changes", exact: true }).click();
   await expect(page.getByRole("status").filter({ hasText: "Saved and verified by readback." })).toBeVisible();
   expect(document).toEqual({ ...original, model: "edited-model" });

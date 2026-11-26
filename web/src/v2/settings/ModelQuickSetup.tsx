@@ -12,7 +12,7 @@ function PrimaryConfigurationStatus({ draft }: { draft: GlobalSettingsDraft }) {
   const connection = draft.connection?.provider === undefined ? draft.connection : null;
   const model = stringValue(settingsValue(draft.doc, ["model"]));
   const provider = stringValue(settingsValue(draft.doc, ["provider"]));
-  const title = connection ? t(connection.ok ? "模型目录可访问" : "模型目录连接失败") : t("尚未测试目录连接");
+  const title = connection ? t(connection.kind === "chat_connection" ? (connection.ok ? "对话测试成功" : "对话测试失败") : connection.ok ? "模型目录可访问" : "模型目录连接失败") : t("尚未测试目录连接");
   return <section className="model-status" aria-label={t("配置中的主模型")}>
     <div className="model-status-icon" data-result={connection ? connection.ok ? "success" : "error" : "unknown"}>
       {connection ? connection.ok ? <Check size={19} /> : <CircleAlert size={19} /> : <Cpu size={19} />}

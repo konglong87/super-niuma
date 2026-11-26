@@ -2250,7 +2250,7 @@ export interface paths {
         put?: never;
         /**
          * Test provider models catalog connectivity
-         * @description Restores masked credentials and probes the provider models catalog with a ten second timeout. Never saves settings, follows redirects, or performs inference. A catalog failure does not prove inference is unavailable.
+         * @description Restores masked credentials and probes the provider models catalog with a ten second timeout. Never saves settings or follows redirects. After the catalog check passes and a model is configured, sends one minimal chat request (max tokens 1) to verify the key and model; failures carry a reason code (key_invalid, quota_or_rate_limit, model_not_found, network, chat_failed, catalog_failed). Also probes tool calling with a no-op ping tool (tool_support: supported, unsupported or unknown; unsupported is a warning, not a failure). Does not verify vision support.
          */
         post: {
             parameters: {
@@ -13222,7 +13222,18 @@ export interface components {
             kind?: string;
             message?: string;
             ok?: boolean;
+            /**
+             * @description Reason classifies a failure: key_invalid, quota_or_rate_limit, model_not_found,
+             *     network, chat_failed or catalog_failed. Empty on success.
+             */
+            reason?: string;
             status_code?: number;
+            /**
+             * @description ToolSupport is the tool-calling probe result: supported, unsupported or unknown.
+             *     Only set by the chat stage.
+             * @enum {string}
+             */
+            tool_support?: "supported" | "unsupported" | "unknown";
         };
         "server.SettingsValidationResponse": {
             issues?: components["schemas"]["config.SettingsIssue"][];
