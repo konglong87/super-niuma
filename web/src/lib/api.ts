@@ -1,3 +1,4 @@
+import type { components } from "./generated/api-types";
 import type {
   IdentityConfig,
   ImageArtifact,
@@ -1396,4 +1397,11 @@ export async function promoteGlobalSettingsProvider(identity: IdentityConfig, do
     body: { doc, provider_index: providerIndex },
     signal,
   });
+}
+
+export type FreeModelProvider = components["schemas"]["server.FreeModelProvider"];
+export type FreeModelsResponse = components["schemas"]["server.FreeModelsResponse"];
+
+export async function getFreeModels(identity: IdentityConfig, signal?: AbortSignal): Promise<FreeModelsResponse> {
+  return apiRequest<FreeModelsResponse>(identity, "/runtime/free-models", { signal });
 }

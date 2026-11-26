@@ -5,6 +5,7 @@ import { Field, stringValue } from "./modelSettingsFields";
 import { ProviderConnection } from "./ModelConnectionTest";
 import { useModelSettingsText } from "./modelSettingsCopy";
 import type { ModelSection } from "./ModelSettingsTabs";
+import { FreeModelCatalog } from "./FreeModelCatalog";
 
 function PrimaryConfigurationStatus({ draft }: { draft: GlobalSettingsDraft }) {
   const t = useModelSettingsText();
@@ -50,6 +51,7 @@ export function ModelQuickSetup({ draft, onNavigate }: { draft: GlobalSettingsDr
   const useToken = typeof authToken === "string" && !settingsValue(draft.doc, ["apiKey"]);
   const options = PROVIDER_TYPES.map(([value, label]) => [value, value === "" ? t("沿用现有默认值") : value === "custom" ? t("自定义服务") : value === "openai-compatible" ? t("OpenAI 兼容服务") : label] as const);
   return <>
+    <FreeModelCatalog draft={draft} />
     <PrimaryConfigurationStatus draft={draft} />
     <section className="model-quick-form">
       <h3>{t("快速配置主模型")}</h3>

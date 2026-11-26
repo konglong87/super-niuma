@@ -480,7 +480,8 @@ function WebUIV2RouteShell({ identity, workflowClient, workflowAgentClient }: { 
         </div>
         <div className="webui2-onboarding-actions">
           <button type="button" onClick={openSuper}>{language === "zh" ? "先登记工单（无需模型）" : "Record a work order (no model needed)"}</button>
-          <button type="button" onClick={() => openSettings("models")}>{language === "zh" ? "配置模型" : "Configure model"}</button>
+          <button type="button" onClick={() => openSettings("models")}>{language === "zh" ? "获取免费模型" : "Get a free model"}</button>
+          <button type="button" className="secondary" onClick={() => openSettings("models")}>{language === "zh" ? "配置模型" : "Configure model"}</button>
         </div>
       </div>
     </section> : null}
