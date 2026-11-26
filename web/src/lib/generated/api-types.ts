@@ -1525,6 +1525,63 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/runtime/free-models": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List the built-in free model providers
+         * @description Read-only snapshot embedded at build time (no online update). Every catalog field is returned unchanged; `unverified` is derived: true when status is not ok, openai_compatible is not supported, the recommended model is null, or its tool_calling is not supported. The catalog never contains API keys.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["server.FreeModelsResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["server.SwaggerError"];
+                    };
+                };
+                /** @description Internal Server Error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["server.SwaggerError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/runtime/settings": {
         parameters: {
             query?: never;
@@ -12212,6 +12269,31 @@ export interface components {
             };
             xattrs_known?: boolean;
         };
+        "freemodels.Free": {
+            note?: string;
+            type?: string;
+        };
+        "freemodels.Model": {
+            capabilities?: string[];
+            context?: string;
+            id?: string;
+            pending_capabilities?: string[];
+            rpd?: number;
+            rpm?: number;
+            tool_calling?: string;
+            tpd?: number;
+            tpm?: number;
+        };
+        "freemodels.Requirements": {
+            credit_card?: string;
+            other?: string;
+            real_name?: string;
+            region?: string;
+        };
+        "freemodels.Source": {
+            label?: string;
+            url?: string;
+        };
         /** @enum {string} */
         "goal.CriterionStatus": "pending" | "passed" | "failed" | "waived";
         "goal.Decision": {
@@ -12904,6 +12986,29 @@ export interface components {
             process_snapshot?: components["schemas"]["server.SettingsProcessSnapshot"];
             scope?: string;
             workspace?: string;
+        };
+        "server.FreeModelProvider": {
+            anthropic_endpoint?: string;
+            base_url?: string;
+            free?: components["schemas"]["freemodels.Free"];
+            models?: components["schemas"]["freemodels.Model"][];
+            name?: string;
+            openai_compatible?: string;
+            recommended_model?: components["schemas"]["freemodels.Model"];
+            requirements?: components["schemas"]["freemodels.Requirements"];
+            signup_url?: string;
+            slug?: string;
+            sources?: components["schemas"]["freemodels.Source"][];
+            status?: string;
+            status_note?: string;
+            unverified?: boolean;
+            usage_notes?: string[];
+            verified_at?: string;
+        };
+        "server.FreeModelsResponse": {
+            generated_at?: string;
+            providers?: components["schemas"]["server.FreeModelProvider"][];
+            schema_version?: number;
         };
         "server.GlobalSettingsPromoteRequest": {
             doc?: {

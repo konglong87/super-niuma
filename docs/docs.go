@@ -1372,6 +1372,43 @@ const docTemplate = `{
                 }
             }
         },
+        "/runtime/free-models": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Read-only snapshot embedded at build time (no online update). Every catalog field is returned unchanged; ` + "`" + `unverified` + "`" + ` is derived: true when status is not ok, openai_compatible is not supported, the recommended model is null, or its tool_calling is not supported. The catalog never contains API keys.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Runtime"
+                ],
+                "summary": "List the built-in free model providers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/server.FreeModelsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/server.SwaggerError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.SwaggerError"
+                        }
+                    }
+                }
+            }
+        },
         "/runtime/settings": {
             "get": {
                 "security": [
@@ -12921,6 +12958,83 @@ const docTemplate = `{
                 }
             }
         },
+        "freemodels.Free": {
+            "type": "object",
+            "properties": {
+                "note": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "freemodels.Model": {
+            "type": "object",
+            "properties": {
+                "capabilities": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "context": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "pending_capabilities": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "rpd": {
+                    "type": "integer"
+                },
+                "rpm": {
+                    "type": "integer"
+                },
+                "tool_calling": {
+                    "type": "string"
+                },
+                "tpd": {
+                    "type": "integer"
+                },
+                "tpm": {
+                    "type": "integer"
+                }
+            }
+        },
+        "freemodels.Requirements": {
+            "type": "object",
+            "properties": {
+                "credit_card": {
+                    "type": "string"
+                },
+                "other": {
+                    "type": "string"
+                },
+                "real_name": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                }
+            }
+        },
+        "freemodels.Source": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
         "goal.CriterionStatus": {
             "type": "string",
             "enum": [
@@ -15081,6 +15195,85 @@ const docTemplate = `{
                 },
                 "workspace": {
                     "type": "string"
+                }
+            }
+        },
+        "server.FreeModelProvider": {
+            "type": "object",
+            "properties": {
+                "anthropic_endpoint": {
+                    "type": "string"
+                },
+                "base_url": {
+                    "type": "string"
+                },
+                "free": {
+                    "$ref": "#/definitions/freemodels.Free"
+                },
+                "models": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/freemodels.Model"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "openai_compatible": {
+                    "type": "string"
+                },
+                "recommended_model": {
+                    "$ref": "#/definitions/freemodels.Model"
+                },
+                "requirements": {
+                    "$ref": "#/definitions/freemodels.Requirements"
+                },
+                "signup_url": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "sources": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/freemodels.Source"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "status_note": {
+                    "type": "string"
+                },
+                "unverified": {
+                    "type": "boolean"
+                },
+                "usage_notes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "verified_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "server.FreeModelsResponse": {
+            "type": "object",
+            "properties": {
+                "generated_at": {
+                    "type": "string"
+                },
+                "providers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/server.FreeModelProvider"
+                    }
+                },
+                "schema_version": {
+                    "type": "integer"
                 }
             }
         },

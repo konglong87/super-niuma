@@ -343,6 +343,56 @@ definitions:
       xattrs_known:
         type: boolean
     type: object
+  freemodels.Free:
+    properties:
+      note:
+        type: string
+      type:
+        type: string
+    type: object
+  freemodels.Model:
+    properties:
+      capabilities:
+        items:
+          type: string
+        type: array
+      context:
+        type: string
+      id:
+        type: string
+      pending_capabilities:
+        items:
+          type: string
+        type: array
+      rpd:
+        type: integer
+      rpm:
+        type: integer
+      tool_calling:
+        type: string
+      tpd:
+        type: integer
+      tpm:
+        type: integer
+    type: object
+  freemodels.Requirements:
+    properties:
+      credit_card:
+        type: string
+      other:
+        type: string
+      real_name:
+        type: string
+      region:
+        type: string
+    type: object
+  freemodels.Source:
+    properties:
+      label:
+        type: string
+      url:
+        type: string
+    type: object
   goal.CriterionStatus:
     enum:
     - pending
@@ -1795,6 +1845,58 @@ definitions:
         type: string
       workspace:
         type: string
+    type: object
+  server.FreeModelProvider:
+    properties:
+      anthropic_endpoint:
+        type: string
+      base_url:
+        type: string
+      free:
+        $ref: '#/definitions/freemodels.Free'
+      models:
+        items:
+          $ref: '#/definitions/freemodels.Model'
+        type: array
+      name:
+        type: string
+      openai_compatible:
+        type: string
+      recommended_model:
+        $ref: '#/definitions/freemodels.Model'
+      requirements:
+        $ref: '#/definitions/freemodels.Requirements'
+      signup_url:
+        type: string
+      slug:
+        type: string
+      sources:
+        items:
+          $ref: '#/definitions/freemodels.Source'
+        type: array
+      status:
+        type: string
+      status_note:
+        type: string
+      unverified:
+        type: boolean
+      usage_notes:
+        items:
+          type: string
+        type: array
+      verified_at:
+        type: string
+    type: object
+  server.FreeModelsResponse:
+    properties:
+      generated_at:
+        type: string
+      providers:
+        items:
+          $ref: '#/definitions/server.FreeModelProvider'
+        type: array
+      schema_version:
+        type: integer
     type: object
   server.GlobalSettingsPromoteRequest:
     properties:
@@ -6802,6 +6904,33 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Read local scheduler events
+      tags:
+      - Runtime
+  /runtime/free-models:
+    get:
+      description: 'Read-only snapshot embedded at build time (no online update).
+        Every catalog field is returned unchanged; `unverified` is derived: true when
+        status is not ok, openai_compatible is not supported, the recommended model
+        is null, or its tool_calling is not supported. The catalog never contains
+        API keys.'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.FreeModelsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.SwaggerError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.SwaggerError'
+      security:
+      - ApiKeyAuth: []
+      summary: List the built-in free model providers
       tags:
       - Runtime
   /runtime/settings:
