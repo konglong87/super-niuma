@@ -10,7 +10,7 @@ const SETTINGS_CONFLICT_MESSAGE = "服务端配置已变更。当前草稿已保
 export type SettingsPath = readonly (string | number)[];
 export type SettingsIssue = { field: string; code: string; message: string };
 export type SettingsValidation = { valid: boolean; issues: SettingsIssue[] };
-export type SettingsConnection = { ok: boolean; kind: "catalog_connection"; status_code?: number; message: string };
+export type SettingsConnection = { ok: boolean; kind: "catalog_connection" | "chat_connection"; status_code?: number; message: string; reason?: string };
 type SettingsSnapshot = GlobalSettingsResponse & { revision?: string };
 type DraftState = {
   snapshot?: SettingsSnapshot;

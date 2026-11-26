@@ -516,3 +516,107 @@ func TestWebUIV2SettingsReadSameGlobalFile(t *testing.T) {
 		})
 	}
 }
+
+func TestSettingsProviderProbeRunsMinimalChat(t *testing.T) {
+	for _, key := range []string{"ANTHROPIC_BASE_URL", "ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "NIUMA_PROVIDER", "CLAUDE_CODE_PROVIDER"} {
+		t.Setenv(key, "")
+	}
+	const secret = "sk-probe-secret-value"
+	cases := []struct {
+		name       string
+		chatStatus int
+		chatBody   string
+		wantOK     bool
+		wantReason string
+	}{
+		{"ok", 200, `{"choices":[]}`, true, ""},
+		{"bad key", 401, `{"error":"bad key sk-probe-secret-value"}`, false, "key_invalid"},
+		{"forbidden", 403, `{}`, false, "key_invalid"},
+		{"rate limited", 429, `{}`, false, "quota_or_rate_limit"},
+		{"payment required", 402, `{}`, false, "quota_or_rate_limit"},
+		{"quota in 403", 403, `{"error":{"code":"insufficient_quota"}}`, false, "quota_or_rate_limit"},
+		{"model missing", 404, `{}`, false, "model_not_found"},
+		{"model missing 400", 400, `{"error":{"message":"The model does not exist"}}`, false, "model_not_found"},
+		{"server error", 500, `{}`, false, "chat_failed"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			handler, _ := settingsTestHandler(t, "")
+			var chatBody map[string]any
+			provider := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if r.URL.Path == "/v1/models" {
+					writeJSON(w, map[string]any{"data": []any{}})
+					return
+				}
+				if r.URL.Path != "/v1/chat/completions" || r.Header.Get("Authorization") != "Bearer "+secret {
+					t.Errorf("unexpected chat path=%s auth=%q", r.URL.Path, r.Header.Get("Authorization"))
+				}
+				_ = json.NewDecoder(r.Body).Decode(&chatBody)
+				w.WriteHeader(tc.chatStatus)
+				_, _ = w.Write([]byte(tc.chatBody))
+			}))
+			defer provider.Close()
+			body := `{"doc":{"provider":"openai","model":"free-model","baseURL":"` + provider.URL + `/v1","apiKey":"` + secret + `"}}`
+			rec := settingsRequest(handler, http.MethodPost, "/runtime/settings/test-provider", body, "", "")
+			var result SettingsProviderTestResponse
+			if err := json.Unmarshal(rec.Body.Bytes(), &result); err != nil {
+				t.Fatalf("decode: %v body=%s", err, rec.Body.String())
+			}
+			if result.OK != tc.wantOK || result.Reason != tc.wantReason || result.Kind != "chat_connection" {
+				t.Fatalf("result=%+v", result)
+			}
+			if chatBody["model"] != "free-model" || chatBody["max_tokens"] != float64(1) {
+				t.Fatalf("chat body=%v", chatBody)
+			}
+			if strings.Contains(rec.Body.String(), secret) {
+				t.Fatalf("secret leaked: %s", rec.Body.String())
+			}
+		})
+	}
+}
+
+func TestSettingsProviderProbeChatNetworkFailure(t *testing.T) {
+	for _, key := range []string{"ANTHROPIC_BASE_URL", "NIUMA_PROVIDER", "CLAUDE_CODE_PROVIDER"} {
+		t.Setenv(key, "")
+	}
+	handler, _ := settingsTestHandler(t, "")
+	provider := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/v1/models" {
+			writeJSON(w, map[string]any{"data": []any{}})
+			return
+		}
+		hj, _ := w.(http.Hijacker)
+		conn, _, _ := hj.Hijack()
+		conn.Close()
+	}))
+	defer provider.Close()
+	body := `{"doc":{"provider":"openai","model":"m","baseURL":"` + provider.URL + `/v1","apiKey":"k"}}`
+	rec := settingsRequest(handler, http.MethodPost, "/runtime/settings/test-provider", body, "", "")
+	var result SettingsProviderTestResponse
+	if err := json.Unmarshal(rec.Body.Bytes(), &result); err != nil || result.OK || result.Reason != "network" {
+		t.Fatalf("result=%s err=%v", rec.Body.String(), err)
+	}
+}
+
+func TestSettingsProviderProbeAnthropicChatUsesMessages(t *testing.T) {
+	for _, key := range []string{"ANTHROPIC_BASE_URL", "ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "NIUMA_PROVIDER", "CLAUDE_CODE_PROVIDER"} {
+		t.Setenv(key, "")
+	}
+	handler, _ := settingsTestHandler(t, "")
+	var hit bool
+	provider := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/v1/models" {
+			writeJSON(w, map[string]any{"data": []any{}})
+			return
+		}
+		hit = r.URL.Path == "/v1/messages" && r.Header.Get("x-api-key") == "k"
+		writeJSON(w, map[string]any{"type": "message"})
+	}))
+	defer provider.Close()
+	body := `{"doc":{"provider":"anthropic","model":"m","baseURL":"` + provider.URL + `","apiKey":"k"}}`
+	rec := settingsRequest(handler, http.MethodPost, "/runtime/settings/test-provider", body, "", "")
+	var result SettingsProviderTestResponse
+	if err := json.Unmarshal(rec.Body.Bytes(), &result); err != nil || !result.OK || !hit {
+		t.Fatalf("result=%s err=%v hit=%v", rec.Body.String(), err, hit)
+	}
+}

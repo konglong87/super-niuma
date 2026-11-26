@@ -1437,7 +1437,9 @@ func canFallbackAfterError(ctx context.Context, err error) bool {
 		return apiErr.StatusCode == http.StatusRequestTimeout ||
 			apiErr.StatusCode == http.StatusConflict ||
 			apiErr.StatusCode == http.StatusTooManyRequests ||
+			apiErr.StatusCode == http.StatusPaymentRequired ||
 			apiErr.StatusCode >= http.StatusInternalServerError ||
+			isQuotaExhaustedFallbackError(apiErr.StatusCode, raw) ||
 			strings.Contains(raw, "overloaded_error") ||
 			strings.Contains(raw, "rate_limit_error")
 	}
@@ -1446,16 +1448,20 @@ func canFallbackAfterError(ctx context.Context, err error) bool {
 		return openAIErr.HTTPStatusCode == http.StatusRequestTimeout ||
 			openAIErr.HTTPStatusCode == http.StatusConflict ||
 			openAIErr.HTTPStatusCode == http.StatusTooManyRequests ||
+			openAIErr.HTTPStatusCode == http.StatusPaymentRequired ||
 			openAIErr.HTTPStatusCode >= http.StatusInternalServerError ||
-			isModelAccessFallbackError(openAIErr.HTTPStatusCode, openAIErr.Message)
+			isModelAccessFallbackError(openAIErr.HTTPStatusCode, openAIErr.Message) ||
+			isQuotaExhaustedFallbackError(openAIErr.HTTPStatusCode, openAIErr.Message)
 	}
 	var responsesErr *openairesponses.Error
 	if errors.As(err, &responsesErr) {
 		return responsesErr.StatusCode == http.StatusRequestTimeout ||
 			responsesErr.StatusCode == http.StatusConflict ||
 			responsesErr.StatusCode == http.StatusTooManyRequests ||
+			responsesErr.StatusCode == http.StatusPaymentRequired ||
 			responsesErr.StatusCode >= http.StatusInternalServerError ||
-			isModelAccessFallbackError(responsesErr.StatusCode, responsesErr.Message)
+			isModelAccessFallbackError(responsesErr.StatusCode, responsesErr.Message) ||
+			isQuotaExhaustedFallbackError(responsesErr.StatusCode, responsesErr.Message)
 	}
 	var responsesEventErr *openAIResponsesEventError
 	if errors.As(err, &responsesEventErr) {
@@ -1600,6 +1606,38 @@ func isModelAccessFallbackError(status int, message string) bool {
 		}
 	}
 	return false
+}
+
+// isQuotaExhaustedFallbackError 识别免费层额度/余额用完。402 已在调用处整体放行；
+// 这里只处理 400/403 + 额度类消息，标记刻意保守，避免把普通参数错误当成可切换。
+func isQuotaExhaustedFallbackError(status int, message string) bool {
+	if status != http.StatusBadRequest && status != http.StatusForbidden {
+		return false
+	}
+	normalized := strings.ToLower(strings.TrimSpace(message))
+	if normalized == "" {
+		return false
+	}
+	for _, marker := range []string{
+		"insufficient_quota",
+		"exceeded your current quota",
+		"quota exceeded",
+		"insufficient credits",
+		"insufficient balance",
+		"余额不足",
+		"额度已用完",
+		"额度不足",
+	} {
+		if strings.Contains(normalized, marker) {
+			return true
+		}
+	}
+	return false
+}
+
+// IsQuotaExhaustedError 供连接测试等调用方复用同一套额度标记。
+func IsQuotaExhaustedError(status int, message string) bool {
+	return status == http.StatusPaymentRequired || isQuotaExhaustedFallbackError(status, message)
 }
 
 func formatProviderFailures(failures []providerFailure) error {

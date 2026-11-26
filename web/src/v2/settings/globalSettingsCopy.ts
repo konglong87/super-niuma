@@ -50,7 +50,7 @@ const english: Record<string, string> = {
   "无法连接配置服务，请检查网络后重试。": "Cannot reach the settings service. Check the connection and try again.",
   "保存后配置再次发生变化，当前草稿已保留，请重新载入确认。": "The configuration changed again after saving. Your draft is retained; reload to review the latest version.",
   "保存请求已提交，但读取确认失败。当前草稿已保留，请重新载入确认。": "The save request was submitted, but readback failed. Your draft is retained; reload to confirm the result.",
-  "模型目录连接成功": "Model catalog connection succeeded", "模型目录连接失败": "Model catalog connection failed",
+  "模型目录连接成功": "Model catalog connection succeeded", "对话测试成功": "Chat test succeeded", "对话测试失败": "Chat test failed", "模型目录连接失败": "Model catalog connection failed",
 };
 
 export function globalSettingsText(language: string, text: string): string {

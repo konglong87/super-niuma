@@ -2250,7 +2250,7 @@ export interface paths {
         put?: never;
         /**
          * Test provider models catalog connectivity
-         * @description Restores masked credentials and probes the provider models catalog with a ten second timeout. Never saves settings, follows redirects, or performs inference. A catalog failure does not prove inference is unavailable.
+         * @description Restores masked credentials and probes the provider models catalog with a ten second timeout. Never saves settings or follows redirects. After the catalog check passes and a model is configured, sends one minimal chat request (max tokens 1) to verify the key and model; failures carry a reason code (key_invalid, quota_or_rate_limit, model_not_found, network, chat_failed, catalog_failed). Does not verify tool or vision support.
          */
         post: {
             parameters: {
@@ -13222,6 +13222,11 @@ export interface components {
             kind?: string;
             message?: string;
             ok?: boolean;
+            /**
+             * @description Reason classifies a failure: key_invalid, quota_or_rate_limit, model_not_found,
+             *     network, chat_failed or catalog_failed. Empty on success.
+             */
+            reason?: string;
             status_code?: number;
         };
         "server.SettingsValidationResponse": {
