@@ -1,0 +1,861 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-26T06:06:48Z",
+  "providers": [
+    {
+      "slug": "zhipu-glm",
+      "name": "智谱 GLM",
+      "base_url": "https://open.bigmodel.cn/api/paas/v4/",
+      "openai_compatible": "supported",
+      "free": {
+        "type": "unknown",
+        "note": "价格页 glm-4.7-flash、glm-4-flash-250414 输入输出均标「免费」，未写截止日期，但注明「暂不展示免费期结束后的标准价格」；缓存存储为限时免费"
+      },
+      "requirements": {
+        "credit_card": "unknown",
+        "real_name": "unknown",
+        "region": "unknown"
+      },
+      "signup_url": "https://bigmodel.cn/",
+      "status": "ok",
+      "verified_at": "2026-06-25",
+      "sources": [
+        {
+          "label": "GLM-4.7-Flash 模型页",
+          "url": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.7-flash"
+        },
+        {
+          "label": "定价",
+          "url": "https://docs.bigmodel.cn/cn/guide/start/pricing"
+        },
+        {
+          "label": "官网",
+          "url": "https://bigmodel.cn/"
+        },
+        {
+          "label": "模型概览",
+          "url": "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        },
+        {
+          "label": "价格页",
+          "url": "https://bigmodel.cn/pricing"
+        },
+        {
+          "label": "OpenAI API 兼容",
+          "url": "https://docs.bigmodel.cn/cn/guide/develop/openai"
+        }
+      ],
+      "recommended_model": {
+        "id": "glm-4.7-flash",
+        "capabilities": [
+          "文本生成"
+        ],
+        "pending_capabilities": [],
+        "tool_calling": "supported",
+        "context": "200K"
+      },
+      "models": [
+        {
+          "id": "glm-4.7-flash",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "200K"
+        },
+        {
+          "id": "glm-4-flash-250414",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "glm-4.6v-flash",
+          "capabilities": [
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "glm-4.1v-thinking-flash",
+          "capabilities": [
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "glm-4v-flash",
+          "capabilities": [
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "cogview-3-flash",
+          "capabilities": [
+            "文生图"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "cogvideox-flash",
+          "capabilities": [
+            "视频生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        }
+      ],
+      "usage_notes": []
+    },
+    {
+      "slug": "siliconflow",
+      "name": "硅基流动（国内站）",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "openai_compatible": "supported",
+      "anthropic_endpoint": "https://api.siliconflow.cn",
+      "free": {
+        "type": "permanent",
+        "note": "价格页标「免费」的小模型调用费用为 0，限速免费；官方保留解释权，模型可能随时下线。国际站 siliconflow.com 未见免费模型，不收录"
+      },
+      "requirements": {
+        "credit_card": "none",
+        "real_name": "required",
+        "region": "unknown",
+        "other": "2026-05-15 起未实名认证账户无法使用平台功能（支付宝人脸识别）；免费模型具体 RPM / TPM 需登录模型详情页查看"
+      },
+      "signup_url": "https://cloud.siliconflow.cn",
+      "status": "pending",
+      "status_note": "官方页面已核对，免费模型 ID 与限速待登录实测",
+      "verified_at": "2026-11-26",
+      "sources": [
+        {
+          "label": "价格页",
+          "url": "https://www.siliconflow.cn/pricing"
+        },
+        {
+          "label": "公开模型中心",
+          "url": "https://www.siliconflow.cn/models"
+        },
+        {
+          "label": "Rate Limits",
+          "url": "https://docs.siliconflow.cn/docs/userguide/faqs/rate-limit-and-upgradation"
+        },
+        {
+          "label": "实名认证 FAQ",
+          "url": "https://docs.siliconflow.cn/docs/userguide/faqs/authentication"
+        },
+        {
+          "label": "更新公告",
+          "url": "https://docs.siliconflow.cn/docs/release-notes/overview"
+        },
+        {
+          "label": "函数调用指南",
+          "url": "https://docs.siliconflow.com/en/userguide/guides/function-calling"
+        },
+        {
+          "label": "Messages API",
+          "url": "https://docs.siliconflow.cn/docs/api/messages-post"
+        }
+      ],
+      "recommended_model": {
+        "id": "Qwen/Qwen3-8B",
+        "capabilities": [
+          "文本生成"
+        ],
+        "pending_capabilities": [],
+        "tool_calling": "pending",
+        "context": "128K"
+      },
+      "models": [
+        {
+          "id": "Qwen/Qwen3-8B",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "128K"
+        },
+        {
+          "id": "THUDM/GLM-Z1-9B-0414",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "128K"
+        },
+        {
+          "id": "Qwen/Qwen3.5-4B",
+          "capabilities": [
+            "文本生成",
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "256K"
+        },
+        {
+          "id": "deepseek-ai/DeepSeek-OCR",
+          "capabilities": [
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "8K"
+        },
+        {
+          "id": "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "128K"
+        },
+        {
+          "id": "Qwen/Qwen2.5-7B-Instruct",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "32K"
+        },
+        {
+          "id": "THUDM/GLM-4-9B-0414",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "32K"
+        },
+        {
+          "id": "tencent/Hunyuan-MT-7B",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "32K"
+        },
+        {
+          "id": "PaddlePaddle/PaddleOCR-VL-1.5",
+          "capabilities": [
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "XingChenAGI/Xing4.0-29B",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "256K"
+        }
+      ],
+      "usage_notes": [
+        "需完成实名认证后才能使用全部免费模型"
+      ]
+    },
+    {
+      "slug": "modelscope",
+      "name": "ModelScope",
+      "base_url": "https://api-inference.modelscope.cn/v1",
+      "openai_compatible": "unverified",
+      "free": {
+        "type": "unknown",
+        "note": "免费模型与限流待官方复核"
+      },
+      "requirements": {
+        "credit_card": "unknown",
+        "real_name": "unknown",
+        "region": "unknown"
+      },
+      "signup_url": "https://modelscope.cn/",
+      "status": "pending",
+      "verified_at": "2026-08-27",
+      "sources": [
+        {
+          "label": "官网",
+          "url": "https://modelscope.cn/"
+        },
+        {
+          "label": "模型列表",
+          "url": "https://modelscope.cn/models"
+        },
+        {
+          "label": "文档",
+          "url": "https://modelscope.cn/docs"
+        },
+        {
+          "label": "访问令牌",
+          "url": "https://modelscope.cn/my/myaccesstoken"
+        }
+      ],
+      "recommended_model": {
+        "id": "MiniMax/MiniMax-M2.5",
+        "capabilities": [
+          "文本生成"
+        ],
+        "pending_capabilities": [],
+        "tool_calling": "pending",
+        "context": "204K"
+      },
+      "models": [
+        {
+          "id": "MiniMax/MiniMax-M2.5",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "204K"
+        },
+        {
+          "id": "qwen-qwen3-5-35b-a3b",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "131K",
+          "rpd": 2000
+        },
+        {
+          "id": "qwen-qwen3-5-27b",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "131K",
+          "rpd": 2000
+        }
+      ],
+      "usage_notes": []
+    },
+    {
+      "slug": "google-ai-studio",
+      "name": "Google AI Studio（Gemini）",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "openai_compatible": "supported",
+      "free": {
+        "type": "permanent",
+        "note": "新账号默认 Free Tier，按项目限流，官方未写截止日期；免费层输入输出会被用于改进产品（EEA、瑞士、英国适用付费级数据条款）"
+      },
+      "requirements": {
+        "credit_card": "none",
+        "real_name": "unknown",
+        "region": "required",
+        "other": "中国大陆不在官方支持地区列表；第二个及以后的免费项目需扫码设备验证（官方称不需要手机号）；除 gemini-decision-1 外，免费层数值限额需登录 AI Studio 查看"
+      },
+      "signup_url": "https://aistudio.google.com",
+      "status": "pending",
+      "status_note": "官方文档已核对，免费层数值限额与调用待实测",
+      "verified_at": "2026-11-26",
+      "sources": [
+        {
+          "label": "定价与免费层",
+          "url": "https://aistudio.google.com/docs/pricing"
+        },
+        {
+          "label": "限流",
+          "url": "https://aistudio.google.com/docs/rate-limits"
+        },
+        {
+          "label": "模型清单",
+          "url": "https://aistudio.google.com/docs/models"
+        },
+        {
+          "label": "OpenAI 兼容",
+          "url": "https://aistudio.google.com/docs/openai"
+        },
+        {
+          "label": "弃用",
+          "url": "https://aistudio.google.com/docs/deprecations"
+        },
+        {
+          "label": "服务条款",
+          "url": "https://aistudio.google.com/docs/terms"
+        },
+        {
+          "label": "账单",
+          "url": "https://aistudio.google.com/docs/billing"
+        },
+        {
+          "label": "可用地区",
+          "url": "https://aistudio.google.com/docs/available-regions"
+        }
+      ],
+      "recommended_model": {
+        "id": "gemini-4-hydrogen",
+        "capabilities": [
+          "文本生成",
+          "图片理解"
+        ],
+        "pending_capabilities": [],
+        "tool_calling": "supported",
+        "context": "1M（输入，Gemini 4 系列）"
+      },
+      "models": [
+        {
+          "id": "gemini-4-hydrogen",
+          "capabilities": [
+            "文本生成",
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "1M（输入，Gemini 4 系列）"
+        },
+        {
+          "id": "gemini-3.8-flash",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "gemini-3.6-flash",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "gemini-3.5-flash-lite",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "gemini-3.1-flash-lite",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "gemini-3-flash-preview",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "gemini-2.5-pro",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "gemini-2.5-flash",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "gemini-2.5-flash-lite",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        }
+      ],
+      "usage_notes": [
+        "免费层的输入和输出会被用于改进产品，并可能被人工审阅，不要提交敏感信息（EEA、瑞士、英国用户除外）",
+        "中国大陆不在官方支持地区列表"
+      ]
+    },
+    {
+      "slug": "groq",
+      "name": "Groq",
+      "base_url": "https://api.groq.com/openai/v1",
+      "openai_compatible": "supported",
+      "free": {
+        "type": "unknown",
+        "note": "免费模型与限流待官方复核"
+      },
+      "requirements": {
+        "credit_card": "unknown",
+        "real_name": "unknown",
+        "region": "unknown"
+      },
+      "signup_url": "https://console.groq.com/",
+      "status": "pending",
+      "verified_at": "2026-08-27",
+      "sources": [
+        {
+          "label": "官网",
+          "url": "https://groq.com/"
+        },
+        {
+          "label": "控制台",
+          "url": "https://console.groq.com/"
+        },
+        {
+          "label": "文档",
+          "url": "https://console.groq.com/docs"
+        },
+        {
+          "label": "模型文档",
+          "url": "https://console.groq.com/docs/models"
+        }
+      ],
+      "recommended_model": {
+        "id": "openai/gpt-oss-120b",
+        "capabilities": [
+          "文本生成"
+        ],
+        "pending_capabilities": [],
+        "tool_calling": "pending",
+        "context": "131K"
+      },
+      "models": [
+        {
+          "id": "moonshotai/kimi-k2-instruct",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "131K"
+        },
+        {
+          "id": "moonshotai/kimi-k2-instruct-0905",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "131K"
+        },
+        {
+          "id": "groq/compound",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "131K",
+          "rpm": 30,
+          "rpd": 250
+        },
+        {
+          "id": "openai/gpt-oss-120b",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "131K"
+        }
+      ],
+      "usage_notes": []
+    },
+    {
+      "slug": "openrouter",
+      "name": "OpenRouter",
+      "base_url": "https://openrouter.ai/api/v1",
+      "openai_compatible": "supported",
+      "free": {
+        "type": "daily",
+        "note": "免费模型带 :free 后缀，按 UTC 每日计次：每分钟 20 次；累计购买不足 10 credits 时每天 50 次，购满 10 credits 后每天 1,000 次。免费模型会变化，以官方模型接口为准"
+      },
+      "requirements": {
+        "credit_card": "unknown",
+        "real_name": "unknown",
+        "region": "unknown"
+      },
+      "signup_url": "https://openrouter.ai/",
+      "status": "ok",
+      "verified_at": "2026-11-26",
+      "sources": [
+        {
+          "label": "官网",
+          "url": "https://openrouter.ai/"
+        },
+        {
+          "label": "Quickstart",
+          "url": "https://openrouter.ai/docs/quickstart"
+        },
+        {
+          "label": "免费模型筛选",
+          "url": "https://openrouter.ai/models?max_price=0"
+        },
+        {
+          "label": "模型接口",
+          "url": "https://openrouter.ai/api/v1/models"
+        },
+        {
+          "label": "限额",
+          "url": "https://openrouter.ai/docs/api-reference/limits"
+        },
+        {
+          "label": "FAQ",
+          "url": "https://openrouter.ai/docs/faq"
+        }
+      ],
+      "recommended_model": {
+        "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "capabilities": [
+          "文本生成"
+        ],
+        "pending_capabilities": [],
+        "tool_calling": "supported",
+        "context": "1000000",
+        "rpm": 20,
+        "rpd": 50
+      },
+      "models": [
+        {
+          "id": "*:free",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        },
+        {
+          "id": "inclusionai/ling-3.2-flash:free",
+          "capabilities": [
+            "文本生成",
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "1048576"
+        },
+        {
+          "id": "baidu/ernie-5.5-flash-preview:free",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "1024000"
+        },
+        {
+          "id": "liquid/lfm-3-1.7b:free",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "262144"
+        },
+        {
+          "id": "particle-ai/particle-1:free",
+          "capabilities": [
+            "文本生成",
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "1048576"
+        },
+        {
+          "id": "recursive/flint-v1.0:free",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "262144"
+        },
+        {
+          "id": "nvidia/nemotron-3.5-super-vl:free",
+          "capabilities": [
+            "文本生成",
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "1000000"
+        },
+        {
+          "id": "nvidia/nemotron-3.5-lightning:free",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "1000000"
+        },
+        {
+          "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "1000000",
+          "rpm": 20,
+          "rpd": 50
+        },
+        {
+          "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+          "capabilities": [
+            "文本生成",
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "256000"
+        },
+        {
+          "id": "google/gemma-4-26b-a4b-it:free",
+          "capabilities": [
+            "文本生成",
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "262144"
+        },
+        {
+          "id": "google/gemma-4-31b-it:free",
+          "capabilities": [
+            "文本生成",
+            "图片理解"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "supported",
+          "context": "262144"
+        }
+      ],
+      "usage_notes": [
+        "免费模型每分钟 20 次；累计购买不足 10 credits 时每天只有 50 次",
+        "免费模型列表经常变化，原有模型可能下线"
+      ]
+    },
+    {
+      "slug": "nvidia-nim",
+      "name": "NVIDIA NIM",
+      "base_url": "https://integrate.api.nvidia.com/v1",
+      "openai_compatible": "unverified",
+      "free": {
+        "type": "unknown",
+        "note": "官方称 NVIDIA 开发者计划成员可免费访问 NIM API 端点用于原型验证；额度或限速方式官方未写明"
+      },
+      "requirements": {
+        "credit_card": "unknown",
+        "real_name": "unknown",
+        "region": "unknown"
+      },
+      "signup_url": "https://build.nvidia.com/",
+      "status": "pending",
+      "verified_at": "2026-08-27",
+      "sources": [
+        {
+          "label": "官网",
+          "url": "https://www.nvidia.com/"
+        },
+        {
+          "label": "模型目录",
+          "url": "https://build.nvidia.com/models"
+        },
+        {
+          "label": "API key 页面",
+          "url": "https://build.nvidia.com/settings/api-keys"
+        },
+        {
+          "label": "NIM 文档",
+          "url": "https://docs.nvidia.com/nim/"
+        },
+        {
+          "label": "NIM API 说明",
+          "url": "https://docs.api.nvidia.com/nim/docs/product"
+        },
+        {
+          "label": "公开模型列表",
+          "url": "https://integrate.api.nvidia.com/v1/models"
+        }
+      ],
+      "recommended_model": {
+        "id": "nvidia/nemotron-3-ultra-550b-a55b",
+        "capabilities": [
+          "文本生成"
+        ],
+        "pending_capabilities": [],
+        "tool_calling": "pending"
+      },
+      "models": [
+        {
+          "id": "z-ai/glm-5.2",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "1M",
+          "rpm": 40
+        },
+        {
+          "id": "poolside/laguna-xs-2.1",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "262K",
+          "rpm": 40
+        },
+        {
+          "id": "z-ai/glm-5.1",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "202K",
+          "rpm": 40
+        },
+        {
+          "id": "qwen/qwen3.5-397b-a17b",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending",
+          "context": "262K"
+        },
+        {
+          "id": "nvidia/nemotron-3-ultra-550b-a55b",
+          "capabilities": [
+            "文本生成"
+          ],
+          "pending_capabilities": [],
+          "tool_calling": "pending"
+        }
+      ],
+      "usage_notes": [
+        "免费端点是试用服务（trial service），只用于原型和测试；生产使用需 NVIDIA AI Enterprise 授权"
+      ]
+    }
+  ]
+}

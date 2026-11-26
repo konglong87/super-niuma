@@ -479,6 +479,7 @@ func newRouter(opts Options, queryFn QueryFunc) *gin.Engine {
 	registerWebUIRoutes(router, opts)
 	registerRuntimeRoutes(router, opts)
 	registerSettingsRoutes(router, opts)
+	registerFreeModelRoutes(router, opts)
 	router.GET("/trace", gin.WrapF(traceUIHandler(opts)))
 	router.Any("/trace/api/sessions", gin.WrapF(traceAPISessionsHandler(opts)))
 	router.Any("/trace/api/sessions/:id/export", gin.WrapF(traceAPIExportHandler(opts)))
