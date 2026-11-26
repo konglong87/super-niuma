@@ -7,8 +7,8 @@
   },
   "web/src/v2/WebUIV2App.tsx": {
     "baseline_sha256": "b8cb327f534c309b89cd91451876ac08a4d8d5ad7e11f9ac6b4ca93d74e39e4b",
-    "reviewed_sha256": "379fb84bccdac49791b03d03d43087792d0e692186826127039a75f46972c63b",
-    "reason": "Desktop-only pane visibility and navigation composition, plus pausing the hidden Super panel's polling; existing Session components stay mounted; plus a Get a free model button in the first-run dialog that opens model settings.",
+    "reviewed_sha256": "1cddb20b94932623fd9250735c2c7013e8630bd6347fffcf160fd006df043a29",
+    "reason": "Desktop-only pane visibility and navigation composition, plus pausing the hidden Super panel's polling; existing Session components stay mounted; plus a primary Get a free model button in the first-run dialog that opens model settings.",
     "verification": "DesktopSuperNavigation (incl. hidden-pause test) + existing WebUIV2App/WorkflowShell regression + native clicks"
   },
   "web/src/v2/components/SessionSidebar.tsx": {
@@ -127,7 +127,7 @@
   },
   "web/src/v2/settings/modelSettings.css": {
     "baseline_sha256": "b618c2cfb91975d80a8176c38dbd0b2f22bf1fcb4636cb0892b535e5221d7ac6",
-    "reviewed_sha256": "1435e832e04e8b829aa48cdf29ccbb94550339703602715a51c4e64aaf912cc9",
+    "reviewed_sha256": "2453340437f3b3e46096b163331637786c6f2d902a8b5b5a205bd643fcf76afc",
     "reason": "Free model onboarding: Styles for the free model cards.",
     "verification": "visual only"
   },
