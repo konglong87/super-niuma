@@ -20,7 +20,9 @@ class BoundaryReviewTest(unittest.TestCase):
         self.files = {"desktop-v2/main.go": b"package main\n", "internal/session/engine.go": b"package session\n",
                       "docs/docs.go": b"package docs\n",
                       "internal/computerbridge/listener_test.go": b"package computerbridge\n",
-                      "internal/computerbridge/other_test.go": b"package computerbridge\n"}
+                      "internal/computerbridge/other_test.go": b"package computerbridge\n",
+                      "internal/anthropic/client.go": b"package anthropic\n",
+                      "internal/anthropic/other.go": b"package anthropic\n"}
         for name, data in self.files.items():
             self.write(name, data)
         self.write("go.mod", f"module {boundary.NEW_MODULE}\n".encode())
@@ -77,6 +79,22 @@ class BoundaryReviewTest(unittest.TestCase):
 
     def test_new_session_code_is_forbidden(self):
         self.write("internal/session/new.go", b"package session\n")
+        self.assertTrue(any("outside Super boundary" in error for error in boundary.verify(self.root)))
+
+    def test_exact_free_model_onboarding_review_passes(self):
+        self.approve("internal/anthropic/client.go", b"package anthropic\n// quota fallback\n")
+        self.assertEqual(boundary.verify(self.root), [])
+
+    def test_other_runtime_file_in_free_model_package_is_forbidden(self):
+        self.approve("internal/anthropic/other.go", b"package anthropic\n// changed\n")
+        self.assertTrue(any("forbidden" in error for error in boundary.verify(self.root)))
+
+    def test_named_new_go_file_is_allowed(self):
+        self.write("internal/server/free_models.go", b"package server\n")
+        self.assertEqual(boundary.verify(self.root), [])
+
+    def test_unnamed_new_server_go_file_is_forbidden(self):
+        self.write("internal/server/other_new.go", b"package server\n")
         self.assertTrue(any("outside Super boundary" in error for error in boundary.verify(self.root)))
 
     def test_review_cannot_change_baseline_identity(self):

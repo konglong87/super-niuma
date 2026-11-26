@@ -39,8 +39,34 @@ TEST_FIXTURE_FILES = frozenset({
     "internal/computerbridge/client_test.go",
     "internal/computerbridge/listener_test.go",
 })
-REVIEWABLE_FILES = COMPOSITION_FILES | GENERATED_CONTRACT_FILES | TEST_FIXTURE_FILES
+# Built-in free model onboarding: quota-exhausted fallback, the chat and tool
+# probe in the provider connection test, the catalog route and the settings
+# cards. Each file still needs its own exact review entry.
+FREE_MODEL_ONBOARDING_FILES = frozenset({
+    "internal/anthropic/client.go",
+    "internal/server/server.go",
+    "internal/server/settings_center_test.go",
+    "internal/server/settings_provider_test_handler.go",
+    "internal/server/swagger_annotations.go",
+    "web/src/lib/api.ts",
+    "web/src/v2/settings/ModelConnectionTest.tsx",
+    "web/src/v2/settings/ModelQuickSetup.tsx",
+    "web/src/v2/settings/globalSettingsCopy.ts",
+    "web/src/v2/settings/globalSettingsDraft.test.tsx",
+    "web/src/v2/settings/globalSettingsDraft.ts",
+    "web/src/v2/settings/modelSettings.css",
+    "web/src/v2/settings/modelSettingsCopy.ts",
+})
+REVIEWABLE_FILES = COMPOSITION_FILES | GENERATED_CONTRACT_FILES | TEST_FIXTURE_FILES | FREE_MODEL_ONBOARDING_FILES
 ALLOWED_NEW_GO_ROOTS = ("cmd/super-niuma/", "internal/super/")
+# Exact new Go files outside the Super roots, named one by one: the free model
+# catalog route must live in internal/server, where swag finds @Router.
+ALLOWED_NEW_GO_FILES = frozenset({
+    "internal/anthropic/quota_fallback_test.go",
+    "internal/server/free_models.go",
+    "internal/server/free_models_test.go",
+    "internal/server/swagger_free_models.go",
+})
 
 
 def verify(root=ROOT):
@@ -70,7 +96,7 @@ def verify(root=ROOT):
     for folder in ("internal", "cmd"):
         for path in (root / folder).rglob("*.go"):
             name = path.relative_to(root).as_posix()
-            if name not in manifest["files"] and not name.startswith(ALLOWED_NEW_GO_ROOTS):
+            if name not in manifest["files"] and name not in ALLOWED_NEW_GO_FILES and not name.startswith(ALLOWED_NEW_GO_ROOTS):
                 failures.append(f"new Go file outside Super boundary: {name}")
             if OLD_MODULE in path.read_text():
                 failures.append(f"old module dependency: {name}")
@@ -85,7 +111,7 @@ def main():
     if failures:
         print("\n".join(failures), file=sys.stderr)
         return 1
-    print("PASS: legacy baseline protected; exact reviewed Desktop composition, generated API contract and test fixture exceptions only")
+    print("PASS: legacy baseline protected; exact reviewed Desktop composition, generated API contract, test fixture and free model onboarding exceptions only")
     return 0
 
 
