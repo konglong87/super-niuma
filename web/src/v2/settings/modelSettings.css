@@ -55,3 +55,21 @@
 .model-credential-help { flex: 1 1 250px; }
 .model-credential-help summary { cursor: pointer; padding: 8px 0; }
 .model-credential-help p { margin: 8px 0; }
+
+.free-model-catalog { margin-bottom: var(--model-gap); }
+.free-model-catalog > p { margin: 0 0 12px; color: var(--webui2-text-muted); }
+.free-model-list { display: grid; gap: 12px; }
+.free-model-card { background: var(--webui2-surface-muted); border-radius: 8px; padding: 12px 14px; display: grid; gap: 8px; }
+.free-model-card header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.free-model-card h4 { margin: 0; }
+.free-model-status { margin-left: auto; color: var(--webui2-text-muted); font-size: 12px; }
+.free-model-badge { border: 1px solid currentColor; border-radius: 4px; font-size: 12px; padding: 0 6px; color: var(--webui2-warning, #b26a00); }
+.free-model-unverified, .free-model-notes { margin: 0; padding-left: 18px; color: var(--webui2-text-muted); font-size: 13px; }
+.free-model-region { display: flex; align-items: center; gap: 6px; margin: 0; font-weight: 600; color: var(--webui2-danger, #c0392b); }
+.free-model-card dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 0; font-size: 13px; }
+.free-model-card dt { color: var(--webui2-text-muted); }
+.free-model-card dd { margin: 0; }
+.free-model-tag { display: inline-block; border: 1px solid var(--webui2-border, #8884); border-radius: 4px; padding: 0 6px; margin-right: 6px; }
+.free-model-verify { display: flex; gap: 8px; }
+.free-model-verify input { flex: 1; min-width: 0; }
+.free-model-warning { display: flex; align-items: center; gap: 6px; }

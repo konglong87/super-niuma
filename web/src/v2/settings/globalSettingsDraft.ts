@@ -242,6 +242,7 @@ export function useGlobalSettingsDraft(identity: IdentityConfig, enabled = true)
 
   return {
     ...state,
+    identity,
     loaded: Boolean(state.snapshot),
     path: state.snapshot?.path ?? "",
     revision: state.snapshot?.revision,

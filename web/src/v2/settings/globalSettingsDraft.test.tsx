@@ -6,6 +6,9 @@ import { I18nProvider } from "../../lib/i18n";
 import { SettingsDocumentPanel } from "./SettingsDocumentPanel";
 import { SETTINGS_SECRET_SENTINEL, parseSettingsDraft, updateSettingsValue, useGlobalSettingsDraft, type GlobalSettingsDraft } from "./globalSettingsDraft";
 
+// The quick setup also lists free models; keep this suite counting only settings requests.
+vi.mock("../../lib/api", async (importOriginal) => ({ ...(await importOriginal<typeof import("../../lib/api")>()), getFreeModels: vi.fn().mockResolvedValue({ providers: [] }) }));
+
 const identity: IdentityConfig = { apiBase: "/api", apiToken: "test-token", mobileJwt: "", tenantKey: "tenant", userId: "user", deviceId: "device", model: "" };
 const fixture: SettingsDoc = {
   provider: "custom", providerProtocol: "openai-responses", model: "old-model",
