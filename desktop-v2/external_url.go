@@ -6,6 +6,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/konglong87/super-niuma/internal/super/freemodels"
 	wailsruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -34,6 +35,19 @@ func RegisterExternalURLHosts(hosts ...string) {
 		if host = strings.ToLower(strings.TrimSpace(host)); host != "" {
 			externalURLHosts[host] = struct{}{}
 		}
+	}
+}
+
+// The embedded free model catalog is validated by its own tests, so a load
+// error here only leaves the allowlist empty: nothing opens rather than
+// anything opening.
+func init() {
+	hosts, err := freemodels.SignupHosts()
+	if err != nil {
+		return
+	}
+	for host := range hosts {
+		RegisterExternalURLHosts(host)
 	}
 }
 

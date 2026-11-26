@@ -5,6 +5,8 @@ import (
 	"errors"
 	"reflect"
 	"testing"
+
+	"github.com/konglong87/super-niuma/internal/super/freemodels"
 )
 
 func withExternalURLTestState(t *testing.T, hosts ...string) *[]string {
@@ -69,5 +71,17 @@ func TestOpenExternalURLEmptyAllowlistAndNoWindow(t *testing.T) {
 	RegisterExternalURLHosts("example.com")
 	if err := (&app{}).OpenExternalURL("https://example.com/"); !errors.Is(err, errExternalURLUnavailable) {
 		t.Fatalf("no window: %v", err)
+	}
+}
+
+func TestEmbeddedCatalogSignupHostsAreAllowlisted(t *testing.T) {
+	hosts, err := freemodels.SignupHosts()
+	if err != nil || len(hosts) == 0 {
+		t.Fatalf("SignupHosts() = %v, %v", hosts, err)
+	}
+	for host := range hosts {
+		if _, err := validateExternalURL("https://" + host + "/"); err != nil {
+			t.Fatalf("catalog signup host %q is not allowlisted: %v", host, err)
+		}
 	}
 }
