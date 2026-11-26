@@ -35,6 +35,9 @@ type SettingsProviderTestResponse struct {
 	// Reason classifies a failure: key_invalid, quota_or_rate_limit, model_not_found,
 	// network, chat_failed or catalog_failed. Empty on success.
 	Reason string `json:"reason,omitempty"`
+	// ToolSupport is the tool-calling probe result: supported, unsupported or unknown.
+	// Only set by the chat stage.
+	ToolSupport string `json:"tool_support,omitempty" enums:"supported,unsupported,unknown"`
 }
 
 func settingsTestProviderGin(opts Options) gin.HandlerFunc {
@@ -168,42 +171,59 @@ func isTimeoutError(err error) bool {
 	return errors.Is(err, context.DeadlineExceeded) || (errors.As(err, &netErr) && netErr.Timeout())
 }
 
-// probeProviderChat 用配置的模型发一次最小对话，验证 Key 和模型能真正对话。
+// probeProviderChat 用配置的模型发一次最小对话，验证 Key 和模型能真正对话，
+// 并顺带带一个无副作用的 ping 工具探测工具调用。
 // 结果里只含状态码和中文提示，绝不回显上游响应体或密钥。
 func probeProviderChat(ctx context.Context, client *http.Client, cfg config.Config, protocol config.ProviderProtocol, endpoint *url.URL, basePath, model string) SettingsProviderTestResponse {
-	result := SettingsProviderTestResponse{Kind: settingsProviderChatKind}
+	result := SettingsProviderTestResponse{Kind: settingsProviderChatKind, ToolSupport: "unknown"}
 	chatURL := *endpoint
+	pingSchema := map[string]any{"type": "object", "properties": map[string]any{}}
+	const pingDesc = "No-op connectivity check. Never needs to be called."
 	var payload map[string]any
 	switch protocol {
 	case config.ProviderProtocolAnthropicMessages:
 		chatURL.Path = basePath + "/messages"
-		payload = map[string]any{"model": model, "max_tokens": 1, "messages": []map[string]string{{"role": "user", "content": "hi"}}}
+		payload = map[string]any{"model": model, "max_tokens": 1, "messages": []map[string]string{{"role": "user", "content": "hi"}},
+			"tools":       []map[string]any{{"name": "ping", "description": pingDesc, "input_schema": pingSchema}},
+			"tool_choice": map[string]any{"type": "auto"}}
 	case config.ProviderProtocolOpenAIResponses:
 		chatURL.Path = basePath + "/responses"
-		payload = map[string]any{"model": model, "max_output_tokens": 16, "input": "hi", "store": false}
+		payload = map[string]any{"model": model, "max_output_tokens": 16, "input": "hi", "store": false,
+			"tools":       []map[string]any{{"type": "function", "name": "ping", "description": pingDesc, "parameters": pingSchema}},
+			"tool_choice": "auto"}
 	default:
 		chatURL.Path = basePath + "/chat/completions"
-		payload = map[string]any{"model": model, "max_tokens": 1, "messages": []map[string]string{{"role": "user", "content": "hi"}}}
+		payload = map[string]any{"model": model, "max_tokens": 1, "messages": []map[string]string{{"role": "user", "content": "hi"}},
+			"tools":       []map[string]any{{"type": "function", "function": map[string]any{"name": "ping", "description": pingDesc, "parameters": pingSchema}}},
+			"tool_choice": "auto"}
 	}
-	body, _ := json.Marshal(payload)
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, chatURL.String(), bytes.NewReader(body))
-	if err != nil {
-		result.Reason, result.Message = "chat_failed", "无法构造对话测试请求。"
-		return result
-	}
-	req.Header.Set("Content-Type", "application/json")
-	if protocol == config.ProviderProtocolAnthropicMessages {
-		req.Header.Set("anthropic-version", "2023-06-01")
-		if cfg.APIKey != "" {
-			req.Header.Set("x-api-key", cfg.APIKey)
+	send := func() (int, string, error) {
+		body, _ := json.Marshal(payload)
+		req, err := http.NewRequestWithContext(ctx, http.MethodPost, chatURL.String(), bytes.NewReader(body))
+		if err != nil {
+			return 0, "", err
 		}
-		if cfg.AuthToken != "" {
-			req.Header.Set("Authorization", "Bearer "+cfg.AuthToken)
+		req.Header.Set("Content-Type", "application/json")
+		if protocol == config.ProviderProtocolAnthropicMessages {
+			req.Header.Set("anthropic-version", "2023-06-01")
+			if cfg.APIKey != "" {
+				req.Header.Set("x-api-key", cfg.APIKey)
+			}
+			if cfg.AuthToken != "" {
+				req.Header.Set("Authorization", "Bearer "+cfg.AuthToken)
+			}
+		} else if credential := firstNonEmpty(cfg.APIKey, cfg.AuthToken); credential != "" {
+			req.Header.Set("Authorization", "Bearer "+credential)
 		}
-	} else if credential := firstNonEmpty(cfg.APIKey, cfg.AuthToken); credential != "" {
-		req.Header.Set("Authorization", "Bearer "+credential)
+		resp, err := client.Do(req)
+		if err != nil {
+			return 0, "", err
+		}
+		defer resp.Body.Close()
+		raw, _ := io.ReadAll(io.LimitReader(resp.Body, 64<<10))
+		return resp.StatusCode, strings.ToLower(string(raw)), nil
 	}
-	resp, err := client.Do(req)
+	status, message, err := send()
 	if err != nil {
 		result.Reason = "network"
 		if isTimeoutError(err) {
@@ -213,26 +233,44 @@ func probeProviderChat(ctx context.Context, client *http.Client, cfg config.Conf
 		}
 		return result
 	}
-	defer resp.Body.Close()
-	raw, _ := io.ReadAll(io.LimitReader(resp.Body, 64<<10))
-	result.StatusCode = resp.StatusCode
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.OK, result.Message = true, "对话测试成功：Key 和模型可用（未验证工具和看图能力）"
+	if status >= 200 && status < 300 {
+		result.StatusCode, result.OK, result.ToolSupport = status, true, "supported"
+		result.Message = "对话测试成功：Key 和模型可用，工具调用：可用（未验证看图能力）"
 		return result
 	}
-	message := strings.ToLower(string(raw))
-	code := strconv.Itoa(resp.StatusCode)
+	// 请求被 tools 参数拒绝时，不带 tools 重试一次，区分“不支持工具”和“对话本身失败”。
+	if toolsRejected(status, message) {
+		delete(payload, "tools")
+		delete(payload, "tool_choice")
+		if retryStatus, retryMessage, retryErr := send(); retryErr == nil && retryStatus >= 200 && retryStatus < 300 {
+			result.StatusCode, result.OK, result.ToolSupport = retryStatus, true, "unsupported"
+			result.Message = "可对话，但该模型不支持工具调用；代码智能体需要工具调用，建议换用支持工具调用的模型。"
+			return result
+		} else if retryErr == nil {
+			status, message = retryStatus, retryMessage
+		}
+	}
+	result.StatusCode = status
+	code := strconv.Itoa(status)
 	switch {
-	case anthropic.IsQuotaExhaustedError(resp.StatusCode, message) || resp.StatusCode == http.StatusTooManyRequests:
+	case anthropic.IsQuotaExhaustedError(status, message) || status == http.StatusTooManyRequests:
 		result.Reason, result.Message = "quota_or_rate_limit", "Key 有效，但触发限流或额度已用完（HTTP "+code+"），请稍后重试或检查额度。"
-	case resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden:
+	case status == http.StatusUnauthorized || status == http.StatusForbidden:
 		result.Reason, result.Message = "key_invalid", "Key 错误或没有该模型的权限（HTTP "+code+"），请检查后重试。"
-	case resp.StatusCode == http.StatusNotFound || ((resp.StatusCode == http.StatusBadRequest) && containsAny(message, "model not found", "unknown model", "invalid model", "does not exist")):
+	case status == http.StatusNotFound || (status == http.StatusBadRequest && containsAny(message, "model not found", "unknown model", "invalid model", "does not exist")):
 		result.Reason, result.Message = "model_not_found", "模型不存在或当前 Key 无法使用该模型（HTTP "+code+"），请检查模型名称。"
 	default:
 		result.Reason, result.Message = "chat_failed", "模型目录可访问，但对话请求失败（HTTP "+code+"）。"
 	}
 	return result
+}
+
+// toolsRejected 判断错误是否指向 tools / function calling 不被支持。
+func toolsRejected(status int, message string) bool {
+	if status != http.StatusBadRequest && status != http.StatusNotFound && status != http.StatusUnprocessableEntity {
+		return false
+	}
+	return containsAny(message, "tools", "tool use", "tool_use", "tool calling", "tool_choice", "function calling", "function_call", "functions")
 }
 
 func firstNonEmpty(values ...string) string {

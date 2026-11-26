@@ -17,7 +17,7 @@ const english: Record<string, string> = {
   "尚未测试目录连接": "Catalog connection not tested",
   "配置状态，不代表运行中任务的实际模型。": "Configuration status, not the model of an active task.",
   "目录测试成功不代表模型支持对话、工具或看图。": "A catalog test does not verify chat, tool or vision support.",
-  "测试会检查模型目录，并发送一次最小对话验证 Key 和模型，不验证工具或看图能力。": "This test checks the model catalog and sends one minimal chat request to verify the key and model. It does not verify tool or vision capabilities.",
+  "测试会检查模型目录，并发送一次最小对话验证 Key 和模型，并探测是否支持工具调用，不验证看图能力。": "This test checks the model catalog and sends one minimal chat request to verify the key and model. It also probes tool calling and does not verify vision capability.",
   "快速配置主模型": "Quickly configure the primary model",
   "先配置日常对话和代码任务使用的模型，其他能力可以稍后设置。": "Start with your model for everyday chat and coding. Set up other capabilities later.",
   "模型服务": "Model service",

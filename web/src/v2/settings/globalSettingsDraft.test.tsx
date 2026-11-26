@@ -84,7 +84,7 @@ describe("shared global settings draft", () => {
     fetchMock.mockResolvedValueOnce(jsonResponse({ ok: true, kind: "catalog_connection", message: "catalog only" }));
     await act(async () => { await draft.testProvider(); });
     expect(host.querySelector('.model-status')?.textContent).toContain("模型目录可访问");
-    expect(host.querySelector('.model-connection-test')?.textContent).toContain("不验证工具或看图能力");
+    expect(host.querySelector('.model-connection-test')?.textContent).toContain("探测是否支持工具调用");
     act(() => draft.setField(["model"], "new-draft-model"));
     expect(host.querySelector('.model-status')?.textContent).toContain("尚未测试目录连接");
   });

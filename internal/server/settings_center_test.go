@@ -620,3 +620,66 @@ func TestSettingsProviderProbeAnthropicChatUsesMessages(t *testing.T) {
 		t.Fatalf("result=%s err=%v hit=%v", rec.Body.String(), err, hit)
 	}
 }
+
+func TestSettingsProviderProbeDetectsToolSupport(t *testing.T) {
+	for _, key := range []string{"ANTHROPIC_BASE_URL", "ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "NIUMA_PROVIDER", "CLAUDE_CODE_PROVIDER"} {
+		t.Setenv(key, "")
+	}
+	cases := []struct {
+		name         string
+		rejectTools  int
+		rejectBody   string
+		retryStatus  int
+		wantOK       bool
+		wantTools    string
+		wantAttempts int
+	}{
+		{"supported", 0, "", 0, true, "supported", 1},
+		{"unsupported 400", 400, `{"error":{"message":"tool calling is not supported by this model"}}`, 200, true, "unsupported", 2},
+		{"unsupported 404", 404, `{"error":"No endpoints found that support tool use"}`, 200, true, "unsupported", 2},
+		{"tools rejected and chat still fails", 400, `{"error":"tools not supported"}`, 401, false, "unknown", 2},
+		{"plain 400 is not a tools rejection", 400, `{"error":"max_tokens too small"}`, 0, false, "unknown", 1},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			handler, _ := settingsTestHandler(t, "")
+			attempts := 0
+			provider := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if r.URL.Path == "/v1/models" {
+					writeJSON(w, map[string]any{"data": []any{}})
+					return
+				}
+				attempts++
+				var body map[string]any
+				_ = json.NewDecoder(r.Body).Decode(&body)
+				_, hasTools := body["tools"]
+				if attempts == 1 && !hasTools || attempts > 1 && hasTools {
+					t.Errorf("attempt %d hasTools=%v", attempts, hasTools)
+				}
+				if hasTools && body["tool_choice"] != "auto" {
+					t.Errorf("tool_choice=%v, want auto", body["tool_choice"])
+				}
+				switch {
+				case tc.rejectTools != 0 && hasTools:
+					w.WriteHeader(tc.rejectTools)
+					_, _ = w.Write([]byte(tc.rejectBody))
+				case tc.rejectTools != 0 && tc.retryStatus != 0:
+					w.WriteHeader(tc.retryStatus)
+					_, _ = w.Write([]byte(`{}`))
+				default:
+					writeJSON(w, map[string]any{"choices": []any{}})
+				}
+			}))
+			defer provider.Close()
+			body := `{"doc":{"provider":"openai","model":"m","baseURL":"` + provider.URL + `/v1","apiKey":"k"}}`
+			rec := settingsRequest(handler, http.MethodPost, "/runtime/settings/test-provider", body, "", "")
+			var result SettingsProviderTestResponse
+			if err := json.Unmarshal(rec.Body.Bytes(), &result); err != nil {
+				t.Fatal(err)
+			}
+			if result.OK != tc.wantOK || result.ToolSupport != tc.wantTools || attempts != tc.wantAttempts {
+				t.Fatalf("result=%+v attempts=%d", result, attempts)
+			}
+		})
+	}
+}
