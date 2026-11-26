@@ -78,6 +78,8 @@ Go 版本以 `go.mod` 为准。发布与本地构建共用 `scripts/build.sh` �
 ```
 
 没有默认模型、默认服务地址或外部产品凭据回退。请使用你自己选择的服务。
+
+想先免费试用：Desktop 模型设置顶部内置了免费模型目录（7 家 OpenAI 兼容服务的快照，来自 [free-AI-free-token](https://github.com/konglong87/free-AI-free-token)，只读接口为 `GET /runtime/free-models`）。自己去官方页面申请 Key，粘贴后验证通过即自动写入上面的字段；已有主模型时写入 `fallback.providers`。连接测试（`POST /runtime/settings/test-provider`）会检查模型目录、发一次最小对话并探测工具调用。402 或明确的额度用完错误也会触发备用切换。目录快照用 `go run ./scripts/freemodels-sync [源文件]` 更新。
 完整字段、备用路由和 Responses 示例见 [全局配置指南](docs/examples/settings_quickstart.md)。
 不要把真实密钥、提示词转储或私有会话提交到版本库。
 

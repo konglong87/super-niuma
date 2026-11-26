@@ -97,7 +97,12 @@ The bundle is currently still named `niuma.app`. Open **Super Niuma** in its sid
 
 ### 2. Walk through your first work order
 
-1. **Configure your own model service** in Desktop settings. Model access is not bundled. Never paste credentials into Super platform JSON or commit them to Git.
+1. **Configure a model service — free models work.** Click **Get a free model** on first launch, or open Desktop model settings. The top of the page lists seven OpenAI-compatible services with free tiers (Zhipu GLM, SiliconFlow, ModelScope, Google AI Studio, Groq, OpenRouter, NVIDIA NIM), each card showing how the free tier works, its requirements (card, identity verification, region) and usage terms. Use **Open sign-up page** to get your own key from the official site, paste it, then **Verify and use**: Desktop sends one real chat with a tool-calling probe and saves on success. If a primary model already exists, the new provider joins the fallback chain, which switches over on exhausted quota or rate limits.
+   - Model access is not bundled and no shared keys ship with Desktop; free tiers come from each provider, under its own terms.
+   - The catalog is a built-in snapshot sourced from [free-AI-free-token](https://github.com/konglong87/free-AI-free-token); items marked *unverified* have not been tested end to end. Google AI Studio is not available in mainland China.
+   - You can still enter any provider, endpoint and credentials by hand. Never paste credentials into Super platform JSON or commit them to Git.
+
+   <img src="docs/images/free-models-en.png" alt="Free model cards at the top of model settings: recommended model, free plan, requirements, tool-calling support, sign-up and verify buttons" width="900">
 2. **Record the objective and acceptance criteria.** Intake alone makes **no model call, creates no session, and grants no filesystem access**.
 3. **Configure a scoped execution profile.** Edit the disabled example: workspace, configured model, node dependencies, read/write paths, budgets and structured verification rules.
 4. **Review and approve the grant.** Select the order and profile, then inspect the frozen authorization summary. Only explicitly preauthorized `auto_approve` profiles start automatically.
