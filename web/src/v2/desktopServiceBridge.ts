@@ -134,6 +134,7 @@ export type DesktopServiceBridge = Partial<SuperWorkOrderBridge> & Partial<Super
   GetComputerCapabilities?: () => Promise<ComputerCapabilitiesResponse>;
   GetComputerRuntimeStatus?: () => Promise<ComputerRuntimeStatus>;
   StopComputerRuntime?: () => Promise<ComputerRuntimeStatus>;
+  OpenExternalURL?: (url: string) => Promise<void>;
   OpenComputerPermissionSettings?: (target: ComputerPermissionTarget) => Promise<void>;
   StartComputerSession?: (input: StartComputerSessionInput) => Promise<ComputerSessionSnapshot>;
   GetComputerSession?: (sessionID: string) => Promise<ComputerSessionSnapshot>;
